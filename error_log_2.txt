@@ -1,0 +1,5 @@
+﻿src/components/EsenciaCTA.tsx(19,17): error TS2554: Expected 1 arguments, but got 0.
+src/components/EsenciaCTA.tsx(20,17): error TS2554: Expected 1 arguments, but got 0.
+src/components/EsenciaCTA.tsx(21,21): error TS2554: Expected 1 arguments, but got 0.
+src/components/EsenciaCTA.tsx(22,21): error TS2554: Expected 1 arguments, but got 0.
+src/components/ForceCard.tsx(11,75): error TS6133: 'icon' is declared but its value is never read.

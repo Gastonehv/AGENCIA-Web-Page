@@ -1,0 +1,219 @@
+import React, { useRef, useMemo, useEffect } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
+import * as THREE from 'three';
+
+const vertexShader = `
+  uniform float uSize;
+  varying vec3 vColor;
+  varying float vAlpha;
+
+  void main() {
+    vec3 pos = position;
+    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+    gl_Position = projectionMatrix * mvPosition;
+    
+    // Size attenuation
+    gl_PointSize = uSize * (100.0 / -mvPosition.z);
+
+    // Color: Cyan/White mix based on position noise
+    vec3 color1 = vec3(0.0, 1.0, 1.0); // Cyan
+    vec3 color2 = vec3(1.0, 1.0, 1.0); // White
+    
+    // Simple noise based on position
+    float noise = sin(pos.x * 0.1 + pos.y * 0.1) * 0.5 + 0.5;
+    vColor = mix(color1, color2, noise);
+    
+    // Alpha fade based on depth
+    vAlpha = smoothstep(50.0, 0.0, abs(pos.z)); 
+  }
+`;
+
+const fragmentShader = `
+  varying vec3 vColor;
+  varying float vAlpha;
+  uniform float uTime;
+
+  void main() {
+    // Circular particle
+    float r = distance(gl_PointCoord, vec2(0.5));
+    if (r > 0.5) discard;
+
+    // Sparkle effect (Vibrant)
+    float sparkle = sin(uTime * 20.0 + vColor.x * 10.0) * 0.5 + 0.5;
+    
+    // Soft glow
+    float glow = 1.0 - (r * 2.0);
+    glow = pow(glow, 2.0);
+
+    // Boost alpha for visibility
+    gl_FragColor = vec4(vColor, vAlpha * glow * (0.8 + sparkle * 0.4));
+  }
+`;
+
+const SparklingParticles: React.FC = () => {
+  const meshRef = useRef<THREE.Points>(null);
+  const count = 4000;
+  const { viewport } = useThree();
+
+  // Physics State
+  const particles = useMemo(() => {
+    const positions = new Float32Array(count * 3);
+    const initialPositions = new Float32Array(count * 3);
+    const velocities = new Float32Array(count * 3);
+    const attractions = new Float32Array(count);
+
+    for (let i = 0; i < count; i++) {
+      const x = (Math.random() - 0.5) * 60;
+      const y = (Math.random() - 0.5) * 60;
+      const z = (Math.random() - 0.5) * 30;
+
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+
+      initialPositions[i * 3] = x;
+      initialPositions[i * 3 + 1] = y;
+      initialPositions[i * 3 + 2] = z;
+
+      velocities[i * 3] = 0;
+      velocities[i * 3 + 1] = 0;
+      velocities[i * 3 + 2] = 0;
+
+      attractions[i] = 0.015 + Math.random() * 0.02; // Stronger attraction
+    }
+    return { positions, initialPositions, velocities, attractions };
+  }, []);
+
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uSize: { value: 0.5 } // Fine size
+  }), []);
+
+  // Interaction State
+  const stateRef = useRef({
+    time: 0,
+    isUserInteracting: false,
+    interactionTimeout: null as NodeJS.Timeout | null,
+    target: new THREE.Vector3(0, 0, 0),
+    mouse: new THREE.Vector2(0, 0)
+  });
+
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      stateRef.current.isUserInteracting = true;
+      stateRef.current.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      stateRef.current.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+      if (stateRef.current.interactionTimeout) clearTimeout(stateRef.current.interactionTimeout);
+      stateRef.current.interactionTimeout = setTimeout(() => {
+        stateRef.current.isUserInteracting = false;
+      }, 2000);
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      if (stateRef.current.interactionTimeout) clearTimeout(stateRef.current.interactionTimeout);
+    };
+  }, []);
+
+  useFrame((state) => {
+    if (!meshRef.current) return;
+
+    // Update Uniforms
+    const material = meshRef.current.material as THREE.ShaderMaterial;
+    material.uniforms.uTime.value = state.clock.getElapsedTime();
+
+    // 1. Determine Global Target (Attractor)
+    if (stateRef.current.isUserInteracting) {
+      stateRef.current.target.set(
+        stateRef.current.mouse.x * (viewport.width / 2),
+        stateRef.current.mouse.y * (viewport.height / 2),
+        0
+      );
+    } else {
+      stateRef.current.time += 0.015;
+      const t = stateRef.current.time;
+      stateRef.current.target.set(
+        Math.cos(t) * (viewport.width * 0.35),
+        Math.sin(t * 2) * (viewport.height * 0.25),
+        0
+      );
+    }
+
+    const globalTarget = stateRef.current.target;
+    const positions = particles.positions;
+    const initialPositions = particles.initialPositions;
+    const velocities = particles.velocities;
+    const attractions = particles.attractions;
+
+    // 2. Physics Loop
+    for (let i = 0; i < count; i++) {
+      const ix = i * 3;
+      const iy = i * 3 + 1;
+      const iz = i * 3 + 2;
+
+      const px = positions[ix];
+      const py = positions[iy];
+      const pz = positions[iz];
+
+      // FLUID SWARM LOGIC:
+      // Target is Global Attractor + (Initial Offset * Compression Factor)
+      // When factor < 1, they compress towards the center.
+      // We use 0.3 to make them swarm tightly but not collapse.
+      const tx = globalTarget.x + initialPositions[ix] * 0.3;
+      const ty = globalTarget.y + initialPositions[iy] * 0.3;
+      const tz = globalTarget.z + initialPositions[iz] * 0.3;
+
+      const dx = tx - px;
+      const dy = ty - py;
+      const dz = tz - pz;
+
+      const force = attractions[i];
+
+      velocities[ix] += dx * force;
+      velocities[iy] += dy * force;
+      velocities[iz] += dz * force;
+
+      // Add organic noise/turbulence
+      velocities[ix] += (Math.random() - 0.5) * 0.02;
+      velocities[iy] += (Math.random() - 0.5) * 0.02;
+      velocities[iz] += (Math.random() - 0.5) * 0.02;
+
+      // Friction
+      velocities[ix] *= 0.94;
+      velocities[iy] *= 0.94;
+      velocities[iz] *= 0.94;
+
+      positions[ix] += velocities[ix];
+      positions[iy] += velocities[iy];
+      positions[iz] += velocities[iz];
+    }
+
+    // 3. Update Buffer
+    meshRef.current.geometry.attributes.position.needsUpdate = true;
+  });
+
+  return (
+    <points ref={meshRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={count}
+          array={particles.positions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <shaderMaterial
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        uniforms={uniforms}
+        transparent
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </points>
+  );
+};
+
+export default SparklingParticles;

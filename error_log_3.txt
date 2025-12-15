@@ -1,0 +1,7 @@
+﻿src/pages/Contacto.tsx(2,1): error TS6133: 'gsap' is declared but its value is never read.
+src/pages/Contacto.tsx(7,1): error TS6133: 'Contact' is declared but its value is never read.
+src/pages/Contacto.tsx(8,1): error TS6133: 'SEO' is declared but its value is never read.
+src/pages/Contacto.tsx(13,12): error TS6133: 'opacity' is declared but its value is never read.
+src/pages/Esencia.tsx(4,1): error TS6133: 'useNavigate' is declared but its value is never read.
+src/pages/Esencia.tsx(5,1): error TS6133: 'EsenciaCTA' is declared but its value is never read.
+src/pages/Home.tsx(10,1): error TS6133: 'SEO' is declared but its value is never read.

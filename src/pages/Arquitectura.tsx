@@ -72,8 +72,8 @@ const DigitalGrid = () => {
     const startPositions = useMemo(() => {
         const arr = new Float32Array(positions.length);
         for (let i = 0; i < arr.length; i++) {
-            // Deterministic chaos based on index
-            arr[i] = (((i * 1.57) % 60) - 30);
+            // True Chaos: Random distribution filling the screen
+            arr[i] = (Math.random() - 0.5) * 50; // Wield spread (was limited to ~30 with lines)
         }
         return arr;
     }, [positions]);

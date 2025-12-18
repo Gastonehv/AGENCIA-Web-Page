@@ -69,22 +69,22 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
             case 'scroll':
                 return (
                     <div style={{
-                        width: '18px', height: '30px',
-                        border: '2px solid #00FF99', borderRadius: '10px',
-                        position: 'relative', boxShadow: '0 0 10px rgba(0, 255, 153, 0.5)'
+                        width: '24px', height: '40px', // Larger
+                        border: '2px solid #00FF99', borderRadius: '12px',
+                        position: 'relative', boxShadow: '0 0 15px rgba(0, 255, 153, 0.7)' // Stronger glow
                     }}>
                         <div className="scroll-wheel" style={{
-                            width: '3px', height: '5px', background: '#fff',
-                            borderRadius: '2px', position: 'absolute', top: '5px',
+                            width: '4px', height: '6px', background: '#fff', // 1px thicker
+                            borderRadius: '2px', position: 'absolute', top: '6px',
                             left: '50%', transform: 'translateX(-50%)'
                         }} />
                     </div>
                 );
             case 'drag':
                 return (
-                    <div style={{ width: '30px', height: '30px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <div style={{ width: '40px', height: '40px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <div style={{ width: '100%', height: '100%', border: '1px dashed rgba(143, 0, 255, 0.5)', borderRadius: '50%', position: 'absolute' }} />
-                        <svg className="drag-hand" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8F00FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 5px #8F00FF)' }}>
+                        <svg className="drag-hand" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8F00FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 8px #8F00FF)' }}>
                             <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
                             <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2" />
                             <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
@@ -94,9 +94,9 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
                 );
             case 'hover':
                 return (
-                    <div style={{ width: '30px', height: '30px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <div style={{ width: '40px', height: '40px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         {/* Mouse Moving */}
-                        <svg className="hover-mouse" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 5px #00D4FF)' }}>
+                        <svg className="hover-mouse" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 8px #00D4FF)' }}>
                             <rect x="5" y="2" width="14" height="20" rx="7" />
                             <line x1="12" y1="6" x2="12" y2="6" strokeWidth="4" />
                             {/* Represents movement trails */}
@@ -106,14 +106,14 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
                 );
             case 'click':
                 return (
-                    <div style={{ width: '30px', height: '30px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <div style={{ width: '40px', height: '40px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         {/* Finger Pressing */}
                         <div className="click-ring" style={{
                             position: 'absolute', width: '100%', height: '100%',
                             border: '2px solid #FF0055', borderRadius: '50%',
                             opacity: 0
                         }} />
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF0055" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 5px #FF0055)' }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF0055" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 8px #FF0055)' }}>
                             <path d="M14 9l-2-2-2 2" />
                             <path d="M12 7v10" />
                             <circle cx="12" cy="19" r="2" fill="#FF0055" />
@@ -161,8 +161,8 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
                     {renderIcon(item.type)}
                     <span style={{
                         fontFamily: 'monospace',
-                        fontSize: '0.7rem',
-                        fontWeight: 500,
+                        fontSize: '0.85rem', // Larger text
+                        fontWeight: 600, // Bolder
                         color: getColor(item.type),
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',

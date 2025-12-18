@@ -8,7 +8,7 @@ interface ForceCardProps {
     icon: React.ReactNode;
 }
 
-const ForceCard: React.FC<ForceCardProps> = ({ title, description, color, icon: _icon }) => {
+const ForceCard: React.FC<ForceCardProps> = ({ title, description, color, icon }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const glowRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
@@ -98,10 +98,13 @@ const ForceCard: React.FC<ForceCardProps> = ({ title, description, color, icon: 
             />
 
             <div style={{ position: 'relative', zIndex: 2 }}>
-                <div style={{
-                    width: '40px', height: '4px', background: color,
-                    marginBottom: '2rem', boxShadow: `0 0 10px ${color} `
-                }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                    <div style={{
+                        width: '40px', height: '4px', background: color,
+                        boxShadow: `0 0 10px ${color}`
+                    }} />
+                    <div style={{ color: color, fontSize: '1.2rem' }}>{icon}</div>
+                </div>
                 <h3 style={{
                     fontSize: '2.5rem', lineHeight: 1, fontWeight: 700,
                     color: '#FFF', marginBottom: '1rem',

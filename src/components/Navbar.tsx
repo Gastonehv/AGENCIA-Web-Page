@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // Added useLocation, useNavigate
 import gsap from 'gsap';
+// import { useLanguage } from '../context/LanguageContext';
 import iconWhite from '../assets/logos/header-brain.png';
 import { servicesData } from '../data/services.ts';
 
@@ -8,8 +9,9 @@ const Navbar: React.FC = () => {
     const navRef = useRef<HTMLElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
     const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
-    const location = useLocation();
-    const navigate = useNavigate();
+    // const { language, toggleLanguage } = useLanguage(); // Removed unused hook
+    const location = useLocation(); // Hook
+    const navigate = useNavigate(); // Hook
 
     const [isOpen, setIsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -25,10 +27,11 @@ const Navbar: React.FC = () => {
 
     const menuItems = [
         { path: '/esencia', label: 'ESENCIA' },
-        { path: '/identidad', label: 'IDENTIDAD' },
-        { path: '/arquitectura', label: 'ARQUITECTURA' },
-        { path: '/inteligencia', label: 'INTELIGENCIA' },
-        { path: '/automatizacion', label: 'AUTOMATIZACIÓN' }
+        { path: '/arquitectura', label: 'ARQUITECTURA DIGITAL' },
+        { path: '/inteligencia', label: 'IA GENERATIVA' },
+        { path: '/automatizacion', label: 'AUTOMATIZACIÓN' },
+        { path: '/identidad', label: 'IDENTIDAD VISUAL' },
+        { path: '/contacto', label: 'CONTACTO' }
     ];
 
     useEffect(() => {
@@ -94,7 +97,8 @@ const Navbar: React.FC = () => {
                                 '/automatizacion': '#case-automatizacion',
                                 '/identidad': '#case-identidad'
                             };
-                            const targetHash = returnMap[location.pathname] || '#capacidades';
+                            // Default to TOP of home for "Esencia" and others, only use deep links for cases
+                            const targetHash = returnMap[location.pathname] || '';
                             navigate('/' + targetHash);
                         } else {
                             // IF HOME -> TOGGLE MENU
@@ -113,78 +117,59 @@ const Navbar: React.FC = () => {
                     className="synaptic-trigger"
                     onMouseEnter={e => {
                         const text = e.currentTarget.querySelector('.menu-label');
-                        // HOVER ALWAYS TRIGGERS NEON GREEN FEEDBACK
-                        if (text) {
-                            if (isOpen) {
-                                gsap.to(text, { filter: 'drop-shadow(0 0 20px #00FF99)', scale: 1.05, color: '#00FF99' });
-                            } else {
-                                // Passive Hover (Closed) -> Maximum Brightness
-                                if (text) gsap.to(text, { filter: 'drop-shadow(0 0 2px #FFFFFF) drop-shadow(0 0 4px #FFFFFF) drop-shadow(0 0 15px #FFFFFF) drop-shadow(0 0 30px rgba(255,255,255,1))', color: '#000' });
-                            }
-                        }
+                        const img = e.currentTarget.querySelector('img');
+                        if (text) gsap.to(text, {
+                            // NUCLEAR GLOW: 7 LAYERS (Ultimate Density)
+                            textShadow: '0 0 1px #fff, 0 0 3px #fff, 0 0 7px #fff, 0 0 15px #fff, 0 0 30px #fff, 0 0 60px #fff, 0 0 100px #fff',
+                            scale: 1.05
+                        });
+                        if (img) gsap.to(img, {
+                            filter: 'brightness(0) drop-shadow(0 0 12px rgba(255,255,255,1)) drop-shadow(0 0 20px rgba(255,255,255,1)) drop-shadow(0 0 35px rgba(255,255,255,0.9))',
+                            scale: 1.15
+                        });
                     }}
                     onMouseLeave={e => {
                         const text = e.currentTarget.querySelector('.menu-label');
-                        if (isOpen) {
-                            // OPEN STATE -> KEEP GREEN
-                            if (text) gsap.to(text, { filter: 'drop-shadow(0 0 10px #00FF99)', scale: 1, color: '#00FF99' });
-                        } else {
-                            // RETURN OR CLOSED STATE -> REVERT TO BLACK + OVERCLOCKED BACKLIGHT
-                            if (text) gsap.to(text, {
-                                filter: 'drop-shadow(0 0 2px #FFFFFF) drop-shadow(0 0 4px #FFFFFF) drop-shadow(0 0 8px #FFFFFF) drop-shadow(0 0 20px rgba(255,255,255,1))',
-                                scale: 1,
-                                color: '#000'
-                            });
-                        }
+                        const img = e.currentTarget.querySelector('img');
+                        if (text) gsap.to(text, {
+                            // IDLE GLOW: SOLID
+                            textShadow: '0 0 2px #fff, 0 0 8px #fff, 0 0 15px #fff',
+                            scale: 1
+                        });
+                        if (img) gsap.to(img, {
+                            filter: 'brightness(0) drop-shadow(0 0 8px rgba(255,255,255,1)) drop-shadow(0 0 15px rgba(255,255,255,0.9)) drop-shadow(0 0 25px rgba(255,255,255,0.7))',
+                            scale: 1.1
+                        });
                     }}
                 >
-                    {/* BRAIN WRAPPER - Handles The GLOW/Shadow (To avoid Mask Clipping) */}
-                    <div style={{
-                        height: '70%',
-                        aspectRatio: '1/1',
-                        position: 'relative',
-                        // Filter applies to the opaque pixels of children (The Masked Brain)
-                        filter: isOpen
-                            ? 'drop-shadow(0 0 10px #00FF99)'
-                            : 'drop-shadow(0 0 2px #FFFFFF) drop-shadow(0 0 5px #FFFFFF) drop-shadow(0 0 15px rgba(255,255,255,0.8))',
-                        transform: (isOpen || location.pathname !== '/') ? 'scale(1.1)' : 'scale(1)',
-                        transition: 'all 0.3s ease'
-                    }}>
-                        {/* THE BRAIN SHAPE (Black or Green) */}
-                        <div style={{
-                            width: '100%', height: '100%',
-                            backgroundColor: isOpen ? '#00FF99' : '#000000',
-                            maskImage: `url(${iconWhite})`,
-                            WebkitMaskImage: `url(${iconWhite})`,
-                            maskSize: 'contain',
-                            WebkitMaskSize: 'contain',
-                            maskRepeat: 'no-repeat',
-                            WebkitMaskRepeat: 'no-repeat',
-                            maskPosition: 'center',
-                            WebkitMaskPosition: 'center',
-                            transition: 'background-color 0.3s ease'
-                        }} />
-                    </div>
+                    <img src={iconWhite} alt="AgencIA Brain" style={{
+                        height: '100%', width: 'auto', objectFit: 'contain',
+                        transition: 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
+                        // ALWAYS: Black icon with intense white glow behind (visible on any background)
+                        filter: 'brightness(0) drop-shadow(0 0 8px rgba(255,255,255,1)) drop-shadow(0 0 15px rgba(255,255,255,0.9)) drop-shadow(0 0 25px rgba(255,255,255,0.7))',
+                        transform: 'scale(1.1)'
+                    }} />
 
                     {/* MENU LABEL - Visual Affordance */}
                     <span className="menu-label" style={{
                         fontFamily: 'var(--font-mono)',
-                        fontWeight: 700,
-                        fontSize: '0.8rem',
-                        letterSpacing: '0.15em',
+                        fontWeight: 900,
+                        fontSize: '1rem', // Larger
+                        letterSpacing: '0.2em',
                         transition: 'all 0.3s ease',
-                        // OPEN: Green
-                        // CLOSED: Black + Backlight (Overclocked for Text Visibility)
-                        color: isOpen ? '#00FF99' : '#000',
-                        // BOOSTED FILTER: Extra layers to compensate for thin text stroke
-                        filter: isOpen
-                            ? 'drop-shadow(0 0 10px #00FF99)'
-                            : 'drop-shadow(0 0 2px #FFFFFF) drop-shadow(0 0 4px #FFFFFF) drop-shadow(0 0 8px #FFFFFF) drop-shadow(0 0 20px rgba(255,255,255,1))',
+                        color: '#000', // Black text
+                        textTransform: 'uppercase',
+                        // SUPER GLOW IDLE
+                        textShadow: '0 0 2px #fff, 0 0 8px #fff, 0 0 15px #fff',
+                        opacity: 1
                     }}>
-                        {location.pathname !== '/' ? '// RETURN' : (isOpen ? '// CLOSE' : '// MENU')}
+                        {location.pathname !== '/' ? '// REGRESAR' : (isOpen ? '// CERRAR' : '// MENÚ')}
                     </span>
                 </div>
 
+                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', zIndex: 10001 }}>
+                    {/* HAMBURGER ELIMINATED */}
+                </div>
             </div>
 
             {/* FULLSCREEN OVERLAY ("THE COMMAND OS") */}
@@ -210,6 +195,7 @@ const Navbar: React.FC = () => {
                 {/* LEFT HEMISPHERE: NAVIGATION */}
                 <div style={{
                     flex: isMobile ? 'none' : 1,
+                    height: isMobile ? 'auto' : '100%',
                     width: '100%',
                     display: 'flex', flexDirection: 'column',
                     justifyContent: 'center',
@@ -354,7 +340,7 @@ const Navbar: React.FC = () => {
                 </div>
             </div>
 
-        </nav >
+        </nav>
     );
 };
 

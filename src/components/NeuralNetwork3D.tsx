@@ -12,9 +12,10 @@ const NeuralNetwork3D = () => {
     const nodes = useMemo(() => {
         const temp = [];
         for (let i = 0; i < count; i++) {
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-            const r = 4 + Math.random() * 3; // Radius between 4 and 7
+            // Deterministic distribution
+            const theta = (i * 0.13) * Math.PI * 2;
+            const phi = Math.acos(((i * 0.02) % 2) - 1);
+            const r = 4 + ((i * 0.7) % 3);
 
             const x = r * Math.sin(phi) * Math.cos(theta);
             const y = r * Math.sin(phi) * Math.sin(theta);

@@ -1,11 +1,41 @@
-import React, { useEffect, useRef, Suspense } from 'react';
+import React, { useEffect, useRef, Suspense, useState } from 'react';
 import gsap from 'gsap';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import Vortex from '../components/Vortex';
 import InteractionGuide from '../components/InteractionGuide';
+import SEO from '../components/SEO';
+import StructuredData from '../components/StructuredData';
+
+// Mobile detection hook - detects immediately on first render
+const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return window.matchMedia('(max-width: 768px)').matches;
+        }
+        return false;
+    });
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+
+        // Sync check
+        if (isMobile !== mediaQuery.matches) {
+            Promise.resolve().then(() => {
+                setIsMobile(mediaQuery.matches);
+            });
+        }
+
+        mediaQuery.addEventListener('change', handler);
+        return () => mediaQuery.removeEventListener('change', handler);
+    }, [isMobile]);
+
+    return isMobile;
+};
 
 const Contacto: React.FC = () => {
+    const isMobile = useIsMobile();
     const containerRef = useRef<HTMLDivElement>(null);
     const formRef = useRef<HTMLDivElement>(null);
 
@@ -23,11 +53,11 @@ const Contacto: React.FC = () => {
     }, []);
 
     return (
-        <section
+        <div
             ref={containerRef}
             style={{
                 width: '100%',
-                height: '100vh', // Full viewport
+                minHeight: '100vh', // Full viewport
                 position: 'relative',
                 overflow: 'hidden',
                 padding: '0',
@@ -35,18 +65,38 @@ const Contacto: React.FC = () => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                background: '#000000', // Exclusive black background
+                background: '#000', // Exclusive black background
+                color: '#fff',
                 zIndex: 5
             }}
         >
+            <SEO
+                title="Contacto"
+                description="Conéctate con el futuro. Hablemos de cómo la IA puede transformar tu marca."
+            />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "ContactPage",
+                "name": "Contacto AgencIA",
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "AgencIA"
+                }
+            }} />
             {/* Vortex Background - Exclusive */}
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
-                <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, pointerEvents: isMobile ? 'none' : 'auto' }}>
+                <Canvas
+                    camera={{ position: [0, 0, 8], fov: 45 }}
+                    style={{ pointerEvents: isMobile ? 'none' : 'auto' }}
+                >
                     <Suspense fallback={null}>
                         <Vortex />
                         <Environment preset="city" />
                     </Suspense>
-                    <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
+                    {/* Disable OrbitControls on mobile to allow scrolling */}
+                    {!isMobile && (
+                        <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
+                    )}
                 </Canvas>
             </div>
 
@@ -102,7 +152,7 @@ const Contacto: React.FC = () => {
                 ]}
                 style={{ bottom: '2rem' }}
             />
-        </section>
+        </div>
     );
 };
 

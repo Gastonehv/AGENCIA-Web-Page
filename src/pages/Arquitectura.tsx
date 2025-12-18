@@ -5,8 +5,38 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import InteractionGuide from '../components/InteractionGuide';
+import SEO from '../components/SEO';
+import StructuredData from '../components/StructuredData';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Mobile detection hook - detects immediately on first render
+const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(() => {
+        // Check immediately on initialization (SSR-safe)
+        if (typeof window !== 'undefined') {
+            return window.matchMedia('(max-width: 768px)').matches;
+        }
+        return false;
+    });
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+
+        // Sync check
+        if (isMobile !== mediaQuery.matches) {
+            Promise.resolve().then(() => {
+                setIsMobile(mediaQuery.matches);
+            });
+        }
+
+        mediaQuery.addEventListener('change', handler);
+        return () => mediaQuery.removeEventListener('change', handler);
+    }, [isMobile]);
+
+    return isMobile;
+};
 
 // --- 3D Logic ---
 
@@ -41,7 +71,10 @@ const DigitalGrid = () => {
     const targetPositions = useMemo(() => Float32Array.from(positions), [positions]);
     const startPositions = useMemo(() => {
         const arr = new Float32Array(positions.length);
-        for (let i = 0; i < arr.length; i++) arr[i] = (Math.random() - 0.5) * 60; // EXTREME CHAOS
+        for (let i = 0; i < arr.length; i++) {
+            // Deterministic chaos based on index
+            arr[i] = (((i * 1.57) % 60) - 30);
+        }
         return arr;
     }, [positions]);
 
@@ -53,7 +86,7 @@ const DigitalGrid = () => {
         const arr = new Float32Array(positions.length);
         const color = new THREE.Color();
         for (let i = 0; i < count; i++) {
-            const rand = Math.random();
+            const rand = ((i * 0.73) % 1);
             if (rand > 0.6) {
                 // Verde Turquesa Fosforescente (Main Accent)
                 color.set('#00FF99');
@@ -212,6 +245,7 @@ const DigitalGrid = () => {
 // --- Main Component ---
 
 const Arquitectura: React.FC = () => {
+    const isMobile = useIsMobile();
     const containerRef = useRef<HTMLDivElement>(null);
 
     // Scroll Reset on Mount
@@ -307,21 +341,7 @@ const Arquitectura: React.FC = () => {
 
                 .add('switch')
 
-                // 3. Text Fade Out (Aggressive Cleanup)
-                .to(['.final-line-1', '.final-line-2', '.final-line-3'], {
-                    opacity: 0,
-                    y: -50,
-                    filter: 'blur(20px)',
-                    duration: 0.5,
-                    stagger: 0.1,
-                    onComplete: () => {
-                        // Force hide to prevent ghosting
-                        gsap.set(['.final-line-1', '.final-line-2', '.final-line-3'], { visibility: 'hidden' });
-                    },
-                    onReverseComplete: () => {
-                        gsap.set(['.final-line-1', '.final-line-2', '.final-line-3'], { visibility: 'visible' });
-                    }
-                }, 'switch')
+                // 3. Text Persists (Animation Removed)
 
                 // 4. Action Bar Reveal
                 .fromTo('.next-protocol-btn',
@@ -338,28 +358,55 @@ const Arquitectura: React.FC = () => {
 
     return (
         <div ref={containerRef} style={{ position: 'relative', width: '100%' }}>
+            <SEO
+                title="Arquitectura Digital"
+                description="Diseño de ecosistemas digitales de alto rendimiento. Infraestructura escalable y código puro."
+            />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "name": "Arquitectura Digital",
+                "provider": {
+                    "@type": "Organization",
+                    "name": "AgencIA"
+                },
+                "description": "Desarrollo de ecosistemas digitales optimizados para velocidad y escalabilidad extrema."
+            }} />
 
             {/* 1. Fixed WebGL Background */}
-            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1 }}>
-                <Canvas camera={{ position: [0, 0, 12], fov: 60 }}>
+            {/* 1. Fixed WebGL Background - touch-action: none ONLY on canvas to not block page scroll */}
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1, pointerEvents: isMobile ? 'none' : 'auto' }}>
+                <Canvas
+                    camera={{ position: [0, 0, 12], fov: 60 }}
+                    style={{
+                        touchAction: 'none',
+                        pointerEvents: isMobile ? 'none' : 'auto'
+                    }}
+                >
                     <color attach="background" args={['#0A001A']} /> {/* Negro Abisal */}
                     <DigitalGrid />
-                    <OrbitControls
-                        enableZoom={false}
-                        enablePan={false}
-                        enableRotate={true}
-                        autoRotate={true}
-                        autoRotateSpeed={0.5}
-                        enableDamping={true}
-                    />
+                    {/* Disable OrbitControls on mobile to allow page scroll */}
+                    {!isMobile && (
+                        <OrbitControls
+                            enableZoom={false}
+                            enablePan={false}
+                            enableRotate={true}
+                            autoRotate={true}
+                            autoRotateSpeed={0.5}
+                            enableDamping={true}
+                        />
+                    )}
                 </Canvas>
             </div>
 
-            {/* 2. Scrollable Content */}
-            <div style={{ height: '1600vh', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+            {/* 2. Scrollable Content
+                - Desktop: pointerEvents: 'none' permite que el canvas 3D reciba eventos del mouse (OrbitControls)
+                - Mobile: pointerEvents: 'auto' permite scroll táctil nativo (canvas tiene pointer-events: none vía CSS)
+            */}
+            <div style={{ height: '1600vh', position: 'relative', zIndex: 10, pointerEvents: isMobile ? 'auto' : 'none' }}>
 
                 {/* Interaction HUD */}
-                <div className="interaction-hud" style={{ position: 'fixed', bottom: '2rem', width: '100%', zIndex: 20 }}>
+                <div className="interaction-hud" style={{ position: 'fixed', bottom: '1rem', width: '100%', zIndex: 20 }}>
                     <InteractionGuide mode="both" />
                 </div>
 
@@ -376,7 +423,7 @@ const Arquitectura: React.FC = () => {
 
                 <div className="arch-section" style={{
                     position: 'absolute', top: '150vh', width: '100%', textAlign: 'center', color: '#fff',
-                    padding: '0 5%'
+                    padding: isMobile ? '0 3%' : '0 5%', boxSizing: 'border-box'
                 }}>
                     <div className="blueprint-decoration" style={{
                         opacity: 0.3, // Reduced opacity
@@ -389,13 +436,14 @@ const Arquitectura: React.FC = () => {
                     </div>
                     <div style={{ overflow: 'hidden' }}>
                         <h2 className="arch-title" style={{
-                            fontSize: 'clamp(1.8rem, 5vw, 6rem)',
+                            fontSize: isMobile ? 'clamp(1.4rem, 6vw, 2rem)' : 'clamp(1.8rem, 5vw, 6rem)',
                             letterSpacing: '0.05em',
-                            marginBottom: '2rem',
+                            marginBottom: isMobile ? '1rem' : '2rem',
                             textShadow: '0 0 50px rgba(0, 255, 153, 0.4)',
                             textWrap: 'balance',
                             wordBreak: 'break-word',
-                            hyphens: 'auto'
+                            hyphens: 'auto',
+                            padding: isMobile ? '0 1rem' : '0'
                         }}>
                             EXPERIENCIAS WEB DE ALTO IMPACTO
                         </h2>
@@ -403,20 +451,21 @@ const Arquitectura: React.FC = () => {
 
                     <p className="arch-text" style={{
                         fontFamily: 'var(--font-mono)',
-                        fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)',
-                        maxWidth: '90vw', // Mobile safe
-                        width: '100%', // Ensure it takes available space
+                        fontSize: isMobile ? '0.85rem' : 'clamp(0.9rem, 1.5vw, 1.2rem)',
+                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
+                        width: '100%',
                         margin: '0 auto',
                         lineHeight: 1.6,
                         color: '#ffffff',
-                        background: 'rgba(10, 0, 26, 0.6)',
+                        background: 'rgba(10, 0, 26, 0.85)',
                         backdropFilter: 'blur(5px)',
-                        padding: '2rem',
+                        padding: isMobile ? '1rem' : '2rem',
                         borderRadius: '4px',
                         border: '1px solid rgba(0, 255, 153, 0.1)',
                         borderLeft: '2px solid #00FF99',
                         textAlign: 'left',
-                        textShadow: '0 2px 4px rgba(0,0,0,0.9)'
+                        textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                        boxSizing: 'border-box'
                     }}>
                         No hacemos páginas web; construimos <strong style={{ color: '#00FF99' }}>embajadas digitales</strong>. Desde Landing Pages psicodélicas que convierten por instinto hasta Portales Corporativos que imponen autoridad. Tu presencia en la web debe ser un evento, no un folleto.
                     </p>
@@ -424,7 +473,7 @@ const Arquitectura: React.FC = () => {
 
                 <div className="arch-section" style={{
                     position: 'absolute', top: '550vh', width: '100%', textAlign: 'center', color: '#fff',
-                    padding: '0 5%'
+                    padding: isMobile ? '0 3%' : '0 5%', boxSizing: 'border-box'
                 }}>
                     <div className="blueprint-decoration" style={{
                         opacity: 0.3,
@@ -437,33 +486,35 @@ const Arquitectura: React.FC = () => {
                     </div>
                     <div style={{ overflow: 'hidden' }}>
                         <h2 className="arch-title" style={{
-                            fontSize: 'clamp(1.8rem, 5vw, 6rem)', // Reduced min size
+                            fontSize: isMobile ? 'clamp(1.4rem, 6vw, 2rem)' : 'clamp(1.8rem, 5vw, 6rem)',
                             letterSpacing: '0.05em',
-                            marginBottom: '2rem',
+                            marginBottom: isMobile ? '1rem' : '2rem',
                             textShadow: '0 0 50px rgba(0, 255, 153, 0.4)',
                             textWrap: 'balance',
                             wordBreak: 'break-word',
-                            hyphens: 'auto'
+                            hyphens: 'auto',
+                            padding: isMobile ? '0 1rem' : '0'
                         }}>
                             INGENIERÍA DE SOFTWARE & SaaS
                         </h2>
                     </div>
                     <p className="arch-text" style={{
                         fontFamily: 'var(--font-mono)',
-                        fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)',
-                        maxWidth: '90vw',
+                        fontSize: isMobile ? '0.85rem' : 'clamp(0.9rem, 1.5vw, 1.2rem)',
+                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
                         width: '100%',
                         margin: '0 auto',
                         lineHeight: 1.6,
                         color: '#ffffff',
-                        background: 'rgba(10, 0, 26, 0.6)',
+                        background: 'rgba(10, 0, 26, 0.85)',
                         backdropFilter: 'blur(5px)',
-                        padding: '2rem',
+                        padding: isMobile ? '1rem' : '2rem',
                         borderRadius: '4px',
                         border: '1px solid rgba(0, 255, 153, 0.1)',
                         borderRight: '2px solid #00FF99',
-                        textAlign: 'right',
-                        textShadow: '0 2px 4px rgba(0,0,0,0.9)'
+                        textAlign: isMobile ? 'left' : 'right',
+                        textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                        boxSizing: 'border-box'
                     }}>
                         El código estático murió. Desarrollamos <strong style={{ color: '#00FF99' }}>Aplicaciones Web Progresivas (PWA)</strong> y plataformas **SaaS** que escalan con tu ambición. Dashboards de control, sistemas de gestión y herramientas que se sienten vivas. Si puedes imaginar la lógica, podemos programar el sistema.
                     </p>
@@ -472,7 +523,8 @@ const Arquitectura: React.FC = () => {
                 <div className="arch-section" style={{
                     position: 'absolute', top: '950vh', width: '100%', textAlign: 'center',
                     color: '#fff',
-                    padding: '0 5%'
+                    padding: isMobile ? '0 3%' : '0 5%', boxSizing: 'border-box',
+                    transform: isMobile ? 'translateY(-8vh)' : 'none' // LIFT UP ON MOBILE for spacing
                 }}>
                     <div className="blueprint-decoration" style={{
                         opacity: 0.3,
@@ -485,33 +537,35 @@ const Arquitectura: React.FC = () => {
                     </div>
                     <div style={{ overflow: 'hidden' }}>
                         <h2 className="arch-title" style={{
-                            fontSize: 'clamp(1.8rem, 5vw, 6rem)', // Reduced min size
+                            fontSize: isMobile ? 'clamp(1.4rem, 6vw, 2rem)' : 'clamp(1.8rem, 5vw, 6rem)',
                             letterSpacing: '0.05em',
-                            marginBottom: '2rem',
+                            marginBottom: isMobile ? '1rem' : '2rem',
                             textShadow: '0 0 50px rgba(0, 255, 153, 0.4)',
                             textWrap: 'balance',
                             wordBreak: 'break-word',
-                            hyphens: 'auto'
+                            hyphens: 'auto',
+                            padding: isMobile ? '0 1rem' : '0'
                         }}>
                             ARQUITECTURA DE ECOSISTEMAS
                         </h2>
                     </div>
                     <p className="arch-text" style={{
                         fontFamily: 'var(--font-mono)',
-                        fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)',
-                        maxWidth: '90vw',
+                        fontSize: isMobile ? '0.85rem' : 'clamp(0.9rem, 1.5vw, 1.2rem)',
+                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
                         width: '100%',
                         margin: '0 auto',
                         lineHeight: 1.6,
                         color: '#ffffff',
-                        background: 'rgba(10, 0, 26, 0.6)',
+                        background: 'rgba(10, 0, 26, 0.85)',
                         backdropFilter: 'blur(5px)',
-                        padding: '2rem',
+                        padding: isMobile ? '1rem' : '2rem',
                         borderRadius: '4px',
                         border: '1px solid rgba(0, 255, 153, 0.1)',
                         borderBottom: '2px solid #00FF99',
-                        textAlign: 'center',
-                        textShadow: '0 2px 4px rgba(0,0,0,0.9)'
+                        textAlign: isMobile ? 'left' : 'center',
+                        textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                        boxSizing: 'border-box'
                     }}>
                         Un pilar aislado no sostiene nada. Integramos APIs, bases de datos y servicios en la nube para crear un <strong style={{ color: '#00FF99' }}>organismo digital unificado</strong>. Tu frontend habla con tu backend, tu CRM con tu marketing, y todo funciona como una mente colmena eficiente.
                     </p>
@@ -520,7 +574,7 @@ const Arquitectura: React.FC = () => {
                 {/* FINAL COPY SECTION (Magistral) */}
                 <div className="final-copy-section" style={{
                     position: 'absolute', top: '1350vh', width: '100%', textAlign: 'center',
-                    color: '#fff', padding: '0 2rem'
+                    color: '#fff', padding: '0 2rem', boxSizing: 'border-box'
                 }}>
                     <h3 className="final-line-1" style={{
                         fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
@@ -534,7 +588,7 @@ const Arquitectura: React.FC = () => {
                     </h3>
 
                     <h1 className="final-line-2" style={{
-                        fontSize: 'clamp(3rem, 8vw, 8rem)',
+                        fontSize: 'clamp(2.5rem, 8vw, 8rem)', // Slightly smaller min to fit mobile
                         fontWeight: 900,
                         textTransform: 'uppercase',
                         lineHeight: 0.9,
@@ -543,7 +597,12 @@ const Arquitectura: React.FC = () => {
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         filter: 'drop-shadow(0 0 30px rgba(0, 255, 153, 0.5)) drop-shadow(0 4px 8px rgba(0,0,0,0.8))',
-                        opacity: 0
+                        opacity: 0,
+                        width: '100%',
+                        padding: '0 1rem',
+                        boxSizing: 'border-box',
+                        overflowWrap: 'break-word',
+                        wordWrap: 'break-word'
                     }}>
                         LO CONVERTIMOS<br />EN ARTE.
                     </h1>

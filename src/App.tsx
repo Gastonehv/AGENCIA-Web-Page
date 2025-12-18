@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Navbar from './components/Navbar';
 import ScrollToTop from './components/ScrollToTop';
-import { LanguageProvider } from './context/LanguageContext';
-import { ScrollProvider } from './context/ScrollContext';
+import { LanguageProvider } from './context/LanguageProvider';
+import { ScrollProvider } from './context/ScrollProvider';
 
 // Pages
 import Home from './pages/Home';
@@ -14,11 +14,14 @@ import Inteligencia from './pages/Inteligencia';
 import Automatizacion from './pages/Automatizacion';
 import Contacto from './pages/Contacto';
 
+import Cursor from './components/Cursor';
+
 function App() {
   return (
     <LanguageProvider>
       <ScrollProvider>
         <Router>
+          <Cursor />
           <ScrollToTop />
           <Layout>
             <Navbar />

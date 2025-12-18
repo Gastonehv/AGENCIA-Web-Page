@@ -6,6 +6,8 @@ import serviceBrutalismImage from '../assets/images/service_brutalism.png';
 import genesisDnaImage from '../assets/images/genesis-dna-v2.jpg';
 import sintesisAgenciaImage from '../assets/images/sintesis-agencia-v2.jpg';
 import CinematicDrinkHero from '../components/hero/CinematicDrinkHero';
+import SEO from '../components/SEO';
+import StructuredData from '../components/StructuredData';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -278,6 +280,20 @@ const Identidad: React.FC = () => {
             overflow: 'hidden',
             position: 'relative'
         }}>
+            <SEO
+                title="Identidad Visual & Branding"
+                description="Diseño de marcas que respiran. Sistemas de diseño dinámicos y experiencias de usuario inmersivas."
+            />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "name": "Identidad Visual",
+                "provider": {
+                    "@type": "Organization",
+                    "name": "AgencIA"
+                },
+                "description": "Creación de identidades dinámicas utilizando WebGL y animaciones de alto nivel."
+            }} />
             {/* Hero Section */}
             <section className="hero-section" style={{
                 height: '100vh',

@@ -23,12 +23,11 @@ const CASES = [
         subtitle: 'Cimientos de Código Puro',
         desc: 'No usamos plantillas. Construimos ecosistemas digitales desde cero, optimizados para velocidad y escalabilidad extrema.',
         fullDesc: 'Reescribimos las reglas del rendimiento web. Abandonamos los CMS tradicionales para construir una arquitectura headless distribuida globalmente. Utilizando React Server Components y edge caching, logramos tiempos de carga instantáneos que retienen a los usuarios y dominan los rankings de búsqueda.',
-        humanDesc: '¿Sabes cuando entras a una web y te da tiempo de hacer café mientras carga? Pues nosotros eliminamos eso. Botamos esos sistemas viejitos y lentos, y creamos webs que abren al instante. Tu competencia pierde clientes esperando, tú ya estás vendiendo.',
+        humanDesc: 'Tu competencia pierde el 40% de sus visitas por cada segundo extra de carga. Nosotros eliminamos la espera. Sitios instantáneos que retienen clientes desde el primer pixel.',
         services: 'Next.js, Computación Edge, UI de Alto Rendimiento',
         humanServices: 'Páginas ultrarrápidas, Código limpio, Diseño que responde',
         buttonCopy: 'TRADUCCIÓN A MODO MENOS MAMÓN',
-        // IMPACT TAGS REPLACING YEAR
-        impactTag: 'INFRAESTRUCTURA GLOBAL',
+        year: '2026',
         img: techArchitectureImg,
         video: architectureVideo,
         path: '/arquitectura',
@@ -44,7 +43,7 @@ const CASES = [
         services: 'Modelos de Difusión, Integración LLM, APIs en Real-time',
         humanServices: 'Motor que crea imágenes, Chatbots inteligentes, Contenido al instante',
         buttonCopy: 'TRADUCCIÓN A MODO MENOS PAYASO',
-        impactTag: 'INTELIGENCIA AUTÓNOMA',
+        year: '2026',
         img: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop',
         video: iaGenerativaVideo,
         path: '/inteligencia',
@@ -60,7 +59,7 @@ const CASES = [
         services: 'Orquestación de Flujos, Scripts en Python, Agentes de IA',
         humanServices: 'Robots que ayudan, Conexiones automáticas, Empleado digital',
         buttonCopy: 'TRADUCCIÓN A MODO MENOS NERD',
-        impactTag: 'SISTEMAS AUTO-EJECUTABLES',
+        year: '2026',
         img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop',
         video: automationVideo,
         path: '/automatizacion',
@@ -76,7 +75,7 @@ const CASES = [
         services: 'WebGL, Animaciones GSAP, Branding Dinámico',
         humanServices: 'Gráficos 3D, Animaciones bonitas, Marca que se mueve',
         buttonCopy: 'TRADUCCIÓN A MODO MENOS PRETENCIOSO',
-        impactTag: 'BRANDING KINÉTICO',
+        year: '2025',
         img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop',
         video: identidadVideo,
         path: '/identidad',
@@ -85,7 +84,7 @@ const CASES = [
 ];
 
 const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
-    const [activeProject, setActiveProject] = useState<any>(null); // State for Modal
+    const [activeProject, setActiveProject] = useState<typeof CASES[number] | null>(null); // State for Modal
     const containerRef = useRef<HTMLDivElement>(null);
     const sliderRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -268,7 +267,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         textShadow: '0px 10px 30px rgba(0,0,0,0.1)'
                     }}>
                         CAPACIDADES<br />
-                        <span style={{ color: '#00FF99' }}>/// SYSTEM ONLINE</span>
+                        <span style={{ color: '#CCC' }}>/// 2026</span>
                     </h2>
                     <p style={{
                         fontSize: 'clamp(1rem, 1.5vw, 1.5rem)',
@@ -286,6 +285,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         key={i}
                         className="showcase-card"
                         onClick={() => setActiveProject(item)} // OPEN MODAL
+                        data-cursor="open" // Custom Cursor Trigger
                         style={{
                             textDecoration: 'none', // Remove link underline
                             // inherit styles
@@ -386,6 +386,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
             {/* MODAL SYSTEM */}
             <ProjectModal
+                key={activeProject?.id || 'none'}
                 project={activeProject}
                 onClose={() => setActiveProject(null)}
             />

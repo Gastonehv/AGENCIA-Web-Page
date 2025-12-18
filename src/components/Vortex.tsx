@@ -87,8 +87,14 @@ const Vortex = () => {
         return tex;
     }, [fontLoaded]);
 
+    const textureRef = useRef<THREE.CanvasTexture | null>(null);
+
+    useEffect(() => {
+        textureRef.current = texture;
+    }, [texture]);
+
     useFrame((state) => {
-        if (!meshRef.current || !materialRef.current || !texture) return;
+        if (!meshRef.current || !materialRef.current || !textureRef.current) return;
 
         const time = state.clock.getElapsedTime();
 
@@ -97,7 +103,7 @@ const Vortex = () => {
 
         // Texture Offset
         const speed = 0.04;
-        texture.offset.y = -(time * speed) % 1;
+        textureRef.current.offset.y = -(time * speed) % 1;
     });
 
     if (!texture) return null;

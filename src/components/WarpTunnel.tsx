@@ -61,28 +61,28 @@ const WarpTunnel: React.FC = () => {
         const tempObj = new THREE.Object3D();
 
         for (let i = 0; i < count; i++) {
-            // Tunnel distribution (Cylinder)
-            const r = 15 + Math.random() * 30; // Radius 15-45
-            const theta = Math.random() * Math.PI * 2;
+            // Deterministic tunnel distribution
+            const r = 15 + ((i * 0.77) % 30);
+            const theta = (i * 0.13) * Math.PI * 2;
 
             const x = r * Math.cos(theta);
             const y = r * Math.sin(theta);
-            const z = (Math.random() - 0.5) * 200;
+            const z = ((i * 1.23) % 200) - 100;
 
             tempObj.position.set(x, y, z);
-            tempObj.lookAt(0, 0, 100); // Look forward
+            tempObj.lookAt(0, 0, 100);
 
             // Scale: Long streaks
-            const length = Math.random() * 20 + 5;
-            const thickness = Math.random() * 0.2 + 0.05;
+            const length = ((i * 0.47) % 20) + 5;
+            const thickness = ((i * 0.01) % 0.2) + 0.05;
             tempObj.scale.set(thickness, thickness, length);
 
             tempObj.updateMatrix();
             matrices.push(tempObj.matrix.clone());
 
-            speeds[i] = 30.0 + Math.random() * 50.0; // High speed variation
-            offsets[i] = Math.random() * 200.0;
-            sizes[i] = Math.random();
+            speeds[i] = 30.0 + ((i * 1.57) % 50.0);
+            offsets[i] = (i * 0.89) % 200.0;
+            sizes[i] = (i * 0.31) % 1.0;
         }
         return { speeds, offsets, sizes, matrices };
     }, []);

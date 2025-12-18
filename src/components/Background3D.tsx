@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-// @ts-ignore
+// @ts-expect-error - external lib without types
 import attraction from 'threejs-components/build/cursors/attraction1.min.js';
 
 const Background3D: React.FC = () => {
@@ -8,7 +8,7 @@ const Background3D: React.FC = () => {
     useEffect(() => {
         if (!canvasRef.current) return;
 
-        let cursor: any;
+        let cursor: { destroy?: () => void; dispose?: () => void } | null = null;
 
         try {
             // Handle both default and named exports

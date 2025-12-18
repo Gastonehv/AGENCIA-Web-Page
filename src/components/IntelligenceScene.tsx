@@ -1,10 +1,39 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Float, Stars, Lightformer } from '@react-three/drei';
 import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing';
 import AIEntity from './AIEntity';
 import FloatingWindow from './FloatingWindow';
 import { useVoiceInteraction } from './useVoiceInteraction';
+
+// Mobile detection hook - detects immediately on first render
+const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return window.matchMedia('(max-width: 768px)').matches;
+        }
+        return false;
+    });
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+
+        // Use a more modern and robust way to handle the listener
+        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        mediaQuery.addEventListener('change', handler);
+
+        // Final sync check in case something changed between render and effect mount
+        if (isMobile !== mediaQuery.matches) {
+            Promise.resolve().then(() => {
+                setIsMobile(mediaQuery.matches);
+            });
+        }
+
+        return () => mediaQuery.removeEventListener('change', handler);
+    }, [isMobile]);
+
+    return isMobile;
+};
 
 // Escenario Específico: "El Negocio de Semillas y Abarrotes"
 const SCENARIO_STEPS = {
@@ -36,6 +65,7 @@ const SCENARIO_STEPS = {
 };
 
 const IntelligenceScene: React.FC = () => {
+    const isMobile = useIsMobile();
     const [step, setStep] = useState<keyof typeof SCENARIO_STEPS>('IDLE');
     const { speak, isSpeaking, startListening, isListening } = useVoiceInteraction();
     const currentData = SCENARIO_STEPS[step];
@@ -71,8 +101,12 @@ const IntelligenceScene: React.FC = () => {
         <div style={{ position: 'relative', width: '100%', height: '100vh', background: '#000000', overflow: 'hidden' }}>
 
             {/* Capa 3D */}
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
-                <Canvas camera={{ position: [0, 0, 8], fov: 45 }} gl={{ antialias: false, alpha: false }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, pointerEvents: isMobile ? 'none' : 'auto' }}>
+                <Canvas
+                    camera={{ position: [0, 0, 8], fov: 45 }}
+                    gl={{ antialias: false, alpha: false }}
+                    style={{ pointerEvents: isMobile ? 'none' : 'auto' }}
+                >
                     <color attach="background" args={['#050505']} />
 
                     <Suspense fallback={null}>
@@ -115,7 +149,10 @@ const IntelligenceScene: React.FC = () => {
                         </EffectComposer>
                     </Suspense>
 
-                    <OrbitControls enableZoom={false} enablePan={false} autoRotate={step !== 'IDLE'} autoRotateSpeed={0.5} />
+                    {/* Disable OrbitControls on mobile to allow scrolling */}
+                    {!isMobile && (
+                        <OrbitControls enableZoom={false} enablePan={false} autoRotate={step !== 'IDLE'} autoRotateSpeed={0.5} />
+                    )}
                 </Canvas>
             </div>
 

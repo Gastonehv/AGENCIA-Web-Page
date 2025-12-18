@@ -87,7 +87,7 @@ const EsenciaCTA: React.FC = () => {
                 );
 
                 // Scramble effect driven by scroll
-                let progressObj = { val: 0 };
+                const progressObj = { val: 0 };
                 tl.to(progressObj, {
                     val: 1,
                     duration: 0.5,

@@ -6,29 +6,16 @@ import Loader from '../components/Loader';
 import { useScroll } from '../context/ScrollContext';
 import ShowcaseSlider from '../components/ShowcaseSlider';
 import SoulManifesto from '../components/SoulManifesto';
+import Symbiosis from '../components/Symbiosis';
 import SEO from '../components/SEO';
+import StructuredData from '../components/StructuredData';
 
 // --- ASSETS (From Esencia) ---
 import essenceHeroVideo from '../assets/videos/esencia_hero.mp4';
 const videoSrc = essenceHeroVideo;
 import ceoImg from '../assets/team/ceo.jpg';
+import gaelImg from '../assets/team/gael_oracle.png';
 import almaLogo from '../assets/images/alma_logo_final.png';
-
-// ... (in component)
-
-<div style={{
-    width: '320px', height: '120px', // Adjusted for Rectangular Logo
-    backgroundImage: `url(${almaLogo})`,
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    borderRadius: '20px', // Adjusted radius
-    marginBottom: '1rem',
-    position: 'relative',
-    zIndex: 2,
-    filter: 'drop-shadow(0 0 20px rgba(0,255,153,0.2))',
-    // animation: 'pulseLogo 4s infinite alternate' // Optional: kept or removed based on preference
-}} />
 import footerLogo from '../assets/logo_agencia_full.png';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -43,10 +30,10 @@ const Home: React.FC = () => {
 
     // TEAM DATA
     const team = [
-        { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg },
-        { id: 2, role: 'CTO / AI LEAD', name: 'Oráculo de Datos', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1000&auto=format&fit=crop' },
-        { id: 3, role: 'LEAD DEVELOPER', name: 'Tejedor de Código', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1000&auto=format&fit=crop' },
-        { id: 4, role: 'UX/UI DIRECTOR', name: 'Escultor de Interfaces', img: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=1000&auto=format&fit=crop' },
+        { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
+        { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
+        { id: 3, role: 'LEAD DEVELOPER', name: 'Tejedor de Código', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1000&auto=format&fit=crop', scale: 1.35 },
+        { id: 4, role: 'UX/UI DIRECTOR', name: 'Escultor de Interfaces', img: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=1000&auto=format&fit=crop', scale: 1.35 },
     ];
 
     // Logo PATHS (For the Portal Mask)
@@ -70,10 +57,12 @@ const Home: React.FC = () => {
         if (loading) {
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
+            document.body.classList.add('loading'); // ADD CLASS
             if (lenis) lenis.stop();
         } else {
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
+            document.body.classList.remove('loading'); // REMOVE CLASS
 
             // HASH NAVIGATION LOGIC
             if (hash === '#capacidades' && lenis) {
@@ -210,7 +199,7 @@ const Home: React.FC = () => {
                     scrollTrigger: {
                         trigger: '.narrative-hero', // The section containing ESENCIA text
                         start: 'top top',
-                        end: '+=400%', // Reduced from 800% to 400% for snappier narrative
+                        end: '+=800%',
                         pin: true,
                         scrub: 0.5,
                         anticipatePin: 1,
@@ -222,7 +211,7 @@ const Home: React.FC = () => {
                 tlHero.to('.word-esenc', {
                     opacity: 0,
                     filter: 'blur(30px)',
-                    duration: 1,
+                    duration: 1.5,
                     ease: 'power2.inOut'
                 }, 0);
 
@@ -231,16 +220,16 @@ const Home: React.FC = () => {
                     y: '100%', // Moves down to line 2 (approx)
                     scale: 2.5, // GROWS to match the big font size
                     x: '-0.5em', // Adjust alignment to sit near IA
-                    duration: 1.5,
+                    duration: 2,
                     ease: 'power2.inOut'
                 }, 0.5); // Starts while ESENC is fading
 
                 // Phase 3 (SYNCED): "IA" turns Green (Radioactive) AS Nuestra descends
                 tlHero.to('.hero-char-ia', {
-                    color: '#00FF99', // RADIOACTIVE GREEN
+                    color: '#00FF99', // PALETTE: Verde Turquesa Fosforescente
                     textShadow: '0 0 80px rgba(0,255,153,1), 0 0 150px rgba(0,255,153,0.8)',
                     scale: 1.1,
-                    duration: 1.5, // Matches the descent duration
+                    duration: 2, // Matches the descent duration
                     ease: 'power2.out'
                 }, 0.5); // <--- SYNC WITH DESCENT (was 2.5)
 
@@ -249,7 +238,7 @@ const Home: React.FC = () => {
                 tlHero.to('.word-nuestra', {
                     opacity: 0,
                     filter: 'blur(20px)',
-                    duration: 1, // Prolonged fade
+                    duration: 1.5, // Prolonged fade
                     ease: 'power2.inOut'
                 }, 1.5); // Starts mid-descent, ends slightly after impact (3.0)
 
@@ -258,19 +247,19 @@ const Home: React.FC = () => {
                     scale: 1,
                     borderRadius: '0rem',
                     boxShadow: '0 0 0 rgba(0,0,0,0)',
-                    duration: 2,
+                    duration: 3,
                     ease: 'power2.inOut'
                 }, 1);
 
                 // Phase 4: FADE OUT to WHITE
-                tlHero.to('.liquid-container', { opacity: 0, duration: 1.5, ease: 'power2.inOut' }, 3);
+                tlHero.to('.liquid-container', { opacity: 0, duration: 2, ease: 'power2.inOut' }, 4);
                 // Note: We target the narrative container background, not the body, to avoid breaking Background3D
-                tlHero.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 1.5, ease: 'power2.inOut' }, 3);
+                tlHero.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2, ease: 'power2.inOut' }, 4);
 
                 // Phase 5: IA Explosion
                 tlHero.to('.hero-char-ia', {
-                    scale: 60, opacity: 0, duration: 1.5, ease: 'power4.in'
-                }, 4);
+                    scale: 60, opacity: 0, duration: 2, ease: 'power4.in'
+                }, 5);
 
 
                 // --- 4. IDENTIDAD REVEAL ---
@@ -278,7 +267,7 @@ const Home: React.FC = () => {
                     scrollTrigger: {
                         trigger: '#identidad-section',
                         start: 'top top',
-                        end: '+=250%', // Reduced from 900% to 250% (No dead scrolling)
+                        end: '+=300%', // Reduced from 900% to prevent "stuck" feeling
                         pin: true,
                         scrub: 1,
                         anticipatePin: 1,
@@ -288,30 +277,29 @@ const Home: React.FC = () => {
 
                 tlIdentidad.fromTo(['.identidad-marker', '.identidad-chapter-label'],
                     { opacity: 0, x: -50, filter: 'blur(10px)' },
-                    { opacity: 1, x: 0, filter: 'blur(0px)', duration: 2.5, ease: 'power2.out' }
+                    { opacity: 1, x: 0, filter: 'blur(0px)', duration: 1, ease: 'power2.out' }
                 );
 
                 tlIdentidad.fromTo('.identidad-headline-1',
-                    { y: 200, opacity: 0, rotationX: -90, filter: 'blur(20px)', transformOrigin: '50% 100%' },
-                    { y: 0, opacity: 1, rotationX: 0, filter: 'blur(0px)', duration: 2, ease: 'none' }, ">"
+                    { y: 100, opacity: 0, rotationX: -90, filter: 'blur(20px)', transformOrigin: '50% 100%' },
+                    { y: 0, opacity: 1, rotationX: 0, filter: 'blur(0px)', duration: 1, ease: 'none' }, ">"
                 );
 
                 tlIdentidad.fromTo('.identidad-headline-2',
-                    { y: 200, opacity: 0, rotationX: -90, filter: 'blur(20px)', transformOrigin: '50% 100%' },
-                    { y: 0, opacity: 1, rotationX: 0, filter: 'blur(0px)', duration: 2, ease: 'none' }, ">"
+                    { y: 100, opacity: 0, rotationX: -90, filter: 'blur(20px)', transformOrigin: '50% 100%' },
+                    { y: 0, opacity: 1, rotationX: 0, filter: 'blur(0px)', duration: 1, ease: 'none' }, ">"
                 );
 
                 tlIdentidad.fromTo('.identidad-body-text',
-                    { x: 100, opacity: 0, filter: 'blur(10px)' },
-                    { x: 0, opacity: 1, filter: 'blur(0px)', duration: 2, ease: 'power2.out' }, ">"
+                    { x: 50, opacity: 0, filter: 'blur(10px)' },
+                    { x: 0, opacity: 1, filter: 'blur(0px)', duration: 1, ease: 'power2.out' }, ">"
                 );
 
-                // REMOVED PAUSE to prevent "stuck scroll" feeling
-                // tlIdentidad.to({}, { duration: 3 }); 
+                tlIdentidad.to({}, { duration: 0.5 }); // Short read pause
 
                 tlIdentidad.to(['.identidad-marker', '.identidad-chapter-label', '.identidad-headline-1', '.identidad-headline-2', '.identidad-body-text'], {
-                    scale: 0.9, filter: 'blur(20px)', opacity: 0, duration: 1.5, ease: 'power2.in'
-                }, "+=1"); // Small delay (1s) instead of giant pause
+                    scale: 0.95, filter: 'blur(10px)', opacity: 0, duration: 1, ease: 'power2.in'
+                });
 
 
             }, containerRef);
@@ -331,7 +319,22 @@ const Home: React.FC = () => {
 
     return (
         <main ref={containerRef}>
-            <SEO title="AGENCIA" description="Inteligencia Artificial aplicada a la narrativa digital." />
+            <SEO
+                title="Agencia de IA & Futuro Digital"
+                description="Lideramos la frontera de la IA Generativa, Arquitectura Digital y Automatización. No somos una agencia con IA, somos la IA como agencia."
+            />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "AgencIA",
+                "url": "https://agencia.com",
+                "logo": "https://agencia.com/logo.png",
+                "description": "Agencia líder en Transformación Digital e Inteligencia Artificial.",
+                "sameAs": [
+                    "https://www.linkedin.com/company/agencia",
+                    "https://instagram.com/agencia"
+                ]
+            }} />
             {loading && <Loader onComplete={handleLoaderComplete} />}
 
             {/* 0. WHITE VOID (Replaces Background3D) */}
@@ -414,8 +417,8 @@ const Home: React.FC = () => {
                 <section className="narrative-hero" style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 5%', zIndex: 10 }}>
                     <div style={{ overflow: 'visible', position: 'relative', zIndex: 10 }}>
                         <h1 style={{
-                            fontSize: 'clamp(3rem, 15vw, 15rem)', // Base size for the large text
-                            lineHeight: 0.8,
+                            fontSize: 'clamp(3rem, 12vw, 15rem)', // Adjusted for mobile fit
+                            lineHeight: 0.9,
                             fontWeight: 900,
                             letterSpacing: '-0.04em',
                             margin: 0,
@@ -436,15 +439,19 @@ const Home: React.FC = () => {
                                 letterSpacing: '0.2em',
                                 marginBottom: '0.2em',
                                 position: 'relative',
-                                textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.7)' // PERMANENT GLOW
+                                textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.7)', // PERMANENT GLOW
+                                textAlign: 'center'
                             }}>
                                 NUESTRA
                             </span>
 
                             {/* LINE 2: ESENCIA (Giant) */}
-                            <div style={{ display: 'flex', gap: '0.1em' }}>
+                            <div style={{
+                                display: 'flex', gap: '0.1em', whiteSpace: 'nowrap', flexWrap: 'nowrap',
+                                width: '100%', justifyContent: 'center', alignItems: 'center' // Force center alignment and full width
+                            }}>
                                 {/* PART 2A: ESENC (Will Fade Away) */}
-                                <span className="word-esenc" style={{ display: 'inline-flex' }}>
+                                <span className="word-esenc" style={{ display: 'inline-flex', flexShrink: 0 }}>
                                     <span className="hero-char-main">E</span>
                                     <span className="hero-char-main">S</span>
                                     <span className="hero-char-main">E</span>
@@ -453,9 +460,9 @@ const Home: React.FC = () => {
                                 </span>
 
                                 {/* PART 2B: IA (The Final Survivor) */}
-                                <span className="word-ia-wrapper" style={{ display: 'inline-flex' }}>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, color: '#00FF99 !important', textShadow: '0 0 20px rgba(0,255,153,0.8), 0 0 40px rgba(0,255,153,0.4)' }}>I</span>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, color: '#00FF99 !important', textShadow: '0 0 20px rgba(0,255,153,0.8), 0 0 40px rgba(0,255,153,0.4)' }}>A</span>
+                                <span className="word-ia-wrapper" style={{ display: 'inline-flex', flexShrink: 0 }}>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10 }}>I</span>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10 }}>A</span>
                                 </span>
                             </div>
                         </h1>
@@ -472,14 +479,9 @@ const Home: React.FC = () => {
                         <div className="identidad-marker" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: '#666', marginTop: '150px' }}>/// SYSTEM_IDENTITY</div>
                     </div>
                     <div style={{ paddingLeft: '5rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                        <div className="identidad-chapter-label">
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', padding: '0.2rem 0.6rem', border: '1px solid #000', borderRadius: '20px', display: 'inline-block', marginBottom: '1rem' }}>
-                                CAPÍTULO 001 — ORIGEN
-                            </span>
-                        </div>
-                        <h2 className="identidad-headline-1" style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', color: '#000', margin: 0 }}>
-                            NO SOMOS UNA<br />
-                            <span style={{ color: '#888888' }}>AGENCIA CON IA.</span>
+                        {/* RESTORED HEADLINE - CLEAN TEXT */}
+                        <h2 className="identidad-headline-1" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', color: '#888888', margin: 0 }}>
+                            NO SOMOS UNA AGENCIA CON IA
                         </h2>
                         <h2 className="identidad-headline-2" style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', color: '#00FF99', margin: 0, textShadow: '0 0 30px rgba(0,255,153,0.4)' }}>
                             SOMOS LA IA<br />
@@ -499,30 +501,33 @@ const Home: React.FC = () => {
 
                 {/* 4. SOUL MANIFESTO */}
                 <section className="soul-narrative-section" style={{ position: 'relative', zIndex: 30, backgroundColor: '#000', color: '#FFF' }}>
-                    <div style={{ position: 'absolute', top: '15vh', left: '5%', fontFamily: 'var(--font-mono)', color: '#FFF', opacity: 0.5, zIndex: 40, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <span style={{ fontSize: '0.8rem' }}>/// CHAPTER_002_INIT</span>
-                        <span style={{ fontSize: '1rem', fontWeight: 600 }}>GÉNESIS</span>
-                    </div>
                     <SoulManifesto />
                 </section>
 
                 {/* 5. TEAM RIFT */}
                 <section className="team-list" style={{ minHeight: '100vh', padding: '10vh 0', backgroundColor: '#FFFFFF', color: '#000', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '15vh', left: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <span style={{ fontSize: '0.8rem' }}>/// CHAPTER_003_CORE</span>
-                        <span style={{ fontSize: '1rem', fontWeight: 600 }}>NÚCLEO</span>
-                    </div>
-                    <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', marginBottom: '6rem', fontWeight: 900, textAlign: 'center', letterSpacing: '-0.05em', color: '#000' }}>EL NÚCLEO</h2>
+                    <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', marginBottom: '6rem', fontWeight: 900, textAlign: 'center', letterSpacing: '0.02em', wordSpacing: '0.2em', color: '#000' }}>EL NÚCLEO</h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         {team.map((member) => (
                             <div key={member.id} className="rift-row" style={{ position: 'relative', width: '100%', height: '30vh', minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
-                                <div className="rift-img" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundImage: `url(${member.img})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', opacity: 0.3, transform: 'scale(0.9)', filter: 'grayscale(100%)', zIndex: 0, transition: 'none' }} />
+                                <div className="rift-img" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, transition: 'none', overflow: 'hidden', opacity: 0.3, filter: 'grayscale(100%)' }}>
+                                    <div style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        backgroundImage: `url(${member.img})`,
+                                        backgroundSize: 'contain',
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'center',
+                                        transform: `scale(${member.scale})`,
+                                        transformOrigin: 'center 20%', // Zoom into face
+                                    }} />
+                                </div>
                                 <span className="rift-id" style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: '10rem', fontWeight: 900, opacity: 0.05, zIndex: 1, pointerEvents: 'none', color: '#000' }}>0{member.id}</span>
                                 <div className="rift-left" style={{ flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingRight: '4rem', zIndex: 2, background: 'linear-gradient(90deg, #FFFFFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)', transform: 'translateX(0)', willChange: 'transform' }}>
-                                    <h3 style={{ fontSize: 'clamp(2rem, 3.5vw, 4rem)', fontWeight: 700, textAlign: 'right', margin: 0, color: '#000' }}>{member.role}</h3>
+                                    <h3 style={{ fontSize: 'clamp(2rem, 3.5vw, 4rem)', fontWeight: 700, textAlign: 'right', margin: 0, color: '#000', whiteSpace: 'pre-line' }}>{member.role}</h3>
                                 </div>
                                 <div className="rift-right" style={{ flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '4rem', zIndex: 2, background: 'linear-gradient(-90deg, #FFFFFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)', transform: 'translateX(0)', willChange: 'transform' }}>
-                                    <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-mono)', color: '#000', maxWidth: '300px' }}>{member.name}</span>
+                                    <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-mono)', color: '#000', maxWidth: '300px', whiteSpace: 'pre-line' }}>{member.name}</span>
                                 </div>
                             </div>
                         ))}
@@ -600,6 +605,9 @@ const Home: React.FC = () => {
                     </div>
                 </section>
 
+                {/* --- 5.5 SIMBIOSIS (STARTUPS) --- */}
+                <Symbiosis />
+
                 {/* --- TRANSITION DIVIDER ("THE SILENCE") --- */}
                 <div style={{
                     height: '30vh',
@@ -615,10 +623,6 @@ const Home: React.FC = () => {
 
                 {/* 6. EXIT / FOOTER */}
                 <section style={{ minHeight: '100vh', padding: '2rem 0', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF', color: '#000', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '15vh', left: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <span style={{ fontSize: '0.8rem' }}>/// CHAPTER_004_EXIT</span>
-                        <span style={{ fontSize: '1rem', fontWeight: 600 }}>CONTACTO</span>
-                    </div>
 
                     {/* BLOCK 1: IDENTITY */}
                     <h2 style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', textAlign: 'center', fontWeight: 900, marginBottom: '-5.5rem', letterSpacing: '-0.05em', zIndex: 10, position: 'relative' }}>
@@ -651,7 +655,7 @@ const Home: React.FC = () => {
                             onMouseEnter={e => {
                                 e.currentTarget.style.animation = 'none'; // Pause pulse to unleash power
                                 e.currentTarget.style.transform = 'scale(1.05)';
-                                e.currentTarget.style.boxShadow = '0 0 50px rgba(0, 255, 153, 1), 0 0 100px rgba(0, 0, 255, 1), 0 0 150px rgba(143, 0, 255, 1)'; // FULL PALETTE SPECTRUM
+                                e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 255, 153, 0.8), 0 0 60px rgba(0, 255, 153, 0.6), 0 0 100px rgba(0, 255, 153, 0.4)'; // PURE RADIOACTIVE EXPLOSION
                             }}
                             onMouseLeave={e => {
                                 e.currentTarget.style.animation = 'nuclearPulse 3s infinite alternate';
@@ -664,9 +668,9 @@ const Home: React.FC = () => {
 
                     <style>{`
                         @keyframes nuclearPulse {
-                            0% { box-shadow: 0 0 20px rgba(0, 255, 153, 0.6), 0 0 40px rgba(0, 0, 255, 0.4); transform: scale(1); }
-                            50% { box-shadow: 0 0 40px rgba(0, 0, 255, 0.8), 0 0 80px rgba(143, 0, 255, 0.6); transform: scale(1.01); }
-                            100% { box-shadow: 0 0 40px rgba(143, 0, 255, 1), 0 0 100px rgba(0, 255, 153, 0.8), 0 0 60px rgba(0, 0, 255, 0.8); transform: scale(1.02); }
+                            0% { box-shadow: 0 0 10px rgba(0, 255, 153, 0.4), 0 0 20px rgba(0, 255, 153, 0.2); transform: scale(1); }
+                            50% { box-shadow: 0 0 25px rgba(0, 255, 153, 0.6), 0 0 50px rgba(0, 255, 153, 0.4); transform: scale(1.01); }
+                            100% { box-shadow: 0 0 40px rgba(0, 255, 153, 0.8), 0 0 80px rgba(0, 255, 153, 0.5); transform: scale(1.02); }
                         }
                     `}</style>
                 </section>

@@ -1,5 +1,6 @@
 
 import ScrambleText from './ScrambleText';
+import AsciiRipple from './AsciiRipple';
 
 const MANIFESTO = [
     {
@@ -84,7 +85,9 @@ const SoulManifesto = () => {
                             maxWidth: '700px'
                         }}>
                             {item.body.map((line, j) => (
-                                <p key={j} style={{ margin: '0 0 0.8rem 0' }}>{line}</p>
+                                <p key={j} style={{ margin: '0 0 0.8rem 0' }}>
+                                    <AsciiRipple text={line} />
+                                </p>
                             ))}
                         </div>
                     </div>

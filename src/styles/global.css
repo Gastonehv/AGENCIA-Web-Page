@@ -1,3 +1,16 @@
+/* HIDE CURSOR for Custom Cursor Implementation */
+@media (pointer: fine) {
+
+    body,
+    a,
+    button,
+    input,
+    textarea,
+    select {
+        cursor: none !important;
+    }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -129,4 +142,48 @@ canvas {
     /* Note: text-shadow usually renders poorly with transparent text clip. 
        We might need drop-shadow filter. */
     filter: drop-shadow(0 0 10px rgba(0, 68, 255, 0.8));
+}
+
+/* ===== MOBILE TOUCH SCROLL FIXES ===== */
+
+/* Ensure horizontal scroll containers work with touch */
+@media (max-width: 768px) {
+
+    /* Allow vertical scroll on pages with fixed 3D backgrounds */
+    body {
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+    }
+
+    /* Showcase card sizing for mobile */
+    .showcase-card {
+        min-width: 85vw !important;
+    }
+
+    .showcase-headline {
+        min-width: 90vw !important;
+    }
+
+    /* Architecture section text boxes */
+    .arch-text {
+        max-width: 95vw !important;
+        padding: 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .arch-title {
+        font-size: 1.6rem !important;
+    }
+
+    /* Disable 3D controls on mobile to allow native scroll */
+    canvas {
+        touch-action: none;
+        pointer-events: none;
+    }
+
+    /* But allow content areas to receive touch */
+    .arch-section,
+    .final-copy-section {
+        pointer-events: auto !important;
+    }
 }

@@ -142,13 +142,13 @@ const Symbiosis: React.FC = () => {
 
     // Reusable Grid Background Style
     const chartGridStyle: React.CSSProperties = {
-        position: 'absolute', inset: 0, zIndex: 0, opacity: 0.3,
+        position: 'absolute', inset: 0, zIndex: 0, opacity: 0.6, // Increased from 0.3
         backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-        `,
+            linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)
+        `, // Increased line alpha from 0.05 to 0.15
         backgroundSize: '20px 20px',
-        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.1) 100%)'
+        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 100%)'
     };
 
     return (

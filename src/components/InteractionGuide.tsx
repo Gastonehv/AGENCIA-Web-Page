@@ -32,8 +32,8 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
         const ctx = gsap.context(() => {
             // Container Pulse
             gsap.to(containerRef.current, {
-                scale: 1.05,
-                boxShadow: '0 0 20px rgba(0, 255, 153, 0.3)',
+                scale: 1.02, // Subtle scale
+                boxShadow: '0 0 25px rgba(0, 255, 153, 0.4)', // Stronger pulse glow
                 duration: 1.5,
                 yoyo: true,
                 repeat: -1,
@@ -69,22 +69,23 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
             case 'scroll':
                 return (
                     <div style={{
-                        width: '24px', height: '40px', // Larger
-                        border: '2px solid #00FF99', borderRadius: '12px',
-                        position: 'relative', boxShadow: '0 0 15px rgba(0, 255, 153, 0.7)' // Stronger glow
+                        width: '18px', height: '28px', // Smaller height
+                        border: '2px solid #00FF99', borderRadius: '10px',
+                        position: 'relative', boxShadow: '0 0 12px rgba(0, 255, 153, 0.8)' // Stronger glow
                     }}>
                         <div className="scroll-wheel" style={{
-                            width: '4px', height: '6px', background: '#fff', // 1px thicker
-                            borderRadius: '2px', position: 'absolute', top: '6px',
-                            left: '50%', transform: 'translateX(-50%)'
+                            width: '4px', height: '6px', background: '#fff',
+                            borderRadius: '2px', position: 'absolute', top: '5px',
+                            left: '50%', transform: 'translateX(-50%)',
+                            boxShadow: '0 0 8px #fff' // Glow on wheel
                         }} />
                     </div>
                 );
             case 'drag':
                 return (
-                    <div style={{ width: '40px', height: '40px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <div style={{ width: '100%', height: '100%', border: '1px dashed rgba(143, 0, 255, 0.5)', borderRadius: '50%', position: 'absolute' }} />
-                        <svg className="drag-hand" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8F00FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 8px #8F00FF)' }}>
+                    <div style={{ width: '32px', height: '32px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <div style={{ width: '100%', height: '100%', border: '1px dashed rgba(143, 0, 255, 0.7)', borderRadius: '50%', position: 'absolute' }} />
+                        <svg className="drag-hand" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8F00FF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 10px #8F00FF)' }}>
                             <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
                             <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2" />
                             <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
@@ -149,9 +150,9 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
                 pointerEvents: 'none',
                 background: 'rgba(10, 0, 26, 0.8)',
                 backdropFilter: 'blur(10px)',
-                padding: '0.8rem 1.5rem',
-                borderRadius: '30px',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                padding: '0.6rem 1.2rem',
+                borderRadius: '20px',
+                border: '1px solid rgba(0, 255, 153, 0.2)',
                 boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
                 ...style // Allow style overrides
             }}

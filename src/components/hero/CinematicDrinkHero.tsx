@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -9,304 +9,153 @@ gsap.registerPlugin(ScrollTrigger);
 const CinematicDrinkHero: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [progress, setProgress] = useState(0);
 
-    // Smooth progress for UI elements (bar, text)
-    const smoothProgress = useSpring(0, {
-        damping: 30,
-        mass: 0.2,
-        stiffness: 250
-    });
+    const smoothProgress = useSpring(0, { damping: 40, stiffness: 300 });
 
     useEffect(() => {
-        smoothProgress.set(progress);
-    }, [progress, smoothProgress]);
-
-    // Parallax effects
-    const scale = useTransform(smoothProgress, [0, 0.5, 1], [1, 1.1, 1]);
-    const textY = useTransform(smoothProgress, [0, 1], ["0%", "-50%"]);
-
-    // GSAP ScrollTrigger Implementation
-    useLayoutEffect(() => {
         const container = containerRef.current;
         const video = videoRef.current;
+        const canvas = canvasRef.current;
+        if (!container || !video || !canvas) return;
 
-        if (!container || !video) return;
+        const ctx = canvas.getContext('2d', { alpha: false });
+        if (!ctx) return;
 
-        const ctx = gsap.context(() => {
-            // Pin the container and scrub the animation
+        const handleResize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            draw();
+        };
+
+        const draw = () => {
+            if (video.readyState < 2) return;
+            const cw = canvas.width;
+            const ch = canvas.height;
+            const vw = video.videoWidth;
+            const vh = video.videoHeight;
+            if (!vw || !vh) return;
+
+            const sc = Math.max(cw / vw, ch / vh);
+            const x = (cw - vw * sc) / 2;
+            const y = (ch - vh * sc) / 2;
+            ctx.drawImage(video, x, y, vw * sc, vh * sc);
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        // 1. Spring-driven video scrubbing (THE SECRET FOR SILK-SMOOTH)
+        const unsubscribe = smoothProgress.on("change", (v) => {
+            if (video.duration) {
+                video.currentTime = v * video.duration;
+            }
+            setProgress(v); // Sync visual progress with smooth value
+        });
+
+        const ctxGSAP = gsap.context(() => {
             ScrollTrigger.create({
                 trigger: container,
                 start: "top top",
-                end: "+=1000%", // Extreme increase to 1000% to guarantee slow-motion feel
+                end: "+=400%", // Slightly longer for better control
                 pin: true,
-                scrub: 2, // Heavy smoothing to mask video keyframe jumps
+                scrub: 0.5, // Subtle scrub on the trigger itself
+                anticipatePin: 1,
                 onUpdate: (self) => {
-                    const p = self.progress;
-                    setProgress(p);
-
-                    // Sync video time
-                    if (video.duration) {
-                        video.currentTime = p * video.duration;
-                    }
-                }
+                    smoothProgress.set(self.progress);
+                },
+                onRefresh: handleResize,
+                id: 'lata-main'
             });
-        }, containerRef);
+        });
 
-        return () => ctx.revert();
-    }, [isLoading]);
+        // 2. GSAP Ticker for ultra-stable frame syncing
+        const tick = () => draw();
+        gsap.ticker.add(tick);
 
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-
-    // Handle Video Loading & Canvas Setup
-    useEffect(() => {
-        const video = videoRef.current;
-        const canvas = canvasRef.current;
-        if (!video || !canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        // Resize canvas to match video dimensions once metadata is loaded
-        const handleResize = () => {
-            if (video.videoWidth && video.videoHeight) {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-
-                // Initial draw
-                const scale = Math.max(canvas.width / video.videoWidth, canvas.height / video.videoHeight);
-                const x = (canvas.width - video.videoWidth * scale) / 2;
-                const y = (canvas.height - video.videoHeight * scale) / 2;
-                ctx.drawImage(video, x, y, video.videoWidth * scale, video.videoHeight * scale);
-            }
-        };
-
-        video.addEventListener('loadedmetadata', handleResize);
-        window.addEventListener('resize', handleResize);
-
-        // Draw loop
-        const render = () => {
-            if (video.readyState >= 2) {
-                const scale = Math.max(canvas.width / video.videoWidth, canvas.height / video.videoHeight);
-                const x = (canvas.width - video.videoWidth * scale) / 2;
-                const y = (canvas.height - video.videoHeight * scale) / 2;
-                ctx.drawImage(video, x, y, video.videoWidth * scale, video.videoHeight * scale);
-            }
-            requestAnimationFrame(render);
-        };
-        const rafId = requestAnimationFrame(render);
-
-        // Load video normally
         video.src = lataVideo;
+        video.muted = true;
+        video.setAttribute('muted', 'true');
+        video.setAttribute('playsinline', 'true');
         video.load();
 
-        // Wake up
         const onReady = () => {
             setIsLoading(false);
             handleResize();
-            ScrollTrigger.refresh();
+            video.play().then(() => {
+                video.pause();
+                ScrollTrigger.refresh();
+            }).catch(() => ScrollTrigger.refresh());
         };
 
-        video.addEventListener('canplay', onReady);
+        video.addEventListener('canplaythrough', onReady, { once: true });
+        const fallbackId = setTimeout(onReady, 3500);
 
         return () => {
+            ctxGSAP.revert();
+            unsubscribe();
+            gsap.ticker.remove(tick);
             window.removeEventListener('resize', handleResize);
-            video.removeEventListener('loadedmetadata', handleResize);
-            video.removeEventListener('canplay', onReady);
-            cancelAnimationFrame(rafId);
+            clearTimeout(fallbackId);
         };
-    }, []);
+    }, [smoothProgress]);
+
+    const textY = useTransform(smoothProgress, [0, 1], ["0%", "-40%"]);
+    const scaleTransform = useTransform(smoothProgress, [0, 0.5, 1], [1, 1.15, 1.1]);
 
     return (
         <div
             ref={containerRef}
             style={{
-                position: 'relative',
                 height: '100vh',
-                width: '100vw',
+                width: '100%',
                 background: '#000',
+                position: 'relative',
                 overflow: 'hidden',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: 10
+                zIndex: 20
             }}
         >
-            {/* Loading Overlay */}
             <AnimatePresence>
                 {isLoading && (
                     <motion.div
-                        initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        style={{
-                            position: 'absolute',
-                            inset: 0,
-                            background: '#000',
-                            zIndex: 20,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'column'
-                        }}
+                        style={{ position: 'absolute', inset: 0, background: '#000', zIndex: 30, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
-                        <div style={{
-                            width: '40px',
-                            height: '40px',
-                            border: '3px solid rgba(255,255,255,0.1)',
-                            borderTopColor: '#ff2a6d',
-                            borderRadius: '50%',
-                            animation: 'spin 1s linear infinite'
-                        }} />
-                        <p style={{
-                            color: '#fff',
-                            marginTop: '1rem',
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.8rem',
-                            letterSpacing: '0.2em'
-                        }}>RENDERING ENGINE...</p>
-                        <style>{`
-                            @keyframes spin {
-                                to { transform: rotate(360deg); }
-                            }
-                        `}</style>
+                        <div style={{ width: '40px', height: '40px', border: '2px solid #ff2a6d', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Background Glow */}
-            <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '60vw',
-                height: '60vw',
-                background: 'radial-gradient(circle, rgba(255, 42, 109, 0.15) 0%, transparent 70%)',
-                zIndex: 0,
-                pointerEvents: 'none'
-            }} />
+            <motion.canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', scale: scaleTransform, zIndex: 1 }} />
+            <video ref={videoRef} style={{ display: 'none' }} />
 
-            {/* Canvas for Video Rendering */}
-            <motion.canvas
-                ref={canvasRef}
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    scale,
-                    zIndex: 1
-                }}
-            />
-
-            {/* Hidden Video Source */}
-            <video
-                ref={videoRef}
-                muted
-                playsInline
-                preload="auto"
-                style={{ display: 'none' }}
-            />
-
-            {/* Overlay Content */}
             <motion.div
                 style={{
-                    position: 'relative',
-                    zIndex: 2,
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '0 5%',
-                    pointerEvents: 'none'
+                    position: 'absolute', inset: 0, zIndex: 2, display: 'flex', justifyContent: 'space-between',
+                    alignItems: 'center', padding: '0 8%', pointerEvents: 'none', y: textY
                 }}
             >
-                {/* Left Text */}
-                <motion.div style={{ y: textY, textAlign: 'left' }}>
-                    <h2 style={{
-                        fontFamily: 'var(--font-heading)',
-                        fontSize: 'clamp(2rem, 4vw, 5rem)',
-                        color: '#fff',
-                        lineHeight: 0.9,
-                        textShadow: '0 0 20px rgba(0,0,0,0.5)'
-                    }}>
-                        ÉXITO<br />
-                        <span style={{ color: '#ff2a6d' }}>PURO</span>
+                <div>
+                    <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.5rem, 6vw, 7rem)', lineHeight: 0.8, color: '#fff' }}>
+                        ÉXITO<br /><span style={{ color: '#ff2a6d' }}>PURO</span>
                     </h2>
-                    <p style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '1rem',
-                        color: 'rgba(255,255,255,0.7)',
-                        marginTop: '1rem',
-                        letterSpacing: '0.1em'
-                    }}>
-                        // DOMINIO TOTAL
-                    </p>
-                </motion.div>
-
-                {/* Right Text */}
-                <motion.div style={{ y: textY, textAlign: 'right' }}>
-                    <h2 style={{
-                        fontFamily: 'var(--font-heading)',
-                        fontSize: 'clamp(2rem, 4vw, 5rem)',
-                        color: '#fff',
-                        lineHeight: 0.9,
-                        textShadow: '0 0 20px rgba(0,0,0,0.5)'
-                    }}>
-                        PODER<br />
-                        <span style={{ color: 'transparent', WebkitTextStroke: '1px #fff' }}>ABSOLUTO</span>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                    <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.5rem, 6vw, 7rem)', lineHeight: 0.8, color: '#fff' }}>
+                        PODER<br /><span style={{ color: 'transparent', WebkitTextStroke: '1px #fff' }}>ABSOLUTO</span>
                     </h2>
-                    <p style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '1rem',
-                        color: 'rgba(255,255,255,0.7)',
-                        marginTop: '1rem',
-                        letterSpacing: '0.1em'
-                    }}>
-                        ESTATUS: LEYENDA //
-                    </p>
-                </motion.div>
+                </div>
             </motion.div>
 
-            {/* Progress Bar */}
-            <div style={{
-                position: 'absolute',
-                bottom: '2rem',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '200px',
-                height: '4px',
-                background: 'rgba(255,255,255,0.2)',
-                borderRadius: '2px',
-                zIndex: 5,
-                overflow: 'hidden'
-            }}>
-                <motion.div
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        background: '#ff2a6d',
-                        scaleX: smoothProgress,
-                        transformOrigin: 'left'
-                    }}
-                />
+            <div style={{ position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)', width: '250px', height: '1px', background: 'rgba(255,255,255,0.1)', zIndex: 5 }}>
+                <motion.div style={{ width: '100%', height: '100%', background: '#ff2a6d', scaleX: progress, transformOrigin: 'left' }} />
             </div>
-
-            {/* Bottom Gradient */}
-            <div style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                width: '100%',
-                height: '20%',
-                background: 'linear-gradient(to top, #000 0%, transparent 100%)',
-                zIndex: 3
-            }} />
         </div>
     );
+
 };
 
 export default CinematicDrinkHero;

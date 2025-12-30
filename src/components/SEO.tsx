@@ -12,9 +12,9 @@ interface SEOProps {
 const SEO: React.FC<SEOProps> = ({
     title,
     description = "Agencia de Transformación Digital. Inteligencia Artificial, Automatización y Diseño Estratégico.",
-    keywords = "Agencia IA, Desarrollo Web, Automatización, Diseño, Branding, Argentina, Global",
+    keywords = "Agencia IA, Desarrollo Web, Automatización, Diseño, Branding, México, Xalapa, Global",
     image = "/og-image.jpg",
-    url = "https://agencia.com"
+    url = "https://www.agenciamx.tech"
 }) => {
     const siteTitle = `AgencIA | ${title}`;
 

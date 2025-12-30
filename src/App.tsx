@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Navbar from './components/Navbar';
 import ScrollToTop from './components/ScrollToTop';
@@ -7,12 +7,12 @@ import { ScrollProvider } from './context/ScrollProvider';
 
 // Pages
 import Home from './pages/Home';
-import Esencia from './pages/Esencia';
 import Identidad from './pages/Identidad';
 import Arquitectura from './pages/Arquitectura';
-import Inteligencia from './pages/Inteligencia';
 import Automatizacion from './pages/Automatizacion';
 import Contacto from './pages/Contacto';
+import Privacidad from './pages/Privacidad';
+import Terminos from './pages/Terminos';
 
 import Cursor from './components/Cursor';
 
@@ -27,12 +27,13 @@ function App() {
             <Navbar />
             <Routes>
               <Route path="/automatizacion" element={<Automatizacion />} />
+              <Route path="/esencia" element={<Navigate to="/" replace />} />
               <Route path="/" element={<Home />} />
-              <Route path="/esencia" element={<Esencia />} />
               <Route path="/identidad" element={<Identidad />} />
               <Route path="/arquitectura" element={<Arquitectura />} />
-              <Route path="/inteligencia" element={<Inteligencia />} />
               <Route path="/contacto" element={<Contacto />} />
+              <Route path="/privacidad" element={<Privacidad />} />
+              <Route path="/terminos" element={<Terminos />} />
             </Routes>
           </Layout>
         </Router>

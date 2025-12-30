@@ -10,32 +10,26 @@ import StructuredData from '../components/StructuredData';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Mobile detection hook - detects immediately on first render
-const useIsMobile = () => {
-    const [isMobile, setIsMobile] = useState(() => {
-        // Check immediately on initialization (SSR-safe)
+// Mobile and Touch detection hook
+const useTouchDevice = () => {
+    const [isTouch, setIsTouch] = useState(() => {
         if (typeof window !== 'undefined') {
-            return window.matchMedia('(max-width: 768px)').matches;
+            return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
         }
         return false;
     });
 
     useEffect(() => {
-        const mediaQuery = window.matchMedia('(max-width: 768px)');
-        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        const checkTouch = () => {
+            const hasTouch = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+            setIsTouch(hasTouch);
+        };
+        checkTouch();
+        window.addEventListener('touchstart', checkTouch, { once: true });
+        return () => window.removeEventListener('touchstart', checkTouch);
+    }, []);
 
-        // Sync check
-        if (isMobile !== mediaQuery.matches) {
-            Promise.resolve().then(() => {
-                setIsMobile(mediaQuery.matches);
-            });
-        }
-
-        mediaQuery.addEventListener('change', handler);
-        return () => mediaQuery.removeEventListener('change', handler);
-    }, [isMobile]);
-
-    return isMobile;
+    return isTouch;
 };
 
 // --- 3D Logic ---
@@ -69,14 +63,14 @@ const DigitalGrid = () => {
 
     // Positions Arrays
     const targetPositions = useMemo(() => Float32Array.from(positions), [positions]);
-    const startPositions = useMemo(() => {
+    const [startPositions] = useState(() => {
         const arr = new Float32Array(positions.length);
         for (let i = 0; i < arr.length; i++) {
             // True Chaos: Random distribution filling the screen
-            arr[i] = (Math.random() - 0.5) * 50; // Wield spread (was limited to ~30 with lines)
+            arr[i] = (Math.random() - 0.5) * 50;
         }
         return arr;
-    }, [positions]);
+    });
 
     // Current Positions Buffer (Mutable)
     const currentPositions = useMemo(() => Float32Array.from(startPositions), [startPositions]);
@@ -245,8 +239,17 @@ const DigitalGrid = () => {
 // --- Main Component ---
 
 const Arquitectura: React.FC = () => {
-    const isMobile = useIsMobile();
+    const [isMobile, setIsMobile] = useState(false);
+    const isTouch = useTouchDevice();
     const containerRef = useRef<HTMLDivElement>(null);
+    const actionBtnRef = useRef<HTMLAnchorElement>(null);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Scroll Reset on Mount
     React.useLayoutEffect(() => {
@@ -324,7 +327,7 @@ const Arquitectura: React.FC = () => {
                 scrollTrigger: {
                     trigger: '.final-copy-section',
                     start: 'center center',
-                    end: '+=2000',
+                    end: '+=1500', // REDUCED FROM 2000
                     pin: true,
                     scrub: 1,
                     toggleActions: 'play reverse play reverse'
@@ -345,15 +348,42 @@ const Arquitectura: React.FC = () => {
 
                 // 4. Action Bar Reveal
                 .fromTo('.next-protocol-btn',
-                    { autoAlpha: 0, scale: 0.5, y: 50 },
-                    { autoAlpha: 1, scale: 1, y: 0, duration: 1, ease: 'elastic.out(1, 0.5)', pointerEvents: 'auto' },
-                    'switch+=0.5'
+                    { autoAlpha: 0, scale: 0.8, y: 100 },
+                    { autoAlpha: 1, scale: 1, y: 0, duration: 1.2, ease: 'back.out(1.7)', pointerEvents: 'auto' },
+                    'switch'
                 )
-                .to('.interaction-hud', { autoAlpha: 0, duration: 0.5 }, 'switch');
+                .to('.interaction-hud', { autoAlpha: 0, duration: 0.2 }, 'switch');
 
         }, containerRef);
 
         return () => ctx.revert();
+    }, []);
+
+    // MAGNETIC BUTTON EFFECT
+    useEffect(() => {
+        const el = actionBtnRef.current;
+        if (!el) return;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - (rect.left + rect.width / 2);
+            const y = e.clientY - (rect.top + rect.height / 2);
+            const distance = Math.sqrt(x * x + y * y);
+
+            if (distance < 300) {
+                gsap.to(el, {
+                    x: x * 0.4,
+                    y: y * 0.4,
+                    duration: 0.6,
+                    ease: "power2.out"
+                });
+            } else {
+                gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: "power2.out" });
+            }
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
     }, []);
 
     return (
@@ -374,19 +404,19 @@ const Arquitectura: React.FC = () => {
             }} />
 
             {/* 1. Fixed WebGL Background */}
-            {/* 1. Fixed WebGL Background - touch-action: none ONLY on canvas to not block page scroll */}
-            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1, pointerEvents: isMobile ? 'none' : 'auto' }}>
+            {/* 1. Fixed WebGL Background - touch-action: auto to allow page scroll */}
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1, pointerEvents: isTouch ? 'none' : 'auto' }}>
                 <Canvas
                     camera={{ position: [0, 0, 12], fov: 60 }}
                     style={{
-                        touchAction: 'none',
-                        pointerEvents: isMobile ? 'none' : 'auto'
+                        touchAction: 'auto', // ALLOWS SCROLL
+                        pointerEvents: isTouch ? 'none' : 'auto'
                     }}
                 >
                     <color attach="background" args={['#0A001A']} /> {/* Negro Abisal */}
                     <DigitalGrid />
-                    {/* Disable OrbitControls on mobile to allow page scroll */}
-                    {!isMobile && (
+                    {/* Disable OrbitControls on touch devices to allow page scroll */}
+                    {!isTouch && (
                         <OrbitControls
                             enableZoom={false}
                             enablePan={false}
@@ -401,9 +431,9 @@ const Arquitectura: React.FC = () => {
 
             {/* 2. Scrollable Content
                 - Desktop: pointerEvents: 'none' permite que el canvas 3D reciba eventos del mouse (OrbitControls)
-                - Mobile: pointerEvents: 'auto' permite scroll táctil nativo (canvas tiene pointer-events: none vía CSS)
+                - Mobile/Touch: pointerEvents: 'auto' permite scroll táctil nativo
             */}
-            <div style={{ height: '1600vh', position: 'relative', zIndex: 10, pointerEvents: isMobile ? 'auto' : 'none' }}>
+            <div style={{ height: '1600vh', position: 'relative', zIndex: 10, pointerEvents: isTouch ? 'auto' : 'none' }}>
 
                 {/* Interaction HUD */}
                 <div className="interaction-hud" style={{ position: 'fixed', bottom: '1rem', width: '100%', zIndex: 20 }}>
@@ -415,9 +445,9 @@ const Arquitectura: React.FC = () => {
                     position: 'absolute', top: '40vh', width: '100%', textAlign: 'center',
                     color: '#00f3ff', textShadow: '0 0 20px rgba(0, 243, 255, 0.5)'
                 }}>
-                    <div style={{ opacity: 0.7, marginBottom: '1rem', color: '#fff' }}>[ INICIAR SECUENCIA ]</div>
+                    <div style={{ opacity: 0.7, marginBottom: '1rem', color: '#fff' }}>[ PROTOCOLO DE CRECIMIENTO ]</div>
                     <h1 style={{ fontSize: 'clamp(2rem, 5vw, 5rem)', textTransform: 'uppercase' }}>
-                        Arquitectura Digital
+                        ESCALABILIDAD INMUNE
                     </h1>
                 </div>
 
@@ -445,7 +475,7 @@ const Arquitectura: React.FC = () => {
                             hyphens: 'auto',
                             padding: isMobile ? '0 1rem' : '0'
                         }}>
-                            EXPERIENCIAS WEB DE ALTO IMPACTO
+                            INFRAESTRUCTURA DE ALTO RENDIMIENTO<br /> & ESCALABILIDAD TOTAL
                         </h2>
                     </div>
 
@@ -456,6 +486,8 @@ const Arquitectura: React.FC = () => {
                         width: '100%',
                         margin: '0 auto',
                         lineHeight: 1.6,
+                        wordSpacing: '0.15em', // Better breathing room
+                        letterSpacing: '0.02em',
                         color: '#ffffff',
                         background: 'rgba(10, 0, 26, 0.85)',
                         backdropFilter: 'blur(5px)',
@@ -467,7 +499,7 @@ const Arquitectura: React.FC = () => {
                         textShadow: '0 2px 4px rgba(0,0,0,0.9)',
                         boxSizing: 'border-box'
                     }}>
-                        No hacemos páginas web; construimos <strong style={{ color: '#00FF99' }}>embajadas digitales</strong>. Desde Landing Pages psicodélicas que convierten por instinto hasta Portales Corporativos que imponen autoridad. Tu presencia en la web debe ser un evento, no un folleto.
+                        En el primer pilar de la Tríada, diseñamos sistemas que no solo funcionan, sino que escalan tu visión. En AgencIA construimos <strong style={{ color: '#00FF99' }}>plataformas de alto impacto</strong>: desde aplicaciones que soportan millones en transacciones hasta portales corporativos que cierran tratos antes del primer clic. Tu presencia es tu activo más valioso; lo convertimos en una herramienta de dominio absoluto.
                     </p>
                 </div>
 
@@ -495,7 +527,7 @@ const Arquitectura: React.FC = () => {
                             hyphens: 'auto',
                             padding: isMobile ? '0 1rem' : '0'
                         }}>
-                            INGENIERÍA DE SOFTWARE & SaaS
+                            MOTORES DE INGRESO:<br /> SaaS & PLATAFORMAS ESCALABLES
                         </h2>
                     </div>
                     <p className="arch-text" style={{
@@ -516,7 +548,7 @@ const Arquitectura: React.FC = () => {
                         textShadow: '0 2px 4px rgba(0,0,0,0.9)',
                         boxSizing: 'border-box'
                     }}>
-                        El código estático murió. Desarrollamos <strong style={{ color: '#00FF99' }}>Aplicaciones Web Progresivas (PWA)</strong> y plataformas **SaaS** que escalan con tu ambición. Dashboards de control, sistemas de gestión y herramientas que se sienten vivas. Si puedes imaginar la lógica, podemos programar el sistema.
+                        El software lento tiene un costo oculto: tu crecimiento. Forjamos <strong style={{ color: '#00FF99' }}>ecosistemas SaaS y aplicaciones empresariales</strong> que trascienden el código tradicional. Creamos máquinas de control robustas que automatizan los procesos críticos, eliminando los cuellos de botella para que tu única limitación sea tu propia ambición.
                     </p>
                 </div>
 
@@ -546,7 +578,7 @@ const Arquitectura: React.FC = () => {
                             hyphens: 'auto',
                             padding: isMobile ? '0 1rem' : '0'
                         }}>
-                            ARQUITECTURA DE ECOSISTEMAS
+                            CONVERGENCIA TOTAL:<br /> EL ORGANISMO UNIFICADO
                         </h2>
                     </div>
                     <p className="arch-text" style={{
@@ -567,25 +599,29 @@ const Arquitectura: React.FC = () => {
                         textShadow: '0 2px 4px rgba(0,0,0,0.9)',
                         boxSizing: 'border-box'
                     }}>
-                        Un pilar aislado no sostiene nada. Integramos APIs, bases de datos y servicios en la nube para crear un <strong style={{ color: '#00FF99' }}>organismo digital unificado</strong>. Tu frontend habla con tu backend, tu CRM con tu marketing, y todo funciona como una mente colmena eficiente.
+                        Un pilar aislado no sostiene nada. Integramos APIs, capas de datos y servicios en el cloud para crear un <strong style={{ color: '#00FF99' }}>organismo digital vivo</strong>. Conectamos cada fibra de tu negocio para que el frontend, el backend y tus herramientas de gestión operen bajo un mismo pulso inteligente. Una arquitectura sin fisuras es el alma de la eficiencia.
                     </p>
                 </div>
 
                 {/* FINAL COPY SECTION (Magistral) */}
                 <div className="final-copy-section" style={{
-                    position: 'absolute', top: '1350vh', width: '100%', textAlign: 'center',
-                    color: '#fff', padding: '0 2rem', boxSizing: 'border-box'
+                    position: 'absolute', top: '1320vh', width: '100%', textAlign: 'center',
+                    color: '#fff', padding: '0 2rem', boxSizing: 'border-box',
+                    display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh',
+                    transform: 'translateY(-10vh)' // AGGRESSIVE LIFT
                 }}>
                     <h3 className="final-line-1" style={{
                         fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
                         fontWeight: 300,
                         marginBottom: '1rem',
                         opacity: 0,
-                        visibility: 'visible', // Ensure toggleable
-                        textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+                        visibility: 'visible',
+                        textShadow: '0 2px 4px rgba(0,0,0,0.8)',
+                        wordSpacing: '0.2em', // Requested fix
+                        letterSpacing: '0.05em'
                     }}>
                         No solo ordenamos el caos...
-                    </h3>
+                    </h3 >
 
                     <h1 className="final-line-2" style={{
                         fontSize: 'clamp(2.5rem, 8vw, 8rem)', // Slightly smaller min to fit mobile
@@ -604,7 +640,7 @@ const Arquitectura: React.FC = () => {
                         overflowWrap: 'break-word',
                         wordWrap: 'break-word'
                     }}>
-                        LO CONVERTIMOS<br />EN ARTE.
+                        DOMINAMOS<br />EL MERCADO.
                     </h1>
 
                     <p className="final-line-3" style={{
@@ -612,63 +648,106 @@ const Arquitectura: React.FC = () => {
                         maxWidth: '800px',
                         margin: '0 auto',
                         opacity: 0,
-                        textShadow: '0 2px 4px rgba(0,0,0,0.9)'
+                        textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                        wordSpacing: '0.15em',
+                        lineHeight: 1.5
                     }}>
                         En AgencIA, tomamos el ruido digital y lo esculpimos hasta revelar la obra maestra.<br />
                         <strong style={{ color: '#00FF99', fontWeight: 600 }}>Porque la claridad es el nuevo superpoder.</strong>
                     </p>
+                </div>
 
-                    {/* ACTION BAR (Fixed at Bottom Center) */}
-                    <div className="action-bar" style={{
-                        position: 'fixed',
-                        bottom: '2rem',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        zIndex: 100,
-                        display: 'flex',
-                        flexDirection: 'column-reverse', // Button at bottom, CTA above
-                        gap: '1.5rem',
-                        alignItems: 'center',
-                        pointerEvents: 'none'
-                    }}>
-                        {/* NEXT PROTOCOL BUTTON (Primary) */}
-                        <a href="/inteligencia" className="next-protocol-btn" style={{
+                {/* ACTION BAR (Fixed at Bottom Center) */}
+                <div className="action-bar" style={{
+                    position: 'fixed',
+                    bottom: '2rem',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 100,
+                    display: 'flex',
+                    flexDirection: 'column-reverse', // Button at bottom, CTA above
+                    gap: '1.5rem',
+                    alignItems: 'center',
+                    pointerEvents: 'none'
+                }}>
+                    {/* NEXT PROTOCOL BUTTON (Primary) */}
+                    <a
+                        ref={actionBtnRef}
+                        href="/#case-02"
+                        className="next-protocol-btn super-cta-button"
+                        style={{
                             opacity: 0,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            padding: '1.5rem 4rem', // Larger padding
-                            background: '#00FF99', // Solid Neon
-                            border: 'none',
-                            borderRadius: '50px',
-                            color: '#000000', // Black Text
-                            fontFamily: 'var(--font-heading)',
-                            fontSize: '1.2rem', // Larger Text
-                            fontWeight: 800,
-                            letterSpacing: '0.1em',
+                            padding: '1.8rem 5rem',
+                            background: '#000',
+                            border: '1px solid rgba(0, 255, 153, 0.4)',
+                            borderRadius: '4px',
+                            color: '#00FF99',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '1rem',
+                            fontWeight: 900,
+                            letterSpacing: '0.3em',
                             textTransform: 'uppercase',
-                            transition: 'all 0.3s ease',
+                            textDecoration: 'none',
+                            position: 'relative',
+                            overflow: 'hidden',
                             cursor: 'pointer',
                             pointerEvents: 'none',
-                            boxShadow: '0 0 30px rgba(0, 255, 153, 0.6), 0 0 60px rgba(0, 255, 153, 0.3)', // Massive Glow
-                            animation: 'pulse-neon 2s infinite' // Custom pulse
+                            boxShadow: '0 0 30px rgba(0, 255, 153, 0.1)',
+                            transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
                         }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'scale(1.1)';
-                                e.currentTarget.style.boxShadow = '0 0 50px rgba(0, 255, 153, 0.8), 0 0 100px rgba(0, 255, 153, 0.5)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'scale(1)';
-                                e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 255, 153, 0.6), 0 0 60px rgba(0, 255, 153, 0.3)';
-                            }}
-                        >
-                            Siguiente Protocolo &gt;
-                        </a>
-                    </div>
+                    >
+                        {/* SCANLINE EFFECT */}
+                        <div className="cta-scanline" />
 
+                        {/* BREATHING GLOW */}
+                        <div className="cta-glow" />
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', position: 'relative', zIndex: 2 }}>
+                            <span>IMPULSAR ESCALABILIDAD</span>
+                            <span style={{ fontSize: '1.2rem', animation: 'arrowPulse 1.2s infinite ease-in-out' }}>→</span>
+                        </div>
+                    </a>
+
+                    <style>{`
+                        .super-cta-button:hover {
+                            border-color: #00FF99 !important;
+                            box-shadow: 0 0 50px rgba(0, 255, 153, 0.4) !important;
+                        }
+                        .cta-scanline {
+                            position: absolute;
+                            top: -100%;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: linear-gradient(to bottom, transparent, rgba(0, 255, 153, 0.2), transparent);
+                            animation: scan 3s infinite linear;
+                        }
+                        .cta-glow {
+                            position: absolute;
+                            inset: 0;
+                            box-shadow: inset 0 0 30px rgba(0, 255, 153, 0.2);
+                            animation: breathe 4s infinite ease-in-out;
+                        }
+                        @keyframes scan {
+                            0% { top: -100%; }
+                            100% { top: 100%; }
+                        }
+                        @keyframes breathe {
+                            0%, 100% { opacity: 0.3; }
+                            50% { opacity: 0.8; }
+                        }
+                        @keyframes arrowPulse {
+                            0%, 100% { transform: translateX(0); }
+                            50% { transform: translateX(10px); }
+                        }
+                    `}</style>
                 </div>
 
             </div>
+
         </div>
     );
 };

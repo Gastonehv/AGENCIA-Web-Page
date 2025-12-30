@@ -38,7 +38,7 @@ export const servicesData: ServicePortal[] = [
         conceptKey: 'concept.cortex',
         descKey: 'cat.ai',
         image: cognitiveEcoImg,
-        path: '/inteligencia',
+        path: '/ia-generativa',
         color: '#7700ff' // Electric Purple
     },
     {

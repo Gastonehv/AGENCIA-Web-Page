@@ -66,6 +66,7 @@ class Particle {
 }
 
 const Identidad: React.FC = () => {
+    const actionBtnRef = useRef<HTMLAnchorElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [activeCard, setActiveCard] = useState<number | null>(null);
@@ -251,38 +252,64 @@ const Identidad: React.FC = () => {
     const services = [
         {
             id: 1,
-            title: 'INGENIERÍA DE CULTO',
-            desc: 'No creamos marcas. Fundamos religiones comerciales.',
-            longDesc: 'Olvida el branding tradicional. Diseñamos sistemas de creencias que convierten a clientes en fanáticos. Tu identidad visual será un tótem; tu mensaje, un dogma. Lealtad irracional es el único KPI que nos importa.',
+            title: 'AUTORIDAD VISUAL',
+            desc: 'La autoridad es la única moneda que no se devalúa.',
+            longDesc: 'Diseñamos identidades que imponen respeto instantáneo. No competimos por precio; posicionamos tu marca en un nivel donde la calidad es el único argumento necesario para cerrar el trato.',
             baseOpacity: 0.1
         },
         {
             id: 2,
-            title: 'GUERRA ASIMÉTRICA',
-            desc: 'Estrategia militar aplicada al mercado. Aplasta, no compitas.',
-            longDesc: 'Analizamos las debilidades estructurales de tu competencia y golpeamos donde duele. No jugamos "limpio", jugamos a ganar. Dominio total del tablero mediante tácticas de guerrilla digital y posicionamiento de autoridad absoluta.',
+            title: 'MARKET DOMINANCE',
+            desc: 'Verse como el líder absoluto es el primer paso para serlo.',
+            longDesc: 'Utilizamos tecnología de alta fidelidad y narrativa visual para que tu mensaje no solo se escuche, sino que domine. Creamos ecosistemas visuales que proyectan poder y solvencia técnica.',
             baseOpacity: 0.15
         },
         {
             id: 3,
-            title: 'OMNIPRESENCIA',
-            desc: 'Tu narrativa en todas partes. Inevitable. Ineludible.',
-            longDesc: 'Inundamos el espectro digital. Creamos un ecosistema de contenido que te hace parecer 10 veces más grande de lo que eres. Desde la web hasta el subconsciente de tu usuario, tu historia se repite hasta convertirse en verdad.',
+            title: 'SELLO DE VALOR',
+            desc: 'Resultados maestros para negocios que no aceptan mediocridad.',
+            longDesc: 'Tu presencia debe ser una declaración de intenciones. Forjamos marcas robustas que respiran éxito, asegurando que cada interacción del cliente sea un paso hacia la conversión de alto valor.',
             baseOpacity: 0.2
         },
     ];
+
+    // MAGNETIC BUTTON EFFECT
+    useEffect(() => {
+        const el = actionBtnRef.current;
+        if (!el) return;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - (rect.left + rect.width / 2);
+            const y = e.clientY - (rect.top + rect.height / 2);
+            const distance = Math.sqrt(x * x + y * y);
+
+            if (distance < 300) {
+                gsap.to(el, {
+                    x: x * 0.4,
+                    y: y * 0.4,
+                    duration: 0.6,
+                    ease: "power2.out"
+                });
+            } else {
+                gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: "power2.out" });
+            }
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
 
     return (
         <div ref={containerRef} style={{
             minHeight: '100vh',
             background: '#000',
             color: '#fff',
-            overflow: 'hidden',
             position: 'relative'
         }}>
             <SEO
-                title="Identidad Visual & Branding"
-                description="Diseño de marcas que respiran. Sistemas de diseño dinámicos y experiencias de usuario inmersivas."
+                title="Autoridad de Mercado & Branding de Lujo"
+                description="Diseñamos marcas que imponen respeto. Sistemas de autoridad visual y experiencias de usuario que cierran tratos."
             />
             <StructuredData data={{
                 "@context": "https://schema.org",
@@ -723,23 +750,23 @@ const Identidad: React.FC = () => {
                     {[
                         {
                             step: '01',
-                            title: 'DECODIFICACIÓN',
-                            desc: 'Escaneamos el ADN. Patrones invisibles revelados.',
-                            longDesc: 'Infiltración analítica profunda. No adivinamos, diseccionamos la realidad de tu mercado.',
+                            title: 'CONCEPCIÓN AI',
+                            desc: 'Dirección creativa potenciada por inteligencia estratégica.',
+                            longDesc: 'Utilizamos IA para explorar fronteras visuales inalcanzables, filtrando la innovación a través de un criterio humano de élite.',
                             image: genesisDnaImage
                         },
                         {
                             step: '02',
-                            title: 'SÍNTESIS',
-                            desc: 'Fusión de estrategia y estética pura.',
-                            longDesc: 'Diseño de interfaz para conexión emocional. Eliminamos el ruido, dejamos la señal pura.',
+                            title: 'REFINAMIENTO',
+                            desc: 'Artesanía digital en cada micro-interacción.',
+                            longDesc: 'Pulimos el diamante. Cada animación y cada sombra está diseñada para proyectar una imagen de perfección inquebrantable.',
                             image: sintesisAgenciaImage
                         },
                         {
                             step: '03',
-                            title: 'PROYECCIÓN',
-                            desc: 'Dominio total. Una declaración de poder.',
-                            longDesc: 'Plataforma optimizada para conversión masiva. Tu marca no compite, reina.',
+                            title: 'MAESTRÍA',
+                            desc: 'Despliegue de una identidad visual dominante.',
+                            longDesc: 'Tu marca se convierte en el referente de calidad. No compites por atención, la exiges por derecho propio.',
                             image: serviceBrutalismImage
                         }
                     ].map((item, i) => (
@@ -864,6 +891,9 @@ const Identidad: React.FC = () => {
                 </div>
             </section>
 
+            {/* Animated Can Section */}
+            <CinematicDrinkHero />
+
             {/* Final CTA - Minimalist */}
             <section style={{
                 padding: '10rem 5%',
@@ -880,41 +910,80 @@ const Identidad: React.FC = () => {
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em'
                 }}>
-                    ¿Listo para la <span style={{ color: '#ff2a6d' }}>Ascensión</span>?
+                    ¿Listo para <span style={{ color: '#ff2a6d' }}>DOMINAR</span> el mercado?
                 </h2>
-                <a href="/contacto" style={{
-                    display: 'inline-block',
-                    padding: '1rem 3rem',
-                    background: 'transparent',
-                    border: '1px solid #fff',
-                    color: '#fff',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '1rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.2em',
-                    textDecoration: 'none',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    transition: 'all 0.3s ease'
-                }}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#fff';
-                        e.currentTarget.style.color = '#000';
-                        e.currentTarget.style.transform = 'scale(1.05)';
-                        e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.3)';
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'transparent';
-                        e.currentTarget.style.color = '#fff';
-                        e.currentTarget.style.transform = 'scale(1)';
-                        e.currentTarget.style.boxShadow = 'none';
+                <a
+                    ref={actionBtnRef}
+                    href="/#nucleo"
+                    className="super-cta-button"
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '1.8rem 5rem',
+                        background: '#000',
+                        border: '1px solid rgba(255, 42, 109, 0.4)',
+                        borderRadius: '0px',
+                        color: '#ff2a6d',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '1rem',
+                        fontWeight: 900,
+                        letterSpacing: '0.3em',
+                        textTransform: 'uppercase',
+                        textDecoration: 'none',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        cursor: 'pointer',
+                        boxShadow: '0 0 30px rgba(255, 42, 109, 0.1)',
+                        transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
                     }}
                 >
-                    Siguiente Protocolo
+                    {/* SCANLINE EFFECT */}
+                    <div className="cta-scanline-pink" />
+
+                    {/* BREATHING GLOW */}
+                    <div className="cta-glow-pink" />
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', position: 'relative', zIndex: 2 }}>
+                        <span>DOMINAR MI MERCADO</span>
+                        <span style={{ fontSize: '1.2rem', animation: 'arrowPulse 1.2s infinite ease-in-out' }}>→</span>
+                    </div>
                 </a>
+
+                <style>{`
+                    .super-cta-button:hover {
+                        border-color: #ff2a6d !important;
+                        box-shadow: 0 0 50px rgba(255, 42, 109, 0.4) !important;
+                    }
+                    .cta-scanline-pink {
+                        position: absolute;
+                        top: -100%;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(to bottom, transparent, rgba(255, 42, 109, 0.2), transparent);
+                        animation: scan 3s infinite linear;
+                    }
+                    .cta-glow-pink {
+                        position: absolute;
+                        inset: 0;
+                        box-shadow: inset 0 0 30px rgba(255, 42, 109, 0.2);
+                        animation: breathe 4s infinite ease-in-out;
+                    }
+                    @keyframes scan {
+                        0% { top: -100%; }
+                        100% { top: 100%; }
+                    }
+                    @keyframes breathe {
+                        0%, 100% { opacity: 0.3; }
+                        50% { opacity: 0.8; }
+                    }
+                    @keyframes arrowPulse {
+                        0%, 100% { transform: translateX(0); }
+                        50% { transform: translateX(10px); }
+                    }
+                `}</style>
             </section >
-            {/* Animated Can Section */}
-            <CinematicDrinkHero />
         </div >
     );
 };

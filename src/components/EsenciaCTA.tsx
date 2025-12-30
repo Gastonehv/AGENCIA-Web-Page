@@ -223,7 +223,7 @@ const EsenciaCTA: React.FC = () => {
             >
                 <button
                     ref={buttonRef}
-                    onClick={() => navigate('/esencia')}
+                    onClick={() => navigate('/')}
                     className="group relative flex items-center justify-center px-16 py-6 overflow-visible rounded-full cursor-pointer transition-transform ease-out"
                     style={{
                         background: 'rgba(0, 0, 0, 0.4)',

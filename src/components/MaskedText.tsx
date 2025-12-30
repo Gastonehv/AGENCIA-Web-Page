@@ -41,7 +41,7 @@ const MaskedText: React.FC<MaskedTextProps> = ({ main, sub, index = 0, className
             );
         }, containerRef);
         return () => ctx.revert();
-    }, [index, start]);
+    }, [index, start, manualControl]);
 
     return (
         <div ref={containerRef} style={{ overflow: 'hidden', position: 'relative', marginTop: '-0.2em', ...style }} className={className}>

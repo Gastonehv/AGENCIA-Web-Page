@@ -28,6 +28,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
     const textRef = useRef<HTMLParagraphElement>(null);
     const servicesRef = useRef<HTMLParagraphElement>(null);
     const toggleBtnRef = useRef<HTMLButtonElement>(null);
+    const ctaRef = useRef<HTMLDivElement>(null);
     const { lenis } = useScroll();
     // State for translation mode
     const [isHumanMode, setIsHumanMode] = useState(false);
@@ -100,6 +101,33 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
         tl.to([textRef.current, servicesRef.current], { opacity: 0, y: -5, duration: 0.2, ease: 'power2.in', onComplete: () => setIsHumanMode(newMode) });
         tl.to([textRef.current, servicesRef.current], { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
     };
+
+    // MAGNETIC CTA EFFECT
+    useEffect(() => {
+        if (!ctaRef.current || isMobile) return;
+
+        const el = ctaRef.current;
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - (rect.left + rect.width / 2);
+            const y = e.clientY - (rect.top + rect.height / 2);
+            const distance = Math.sqrt(x * x + y * y);
+
+            if (distance < 200) {
+                gsap.to(el, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.6,
+                    ease: "power2.out"
+                });
+            } else {
+                gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: "power2.out" });
+            }
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, [isMobile]);
 
     // Derived Display Content
     const descriptionText = isHumanMode ? (project.humanDesc || project.fullDesc || project.desc) : (project.fullDesc || project.desc);
@@ -313,30 +341,97 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                     }}>
                         <Link to={project.path || '/'} onClick={onClose} style={{ textDecoration: 'none', display: 'block' }}>
                             <div
-                                className="cta-button"
+                                ref={ctaRef}
+                                className="super-cta-button"
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    gap: '1rem',
-                                    fontSize: '0.9rem',
-                                    fontWeight: 800,
-                                    color: '#FFF',
-                                    background: '#000',
-                                    padding: '1rem 1.5rem',
-                                    borderRadius: '8px',
+                                    justifyContent: 'center',
+                                    padding: isMobile ? '0.8rem 1.5rem' : '1.2rem 2.5rem',
+                                    backgroundColor: '#000',
+                                    borderRadius: '4px',
+                                    position: 'relative',
+                                    overflow: 'hidden',
                                     cursor: 'pointer',
-                                    letterSpacing: '0.5px',
-                                    textTransform: 'uppercase',
-                                    boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
+                                    transition: 'all 0.4s cubic-bezier(0.19, 1, 0.22, 1)',
+                                    border: '1px solid rgba(0, 255, 153, 0.3)',
+                                    boxShadow: '0 0 20px rgba(0, 255, 153, 0.1)'
                                 }}
                             >
-                                {project.ctaCopy || 'EXPLORA NUESTRO ALCANCE'}
-                                <span style={{ fontSize: '1.2rem', lineHeight: 0 }}>→</span>
+                                {/* SCANLINE EFFECT */}
+                                <div className="cta-scanline" />
+
+                                {/* BREATHING GLOW */}
+                                <div className="cta-glow" />
+
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: isMobile ? '0.8rem' : '1.5rem',
+                                    position: 'relative',
+                                    zIndex: 2
+                                }}>
+                                    <span style={{
+                                        fontFamily: 'var(--font-mono)',
+                                        fontSize: isMobile ? '0.7rem' : '0.85rem',
+                                        fontWeight: 900,
+                                        letterSpacing: isMobile ? '0.2em' : '0.4em',
+                                        color: '#00FF99',
+                                        textShadow: '0 0 10px rgba(0, 255, 153, 0.5)'
+                                    }}>
+                                        {project.ctaCopy || 'INICIAR PROTOCOLO'}
+                                    </span>
+                                    <span style={{
+                                        color: '#00FF99',
+                                        fontSize: '1.2rem',
+                                        animation: 'arrowPulse 1.5s infinite ease-in-out'
+                                    }}>→</span>
+                                </div>
                             </div>
                         </Link>
                     </div>
 
+                    <style>{`
+                        .super-cta-button:hover {
+                            border-color: #00FF99;
+                            box-shadow: 0 0 40px rgba(0, 255, 153, 0.3);
+                            transform: scale(1.02);
+                        }
+                        .cta-scanline {
+                            position: absolute;
+                            top: -100%;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: linear-gradient(
+                                to bottom,
+                                transparent,
+                                rgba(0, 255, 153, 0.2),
+                                transparent
+                            );
+                            animation: scan 3s infinite linear;
+                            pointer-events: none;
+                        }
+                        .cta-glow {
+                            position: absolute;
+                            inset: 0;
+                            box-shadow: inset 0 0 20px rgba(0, 255, 153, 0.2);
+                            animation: breathe 4s infinite ease-in-out;
+                            pointer-events: none;
+                        }
+                        @keyframes scan {
+                            0% { top: -100%; }
+                            100% { top: 100%; }
+                        }
+                        @keyframes breathe {
+                            0%, 100% { opacity: 0.3; }
+                            50% { opacity: 0.8; }
+                        }
+                        @keyframes arrowPulse {
+                            0%, 100% { transform: translateX(0); opacity: 1; }
+                            50% { transform: translateX(10px); opacity: 0.5; }
+                        }
+                    `}</style>
                 </div>
             </div>
         </div>

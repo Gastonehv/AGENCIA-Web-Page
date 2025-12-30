@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import QuantumDepthMeter from './QuantumDepthMeter';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,6 +44,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     return (
         <div className="layout-wrapper" style={{ position: 'relative', zIndex: 1 }}>
+            <QuantumDepthMeter />
             {children}
         </div>
     );

@@ -65,7 +65,7 @@ const Services: React.FC = () => {
         }, componentRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [portals]);
 
 
 

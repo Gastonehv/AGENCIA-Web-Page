@@ -1,3 +1,0 @@
-﻿src/components/EntropyReactor.tsx(110,13): error TS18047: 'meshRef.current' is possibly 'null'.
-src/components/EntropyReactor.tsx(111,13): error TS18047: 'meshRef.current' is possibly 'null'.
-src/components/FloatingWindow.tsx(23,5): error TS6133: 'id' is declared but its value is never read.

@@ -138,8 +138,15 @@ const Cursor: React.FC = () => {
                 const dx = x - cx;
                 const dy = y - cy;
 
-                position.target.x = cx + dx * 0.15;
-                position.target.y = cy + dy * 0.15;
+                // EXCLUSION ZONE: No magnetism in Capacities section or specifically marked elements
+                const isExcluded = hoverEl.closest('#capacidades') || hoverEl.closest('[data-no-magnetic]');
+                if (isExcluded) {
+                    position.target.x = x;
+                    position.target.y = y;
+                } else {
+                    position.target.x = cx + dx * 0.15;
+                    position.target.y = cy + dy * 0.15;
+                }
 
                 // Check for custom cursor type
                 const cursorType = hoverEl.getAttribute('data-cursor');
@@ -178,8 +185,21 @@ const Cursor: React.FC = () => {
         };
 
         // --- LISTENERS ---
-        const onMouseMove = (e: MouseEvent) => {
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
             updateTargetPosition(e.clientX, e.clientY);
+        };
+
+        const handleScroll = () => {
+            // On scroll, if we are hovering, we need to check if we should stay hovering
+            // To be safe and "silky", we reset hover if scrolling and mouse is static
+            if (isHovered) {
+                updateTargetPosition(lastMouseX, lastMouseY);
+            }
         };
 
         const addListeners = () => {
@@ -187,12 +207,9 @@ const Cursor: React.FC = () => {
 
             targets.forEach((target) => {
                 const element = target as HTMLElement;
-                // Use a single flag to prevent re-binding all listeners
                 if (boundElements.has(element)) return;
                 boundElements.add(element);
 
-                // MAGNETISM FOR THE ELEMENT (The "buttons moving" effect)
-                // Only apply to small elements (buttons, links), not big cards
                 const isLarge = element.offsetWidth > 200 || element.offsetHeight > 100;
 
                 if (!isLarge) {
@@ -207,7 +224,15 @@ const Cursor: React.FC = () => {
                         const x = clientX - cx;
                         const y = clientY - cy;
 
-                        xTo(x * 0.1); // Reduced Magnetic strength (Subtle)
+                        const isExcluded = element.closest('[data-no-magnetic]');
+
+                        if (element.closest('#capacidades') || isExcluded) {
+                            xTo(0);
+                            yTo(0);
+                            return;
+                        }
+
+                        xTo(x * 0.1);
                         yTo(y * 0.1);
                     };
 
@@ -221,7 +246,6 @@ const Cursor: React.FC = () => {
                     elementListeners.push({ element, mousemove: elementMouseMove, mouseleave: elementMouseLeave, xTo, yTo });
                 }
 
-                // Cursor hover state listeners
                 const cursorMouseEnter = () => {
                     isHovered = true;
                     hoverEl = element;
@@ -230,48 +254,39 @@ const Cursor: React.FC = () => {
                     isHovered = false;
                     hoverEl = null;
 
-                    // FORCE IMMEDIATE RESET (Fixes sticky "ABRIR" state)
                     if (text) {
                         text.textContent = "";
                         text.style.opacity = '0';
                     }
-                    if (el) {
-                        el.style.mixBlendMode = 'difference';
-                    }
-                    if (visual) {
-                        visual.style.backgroundColor = '#fff';
-                    }
+                    if (el) el.style.mixBlendMode = 'difference';
+                    if (visual) visual.style.backgroundColor = '#fff';
                     scale.target = 1;
                 };
 
                 element.addEventListener('mouseenter', cursorMouseEnter);
                 element.addEventListener('mouseleave', cursorMouseLeave);
-                // Store these for cleanup too if needed, but the main cleanup will reset isHovered/hoverEl
-                // and the elements themselves will be reset by their own magnetism cleanup.
             });
         };
 
         // Init
-        // Center the cursor initially (GSAP handles the transform center)
         gsap.set(el, { xPercent: -50, yPercent: -50 });
 
-        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         gsap.ticker.add(update);
 
-        // Scan for interactives
         addListeners();
-        const scanner = setInterval(addListeners, 1000); // Check for new elements
+        const scanner = setInterval(addListeners, 1000);
 
         return () => {
-            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('scroll', handleScroll);
             gsap.ticker.remove(update);
             clearInterval(scanner);
 
-            // Cleanup for element magnetism listeners
             elementListeners.forEach(({ element, mousemove, mouseleave, xTo, yTo }) => {
                 element.removeEventListener("mousemove", mousemove);
                 element.removeEventListener("mouseleave", mouseleave);
-                // Reset element position if it was moved
                 xTo(0);
                 yTo(0);
             });

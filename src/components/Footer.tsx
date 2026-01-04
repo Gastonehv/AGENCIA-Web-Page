@@ -250,7 +250,7 @@ const Footer: React.FC = () => {
                     </h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                         <a
-                            href="mailto:hola@agenciamx.tech"
+                            href="mailto:hola@agenciamx.app"
                             style={{
                                 color: '#AAA',
                                 textDecoration: 'none',
@@ -260,7 +260,7 @@ const Footer: React.FC = () => {
                             onMouseEnter={(e) => e.currentTarget.style.color = '#00FF99'}
                             onMouseLeave={(e) => e.currentTarget.style.color = '#AAA'}
                         >
-                            hola@agenciamx.tech
+                            hola@agenciamx.app
                         </a>
                         <p style={{ color: '#666', fontSize: '0.85rem', margin: 0, fontFamily: 'var(--font-mono)' }}>
                             Xalapa, Veracruz, México
@@ -279,7 +279,9 @@ const Footer: React.FC = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 cursor: 'pointer',
-                                filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.1))'
+                                // Brightness boosted significantly for mobile screens
+                                filter: 'brightness(1.5) saturate(1.8) drop-shadow(0 0 20px rgba(255,255,255,0.3))',
+                                WebkitFilter: 'brightness(1.5) saturate(1.8) drop-shadow(0 0 20px rgba(255,255,255,0.3))' // Safari/Mobile support
                             }}>
 
                             {/* PURE SVG IMPLEMENTATION (No foreignObject) */}
@@ -287,15 +289,23 @@ const Footer: React.FC = () => {
                                 <defs>
                                     {/* The Dynamic Tricolor Gradient - VIBRANT FLAG COLORS */}
                                     <linearGradient id="mexico-shine-gradient" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="repeat" ref={gradientRef}>
-                                        <stop offset="0%" stopColor="#009B77" /> {/* Vibrant Flag Green */}
+                                        <stop offset="0%" stopColor="#006847" /> {/* Official Mexico Flag Green */}
                                         <stop offset="33%" stopColor="#FFFFFF" /> {/* White */}
-                                        <stop offset="66%" stopColor="#FF334B" /> {/* Vibrant Flag Red */}
-                                        <stop offset="100%" stopColor="#009B77" /> {/* Loop Connector (Green) */}
+                                        <stop offset="66%" stopColor="#CE1126" /> {/* Official Mexico Flag Red */}
+                                        <stop offset="100%" stopColor="#006847" /> {/* Loop Connect */}
                                     </linearGradient>
 
-                                    {/* Mask from Image - INVERTED to make the black logo WHITE (visible in mask) */}
+                                    {/* ROBUST FILTER TO TURN IMAGE WHITE FOR MASKING (iOS Fix) */}
+                                    <filter id="turn-white">
+                                        <feColorMatrix type="matrix" values="0 0 0 0 1
+                                                                           0 0 0 0 1
+                                                                           0 0 0 0 1
+                                                                           0 0 0 1 0" />
+                                    </filter>
+
+                                    {/* MASK USING FILTERED IMAGE */}
                                     <mask id="seal-mask">
-                                        <image href={hechoEnMexicoLogo} width="240" height="120" style={{ filter: 'brightness(0) invert(1)' }} />
+                                        <image href={hechoEnMexicoLogo} width="240" height="120" filter="url(#turn-white)" />
                                     </mask>
                                 </defs>
 

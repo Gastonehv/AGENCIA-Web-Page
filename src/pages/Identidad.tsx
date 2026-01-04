@@ -323,13 +323,14 @@ const Identidad: React.FC = () => {
             }} />
             {/* Hero Section */}
             <section className="hero-section" style={{
-                height: '100vh',
+                minHeight: '100vh', // Changed from height to minHeight for small screens
                 width: '100%',
                 position: 'relative',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                padding: '6rem 0' // Added padding for vertical centering safety
             }}>
                 {/* Background Video */}
                 < div className="sneaker-bg" style={{

@@ -14,7 +14,7 @@ const SEO: React.FC<SEOProps> = ({
     description = "Agencia de Transformación Digital. Inteligencia Artificial, Automatización y Diseño Estratégico.",
     keywords = "Agencia IA, Desarrollo Web, Automatización, Diseño, Branding, México, Xalapa, Global",
     image = "/og-image.jpg",
-    url = "https://www.agenciamx.tech"
+    url = "https://www.agenciamx.app"
 }) => {
     const siteTitle = `AgencIA | ${title}`;
 

@@ -1,6 +1,11 @@
 
+import { useRef, useLayoutEffect } from 'react'; // Added useLayoutEffect
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrambleText from './ScrambleText';
 import AsciiRipple from './AsciiRipple';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const MANIFESTO = [
     {
@@ -22,17 +27,40 @@ const MANIFESTO = [
 ];
 
 const SoulManifesto = () => {
-    // FINAL STATE: STATIC & CLEAN
-    // User requested to stop animating due to issues.
-    // This layout provides maximum readability and stability.
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+        const ctx = gsap.context(() => {
+            // TARGET THE LAST ITEM FOR A BRAKE
+            // We pin pieces independently to ensure smoother flow in flex container if needed,
+            // but pinning the specific item works best.
+            const lastItem = document.querySelector(`.manifesto-item-${MANIFESTO.length - 1}`);
+
+            if (lastItem) {
+                ScrollTrigger.create({
+                    trigger: lastItem,
+                    start: "center center", // When content hits center
+                    end: "+=106%", // USER REQUEST: Specific timing "106%"
+                    pin: true,     // STOP MOVEMENT
+                    pinSpacing: true, // Ensure next section pushes it (displaces), doesn't overlap
+                    scrub: true,   // Smooth
+                    id: "manifesto-brake"
+                });
+            }
+
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section className="manifesto-section" style={{
+        <section ref={containerRef} className="manifesto-section" style={{
             position: 'relative',
             backgroundColor: '#000',
             color: '#FFF',
-            padding: '10vh 0',
+            padding: '10vh 0 15vh', // REDUCED BUFFER: Faster transition to next chapter (Orig 80vh)
             width: '100%',
-            overflow: 'hidden'
+            overflow: 'hidden' // Important for pinning context
         }}>
             <div style={{
                 display: 'flex',
@@ -46,7 +74,7 @@ const SoulManifesto = () => {
                         key={i}
                         className={`manifesto-item manifesto-item-${i}`}
                         style={{
-                            minHeight: '60vh', // Reduced for mobile friendliness
+                            minHeight: '100vh',
                             width: '90%',
                             maxWidth: '1200px',
                             display: 'flex',
@@ -54,7 +82,8 @@ const SoulManifesto = () => {
                             justifyContent: 'center',
                             alignItems: 'center',
                             textAlign: 'center',
-                            padding: 'clamp(1rem, 5vw, 2rem)' // Responsive padding
+                            padding: 'clamp(1rem, 5vw, 2rem)', // Responsive padding
+                            // Debug border removed
                         }}
                     >
                         <h2 style={{

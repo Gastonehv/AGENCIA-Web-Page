@@ -144,6 +144,9 @@ const Home: React.FC = () => {
                     gsap.to(q('.rift-id'), { opacity: 1, duration: 0.3, overwrite: 'auto' });
                 };
 
+                // GRADIENT BRIDGE LOGIC (Identity -> Manifesto)
+
+
 
                 // DESKTOP CONFIG
                 mm.add("(min-width: 769px)", () => {
@@ -159,6 +162,17 @@ const Home: React.FC = () => {
                     rifts.forEach(rift => {
                         rift.addEventListener('mouseenter', () => openRift(rift));
                         rift.addEventListener('mouseleave', () => closeRift(rift));
+
+                        // AUTO-FOCUS ON SCROLL (Fix for "dead" state when scrolling)
+                        ScrollTrigger.create({
+                            trigger: rift,
+                            start: "top 60%", // Focus point near center
+                            end: "bottom 40%",
+                            onEnter: () => openRift(rift),
+                            onLeave: () => closeRift(rift),
+                            onEnterBack: () => openRift(rift),
+                            onLeaveBack: () => closeRift(rift)
+                        });
                     });
                 });
 
@@ -229,7 +243,7 @@ const Home: React.FC = () => {
                 tlHero.to('.word-nuestra', {
                     y: '100%', // Moves down to line 2 (approx)
                     scale: 2.5, // GROWS to match the big font size
-                    x: '-0.5em', // Adjust alignment to sit near IA
+                    x: 0, // RESTORED DEFAULT CENTER
                     duration: 2,
                     ease: 'power2.inOut'
                 }, 0.5); // Starts while ESENC is fading
@@ -269,49 +283,70 @@ const Home: React.FC = () => {
                 // Note: We target the narrative container background, not the body, to avoid breaking Background3D
                 tlHero.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2, ease: 'power2.inOut' }, 4);
 
-                // Phase 5: IA Explosion
+                // Phase 5: IA Explosion (Optimized)
                 tlHero.to('.hero-char-ia', {
-                    scale: 60, opacity: 0, duration: 2, ease: 'power4.in'
+                    scale: 15, // Reduced from 60 to prevent lag
+                    opacity: 0,
+                    duration: 1.5, // Slightly faster
+                    ease: 'power4.in'
                 }, 5);
 
 
-                // --- 4. IDENTIDAD REVEAL ---
+                // --- 4. IDENTIDAD REVEAL (The Architect / Guillotine) ---
                 const tlIdentidad = gsap.timeline({
                     scrollTrigger: {
                         trigger: '#identidad',
                         start: 'top top',
-                        end: '+=600%',
+                        end: '+=800%', // Good long pin
                         pin: true,
-                        scrub: 1,
+                        scrub: 1, // Smooth interaction
                         anticipatePin: 1,
-                        refreshPriority: 6,
-                        pinSpacing: true // Explicitly ensure spacing
                     }
                 });
 
-                tlIdentidad.fromTo(['.identidad-marker', '.identidad-chapter-label'],
-                    { opacity: 0, y: -30, filter: 'blur(10px)' },
-                    { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.5, ease: 'power2.inOut' }
+                // 1. Chapter Labels (Static visibility for "approach" effect)
+                // REMOVED fromTo opacity tween to satisfy user request:
+                // "debe de aparecer desde que aparece marco azul... e ir subiendo"
+                // Now they will just be visible by default CSS (opacity: 1) and scroll naturally.
+
+
+                // 2. The Guillotine Impact (Main Headlines)
+                // We animate the inner containers UP from the "basement"
+                tlIdentidad.to('.guillotine-reveal', {
+                    y: '0%', // Slam into place
+                    duration: 0.8, // Snappier than 1s
+                    stagger: 0.5, // 0.5s stagger with 0.8s duration ensures 98% completion before next start (Math-perfect)
+                    ease: 'power4.out' // The "Heavy Slab" easing
+                }, 0.2);
+
+                // 3. The Green Line (Draws vertically)
+                tlIdentidad.fromTo('.identidad-green-line',
+                    { scaleY: 0, transformOrigin: 'top center' },
+                    { scaleY: 1, duration: 0.6, ease: 'power2.inOut' },
+                    ">+0.2" // Wait slightly after headlines
                 );
 
-                tlIdentidad.fromTo('.identidad-headline-1',
-                    { y: 60, opacity: 0, rotationX: -30, filter: 'blur(20px)' },
-                    { y: 0, opacity: 1, rotationX: 0, filter: 'blur(0px)', duration: 1.5, ease: 'power2.inOut' }, ">-0.8"
+                // 4. Body Text (Neural Data Stream)
+                tlIdentidad.fromTo('.identidad-body-line',
+                    { x: -30, opacity: 0, filter: 'blur(8px)' },
+                    {
+                        x: 0,
+                        opacity: 1,
+                        filter: 'blur(0px)',
+                        duration: 0.8,
+                        stagger: 1.5,
+                        ease: 'power2.out'
+                    },
+                    ">" // Immediately after line draws
                 );
 
-                tlIdentidad.fromTo('.identidad-headline-2',
-                    { y: 60, opacity: 0, rotationX: -30, filter: 'blur(20px)' },
-                    { y: 0, opacity: 1, rotationX: 0, filter: 'blur(0px)', duration: 1.5, ease: 'power2.inOut' }, ">-0.8"
-                );
-
-                tlIdentidad.fromTo('.identidad-body-text',
-                    { x: 50, opacity: 0, filter: 'blur(10px)' },
-                    { x: 0, opacity: 1, filter: 'blur(0px)', duration: 1.5, ease: 'power2.out' }, ">-0.8"
-                );
-
-                tlIdentidad.to(['.identidad-marker', '.identidad-chapter-label', '.identidad-headline-1', '.identidad-headline-2', '.identidad-body-text'], {
-                    scale: 0.95, filter: 'blur(10px)', opacity: 0, duration: 1.5, ease: 'power2.in'
-                }, "+=1");
+                // 5. Exit (Clean Sweep)
+                tlIdentidad.to(['.identidad-marker', '.identidad-chapter-label', '.guillotine-reveal', '.identidad-green-line', '.identidad-body-line', '.identidad-body-container'], {
+                    y: '-100%', // Exit upwards
+                    opacity: 0,
+                    duration: 2,
+                    ease: 'power2.in'
+                }, 8); // HUGE pause to read everything
 
 
                 // --- 5. EDITORIAL CONTACT CTA (Master Pro) ---
@@ -356,8 +391,8 @@ const Home: React.FC = () => {
                 "@context": "https://schema.org",
                 "@type": "Organization",
                 "name": "AgencIA",
-                "url": "https://www.agenciamx.tech",
-                "logo": "https://www.agenciamx.tech/logo.png",
+                "url": "https://www.agenciamx.app",
+                "logo": "https://www.agenciamx.app/logo.png",
                 "description": "Agencia líder en Transformación Digital e Inteligencia Artificial.",
                 "sameAs": [
                     "https://www.linkedin.com/company/agencia",
@@ -417,7 +452,7 @@ const Home: React.FC = () => {
                             width: '4px', height: '4px', backgroundColor: '#000', borderRadius: '50%', position: 'absolute', top: '6px', left: '50%', transform: 'translateX(-50%)', animation: 'scrollBounce 2s infinite'
                         }} />
                     </div>
-                    <span style={{ color: '#000', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.4em', fontWeight: 600, textTransform: 'uppercase', opacity: 0.8 }}>
+                    <span style={{ color: '#000', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.4em', marginRight: '-0.2em', fontWeight: 600, textTransform: 'uppercase', opacity: 0.8 }}>
                         Desliza para Avanzar
                     </span>
                     <style>{`
@@ -443,7 +478,7 @@ const Home: React.FC = () => {
                 </div>
 
                 {/* 1. NARRATIVE HERO (ESENCIA TEXT) */}
-                <section id="hero" className="narrative-hero" style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 5%', zIndex: 10 }}>
+                <section id="hero" className="narrative-hero" style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '0 5%', zIndex: 10 }}>
                     <div style={{ overflow: 'visible', position: 'relative', zIndex: 10 }}>
                         <h1 style={{
                             fontSize: 'clamp(3rem, 12vw, 15rem)', // Adjusted for mobile fit
@@ -469,7 +504,9 @@ const Home: React.FC = () => {
                                 marginBottom: '0.2em',
                                 position: 'relative',
                                 textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.7)', // PERMANENT GLOW
-                                textAlign: 'center'
+                                textAlign: 'center',
+                                marginRight: '-0.1em', // Original optical compensation
+                                transform: 'none'
                             }}>
                                 NUESTRA
                             </span>
@@ -477,7 +514,8 @@ const Home: React.FC = () => {
                             {/* LINE 2: ESENCIA (Giant) */}
                             <div style={{
                                 display: 'flex', gap: '0.1em', whiteSpace: 'nowrap', flexWrap: 'nowrap',
-                                width: '100%', justifyContent: 'center', alignItems: 'center' // Force center alignment and full width
+                                width: '100%', justifyContent: 'center', alignItems: 'center', // Force center alignment and full width
+                                transform: 'translateX(-0.04em)' // NANO SHIFT (Barely there)
                             }}>
                                 {/* PART 2A: ESENC (Will Fade Away) */}
                                 <span className="word-esenc" style={{ display: 'inline-flex', flexShrink: 0 }}>
@@ -490,8 +528,8 @@ const Home: React.FC = () => {
 
                                 {/* PART 2B: IA (The Final Survivor) */}
                                 <span className="word-ia-wrapper" style={{ display: 'inline-flex', flexShrink: 0 }}>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10 }}>I</span>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10 }}>A</span>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, opacity' }}>I</span>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, opacity' }}>A</span>
                                 </span>
                             </div>
                         </h1>
@@ -500,111 +538,226 @@ const Home: React.FC = () => {
 
                 {/* 3. IDENTIDAD MASTERPIECE */}
                 <section id="identidad" style={{
-                    minHeight: '80vh',
-                    padding: '5rem 5%',
+                    minHeight: '100vh',
+                    padding: '3rem 5% 3rem 5%', // COMPACT: Reduced padding to force fit
                     backgroundColor: '#FFFFFF',
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1.5fr', // ASYMMETRIC GRID
-                    alignItems: 'center',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center', // Revert to center to vertically center the whole block
+                    justifyContent: 'center',
+                    gap: '2rem', // COMPACT: Reduced gap between columns
                     position: 'relative',
                     zIndex: 40,
                     overflow: 'hidden',
                     perspective: '1000px',
-                    transformStyle: 'preserve-3d'
+                    transformStyle: 'preserve-3d',
                 }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', paddingRight: '3rem' }}>
-                        <div className="identidad-marker" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: '#666', marginTop: '150px' }}>/// SYSTEM_IDENTITY</div>
+                    {/* COLUMN 1: MARKER (Hidden on small mobile if needed, or just flexed) */}
+                    <div style={{ flex: '1 1 200px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', minHeight: '150px' }}>
+                        <div className="identidad-marker" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: '#666', marginTop: '0' }}>/// SISTEMA_IDENTIDAD</div>
                     </div>
 
-                    <div style={{ paddingLeft: 'clamp(1rem, 5vw, 5rem)', paddingRight: 'clamp(1rem, 5vw, 5rem)', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    {/* COLUMN 2: CONTENT (Main Text) */}
+                    <div style={{ flex: '2 1 400px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                         <div className="identidad-chapter-label">
                             <span style={{
                                 fontFamily: 'var(--font-mono)',
-                                fontSize: '1rem',
-                                padding: '0.2rem 0.6rem',
-                                border: '1px solid #000',
-                                borderRadius: '20px',
+                                fontSize: '0.8rem', // Adjusted size
+                                letterSpacing: '0.1em',
+                                color: '#000',
                                 display: 'inline-block',
-                                marginBottom: '1rem'
+                                marginBottom: '1rem', // Reduced margin
+                                textTransform: 'uppercase'
                             }}>
-                                CAPÍTULO 001 — PREFACIO
+                                /// CAPÍTULO_001_PREFACIO
                             </span>
                         </div>
-                        <h2 className="identidad-headline-1" style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', color: '#000', margin: 0, textTransform: 'uppercase' }}>
-                            NO SOMOS UNA<br />
-                            <span style={{ color: '#888888' }}>AGENCIA CON IA.</span>
-                        </h2>
-                        <h2 className="identidad-headline-2" style={{ fontSize: 'clamp(3rem, 7vw, 7rem)', fontWeight: 900, lineHeight: 0.8, letterSpacing: '-0.02em', color: '#00FF99', margin: 0, textTransform: 'uppercase', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.15em' }}>
-                            <span style={{ textShadow: '0 0 30px rgba(0,255,153,0.4)' }}>SOMOS LA IA</span>
-                            <span style={{ color: '#000', textShadow: 'none' }}>COMO</span>
-                            <img
-                                src={officialTypography}
-                                alt="AgencIA"
-                                style={{
-                                    height: '0.85em',
-                                    width: 'auto',
-                                    objectFit: 'contain',
-                                    display: 'block',
-                                    marginLeft: '-0.02em',
-                                    marginTop: '0.05em'
-                                }}
-                            />
-                        </h2>
-                        <p className="identidad-body-text" style={{
-                            fontFamily: 'var(--font-body)',
-                            fontSize: 'clamp(1.1rem, 1.8vw, 1.5rem)',
-                            lineHeight: 1.4,
-                            maxWidth: '600px',
-                            color: '#333',
-                            margin: '1rem 0 0',
-                            textAlign: 'left',
-                            borderLeft: '4px solid #00FF99',
-                            paddingLeft: '1.5rem'
+                        <h2 className="identidad-headline-1" style={{
+                            fontSize: 'clamp(2rem, 4vw, 3.5rem)', // COMPACT: Reduced max size significantly
+                            fontWeight: 900,
+                            lineHeight: 0.95,
+                            letterSpacing: '-0.02em',
+                            color: '#000',
+                            margin: 0,
+                            textTransform: 'uppercase',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start'
                         }}>
-                            Trascendemos la estética convencional. <br />Orquestamos sistemas de inteligencia visual que no solo comunican, sino que dominan el entorno digital.<br /><br />
-                            <strong style={{ color: '#000', fontWeight: 800 }}>Simbiosis absoluta entre intuición humana y precisión algorítmica.</strong>
-                        </p>
+                            {/* MASK 1 */}
+                            <div style={{ overflow: 'hidden' }}>
+                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)' }}>NO SOMOS UNA</div>
+                            </div>
+                            {/* MASK 2 */}
+                            <div style={{ overflow: 'hidden' }}>
+                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)', color: '#888888' }}>AGENCIA CON IA.</div>
+                            </div>
+                        </h2>
+
+                        <h2 className="identidad-headline-2" style={{
+                            fontSize: 'clamp(2.5rem, 5vw, 5rem)', // COMPACT: Reduced max size significantly
+                            fontWeight: 900,
+                            lineHeight: 0.85,
+                            letterSpacing: '-0.02em',
+                            color: '#00FF99',
+                            margin: '0.5rem 0 0', // Spacing
+                            textTransform: 'uppercase',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start'
+                        }}>
+                            {/* MASK 3 */}
+                            <div style={{ overflow: 'hidden' }}>
+                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)', textShadow: '0 0 30px rgba(0,255,153,0.4)' }}>
+                                    SOMOS LA IA
+                                </div>
+                            </div>
+                            {/* MASK 4 (COMO) */}
+                            <div style={{ overflow: 'hidden' }}>
+                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)', color: '#000', textShadow: 'none' }}>
+                                    COMO
+                                </div>
+                            </div>
+                            {/* MASK 5 (Logo on its own line) */}
+                            <div style={{ overflow: 'hidden', width: '100%' }}>
+                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)', display: 'flex', alignItems: 'center' }}>
+                                    <img
+                                        src={officialTypography}
+                                        alt="AgencIA"
+                                        style={{
+                                            width: '100%',
+                                            maxWidth: '650px',
+                                            height: 'auto',
+                                            maxHeight: '12vh', // COMPACT: Even stricter height limit
+                                            objectFit: 'contain',
+                                            display: 'block',
+                                            marginTop: '0.5rem',
+                                            filter: 'contrast(1.1)'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </h2>
+
+                        <div className="identidad-body-container" style={{
+                            marginTop: '1.5rem', // COMPACT: Reduced spacing
+                            paddingLeft: '1.5rem',
+                            // Border removed here, replaced by dedicated div below
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1rem', // Space between thoughts
+                            position: 'relative',
+                            zIndex: 2
+                        }}>
+                            {/* THE GREEN LINE (Animated) */}
+                            <div className="identidad-green-line" style={{
+                                position: 'absolute',
+                                left: 0,
+                                top: 0,
+                                bottom: 0,
+                                width: '4px',
+                                backgroundColor: '#00FF99',
+                                transform: 'scaleY(0)', // Start hidden
+                                transformOrigin: 'top center'
+                            }} />
+
+                            {/* Line 1 */}
+                            <p className="identidad-body-line" style={{
+                                fontFamily: 'var(--font-body)',
+                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', // COMPACT: Slightly smaller base
+                                lineHeight: 1.3, // Tighter leading
+                                maxWidth: '600px',
+                                color: '#333',
+                                margin: 0
+                            }}>
+                                Trascendemos la estética convencional.
+                            </p>
+
+                            {/* Line 2 */}
+                            <p className="identidad-body-line" style={{
+                                fontFamily: 'var(--font-body)',
+                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', // COMPACT: Slightly smaller base
+                                lineHeight: 1.3, // Tighter leading
+                                maxWidth: '600px',
+                                color: '#333',
+                                margin: 0
+                            }}>
+                                Orquestamos sistemas de inteligencia visual que no solo comunican, sino que dominan el entorno digital.
+                            </p>
+
+                            {/* Line 3 (Strong) */}
+                            <p className="identidad-body-line" style={{
+                                fontFamily: 'var(--font-body)',
+                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', // COMPACT
+                                lineHeight: 1.3,
+                                maxWidth: '600px',
+                                color: '#000',
+                                fontWeight: 800,
+                                margin: '0.5rem 0 0'
+                            }}>
+                                Simbiosis absoluta entre intuición humana y precisión algorítmica.
+                            </p>
+                        </div>
+
+
                     </div>
                 </section>
+
+                {/* --- PHYSICAL GRADIENT BRIDGE: WHITE -> BLACK --- */}
+                <div style={{
+                    width: '100%',
+                    height: '150px',
+                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)',
+                    position: 'relative',
+                    zIndex: 35 // Between 40 (Identidad) and 30 (Manifesto)
+                }} />
 
                 {/* 4. SOUL MANIFESTO */}
                 <section id="manifesto" className="soul-narrative-section" style={{ position: 'relative', zIndex: 30, backgroundColor: '#000', color: '#FFF' }}>
                     <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#FFF', opacity: 0.5, zIndex: 40, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CHAPTER_002_ESENCIA</span>
+                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_002_ESENCIA</span>
                         <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>ESENCIA</span>
                     </div>
                     <SoulManifesto />
                 </section>
 
+                {/* --- PHYSICAL GRADIENT BRIDGE: BLACK -> WHITE --- */}
+                <div style={{
+                    width: '100%',
+                    height: '150px',
+                    background: 'linear-gradient(to bottom, #000000 0%, #FFFFFF 100%)',
+                    position: 'relative',
+                    zIndex: 45 // Between 30 (Manifesto) and 50 (Showcase)
+                }} />
+
                 {/* 5. SHOWCASE SLIDER */}
                 <section id="capacidades" className="identity-section" style={{ position: 'relative', zIndex: 50, marginTop: '0', backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
-                    <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, zIndex: 60, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CHAPTER_003_ORQUESTA</span>
+                    <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 1, zIndex: 1, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
+                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_003_ORQUESTA</span>
                         <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>ORQUESTA</span>
                     </div>
                     <ShowcaseSlider initialHash={hash} />
                 </section>
 
                 {/* 6. TEAM RIFT */}
-                <section id="nucleo" className="team-list" style={{ minHeight: '100vh', padding: '10vh 0', backgroundColor: '#FFFFFF', color: '#000', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CHAPTER_004_CORE</span>
+                <section id="nucleo" className="team-list" style={{ minHeight: '100vh', padding: '0 0 10vh', backgroundColor: '#FFFFFF', color: '#000', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 1, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
+                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_004_NÚCLEO</span>
                         <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>NÚCLEO</span>
                     </div>
-                    <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', marginBottom: '6rem', fontWeight: 900, textAlign: 'center', letterSpacing: '0.02em', wordSpacing: '0.2em', color: '#000' }}>EL NÚCLEO</h2>
+                    <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', margin: '6rem 0', fontWeight: 900, textAlign: 'center', letterSpacing: '0.02em', wordSpacing: '0.2em', color: '#000' }}>EL NÚCLEO</h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         {team.map((member) => (
-                            <div key={member.id} className="rift-row" style={{ position: 'relative', width: '100%', height: '30vh', minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
-                                <div className="rift-img" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, transition: 'none', overflow: 'hidden', opacity: 0.3, filter: 'grayscale(100%)' }}>
+                            <div key={member.id} className="rift-row" style={{ position: 'relative', width: '100%', height: '60vh', minHeight: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+                                <div className="rift-img" style={{ position: 'absolute', top: '15%', left: 0, width: '100%', height: '70%', zIndex: 0, transition: 'none', overflow: 'hidden', opacity: 0.3, filter: 'grayscale(100%)' }}>
                                     <div style={{
                                         width: '100%',
                                         height: '100%',
                                         backgroundImage: `url(${member.img})`,
-                                        backgroundSize: 'contain',
+                                        backgroundSize: 'contain', // Revert to contain to prevent "enormous" cutups
                                         backgroundRepeat: 'no-repeat',
-                                        backgroundPosition: 'center',
-                                        transform: `scale(${member.scale})`,
-                                        transformOrigin: 'center 20%', // Zoom into face
+                                        backgroundPosition: 'center', // Focus on faces generally
+                                        transform: 'scale(1)', // No zoom
                                     }} />
                                 </div>
                                 <span className="rift-id" style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: '10rem', fontWeight: 900, opacity: 0.05, zIndex: 1, pointerEvents: 'none', color: '#000' }}>0{member.id}</span>
@@ -627,16 +780,93 @@ const Home: React.FC = () => {
                 {/* 7. SIMBIOSIS */}
                 <div id="simbiosis" style={{ position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, zIndex: 210, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CHAPTER_005_SINERGIA</span>
+                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_005_SINERGIA</span>
                         <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>SINERGIA</span>
                     </div>
                     <Symbiosis />
                 </div>
 
+                {/* INJECTED STYLES FOR MOBILE MASTERPIECE */}
+                <style>{`
+                    @media (max-width: 768px) {
+                        #identidad {
+                            flex-direction: column !important;
+                            align-items: flex-start !important;
+                            /* CENTERED LAYOUT with safe padding */
+                            justify-content: center !important;
+                            padding: 2rem 5% 2rem 5% !important; 
+                            gap: 0.5rem !important;
+                            min-height: 100vh !important; /* Ensure full height for centering */
+                        }
+                        .identidad-marker {
+                            display: none !important;
+                        }
+                        .identidad-headline-1 {
+                            font-size: clamp(1.5rem, 8vw, 2.5rem) !important; /* SMALLER BASE for iPhone 5 */
+                            line-height: 1.1 !important;
+                        }
+                        .identidad-headline-2 {
+                            font-size: clamp(1.8rem, 10vw, 3rem) !important; /* SMALLER BASE */
+                            margin-top: 0.2rem !important;
+                            line-height: 1 !important;
+                        }
+                        .identidad-body-container {
+                            margin-top: 0.8rem !important;
+                            padding-left: 0.8rem !important; /* Less indentation */
+                            gap: 0.5rem !important;
+                        }
+                        .identidad-body-line {
+                            font-size: clamp(0.75rem, 3.5vw, 1rem) !important; /* iPhone 5 safe */
+                            line-height: 1.3 !important;
+                        }
+                        /* FORCE LOGO COMPACTNESS */
+                        #identidad img {
+                            max-height: 10vh !important; /* Even smaller for iPhone 5 safety */
+                            margin-top: 0.5rem !important;
+                            align-self: flex-start !important; /* Ensure left align */
+                        }
+                    }
+
+                    /* IPHONE 5/SE & ULTRA SMALL SPECIFIC OVERRIDES */
+                    @media (max-width: 380px), (max-height: 700px) {
+                        #identidad {
+                            justify-content: flex-start !important; /* Let it flow from top */
+                            padding-top: 10vh !important; /* REDUCED to bring connection closer to prev section */
+                            padding-bottom: 25vh !important; /* MASSIVE BOTTOM PADDING TO PREVENT CUTOFF */
+                            gap: 0.2rem !important;
+                        }
+                        .identidad-headline-1 {
+                            font-size: 1.3rem !important; /* EVEN SMALLER */
+                        }
+                        .identidad-headline-2 {
+                            font-size: 1.5rem !important; /* EVEN SMALLER */
+                            margin-top: 0.1rem !important;
+                        }
+                        .identidad-body-container {
+                             margin-top: 0.5rem !important;
+                             padding-left: 0.5rem !important;
+                        }
+                        .identidad-body-line {
+                            font-size: 0.7rem !important;
+                            line-height: 1.25 !important;
+                        }
+                        #identidad img {
+                            max-height: 70px !important; /* Fixed pixel max height for safety */
+                            margin-top: 0.2rem !important;
+                        }
+                        /* Ensure nothing is hidden */
+                        #identidad {
+                            overflow-y: visible !important;
+                            height: auto !important;
+                            min-height: 100svh !important;
+                        }
+                    }
+                `}</style>
+
                 {/* 8. CTA SECTION */}
-                <section id="contacto" style={{ minHeight: '100vh', padding: '2rem 0', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF', color: '#000', position: 'relative' }}>
+                <section id="contacto" style={{ minHeight: '100vh', padding: '12vh 0', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF', color: '#000', position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CHAPTER_006_UMBRAL</span>
+                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_006_UMBRAL</span>
                         <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>UMBRAL</span>
                     </div>
 
@@ -695,6 +925,15 @@ const Home: React.FC = () => {
                     </Link>
 
                 </section>
+
+                {/* --- PHYSICAL GRADIENT BRIDGE: WHITE -> BLACK (To Footer) --- */}
+                <div style={{
+                    width: '100%',
+                    height: '150px',
+                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)',
+                    position: 'relative',
+                    zIndex: 20 // Natural flow
+                }} />
 
                 {/* 7. FOOTER */}
                 <Footer />

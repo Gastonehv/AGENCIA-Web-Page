@@ -38,8 +38,8 @@ const ScrollProgress: React.FC = () => {
                 style={{
                     height: '100%',
                     width: `${progress * 100}%`,
-                    backgroundColor: '#00FF99',
-                    boxShadow: '0 0 10px #00FF99, 0 0 20px rgba(0, 255, 153, 0.5)',
+                    backgroundColor: '#BB00FF',
+                    boxShadow: '0 0 10px #BB00FF, 0 0 20px rgba(187, 0, 255, 0.5)',
                     transition: 'width 0.1s ease-out'
                 }}
             />

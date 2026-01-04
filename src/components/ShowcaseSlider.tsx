@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useLayoutEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -18,8 +18,8 @@ interface ShowcaseSliderProps {
 const CASES = [
     {
         id: '01',
-        title: 'ARQUITECTURA DIGITAL',
-        subtitle: 'Ingeniería de Software & SaaS',
+        title: 'INFRAESTRUCTURA',
+        subtitle: 'Arquitectura de Software & Ecosistemas',
         desc: 'Desarrollamos ecosistemas digitales soberanos: aplicaciones escalables, software SAS y plataformas web de alta complejidad.',
         fullDesc: 'Construimos infraestructura digital desde cero, optimizada para velocidad extrema y escalabilidad global. Dejamos atrás las limitaciones comerciales para entregar soluciones de ingeniería pura que dominan el mercado.',
         humanDesc: 'No vendemos páginas; construimos el motor de tu negocio digital. Software que funciona sin errores, Apps que la gente ama usar y plataformas que escalan junto con tu ambición.',
@@ -50,13 +50,13 @@ const CASES = [
     },
     {
         id: '03',
-        title: 'IDENTIDAD VISUAL',
-        subtitle: 'Maestría Estética & Clase Mundial',
-        desc: 'Diseño que define autoridad. Creamos marcas que no solo se ven bien, sino que imponen su presencia en el mercado.',
-        fullDesc: 'Aquí nos ponemos el sombrero de señores en la materia. Forjamos identidades visuales que trascienden lo convencional, utilizando motion graphics de alta fidelidad y un lenguaje estético exclusivo que garantiza el reconocimiento de marca instantáneo.',
-        humanDesc: 'Tu marca es tu firma en el mundo. No hacemos logos mediocres; creamos identidades que inspiran respeto y confianza. Es el arte de verse como el líder, antes de decir una sola palabra.',
-        services: 'Branding de Autoridad, UI/UX de Lujo, Motion Pro',
-        humanServices: 'Marca de impacto, Diseño premium, Animaciones elegantes',
+        title: 'IDENTIDAD',
+        subtitle: 'Estética & Experiencia Multisensorial',
+        desc: 'Diseño que se siente. Creamos marcas que no solo se ven bien, sino que provocan una respuesta visceral en el mercado.',
+        fullDesc: 'Trasscendemos lo visual para diseñar experiencias multisensoriales completas. Forjamos identidades que respiran, se mueven y comunican autoridad a través de cada píxel, sonido y micro-interacción.',
+        humanDesc: 'Tu marca es tu firma en el mundo. No hacemos logos estáticos; creamos sistemas vivos que inspiran respeto y confianza. Es el arte de verse (y sentirse) como el líder.',
+        services: 'Branding Multisensorial, UI/UX de Lujo, Motion Pro',
+        humanServices: 'Marca sensorial, Diseño premium, Animaciones elegantes',
         buttonCopy: 'MODO SENCILLO',
         year: '2025',
         img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop',
@@ -81,7 +81,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const sliderRef = useRef<HTMLDivElement>(null);
-    const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+    const cardContainerRefs = useRef<(HTMLDivElement | null)[]>([]); // New ref for the outer card
+    const cardsRef = useRef<(HTMLDivElement | null)[]>([]); // Keeps existing ref for image window (Parallax)
     // Fix: Allow both Div and Video elements for the parallax target
     const imagesRef = useRef<(HTMLElement | null)[]>([]);
 
@@ -114,51 +115,151 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
         }
     }, [mousePos, isHovering]);
 
+    // 4. RESPONSIVE LAYOUT STATE
+    const [cardWidth, setCardWidth] = useState('30vw'); // Start Small
+
     useEffect(() => {
+        const handleResize = () => {
+            const w = window.innerWidth;
+            if (w <= 768) setCardWidth('85vw');
+            else if (w <= 1024) setCardWidth('45vw');
+            else if (w <= 1440) setCardWidth('30vw');
+            else setCardWidth('30vw');
+        };
+
+        handleResize(); // Init
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // CHANGED TO useLayoutEffect TO PREVENT JUMPS
+    useLayoutEffect(() => {
         let scrollTimeline: gsap.core.Timeline;
 
         const ctx = gsap.context(() => {
             if (!sliderRef.current || !containerRef.current) return;
 
-            // 1. CLEANUP: Only kill previous instances of THIS component's triggers
+            // 1. CLEANUP
             ScrollTrigger.getById('showcase-scroll')?.kill();
             ScrollTrigger.getAll().filter(st => st.vars.id?.startsWith('parallax-')).forEach(st => st.kill());
 
-            const totalWidth = sliderRef.current.scrollWidth;
-            const viewportWidth = window.innerWidth;
+            // 2. APPLY STYLES FIRST (MatchMedia)
+            // Critical: Apply styles BEFORE calculating width
+            const mm = gsap.matchMedia();
+            mm.add({
+                isMobile: "(max-width: 768px)",
+                isTablet: "(min-width: 769px) and (max-width: 1024px)",
+                isLaptop: "(min-width: 1025px) and (max-width: 1440px)",
+                isDesktop: "(min-width: 1441px)"
+            }, (context) => {
+                const { isMobile, isTablet, isLaptop } = context.conditions as { isMobile: boolean, isTablet: boolean, isLaptop: boolean };
 
-            // 2. TIMELINE: Horizontal Scroll + Dead Scroll
+                if (isMobile) {
+                    gsap.set('.showcase-headline', { minWidth: '90vw', marginRight: '5vw' });
+                    gsap.set(sliderRef.current, { paddingLeft: '5vw', gap: 0 });
+                } else if (isTablet) {
+                    gsap.set('.showcase-headline', { minWidth: '40vw', marginRight: '0' });
+                    gsap.set(sliderRef.current, { paddingLeft: '6vw', gap: '4vw' });
+                } else if (isLaptop) {
+                    gsap.set('.showcase-headline', { minWidth: '35vw', marginRight: '0' });
+                    gsap.set(sliderRef.current, { paddingLeft: '8vw', gap: '4vw' });
+                } else {
+                    gsap.set('.showcase-headline', { minWidth: '40vw', marginRight: '0' });
+                    gsap.set(sliderRef.current, { paddingLeft: '10vw', gap: '5vw' });
+                }
+            });
+
+            // 3. FORCE RECALCULATION
+            // Helper to get true width after styles applied
+            const getScrollWidth = () => sliderRef.current?.scrollWidth || 0;
+            const getViewportWidth = () => window.innerWidth;
+
+            // 4. TIMELINE
+            // 4. TIMELINE & PAUSE LOGIC
             const isMobile = window.innerWidth <= 768;
             scrollTimeline = gsap.timeline({
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top top",
-                    end: () => isMobile ? `+=${totalWidth + viewportWidth * 2.5}` : `+=${totalWidth + viewportWidth * 1.0}`, // Adjusted for shorter delay
+                    // Increase the scroll distance to account for the pauses (makes it feel less rushed)
+                    end: () => {
+                        const w = getScrollWidth();
+                        const v = getViewportWidth();
+                        return isMobile ? `+=${w + v * 4}` : `+=${w + v * 3}`;
+                    },
                     pin: true,
-                    scrub: isMobile ? 1.5 : 1,
+                    scrub: 0.5, // Smooth scrubbing
                     invalidateOnRefresh: true,
                     id: 'showcase-scroll'
                 }
             });
 
-            // Add delay/pause before movement starts (reduced to half)
-            scrollTimeline.to({}, { duration: 0.25 });
+            // Initial Delay/Space
+            scrollTimeline.to({}, { duration: 0.2 });
 
-            scrollTimeline.to(sliderRef.current, {
-                x: () => -(totalWidth - viewportWidth),
-                ease: "none",
-                duration: 1
+            // Build Step-by-Step Movement with Pauses
+            let currentX = 0;
+            const viewportWidth = getViewportWidth();
+            const totalScrollWidth = getScrollWidth();
+            const maxScroll = -(totalScrollWidth - viewportWidth);
+
+            // Move to each card and pause
+            cardContainerRefs.current.forEach((card) => {
+                if (!card) return;
+
+                // Calculate X to center the card
+                // Target = Center of Viewport - Center of Card (relative to slider start)
+                // Card Left relative to slider = card.offsetLeft
+                const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                let targetX = (viewportWidth / 2) - cardCenter;
+
+                // Clamp targetX to valid scroll range (0 to maxScroll)
+                if (targetX > 0) targetX = 0;
+                if (targetX < maxScroll) targetX = maxScroll;
+
+                // Calculate distance from last position
+                const distance = Math.abs(targetX - currentX);
+
+                // 1. Move to Card
+                if (distance > 0) {
+                    scrollTimeline.to(sliderRef.current, {
+                        x: targetX,
+                        ease: "none",
+                        // Duration proportional to distance gives constant speed
+                        // Factor 1000 is arbitrary, just sets relative weight vs pause
+                        duration: distance
+                    });
+                }
+
+                // 2. Pause at Card (Autopilot Slow-down)
+                // The duration here determines how much "scroll space" is dedicated to staying still
+                scrollTimeline.to({}, { duration: viewportWidth * 0.5 }); // Pause equivalent to half screen width scroll
+
+                currentX = targetX;
             });
 
-            scrollTimeline.to({}, { duration: 0.15 }); // Reduced from 0.35 for Snappier transition
+            // Final Move to End (if needed)
+            if (currentX > maxScroll) {
+                scrollTimeline.to(sliderRef.current, {
+                    x: maxScroll,
+                    ease: "none",
+                    duration: Math.abs(maxScroll - currentX)
+                });
+            }
 
-            // 3. PARALLAX
+            // Final Buffer
+            scrollTimeline.to({}, { duration: 0.1 });
+            // REDUCED FINAL BUFFER: 0.05 for immediate exit
+            scrollTimeline.to({}, { duration: 0.05 });
+
+            // 5. PARALLAX
             imagesRef.current.forEach((img, i) => {
+                // ... rest of parallax logic (needs to be inside here or rebuilt if needed? Parallax logic was fine)
                 if (!img || !cardsRef.current[i]) return;
                 gsap.fromTo(img,
-                    { xPercent: -15 }, // Reduced slightly for safety
+                    { xPercent: -30 },
                     {
-                        xPercent: 15,
+                        xPercent: 30,
                         ease: "none",
                         force3D: true,
                         scrollTrigger: {
@@ -173,38 +274,9 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 );
             });
 
-            // 4. RESPONSIVE
-            const mm = gsap.matchMedia();
-            mm.add({
-                isMobile: "(max-width: 768px)",
-                isTablet: "(min-width: 769px) and (max-width: 1024px)",
-                isLaptop: "(min-width: 1025px) and (max-width: 1440px)",
-                isDesktop: "(min-width: 1441px)"
-            }, (context) => {
-                const { isMobile, isTablet, isLaptop } = context.conditions as { isMobile: boolean, isTablet: boolean, isLaptop: boolean };
+            // Refresh to ensure all start/end points are correct with new styles
+            ScrollTrigger.refresh();
 
-                if (isMobile) {
-                    gsap.set('.showcase-card', { minWidth: '85vw', marginRight: '5vw' });
-                    gsap.set('.showcase-headline', { minWidth: '90vw', marginRight: '5vw' });
-                    gsap.set(sliderRef.current, { paddingLeft: '5vw', gap: 0 });
-                } else if (isTablet) {
-                    // iPad Pro / Small Laptops
-                    gsap.set('.showcase-card', { minWidth: '45vw', marginRight: '0' });
-                    gsap.set('.showcase-headline', { minWidth: '40vw', marginRight: '0' });
-                    gsap.set(sliderRef.current, { paddingLeft: '6vw', gap: '4vw' });
-                } else if (isLaptop) {
-                    // Standard Laptops (1366x768, 1440x900) - Tighter distribution
-                    gsap.set('.showcase-card', { minWidth: '40vw', marginRight: '0' });
-                    gsap.set('.showcase-headline', { minWidth: '35vw', marginRight: '0' });
-                    gsap.set(sliderRef.current, { paddingLeft: '8vw', gap: '4vw' });
-                } else {
-                    // Large Screens
-                    gsap.set('.showcase-card', { minWidth: '50vw', marginRight: '0' });
-                    gsap.set('.showcase-headline', { minWidth: '40vw', marginRight: '0' });
-                    gsap.set(sliderRef.current, { paddingLeft: '10vw', gap: '5vw' });
-                }
-                ScrollTrigger.refresh();
-            });
         }, containerRef);
 
         // 5. DEEP LINKING
@@ -271,8 +343,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         fontWeight: 900,
                         textShadow: '0px 10px 30px rgba(0,0,0,0.1)'
                     }}>
-                        EJECUCIÓN<br />
-                        <span style={{ color: '#CCC' }}>/// SISTEMAS DE VALOR</span>
+                        INGENIERÍA<br />
+                        <span style={{ color: '#CCC' }}>/// CREATIVA</span>
                     </h2>
                     <p style={{
                         fontSize: 'clamp(1rem, 1.5vw, 1.5rem)',
@@ -288,11 +360,14 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 {CASES.map((item, i) => (
                     <div
                         key={i}
+                        ref={el => { cardContainerRefs.current[i] = el; }} // OUTER REFERENCE FOR POSITIONING
                         className="showcase-card"
                         onClick={() => setActiveProject(item)} // OPEN MODAL
                         style={{
                             textDecoration: 'none',
-                            minWidth: isMobile ? '85vw' : '50vw',
+                            width: cardWidth, // Strict Width
+                            maxWidth: cardWidth, // Prevent expansion
+                            minWidth: cardWidth, // Prevent shrinking
                             height: isMobile ? '80vh' : '80%',
                             alignSelf: 'center',
                             display: 'flex',
@@ -301,11 +376,11 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             padding: isMobile ? '1.5rem' : '2rem',
                             backgroundColor: '#FFFFFF',
                             cursor: 'none',
-                            flexShrink: 0, // CRITICAL: Prevent card shrinking on mobile/smaller screens
+                            flexShrink: 0,
                             transition: 'all 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
                             zIndex: highlightedIndex === i || hoveredIndex === i ? 10 : 2,
                             boxShadow: highlightedIndex === i
-                                ? '0 0 100px rgba(0, 255, 153, 0.6)' // Doubled intensity
+                                ? '0 0 100px rgba(0, 255, 153, 0.6)'
                                 : (hoveredIndex === i ? '0 40px 80px rgba(0,0,0,0.3)' : '0 30px 60px rgba(0,0,0,0.1)'),
                             border: highlightedIndex === i ? '2px solid #00FF99' : '1px solid rgba(0,0,0,0.05)',
                             animation: highlightedIndex === i ? 'landingFlash 1.5s infinite alternate' : 'none',
@@ -326,13 +401,14 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             ref={el => { cardsRef.current[i] = el; }}
                             style={{
                                 width: '100%',
-                                height: '50vh',
+                                height: '55%', // PERCENTAGE BASED: Ensures perfect equality relative to card size (was 50vh)
                                 overflow: 'hidden',
                                 borderRadius: '16px',
-                                marginBottom: '2rem',
+                                marginBottom: '1.5rem', // Slightly reduced margin
                                 position: 'relative',
                                 boxShadow: '0 30px 60px rgba(0,0,0,0.7)',
-                                border: '1px solid rgba(0,0,0,0.05)'
+                                border: '1px solid rgba(0,0,0,0.05)',
+                                flexShrink: 0 // Prevent crushing
                             }}>
                             {/* MEDIA CONTENT (VIDEO OR IMAGE) */}
                             {item.video ? (
@@ -344,11 +420,11 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     loop
                                     playsInline
                                     style={{
-                                        width: '170%', // Increased for total parallax coverage
+                                        width: '250%', // ULTRA WIDE for max parallax
                                         height: '100%',
                                         objectFit: 'cover',
                                         position: 'absolute',
-                                        left: '-35%', // Recalculated center
+                                        left: '-75%', // Centered (250 - 100) / 2
                                         willChange: 'transform'
                                     }}
                                 />
@@ -356,13 +432,13 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                 <div
                                     ref={el => { imagesRef.current[i] = el; }}
                                     style={{
-                                        width: '170%', // Increased for total parallax coverage
+                                        width: '250%', // ULTRA WIDE
                                         height: '100%',
                                         backgroundImage: `url(${item.img})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         position: 'absolute',
-                                        left: '-35%'
+                                        left: '-75%'
                                     }}
                                 />
                             )}

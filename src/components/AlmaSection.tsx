@@ -125,11 +125,13 @@ const AlmaSection: React.FC = () => {
                     {/* ACRONYM DEFINITION - SINGLE LINE */}
                     <span style={{
                         fontSize: 'clamp(0.6rem, 1.2vw, 0.75rem)',
-                        letterSpacing: '0.4em',
+                        letterSpacing: 'clamp(0.1em, 1vw, 0.4em)', // Reduced for mobile
                         color: '#000',
                         fontWeight: 700,
                         textTransform: 'uppercase',
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'normal', // Allow wrap on small screens
+                        textAlign: 'center',
+                        lineHeight: 1.4
                     }}>
                         ALGORITMO LÓGICO DE MENTE ARTIFICIAL
                     </span>

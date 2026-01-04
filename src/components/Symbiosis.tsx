@@ -29,39 +29,47 @@ const Symbiosis: React.FC = () => {
         const startLoops = () => {
             const isMobileView = window.innerWidth < 800;
 
-            // J-Curve Flow
-            livingLoops.push(gsap.to('.chart-line-flow', { strokeDashoffset: -2000, duration: 4, repeat: -1, ease: "linear", force3D: true }));
+            // J-Curve Flow (SVG Only)
+            if (document.querySelector('.chart-line-flow')) {
+                livingLoops.push(gsap.to('.chart-line-flow', { strokeDashoffset: -2000, duration: 4, repeat: -1, ease: "linear", force3D: true }));
 
-            if (!isMobileView) {
-                livingLoops.push(gsap.to('.chart-line-flow', { strokeWidth: 12, duration: 0.8, repeat: -1, yoyo: true, ease: "sine.inOut" }));
-                livingLoops.push(gsap.to('.chart-dot-growth', { fill: "#ccff00", boxShadow: "0 0 50px #ccff00", scale: 1.6, duration: 0.6, repeat: -1, yoyo: true, ease: "power2.inOut" }));
-            }
-
-            // Traffic Bars Height Dance
-            const barsTraffic = document.querySelectorAll('.chart-bar-traffic');
-            barsTraffic.forEach((bar, i) => {
-                const baseScale = 0.3 + (i / barsTraffic.length) * 0.7;
-                livingLoops.push(gsap.to(bar, {
-                    scaleY: `random(${baseScale * 0.8}, ${Math.min(baseScale * 1.2, 1)})`,
-                    duration: "random(0.4, 0.8)", repeat: -1, yoyo: true, ease: "power1.inOut", delay: "random(0, 0.5)",
-                    force3D: true
-                }));
                 if (!isMobileView) {
-                    livingLoops.push(gsap.to(bar, { filter: "hue-rotate(30deg)", duration: 5, repeat: -1, yoyo: true, ease: "linear" }));
+                    livingLoops.push(gsap.to('.chart-line-flow', { strokeWidth: 12, duration: 0.8, repeat: -1, yoyo: true, ease: "sine.inOut" }));
+                    livingLoops.push(gsap.to('.chart-dot-growth', { fill: "#ccff00", boxShadow: "0 0 50px #ccff00", scale: 1.6, duration: 0.6, repeat: -1, yoyo: true, ease: "power2.inOut" }));
                 }
-            });
-
-            // Funding Bars Loops
-            livingLoops.push(gsap.fromTo('.chart-bar-fund-seed', { height: "15%" }, { height: "45%", duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut", force3D: true }));
-            livingLoops.push(gsap.fromTo('.chart-bar-fund-series', { height: "30%" }, { height: "75%", duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 0.2, force3D: true }));
-            livingLoops.push(gsap.fromTo('.chart-bar-fund-unicorn', { height: "50%" }, { height: "100%", duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 0.4, force3D: true }));
-
-            if (!isMobileView) {
-                livingLoops.push(gsap.to('.unicorn-text', { color: "#ff00ff", scale: 1.3, duration: 0.8, repeat: -1, yoyo: true, ease: "steps(1)" }));
             }
 
-            // Scanner
-            livingLoops.push(gsap.fromTo('.chart-line-latency-scanner', { left: '-20%' }, { left: '120%', duration: 2, repeat: -1, ease: "power1.inOut", force3D: true }));
+            // Traffic Bars Height Dance (SVG Only)
+            const barsTraffic = document.querySelectorAll('.chart-bar-traffic');
+            if (barsTraffic.length > 0) {
+                barsTraffic.forEach((bar, i) => {
+                    const baseScale = 0.3 + (i / barsTraffic.length) * 0.7;
+                    livingLoops.push(gsap.to(bar, {
+                        scaleY: `random(${baseScale * 0.8}, ${Math.min(baseScale * 1.2, 1)})`,
+                        duration: "random(0.4, 0.8)", repeat: -1, yoyo: true, ease: "power1.inOut", delay: "random(0, 0.5)",
+                        force3D: true
+                    }));
+                    if (!isMobileView) {
+                        livingLoops.push(gsap.to(bar, { filter: "hue-rotate(30deg)", duration: 5, repeat: -1, yoyo: true, ease: "linear" }));
+                    }
+                });
+            }
+
+            // Funding Bars Loops (SVG Only)
+            if (document.querySelector('.chart-bar-fund-seed')) {
+                livingLoops.push(gsap.fromTo('.chart-bar-fund-seed', { height: "15%" }, { height: "45%", duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut", force3D: true }));
+                livingLoops.push(gsap.fromTo('.chart-bar-fund-series', { height: "30%" }, { height: "75%", duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 0.2, force3D: true }));
+                livingLoops.push(gsap.fromTo('.chart-bar-fund-unicorn', { height: "50%" }, { height: "100%", duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 0.4, force3D: true }));
+
+                if (!isMobileView) {
+                    livingLoops.push(gsap.to('.unicorn-text', { color: "#ff00ff", scale: 1.3, duration: 0.8, repeat: -1, yoyo: true, ease: "steps(1)" }));
+                }
+            }
+
+            // Scanner (SVG Only)
+            if (document.querySelector('.chart-line-latency-scanner')) {
+                livingLoops.push(gsap.fromTo('.chart-line-latency-scanner', { left: '-20%' }, { left: '120%', duration: 2, repeat: -1, ease: "power1.inOut", force3D: true }));
+            }
         };
 
         // PERFORMANCE CONTROL: Only run when visible
@@ -208,10 +216,10 @@ const Symbiosis: React.FC = () => {
             ref={sectionRef}
             id="simbiosis-startups"
             style={{
-                minHeight: '100vh', // Reduced min-height for mobile
+                minHeight: '200vh', // DOUBLED HEIGHT FOR SLOWER PACE
                 background: 'linear-gradient(180deg, #FFFFFF 0%, #F5F7FA 25%, #E2E8F0 50%, #F5F7FA 75%, #FFFFFF 100%)',
                 position: 'relative',
-                padding: '10vh 5% 15vh', // Tighter padding
+                padding: '20vh 5% 30vh', // Increased padding for vertical breathing room
                 display: 'flex', flexDirection: 'column', justifyContent: 'center',
                 zIndex: 200, overflow: 'hidden'
             }}

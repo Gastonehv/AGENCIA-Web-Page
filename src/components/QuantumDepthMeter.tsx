@@ -114,7 +114,7 @@ const QuantumDepthMeter: React.FC = () => {
                 <div style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.65rem',
-                    color: '#00FF99',
+                    color: '#00FF99', // BRAND GREEN
                     letterSpacing: '0.2em',
                     fontWeight: 900,
                     opacity: 0.8
@@ -124,7 +124,7 @@ const QuantumDepthMeter: React.FC = () => {
                 <div style={{
                     width: '30px',
                     height: '1px',
-                    background: 'linear-gradient(to right, #00FF99, transparent)',
+                    background: 'linear-gradient(to right, #00FF99, transparent)', // BRAND GREEN
                     opacity: 0.5
                 }} />
             </div>

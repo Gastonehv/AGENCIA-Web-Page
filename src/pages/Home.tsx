@@ -70,23 +70,19 @@ const Home: React.FC = () => {
             // HASH NAVIGATION LOGIC
             if (hash && lenis) {
                 lenis.start();
+                // Forced refresh to ensure layout is correct before scrolling
                 ScrollTrigger.refresh();
 
-                if (hash === '#capacidades') {
-                    const timer = setTimeout(() => {
-                        ScrollTrigger.refresh();
-                        lenis.scrollTo('#capacidades', { offset: 0, duration: 1.5, force: true, onComplete: () => ScrollTrigger.refresh() });
-                    }, 1000);
-                    return () => clearTimeout(timer);
-                } else if (!hash.startsWith('#case-')) {
-                    // Generic scroll to other hashes (e.g., #manifesto, #simbiosis)
-                    const timer = setTimeout(() => {
-                        ScrollTrigger.refresh();
-                        lenis.scrollTo(hash, { offset: 0, duration: 1.5, force: true, onComplete: () => ScrollTrigger.refresh() });
-                    }, 800);
-                    return () => clearTimeout(timer);
-                }
-                // #case- falls through as it's handled by ShowcaseSlider
+                // Use a single robust scroll call with onComplete
+                // Delay slightly to ensure browser paint
+                gsap.delayedCall(0.1, () => {
+                    lenis.scrollTo(hash, {
+                        offset: 0,
+                        duration: 1.5,
+                        force: true,
+                        onComplete: () => ScrollTrigger.refresh()
+                    });
+                });
             } else if (lenis) {
                 // Normal Load (No Hash) -> Start and Reset
                 lenis.start();
@@ -129,8 +125,45 @@ const Home: React.FC = () => {
 
                 // TEAM RIFT ANIMATIONS
                 const rifts = gsap.utils.toArray<HTMLElement>('.rift-row');
+
+                // --- NEW PINNING LOGIC (FORCE PAUSE) ---
+                // Applies to ALL screen sizes to ensure readability
+                rifts.forEach((rift, i) => {
+                    ScrollTrigger.create({
+                        trigger: rift,
+                        start: "center center",
+                        end: "+=60%", // Holds the member in center for 60% of viewport height
+                        pin: true,
+                        pinSpacing: true, // Adds physical space
+                        id: `rift-pin-${i}`
+                    });
+                });
+
+                // Pin ALMA Section for reading (Maximum Friction)
+                ScrollTrigger.create({
+                    trigger: ".alma-portal-container",
+                    start: "center center",
+                    end: "+=150%", // MAXIMIZED: Impossible to miss
+                    pin: true,
+                    pinSpacing: true
+                });
+
+                // --- SYMBIOSIS LOGIC MOVED TO COMPONENT ---
+                // The pinning for #simbiosis and .pillar-item is now handled inside Symbiosis.tsx
+                // to ensure correct DOM access and context scoping.
+
+                // --- FOOTER FAREWELL FRICTION ---
+                ScrollTrigger.create({
+                    trigger: "footer",
+                    start: "bottom bottom",
+                    end: "+=50%", // Short pause at the very end
+                    pin: true,
+                    pinSpacing: true
+                });
+
                 const openRift = (target: HTMLElement) => {
                     const q = gsap.utils.selector(target);
+                    // Standardize animation for both
                     gsap.to(q('.rift-left'), { x: '-20%', duration: 0.6, ease: 'power3.out', overwrite: 'auto' });
                     gsap.to(q('.rift-right'), { x: '20%', duration: 0.6, ease: 'power3.out', overwrite: 'auto' });
                     gsap.to(q('.rift-img'), { scale: 1, opacity: 1, filter: 'grayscale(0%)', duration: 0.6, overwrite: 'auto' });
@@ -190,7 +223,7 @@ const Home: React.FC = () => {
                     // Identidad Stack Vertical
                     gsap.set("#identidad", { gridTemplateColumns: "1fr", height: "auto", paddingTop: "10rem" });
                     gsap.set("#identidad > div:first-child", { paddingRight: 0, marginBottom: "2rem", textAlign: "center" });
-                    gsap.set(".identidad-marker", { marginTop: 0 });
+
                     gsap.set("#identidad > div:last-child", { paddingLeft: "1.5rem", paddingRight: "1.5rem", gap: "1.5rem" });
                     gsap.set(".rift-left", { paddingRight: "1rem" });
                     gsap.set(".rift-right", { paddingLeft: "1rem" });
@@ -251,8 +284,9 @@ const Home: React.FC = () => {
                 // Phase 3 (SYNCED): "IA" turns Green (Radioactive) AS Nuestra descends
                 tlHero.to('.hero-char-ia', {
                     color: '#00FF99', // PALETTE: Verde Turquesa Fosforescente
-                    textShadow: '0 0 80px rgba(0,255,153,1), 0 0 150px rgba(0,255,153,0.8)',
+                    textShadow: '0 0 30px rgba(0,255,153,1), 0 0 60px rgba(0,255,153,0.8)', // OPTIMIZED: Reduced bloom radius
                     scale: 1.1,
+
                     duration: 3, // Match increased duration for stability
                     ease: 'power2.out'
                 }, 0.5);
@@ -341,7 +375,7 @@ const Home: React.FC = () => {
                 );
 
                 // 5. Exit (Clean Sweep)
-                tlIdentidad.to(['.identidad-marker', '.identidad-chapter-label', '.guillotine-reveal', '.identidad-green-line', '.identidad-body-line', '.identidad-body-container'], {
+                tlIdentidad.to(['.identidad-chapter-label', '.guillotine-reveal', '.identidad-green-line', '.identidad-body-line', '.identidad-body-container'], {
                     y: '-100%', // Exit upwards
                     opacity: 0,
                     duration: 2,
@@ -488,7 +522,7 @@ const Home: React.FC = () => {
                             margin: 0,
                             textTransform: 'uppercase',
                             color: '#000000',
-                            textShadow: '0 0 50px rgba(255,255,255,0.9), 0 0 100px rgba(255,255,255,0.5)',
+                            textShadow: '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.5)', // OPTIMIZED
                             mixBlendMode: 'normal',
                             position: 'relative',
                             display: 'flex',
@@ -528,8 +562,8 @@ const Home: React.FC = () => {
 
                                 {/* PART 2B: IA (The Final Survivor) */}
                                 <span className="word-ia-wrapper" style={{ display: 'inline-flex', flexShrink: 0 }}>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, opacity' }}>I</span>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, opacity' }}>A</span>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow' }}>I</span>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow' }}>A</span>
                                 </span>
                             </div>
                         </h1>
@@ -553,25 +587,11 @@ const Home: React.FC = () => {
                     transformStyle: 'preserve-3d',
                 }}>
                     {/* COLUMN 1: MARKER (Hidden on small mobile if needed, or just flexed) */}
-                    <div style={{ flex: '1 1 200px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', minHeight: '150px' }}>
-                        <div className="identidad-marker" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: '#666', marginTop: '0' }}>/// SISTEMA_IDENTIDAD</div>
-                    </div>
+                    {/* MARKER REMOVED FOR VISUAL PURITY */}
 
                     {/* COLUMN 2: CONTENT (Main Text) */}
                     <div style={{ flex: '2 1 400px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <div className="identidad-chapter-label">
-                            <span style={{
-                                fontFamily: 'var(--font-mono)',
-                                fontSize: '0.8rem', // Adjusted size
-                                letterSpacing: '0.1em',
-                                color: '#000',
-                                display: 'inline-block',
-                                marginBottom: '1rem', // Reduced margin
-                                textTransform: 'uppercase'
-                            }}>
-                                /// CAPÍTULO_001_PREFACIO
-                            </span>
-                        </div>
+                        {/* CHAPTER LABEL REMOVED */}
                         <h2 className="identidad-headline-1" style={{
                             fontSize: 'clamp(2rem, 4vw, 3.5rem)', // COMPACT: Reduced max size significantly
                             fontWeight: 900,
@@ -714,10 +734,7 @@ const Home: React.FC = () => {
 
                 {/* 4. SOUL MANIFESTO */}
                 <section id="manifesto" className="soul-narrative-section" style={{ position: 'relative', zIndex: 30, backgroundColor: '#000', color: '#FFF' }}>
-                    <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#FFF', opacity: 0.5, zIndex: 40, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_002_ESENCIA</span>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>ESENCIA</span>
-                    </div>
+                    {/* CAP 002 REMOVED */}
                     <SoulManifesto />
                 </section>
 
@@ -732,19 +749,13 @@ const Home: React.FC = () => {
 
                 {/* 5. SHOWCASE SLIDER */}
                 <section id="capacidades" className="identity-section" style={{ position: 'relative', zIndex: 50, marginTop: '0', backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
-                    <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 1, zIndex: 1, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_003_ORQUESTA</span>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>ORQUESTA</span>
-                    </div>
+                    {/* CAP 003 REMOVED */}
                     <ShowcaseSlider initialHash={hash} />
                 </section>
 
                 {/* 6. TEAM RIFT */}
                 <section id="nucleo" className="team-list" style={{ minHeight: '100vh', padding: '0 0 10vh', backgroundColor: '#FFFFFF', color: '#000', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 1, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_004_NÚCLEO</span>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>NÚCLEO</span>
-                    </div>
+                    {/* CAP 004 REMOVED */}
                     <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', margin: '6rem 0', fontWeight: 900, textAlign: 'center', letterSpacing: '0.02em', wordSpacing: '0.2em', color: '#000' }}>EL NÚCLEO</h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         {team.map((member) => (
@@ -772,17 +783,14 @@ const Home: React.FC = () => {
                     </div>
 
                     {/* A.L.M.A. PORTAL (Integrated into Nucleo End) */}
-                    <div style={{ marginTop: '5vh' }}>
+                    <div className="alma-portal-container" style={{ marginTop: '5vh' }}>
                         <AlmaSection />
                     </div>
                 </section>
 
                 {/* 7. SIMBIOSIS */}
                 <div id="simbiosis" style={{ position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, zIndex: 210, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_005_SINERGIA</span>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>SINERGIA</span>
-                    </div>
+                    {/* CAP 005 REMOVED */}
                     <Symbiosis />
                 </div>
 

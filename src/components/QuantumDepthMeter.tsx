@@ -61,14 +61,14 @@ const QuantumDepthMeter: React.FC = () => {
                 backgroundColor: 'rgba(0, 0, 0, 0.9)',
                 backdropFilter: 'blur(15px)',
                 WebkitBackdropFilter: 'blur(15px)',
-                border: '1px solid rgba(0, 255, 153, 0.4)',
+                border: '1px solid rgba(0, 255, 153, 0.4)', // GREEN (Version Update)
                 borderRadius: '2px',
                 overflow: 'hidden',
                 position: 'relative',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 153, 0.1)'
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 153, 0.2)'
             }}>
                 {/* VERTICAL STRIP */}
                 <div
@@ -91,11 +91,11 @@ const QuantumDepthMeter: React.FC = () => {
                                 alignItems: 'center',
                                 fontFamily: 'var(--font-mono)',
                                 fontSize: '1.2rem',
-                                color: progressLabel === num ? '#00FF99' : '#FFF',
+                                color: progressLabel === num ? '#00FF99' : '#888', // GREEN
                                 fontWeight: progressLabel === num ? 900 : 400,
                                 opacity: progressLabel === num ? 1 : 0.1,
                                 transition: 'all 0.3s ease',
-                                textShadow: progressLabel === num ? '0 0 10px #00FF99' : 'none'
+                                textShadow: progressLabel === num ? '0 0 10px rgba(0, 255, 153, 0.6)' : 'none'
                             }}
                         >
                             {num}
@@ -114,17 +114,17 @@ const QuantumDepthMeter: React.FC = () => {
                 <div style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.65rem',
-                    color: '#00FF99', // BRAND GREEN
+                    color: '#00FF99', // GREEN
                     letterSpacing: '0.2em',
                     fontWeight: 900,
                     opacity: 0.8
                 }}>
-                    DEPTH_LEVEL.EXE
+                    MEDIDOR.EXE
                 </div>
                 <div style={{
                     width: '30px',
                     height: '1px',
-                    background: 'linear-gradient(to right, #00FF99, transparent)', // BRAND GREEN
+                    background: 'linear-gradient(to right, #00FF99, transparent)', // GREEN
                     opacity: 0.5
                 }} />
             </div>

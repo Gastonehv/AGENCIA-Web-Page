@@ -6,7 +6,7 @@ import ProjectModal from './ProjectModal';
 import { useScroll } from '../context/ScrollContext'; // Import useScroll
 import techArchitectureImg from '../assets/images/architecture_digital.jpg';
 import architectureVideo from '../assets/videos/arquitectura.mp4';
-import automationVideo from '../assets/videos/automatización.mp4';
+import automationVideo from '../assets/videos/automatizacion.mp4';
 import identidadVideo from '../assets/videos/IDENTIDAD VISUAL.mp4';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -175,6 +175,12 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
             const getViewportWidth = () => window.innerWidth;
 
             // 4. TIMELINE
+
+            // PRE-CALCULATE VARIABLES
+            const viewportWidth = getViewportWidth();
+            const totalScrollWidth = getScrollWidth();
+            const maxScroll = -(totalScrollWidth - viewportWidth);
+
             // 4. TIMELINE & PAUSE LOGIC
             const isMobile = window.innerWidth <= 768;
             scrollTimeline = gsap.timeline({
@@ -182,10 +188,19 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     trigger: containerRef.current,
                     start: "top top",
                     // Increase the scroll distance to account for the pauses (makes it feel less rushed)
+                    // OPTIMIZED: Remove dead space ("Snappy Exit")
                     end: () => {
                         const w = getScrollWidth();
                         const v = getViewportWidth();
-                        return isMobile ? `+=${w + v * 4}` : `+=${w + v * 3}`;
+                        // v * 0.5 allows just enough buffer for the last pause to breathe.
+                        // ADDED BUFFER: 
+                        // - Headline: 1.0v
+                        // - Card 1: 0.9v (BALANCED)
+                        // - Other Cards (2): 1.0v
+                        // - Total Pauses: ~2.9v
+                        // - Movement: ~w
+                        // Setting to 4.0v ensures perfect sync
+                        return isMobile ? `+=${w + v * 4.5}` : `+=${w + v * 4.0}`;
                     },
                     pin: true,
                     scrub: 0.5, // Smooth scrubbing
@@ -194,22 +209,18 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 }
             });
 
-            // Initial Delay/Space
-            scrollTimeline.to({}, { duration: 0.2 });
+            // 1. Initial Headline Pause (Restored)
+            // Ensures "INGENIERÍA CREATIVA" gets its own read time before movement starts.
+            scrollTimeline.to({}, { duration: viewportWidth * 1.0 });
 
             // Build Step-by-Step Movement with Pauses
             let currentX = 0;
-            const viewportWidth = getViewportWidth();
-            const totalScrollWidth = getScrollWidth();
-            const maxScroll = -(totalScrollWidth - viewportWidth);
 
             // Move to each card and pause
-            cardContainerRefs.current.forEach((card) => {
+            cardContainerRefs.current.forEach((card, i) => {
                 if (!card) return;
 
                 // Calculate X to center the card
-                // Target = Center of Viewport - Center of Card (relative to slider start)
-                // Card Left relative to slider = card.offsetLeft
                 const cardCenter = card.offsetLeft + card.offsetWidth / 2;
                 let targetX = (viewportWidth / 2) - cardCenter;
 
@@ -220,20 +231,21 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 // Calculate distance from last position
                 const distance = Math.abs(targetX - currentX);
 
-                // 1. Move to Card
+                // 2. Move to Card
                 if (distance > 0) {
                     scrollTimeline.to(sliderRef.current, {
                         x: targetX,
                         ease: "none",
-                        // Duration proportional to distance gives constant speed
-                        // Factor 1000 is arbitrary, just sets relative weight vs pause
                         duration: distance
                     });
                 }
 
-                // 2. Pause at Card (Autopilot Slow-down)
-                // The duration here determines how much "scroll space" is dedicated to staying still
-                scrollTimeline.to({}, { duration: viewportWidth * 0.5 }); // Pause equivalent to half screen width scroll
+                // 3. Pause at Card (Autopilot Slow-down)
+                // SPECIAL LOGIC: Card 01 (i===0) gets extended pause, but not excessive
+                let pauseDuration = viewportWidth * 0.5;
+                if (i === 0) pauseDuration = viewportWidth * 0.9; // 0.9 screens: The "Sweet Spot"
+
+                scrollTimeline.to({}, { duration: pauseDuration });
 
                 currentX = targetX;
             });

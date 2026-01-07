@@ -31,22 +31,29 @@ const SoulManifesto = () => {
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
-            // TARGET THE LAST ITEM FOR A BRAKE
-            // We pin pieces independently to ensure smoother flow in flex container if needed,
-            // but pinning the specific item works best.
-            const lastItem = document.querySelector(`.manifesto-item-${MANIFESTO.length - 1}`);
+            // RE-ENGINEERED TIMING: "CPU RESET"
+            // We pin EACH item individually to force a "Reading Pause" (The Visionary Halt)
+            // This prevents the user from scrolling past the soul of the agency.
 
-            if (lastItem) {
+            MANIFESTO.forEach((_, i) => {
+                const target = `.manifesto-item-${i}`;
+
                 ScrollTrigger.create({
-                    trigger: lastItem,
-                    start: "center center", // When content hits center
-                    end: "+=106%", // USER REQUEST: Specific timing "106%"
-                    pin: true,     // STOP MOVEMENT
-                    pinSpacing: true, // Ensure next section pushes it (displaces), doesn't overlap
-                    scrub: true,   // Smooth
-                    id: "manifesto-brake"
+                    trigger: target,
+                    start: "center center",
+                    end: "+=90%", // DRAMATIC PAUSE: Almost a full screen height of scroll to pass one item
+                    pin: true,
+                    pinSpacing: true, // Pushes the next content down
+                    scrub: 1, // Smooth catch-up
+                    anticipatePin: 1,
+                    onEnter: () => {
+                        // Optional: Trigger any entrance effects explicitly if needed
+                    },
+                    onLeave: () => {
+                        // Optional: Fade out?
+                    }
                 });
-            }
+            });
 
         }, containerRef);
 
@@ -115,7 +122,7 @@ const SoulManifesto = () => {
                         }}>
                             {item.body.map((line, j) => (
                                 <p key={j} style={{ margin: '0 0 0.8rem 0' }}>
-                                    <AsciiRipple text={line} />
+                                    <AsciiRipple text={line} autoTrigger={true} />
                                 </p>
                             ))}
                         </div>

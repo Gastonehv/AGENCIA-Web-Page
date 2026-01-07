@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -14,7 +14,6 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         velocity: 0,
         currentSection: 0
     });
-    const reqIdRef = useRef<number | null>(null);
 
     useEffect(() => {
         const lenisInstance = new Lenis({
@@ -37,17 +36,13 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             setLenis(lenisInstance);
         });
 
+        // Sync ScrollTrigger with Lenis
         lenisInstance.on('scroll', ScrollTrigger.update);
 
-        gsap.ticker.add((time) => {
-            lenisInstance.raf(time * 1000);
-        });
-
-        gsap.ticker.lagSmoothing(0);
-
-        const update = () => {
-            const maxScroll = document.body.scrollHeight - window.innerHeight;
-            const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+        // Update React Context State on Scroll (Throttled by Lenis emit)
+        // Optimization: Only run this logic when scrolling occurs
+        lenisInstance.on('scroll', ({ scroll, limit, velocity }) => {
+            const progress = limit > 0 ? scroll / limit : 0;
 
             let section = 0;
             if (progress < 0.2) section = 0; // Hero
@@ -56,17 +51,19 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
             setScrollData({
                 scrollProgress: progress,
-                velocity: lenisInstance.velocity,
+                velocity: velocity,
                 currentSection: section
             });
+        });
 
-            reqIdRef.current = requestAnimationFrame(update);
-        };
+        // Use GSAP Ticker to drive Lenis (High Priority)
+        gsap.ticker.add((time) => {
+            lenisInstance.raf(time * 1000);
+        });
 
-        reqIdRef.current = requestAnimationFrame(update);
+        gsap.ticker.lagSmoothing(0);
 
         return () => {
-            if (reqIdRef.current) cancelAnimationFrame(reqIdRef.current);
             lenisInstance.destroy();
             gsap.ticker.remove((time) => lenisInstance.raf(time * 1000));
         };

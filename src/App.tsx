@@ -13,6 +13,7 @@ import Automatizacion from './pages/Automatizacion';
 import Contacto from './pages/Contacto';
 import Privacidad from './pages/Privacidad';
 import Terminos from './pages/Terminos';
+import Playground from './pages/Playground';
 
 import Cursor from './components/Cursor';
 
@@ -34,6 +35,7 @@ function App() {
               <Route path="/contacto" element={<Contacto />} />
               <Route path="/privacidad" element={<Privacidad />} />
               <Route path="/terminos" element={<Terminos />} />
+              <Route path="/playground" element={<Playground />} />
             </Routes>
           </Layout>
         </Router>

@@ -10,9 +10,10 @@ interface AsciiRippleProps {
     text: string;
     className?: string;
     style?: React.CSSProperties;
+    autoTrigger?: boolean;
 }
 
-const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style }) => {
+const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoTrigger = false }) => {
     const elementRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
@@ -153,16 +154,22 @@ const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style }) => 
         el.addEventListener('mousemove', handleMove);
         el.addEventListener('mouseleave', handleLeave);
 
-        // --- MOBILE / TOUCH AUTO-ANIMATION ---
+        // --- AUTO-ANIMATION ("FLASHAZOS") ---
+        // Triggered via prop OR touch devices (legacy support)
         let autoAnimInterval: number | undefined;
-        if (isTouch) {
-            autoAnimInterval = setInterval(() => {
-                if (!isAnim) {
-                    // Randomize "cursor" position for the wave origin
-                    cursorPos = Math.floor(Math.random() * origTxt.length);
-                    startWave();
-                }
-            }, 6000); // Trigger every 6 seconds
+        if (isTouch || autoTrigger) {
+            // Randomize start time slightly to avoid robotic sync
+            const randomDelay = Math.random() * 2000;
+
+            setTimeout(() => {
+                autoAnimInterval = setInterval(() => {
+                    if (!isAnim) {
+                        // Randomize "cursor" position for the wave origin
+                        cursorPos = Math.floor(Math.random() * origTxt.length);
+                        startWave();
+                    }
+                }, 4000 + Math.random() * 3000); // Trigger every 4-7 seconds (Randomized)
+            }, randomDelay);
         }
 
         // Cleanup

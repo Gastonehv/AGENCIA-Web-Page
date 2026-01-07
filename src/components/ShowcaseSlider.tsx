@@ -176,115 +176,83 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
             // 4. TIMELINE
 
-            // PRE-CALCULATE VARIABLES
-            const viewportWidth = getViewportWidth();
-            const totalScrollWidth = getScrollWidth();
-            const maxScroll = -(totalScrollWidth - viewportWidth);
+            // 4. TIMELINE (DESKTOP ONLY)
+            // Use existing 'mm' from line 148
 
-            // 4. TIMELINE & PAUSE LOGIC
-            const isMobile = window.innerWidth <= 768;
-            scrollTimeline = gsap.timeline({
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top top",
-                    // Increase the scroll distance to account for the pauses (makes it feel less rushed)
-                    // OPTIMIZED: Remove dead space ("Snappy Exit")
-                    end: () => {
-                        const w = getScrollWidth();
-                        const v = getViewportWidth();
-                        // v * 0.5 allows just enough buffer for the last pause to breathe.
-                        // ADDED BUFFER: 
-                        // - Headline: 1.0v
-                        // - Card 1: 0.9v (BALANCED)
-                        // - Other Cards (2): 1.0v
-                        // - Total Pauses: ~2.9v
-                        // - Movement: ~w
-                        // Setting to 4.0v ensures perfect sync
-                        return isMobile ? `+=${w + v * 4.5}` : `+=${w + v * 4.0}`;
-                    },
-                    pin: true,
-                    scrub: 0.5, // Smooth scrubbing
-                    invalidateOnRefresh: true,
-                    id: 'showcase-scroll'
-                }
-            });
+            // DESKTOP: Horizontal Scroll logic
+            mm.add("(min-width: 769px)", () => {
+                const viewportWidth = getViewportWidth();
+                const totalScrollWidth = getScrollWidth();
+                const maxScroll = -(totalScrollWidth - viewportWidth);
 
-            // 1. Initial Headline Pause (Restored)
-            // Ensures "INGENIERÍA CREATIVA" gets its own read time before movement starts.
-            scrollTimeline.to({}, { duration: viewportWidth * 1.0 });
+                scrollTimeline = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top top",
+                        end: () => `+=${totalScrollWidth + viewportWidth * 4.0}`,
+                        pin: true,
+                        scrub: 0.5,
+                        invalidateOnRefresh: true,
+                        id: 'showcase-scroll'
+                    }
+                });
 
-            // Build Step-by-Step Movement with Pauses
-            let currentX = 0;
+                // ... (Logic continues inside) ...
 
-            // Move to each card and pause
-            cardContainerRefs.current.forEach((card, i) => {
-                if (!card) return;
+                // 1. Initial Headline Pause
+                scrollTimeline.to({}, { duration: viewportWidth * 1.0 });
 
-                // Calculate X to center the card
-                const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-                let targetX = (viewportWidth / 2) - cardCenter;
+                let currentX = 0;
+                cardContainerRefs.current.forEach((card, i) => {
+                    if (!card) return;
+                    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                    let targetX = (viewportWidth / 2) - cardCenter;
+                    if (targetX > 0) targetX = 0;
+                    if (targetX < maxScroll) targetX = maxScroll;
+                    const distance = Math.abs(targetX - currentX);
+                    if (distance > 0) {
+                        scrollTimeline.to(sliderRef.current, {
+                            x: targetX, ease: "none", duration: distance
+                        });
+                    }
+                    let pauseDuration = i === 0 ? viewportWidth * 0.9 : viewportWidth * 0.5;
+                    scrollTimeline.to({}, { duration: pauseDuration });
+                    currentX = targetX;
+                });
 
-                // Clamp targetX to valid scroll range (0 to maxScroll)
-                if (targetX > 0) targetX = 0;
-                if (targetX < maxScroll) targetX = maxScroll;
-
-                // Calculate distance from last position
-                const distance = Math.abs(targetX - currentX);
-
-                // 2. Move to Card
-                if (distance > 0) {
+                if (currentX > maxScroll) {
                     scrollTimeline.to(sliderRef.current, {
-                        x: targetX,
-                        ease: "none",
-                        duration: distance
+                        x: maxScroll, ease: "none", duration: Math.abs(maxScroll - currentX)
                     });
                 }
+                scrollTimeline.to({}, { duration: 0.15 });
 
-                // 3. Pause at Card (Autopilot Slow-down)
-                // SPECIAL LOGIC: Card 01 (i===0) gets extended pause, but not excessive
-                let pauseDuration = viewportWidth * 0.5;
-                if (i === 0) pauseDuration = viewportWidth * 0.9; // 0.9 screens: The "Sweet Spot"
-
-                scrollTimeline.to({}, { duration: pauseDuration });
-
-                currentX = targetX;
-            });
-
-            // Final Move to End (if needed)
-            if (currentX > maxScroll) {
-                scrollTimeline.to(sliderRef.current, {
-                    x: maxScroll,
-                    ease: "none",
-                    duration: Math.abs(maxScroll - currentX)
-                });
-            }
-
-            // Final Buffer
-            scrollTimeline.to({}, { duration: 0.1 });
-            // REDUCED FINAL BUFFER: 0.05 for immediate exit
-            scrollTimeline.to({}, { duration: 0.05 });
-
-            // 5. PARALLAX
-            imagesRef.current.forEach((img, i) => {
-                // ... rest of parallax logic (needs to be inside here or rebuilt if needed? Parallax logic was fine)
-                if (!img || !cardsRef.current[i]) return;
-                gsap.fromTo(img,
-                    { xPercent: -30 },
-                    {
-                        xPercent: 30,
-                        ease: "none",
-                        force3D: true,
-                        scrollTrigger: {
-                            trigger: cardsRef.current[i],
-                            containerAnimation: scrollTimeline,
-                            start: "left right",
-                            end: "right left",
-                            scrub: true,
-                            id: `parallax-${i}`
+                // PARALLAX (Desktop Only)
+                imagesRef.current.forEach((img, i) => {
+                    if (!img || !cardsRef.current[i]) return;
+                    gsap.fromTo(img,
+                        { xPercent: -30 },
+                        {
+                            xPercent: 30,
+                            ease: "none",
+                            force3D: true,
+                            scrollTrigger: {
+                                trigger: cardsRef.current[i],
+                                containerAnimation: scrollTimeline,
+                                start: "left right",
+                                end: "right left",
+                                scrub: true,
+                                id: `parallax-${i}`
+                            }
                         }
-                    }
-                );
+                    );
+                });
             });
+
+            // MOBILE: No GSAP Pinning/Scroll - Native Vertical Stack
+            // (Handled via CSS injected below)
+
+
 
             // Refresh to ensure all start/end points are correct with new styles
             ScrollTrigger.refresh();
@@ -326,9 +294,10 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
     }, [initialHash, lenis]);
 
     return (
-        <div ref={containerRef} style={{ width: '100%', height: '100vh', overflow: 'hidden', backgroundColor: '#FFF' }}>
+        <div ref={containerRef} className="showcase-slider-container" style={{ width: '100%', height: '100vh', overflow: 'hidden', backgroundColor: '#FFF' }}>
             <div
                 ref={sliderRef}
+                className="showcase-track"
                 style={{
                     display: 'flex',
                     height: '100%',
@@ -503,9 +472,42 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     </div>
                 ))}
 
-                {/* END SPACER */}
                 <div style={{ minWidth: '10vw' }} />
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    /* FORCE VERTICAL STACK ON MOBILE */
+                    .showcase-slider-container {
+                        height: auto !important;
+                        overflow: visible !important;
+                         background-color: #FFF !important;
+                    }
+                    .showcase-track {
+                        flex-direction: column !important;
+                        width: 100% !important;
+                        height: auto !important;
+                        padding: 100px 5vw 50px 5vw !important;
+                        gap: 2rem !important;
+                        transform: none !important; /* Kill GSAP transform */
+                    }
+                    .showcase-headline {
+                        min-width: 100% !important;
+                        height: auto !important;
+                        margin-bottom: 2rem !important;
+                        margin-right: 0 !important;
+                        align-items: flex-start !important;
+                    }
+                    .showcase-card {
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        min-width: 100% !important;
+                        height: auto !important;
+                        aspect-ratio: auto !important;
+                        margin: 0 !important;
+                    }
+                }
+            `}</style>
 
             {/* PROJECT MODAL */}
             <ProjectModal

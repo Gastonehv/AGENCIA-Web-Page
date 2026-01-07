@@ -657,91 +657,109 @@ const Arquitectura: React.FC = () => {
                     </p>
                 </div>
 
-                {/* ACTION BAR (Fixed at Bottom Center) */}
+                {/* ELEGANT CTA - Minimalist Text Link */}
                 <div className="action-bar" style={{
                     position: 'fixed',
-                    bottom: '2rem',
+                    bottom: '3rem',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     zIndex: 100,
-                    display: 'flex',
-                    flexDirection: 'column-reverse', // Button at bottom, CTA above
-                    gap: '1.5rem',
-                    alignItems: 'center',
                     pointerEvents: 'none'
                 }}>
-                    {/* NEXT PROTOCOL BUTTON (Primary) */}
                     <a
                         ref={actionBtnRef}
                         href="/#case-02"
-                        className="next-protocol-btn super-cta-button"
+                        className="next-protocol-btn elegant-cta"
                         style={{
                             opacity: 0,
-                            display: 'flex',
+                            display: 'inline-flex',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '1.8rem 5rem',
-                            background: '#000',
-                            border: '1px solid rgba(0, 255, 153, 0.4)',
-                            borderRadius: '4px',
+                            gap: '1rem',
+                            background: 'transparent',
+                            border: 'none',
                             color: '#00FF99',
                             fontFamily: 'var(--font-mono)',
-                            fontSize: '1rem',
-                            fontWeight: 900,
-                            letterSpacing: '0.3em',
+                            fontSize: 'clamp(0.85rem, 1.2vw, 1rem)',
+                            fontWeight: 500,
+                            letterSpacing: '0.25em',
                             textTransform: 'uppercase',
                             textDecoration: 'none',
-                            position: 'relative',
-                            overflow: 'hidden',
                             cursor: 'pointer',
                             pointerEvents: 'none',
-                            boxShadow: '0 0 30px rgba(0, 255, 153, 0.1)',
-                            transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
+                            position: 'relative',
+                            padding: '0.5rem 0',
+                            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
                         }}
                     >
-                        {/* SCANLINE EFFECT */}
-                        <div className="cta-scanline" />
-
-                        {/* BREATHING GLOW */}
-                        <div className="cta-glow" />
-
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', position: 'relative', zIndex: 2 }}>
-                            <span>IMPULSAR ESCALABILIDAD</span>
-                            <span style={{ fontSize: '1.2rem', animation: 'arrowPulse 1.2s infinite ease-in-out' }}>→</span>
-                        </div>
+                        <span className="cta-underline" />
+                        <span style={{ position: 'relative', zIndex: 2 }}>
+                            Continuar Exploración
+                        </span>
+                        <span className="cta-arrow" style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            border: '1px solid rgba(0, 255, 153, 0.3)',
+                            fontSize: '0.9rem',
+                            position: 'relative',
+                            transition: 'all 0.4s ease'
+                        }}>
+                            →
+                            <span className="arrow-glow" />
+                        </span>
                     </a>
 
                     <style>{`
-                        .super-cta-button:hover {
-                            border-color: #00FF99 !important;
-                            box-shadow: 0 0 50px rgba(0, 255, 153, 0.4) !important;
+                        .elegant-cta {
+                            filter: drop-shadow(0 0 20px rgba(0, 255, 153, 0.2));
                         }
-                        .cta-scanline {
-                            position: absolute;
-                            top: -100%;
-                            left: 0;
+                        .elegant-cta:hover {
+                            color: #fff !important;
+                            filter: drop-shadow(0 0 30px rgba(0, 255, 153, 0.5));
+                        }
+                        .elegant-cta:hover .cta-arrow {
+                            background: rgba(0, 255, 153, 0.15);
+                            border-color: rgba(0, 255, 153, 0.6);
+                            transform: translateX(5px);
+                        }
+                        .elegant-cta:hover .cta-underline {
                             width: 100%;
-                            height: 100%;
-                            background: linear-gradient(to bottom, transparent, rgba(0, 255, 153, 0.2), transparent);
-                            animation: scan 3s infinite linear;
+                            opacity: 1;
                         }
-                        .cta-glow {
+                        .elegant-cta:hover .arrow-glow {
+                            opacity: 1;
+                        }
+                        .cta-underline {
                             position: absolute;
-                            inset: 0;
-                            box-shadow: inset 0 0 30px rgba(0, 255, 153, 0.2);
-                            animation: breathe 4s infinite ease-in-out;
+                            bottom: 0;
+                            left: 0;
+                            width: 0;
+                            height: 1px;
+                            background: linear-gradient(90deg, #00FF99, #00E5FF, #00FF99);
+                            background-size: 200% 100%;
+                            opacity: 0;
+                            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                            animation: shimmer 3s infinite linear;
                         }
-                        @keyframes scan {
-                            0% { top: -100%; }
-                            100% { top: 100%; }
+                        .arrow-glow {
+                            position: absolute;
+                            inset: -2px;
+                            border-radius: 50%;
+                            background: radial-gradient(circle, rgba(0, 255, 153, 0.4) 0%, transparent 70%);
+                            opacity: 0;
+                            transition: opacity 0.4s ease;
+                            animation: pulse-soft 2s infinite ease-in-out;
                         }
-                        @keyframes breathe {
-                            0%, 100% { opacity: 0.3; }
-                            50% { opacity: 0.8; }
+                        @keyframes shimmer {
+                            0% { background-position: 200% 0; }
+                            100% { background-position: -200% 0; }
                         }
-                        @keyframes arrowPulse {
-                            0%, 100% { transform: translateX(0); }
-                            50% { transform: translateX(10px); }
+                        @keyframes pulse-soft {
+                            0%, 100% { transform: scale(1); opacity: 0.3; }
+                            50% { transform: scale(1.2); opacity: 0.6; }
                         }
                     `}</style>
                 </div>

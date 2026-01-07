@@ -349,7 +349,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             width: cardWidth, // Strict Width
                             maxWidth: cardWidth, // Prevent expansion
                             minWidth: cardWidth, // Prevent shrinking
-                            height: isMobile ? '80vh' : '80%',
+                            height: isMobile ? 'auto' : '80%', // AUTO on mobile to prevent clipping
                             alignSelf: 'center',
                             display: 'flex',
                             flexDirection: 'column',
@@ -392,7 +392,6 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                 border: '1px solid rgba(0,0,0,0.05)',
                                 flexShrink: 0
                             }}>
-                            {/* MEDIA CONTENT (VIDEO OR IMAGE) */}
                             {item.video ? (
                                 <video
                                     ref={el => { imagesRef.current[i] = el; }}
@@ -402,6 +401,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     loop
                                     playsInline
                                     webkit-playsinline="true"
+                                    preload="auto"
+                                    poster={item.img}
                                     className="showcase-video"
                                     style={{
                                         width: isMobile ? '100%' : '250%',
@@ -513,12 +514,15 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         padding: 1.5rem !important;
                     }
                     .showcase-media-window {
-                        height: 250px !important;
+                        height: 200px !important;
+                        min-height: 200px !important;
                     }
                     .showcase-video, .showcase-image {
                         width: 100% !important;
+                        height: 100% !important;
                         left: 0 !important;
                         position: relative !important;
+                        object-fit: cover !important;
                     }
                 }
             `}</style>

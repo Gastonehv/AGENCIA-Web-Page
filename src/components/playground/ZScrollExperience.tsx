@@ -1,105 +1,156 @@
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Text, Image, useScroll } from '@react-three/drei';
+import { useScroll, Text } from '@react-three/drei';
 import * as THREE from 'three';
+import HolographicPanel from './HolographicPanel';
+import type { PanelData } from './HolographicPanel';
+import SpeedParticles from './SpeedParticles';
 
-const SECTION_Z_SPACING = 30;
-const TOTAL_SECTIONS = 6;
+// Import service images
+import genesisImg from '../../assets/images/genesis-sneaker.jpg';
+import digitalArchImg from '../../assets/images/architecture-interface.png';
+import cognitiveEcoImg from '../../assets/images/ai-processor.jpg';
+import processSyncImg from '../../assets/images/automation-growth.jpg';
 
-// Fake Data for Content Panels
-const contentData = [
-    { title: "INFRAESTRUCTURA", subtitle: "ESCALABILIDAD ILIMITADA", type: "text" },
-    { title: "SAAS & PLATFORMS", subtitle: "MOTORES DE INGRESO", type: "image", src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" },
-    { title: "ECOSISTEMAS", subtitle: "ORGANISMO UNIFICADO", type: "text" },
-    { title: "DASHBOARDS", subtitle: "CONTROL TOTAL", type: "image", src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" },
-    { title: "SEGURIDAD", subtitle: "BLINDAJE DE DATOS", type: "text" },
-    { title: "INTEGRACIONES", subtitle: "CONECTIVIDAD TOTAL", type: "image", src: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop" }
+const SECTION_Z_SPACING = 35;
+
+// Real content based on AgencIA services
+const contentData: PanelData[] = [
+    {
+        id: 'genesis',
+        title: 'IDENTIDAD VISUAL',
+        subtitle: 'DISEÑO DE MARCA',
+        description: 'Creamos identidades que trascienden lo visual. Marcas vivas que evolucionan.',
+        image: genesisImg,
+        color: '#ff2a6d'
+    },
+    {
+        id: 'hyperstructure',
+        title: 'ARQUITECTURA DIGITAL',
+        subtitle: 'INFRAESTRUCTURA INFINITA',
+        description: 'Sistemas escalables. Aplicaciones que crecen con tu visión.',
+        image: digitalArchImg,
+        color: '#05d9e8'
+    },
+    {
+        id: 'cortex',
+        title: 'INTELIGENCIA ARTIFICIAL',
+        subtitle: 'ECOSISTEMA COGNITIVO',
+        description: 'IA generativa. Automatización inteligente. El futuro, hoy.',
+        image: cognitiveEcoImg,
+        color: '#7700ff'
+    },
+    {
+        id: 'nexus',
+        title: 'AUTOMATIZACIÓN',
+        subtitle: 'SINCRONIZACIÓN TOTAL',
+        description: 'Flujos de trabajo optimizados. Eficiencia sin límites.',
+        image: processSyncImg,
+        color: '#00ff9d'
+    },
+    {
+        id: 'symbiosis',
+        title: 'ECOSISTEMAS',
+        subtitle: 'INTEGRACIÓN ORGÁNICA',
+        description: 'Conexiones que multiplican. Plataformas que colaboran.',
+        color: '#FFD700'
+    },
+    {
+        id: 'nucleus',
+        title: 'EL NÚCLEO',
+        subtitle: 'DONDE TODO CONVERGE',
+        description: 'Tu visión + nuestra ejecución = Resultados extraordinarios.',
+        color: '#FF6B35'
+    }
 ];
 
-interface PanelData {
-    title: string;
-    subtitle: string;
-    type: string;
-    src?: string;
-}
+const TOTAL_SECTIONS = contentData.length;
 
-const HolographicPanel = ({ position, data, index }: { position: [number, number, number], data: PanelData, index: number }) => {
-    const groupRef = useRef<THREE.Group>(null);
-    const [hovered, setHovered] = useState(false);
+// Animated Grid Floor with depth
+const AnimatedGrid = () => {
+    const gridRef = useRef<THREE.GridHelper>(null);
 
     useFrame((state) => {
-        if (!groupRef.current) return;
-
-        // Gentle float
-        groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime + index) * 0.2;
-
-        // Look at camera (billboard effect but damped)
-        groupRef.current.lookAt(0, 0, state.camera.position.z + 20); // Always face forward slightly
+        if (gridRef.current) {
+            // Subtle wave animation
+            gridRef.current.position.z = -100 + Math.sin(state.clock.elapsedTime * 0.2) * 5;
+        }
     });
 
     return (
-        <group
-            ref={groupRef}
-            position={position}
-            onPointerOver={() => setHovered(true)}
-            onPointerOut={() => setHovered(false)}
-        >
-            {/* Glass Panel Background */}
-            <mesh position={[0, 0, 0]}>
-                <planeGeometry args={[12, 7]} />
-                <meshPhysicalMaterial
-                    color={hovered ? "#00FF99" : "#000"}
-                    transparent
-                    opacity={hovered ? 0.2 : 0.5}
-                    roughness={0}
-                    metalness={0.8}
-                    transmission={0.5}
-                    thickness={2}
-                    wireframe={false}
-                    side={THREE.DoubleSide}
-                />
-            </mesh>
+        <group>
+            {/* Floor Grid */}
+            <gridHelper
+                ref={gridRef}
+                args={[400, 150, 0x0a0a0a, 0x050505]}
+                position={[0, -12, -100]}
+            />
+            {/* Ceiling Grid */}
+            <gridHelper
+                args={[400, 150, 0x0a0a0a, 0x050505]}
+                position={[0, 12, -100]}
+            />
+            {/* Side walls (subtle) */}
+            <gridHelper
+                args={[400, 100, 0x080808, 0x030303]}
+                position={[-25, 0, -100]}
+                rotation={[0, 0, Math.PI / 2]}
+            />
+            <gridHelper
+                args={[400, 100, 0x080808, 0x030303]}
+                position={[25, 0, -100]}
+                rotation={[0, 0, Math.PI / 2]}
+            />
+        </group>
+    );
+};
 
-            {/* Border Glow */}
-            <mesh position={[0, 0, 0.05]}>
-                <planeGeometry args={[12.1, 7.1]} />
-                <meshBasicMaterial color="#00FF99" wireframe transparent opacity={0.3} />
-            </mesh>
 
-            {/* Content */}
-            <group position={[0, 0, 0.1]}>
-                <Text
-                    position={[0, 1.5, 0]}
-                    fontSize={1.2}
-                    color="#ffffff"
-                    anchorX="center"
-                    anchorY="middle"
-                // font="/fonts/Inter-Bold.ttf" // Commented out to fallback to default if missing
-                >
-                    {data.title}
-                </Text>
 
-                <Text
-                    position={[0, 0.5, 0]}
-                    fontSize={0.5}
-                    color="#00FF99"
-                    anchorX="center"
-                    anchorY="middle"
-                >
-                    [{data.subtitle}]
-                </Text>
+// Entrance text animation
+const EntranceText = () => {
+    const textRef = useRef<THREE.Group>(null);
+    const scroll = useScroll();
 
-                {data.type === 'image' && (
-                    <Image
-                        url={data.src || ''}
-                        position={[0, -1.5, 0]}
-                        scale={[6, 3]}
-                        transparent
-                        opacity={0.8}
-                        toneMapped={false}
-                    />
-                )}
-            </group>
+    useFrame(() => {
+        if (!textRef.current) return;
+        // Fade out as we scroll
+        const opacity = Math.max(0, 1 - scroll.offset * 5);
+        textRef.current.children.forEach((child) => {
+            if ((child as THREE.Mesh).material) {
+                ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).opacity = opacity;
+            }
+        });
+    });
+
+    return (
+        <group ref={textRef} position={[0, 0, 5]}>
+            <Text
+                position={[0, 2, 0]}
+                fontSize={0.4}
+                color="#00FF99"
+                anchorX="center"
+                font="/fonts/SpaceMono-Regular.ttf"
+            >
+                [ AGENCIA_LAB ]
+            </Text>
+            <Text
+                position={[0, 0.5, 0]}
+                fontSize={1.5}
+                color="#ffffff"
+                anchorX="center"
+                font="/fonts/SpaceMono-Bold.ttf"
+            >
+                Z-AXIS EXPERIENCE
+            </Text>
+            <Text
+                position={[0, -1, 0]}
+                fontSize={0.35}
+                color="rgba(255,255,255,0.5)"
+                anchorX="center"
+            >
+                Scroll para navegar a través de nuestros servicios
+            </Text>
         </group>
     );
 };
@@ -109,44 +160,60 @@ const ZScrollExperience = () => {
     const { camera } = useThree();
 
     useFrame((state, delta) => {
-        // Move camera along Z axis based on scroll
-        // Range: 0 to TOTAL_SECTIONS * SECTION_Z_SPACING
-        const targetZ = -scroll.offset * (TOTAL_SECTIONS * SECTION_Z_SPACING);
+        // Calculate target Z based on scroll
+        const maxZ = TOTAL_SECTIONS * SECTION_Z_SPACING;
+        const targetZ = -scroll.offset * maxZ;
 
-        // Smooth lerp camera z
-        camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ + 10, delta * 2);
+        // Smooth camera movement along Z
+        camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ + 15, delta * 2.5);
 
-        // Add some mouse parallax
-        camera.position.x = THREE.MathUtils.lerp(camera.position.x, state.mouse.x * 2, delta * 2);
-        camera.position.y = THREE.MathUtils.lerp(camera.position.y, state.mouse.y * 2, delta * 2);
+        // Mouse parallax for immersion
+        camera.position.x = THREE.MathUtils.lerp(camera.position.x, state.pointer.x * 3, delta * 3);
+        camera.position.y = THREE.MathUtils.lerp(camera.position.y, state.pointer.y * 2, delta * 3);
+
+        // Subtle camera tilt based on mouse
+        camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -state.pointer.x * 0.05, delta * 2);
+        camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, state.pointer.y * 0.03, delta * 2);
     });
 
-    // Generate panels along the path
+    // Generate panels with varied positioning
     const panels = useMemo(() => {
         return contentData.map((data, i) => {
-            const z = -i * SECTION_Z_SPACING;
-            const x = (i % 2 === 0 ? -1 : 1) * 4; // Alternate Left/Right
-            const y = (Math.random() - 0.5) * 4; // Random Height variation
-            return <HolographicPanel key={i} index={i} position={[x, y, z]} data={data} />;
+            const z = -i * SECTION_Z_SPACING - 20; // Start after entrance
+            const x = (i % 2 === 0 ? -1 : 1) * (4 + Math.random() * 2);
+            const y = (Math.random() - 0.5) * 3;
+
+            return (
+                <HolographicPanel
+                    key={data.id}
+                    index={i}
+                    position={[x, y, z]}
+                    data={data}
+                />
+            );
         });
     }, []);
 
     return (
         <group>
+            {/* Speed particles for warp effect */}
+            <SpeedParticles count={1500} speed={0.3} spread={40} depth={250} />
+
+            {/* Entrance */}
+            <EntranceText />
+
+            {/* Content panels */}
             {panels}
 
-            {/* Floor Grid (Tron style) to give speed reference */}
-            <gridHelper
-                args={[300, 100, 0x111111, 0x050505]}
-                position={[0, -10, -100]}
-                rotation={[0, 0, 0]}
-            />
-            {/* Ceiling Grid */}
-            <gridHelper
-                args={[300, 100, 0x111111, 0x050505]}
-                position={[0, 10, -100]}
-                rotation={[0, 0, 0]}
-            />
+            {/* Tunnel structure */}
+            <AnimatedGrid />
+
+            {/* Ambient lighting */}
+            <ambientLight intensity={0.3} />
+            <pointLight position={[10, 10, 10]} intensity={0.5} color="#ffffff" />
+            <pointLight position={[-10, -10, -50]} intensity={0.3} color="#00FF99" />
+            <pointLight position={[0, 0, -100]} intensity={0.4} color="#7700ff" />
+            <pointLight position={[0, 0, -180]} intensity={0.4} color="#ff2a6d" />
         </group>
     );
 };

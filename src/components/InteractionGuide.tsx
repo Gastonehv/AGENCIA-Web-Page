@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 type InteractionType = 'scroll' | 'drag' | 'hover' | 'click';
@@ -10,130 +10,144 @@ interface InteractionItem {
 
 interface InteractionGuideProps {
     items?: InteractionItem[];
-    mode?: 'scroll' | 'drag' | 'both'; // Deprecated
-    className?: string; // For custom positioning
+    mode?: 'scroll' | 'drag' | 'both';
+    className?: string;
     style?: React.CSSProperties;
 }
 
 const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, className, style }) => {
-    // Normalize functionality: use items if provided, otherwise map mode
+    const [isVisible, setIsVisible] = useState(true);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Normalize functionality
     const activeItems = items || (() => {
         const defaults: InteractionItem[] = [];
-        if (mode === 'scroll' || mode === 'both') defaults.push({ type: 'scroll', text: 'Deslizar' });
-        if (mode === 'drag' || mode === 'both') defaults.push({ type: 'drag', text: 'Arrastrar' });
+        if (mode === 'scroll' || mode === 'both') defaults.push({ type: 'scroll', text: 'Scroll' });
+        if (mode === 'drag' || mode === 'both') defaults.push({ type: 'drag', text: 'Drag' });
         return defaults;
     })();
 
-    const containerRef = useRef<HTMLDivElement>(null);
+    // Auto-hide after user starts interacting
+    useEffect(() => {
+        const hideOnScroll = () => {
+            if (window.scrollY > 200) {
+                setIsVisible(false);
+            }
+        };
+        window.addEventListener('scroll', hideOnScroll, { passive: true });
+        return () => window.removeEventListener('scroll', hideOnScroll);
+    }, []);
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        if (!containerRef.current || !isVisible) return;
 
         const ctx = gsap.context(() => {
-            // Container Pulse
+            // Subtle float animation
             gsap.to(containerRef.current, {
-                scale: 1.02, // Subtle scale
-                boxShadow: '0 0 25px rgba(0, 255, 153, 0.4)', // Stronger pulse glow
-                duration: 1.5,
+                y: -4,
+                duration: 2.5,
                 yoyo: true,
                 repeat: -1,
                 ease: "sine.inOut"
             });
 
-            // Animations for each type
+            // Icon animations
             activeItems.forEach(item => {
                 if (item.type === 'scroll') {
-                    gsap.to('.scroll-wheel', { y: 5, opacity: 0, duration: 1.5, repeat: -1, ease: "power1.inOut" });
+                    gsap.to('.scroll-indicator', {
+                        y: 6,
+                        opacity: 0.4,
+                        duration: 1.2,
+                        repeat: -1,
+                        ease: "power1.inOut"
+                    });
                 }
                 if (item.type === 'drag') {
-                    gsap.to('.drag-hand', { x: 10, duration: 1, yoyo: true, repeat: -1, ease: "sine.inOut" });
-                }
-                if (item.type === 'hover') {
-                    gsap.to('.hover-mouse', { x: 8, y: -5, duration: 2, yoyo: true, repeat: -1, ease: "sine.inOut" });
-                }
-                if (item.type === 'click') {
-                    gsap.fromTo('.click-ring',
-                        { scale: 0.5, opacity: 1 },
-                        { scale: 1.5, opacity: 0, duration: 1.5, repeat: -1, ease: "power1.out" }
-                    );
+                    gsap.to('.drag-indicator', {
+                        x: 8,
+                        duration: 1.5,
+                        yoyo: true,
+                        repeat: -1,
+                        ease: "sine.inOut"
+                    });
                 }
             });
-
         }, containerRef);
 
         return () => ctx.revert();
-    }, [activeItems]);
+    }, [activeItems, isVisible]);
 
-    const renderIcon = (type: InteractionType) => {
+    const renderMinimalIcon = (type: InteractionType) => {
         switch (type) {
             case 'scroll':
                 return (
                     <div style={{
-                        width: '18px', height: '28px', // Smaller height
-                        border: '2px solid #00FF99', borderRadius: '10px',
-                        position: 'relative', boxShadow: '0 0 12px rgba(0, 255, 153, 0.8)' // Stronger glow
+                        width: '20px',
+                        height: '32px',
+                        border: '2px solid rgba(0, 255, 153, 0.6)',
+                        borderRadius: '10px',
+                        position: 'relative',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        paddingTop: '6px'
                     }}>
-                        <div className="scroll-wheel" style={{
-                            width: '4px', height: '6px', background: '#fff',
-                            borderRadius: '2px', position: 'absolute', top: '5px',
-                            left: '50%', transform: 'translateX(-50%)',
-                            boxShadow: '0 0 8px #fff' // Glow on wheel
-                        }} />
+                        <div
+                            className="scroll-indicator"
+                            style={{
+                                width: '3px',
+                                height: '8px',
+                                background: '#00FF99',
+                                borderRadius: '2px',
+                                boxShadow: '0 0 6px rgba(0, 255, 153, 0.8)'
+                            }}
+                        />
                     </div>
                 );
             case 'drag':
                 return (
-                    <div style={{ width: '32px', height: '32px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <div style={{ width: '100%', height: '100%', border: '1px dashed rgba(143, 0, 255, 0.7)', borderRadius: '50%', position: 'absolute' }} />
-                        <svg className="drag-hand" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8F00FF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 10px #8F00FF)' }}>
-                            <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
-                            <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2" />
-                            <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
-                            <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
-                        </svg>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                    }}>
+                        <span style={{ fontSize: '0.9rem', color: 'rgba(143, 0, 255, 0.7)' }}>←</span>
+                        <div
+                            className="drag-indicator"
+                            style={{
+                                width: '10px',
+                                height: '10px',
+                                background: 'rgba(143, 0, 255, 0.8)',
+                                borderRadius: '50%',
+                                boxShadow: '0 0 8px rgba(143, 0, 255, 0.6)'
+                            }}
+                        />
+                        <span style={{ fontSize: '0.9rem', color: 'rgba(143, 0, 255, 0.7)' }}>→</span>
                     </div>
                 );
             case 'hover':
                 return (
-                    <div style={{ width: '40px', height: '40px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        {/* Mouse Moving */}
-                        <svg className="hover-mouse" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 8px #00D4FF)' }}>
-                            <rect x="5" y="2" width="14" height="20" rx="7" />
-                            <line x1="12" y1="6" x2="12" y2="6" strokeWidth="4" />
-                            {/* Represents movement trails */}
-                            <path d="M22 10 l2 2 -2 2" opacity="0.6" strokeWidth="1.5" />
-                        </svg>
-                    </div>
+                    <div style={{ color: '#00D4FF', fontSize: '1.2rem' }}>◎</div>
                 );
             case 'click':
                 return (
-                    <div style={{ width: '40px', height: '40px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        {/* Finger Pressing */}
-                        <div className="click-ring" style={{
-                            position: 'absolute', width: '100%', height: '100%',
-                            border: '2px solid #FF0055', borderRadius: '50%',
-                            opacity: 0
-                        }} />
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF0055" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 8px #FF0055)' }}>
-                            <path d="M14 9l-2-2-2 2" />
-                            <path d="M12 7v10" />
-                            <circle cx="12" cy="19" r="2" fill="#FF0055" />
-                        </svg>
-                    </div>
+                    <div style={{ color: '#FF0055', fontSize: '1.2rem' }}>⦿</div>
                 );
-            default: return null;
+            default:
+                return null;
         }
     };
 
     const getColor = (type: InteractionType) => {
         switch (type) {
-            case 'scroll': return '#00FF99';
-            case 'drag': return '#8F00FF';
-            case 'hover': return '#00D4FF';
-            case 'click': return '#FF0055';
-            default: return '#fff';
+            case 'scroll': return 'rgba(0, 255, 153, 0.8)';
+            case 'drag': return 'rgba(143, 0, 255, 0.8)';
+            case 'hover': return 'rgba(0, 212, 255, 0.8)';
+            case 'click': return 'rgba(255, 0, 85, 0.8)';
+            default: return 'rgba(255, 255, 255, 0.8)';
         }
     };
+
+    if (!isVisible) return null;
 
     return (
         <div
@@ -145,31 +159,31 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
                 left: '50%',
                 transform: 'translateX(-50%)',
                 display: 'flex',
-                gap: '2rem',
+                gap: '2.5rem',
                 zIndex: 50,
                 pointerEvents: 'none',
-                background: 'rgba(10, 0, 26, 0.8)',
-                backdropFilter: 'blur(10px)',
-                padding: '0.6rem 1.2rem',
-                borderRadius: '20px',
-                border: '1px solid rgba(0, 255, 153, 0.2)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
-                ...style // Allow style overrides
+                transition: 'opacity 0.5s ease',
+                ...style
             }}
         >
             {activeItems.map((item, index) => (
-                <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem' }}>
-                    {renderIcon(item.type)}
+                <div
+                    key={index}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                    }}
+                >
+                    {renderMinimalIcon(item.type)}
                     <span style={{
-                        fontFamily: 'monospace',
-                        fontSize: '0.85rem', // Larger text
-                        fontWeight: 600, // Bolder
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.7rem',
+                        fontWeight: 500,
                         color: getColor(item.type),
                         textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        textShadow: `0 0 5px ${getColor(item.type)}`,
-                        textAlign: 'center',
-                        whiteSpace: 'nowrap'
+                        letterSpacing: '0.15em'
                     }}>
                         {item.text}
                     </span>

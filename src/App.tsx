@@ -14,6 +14,7 @@ import Contacto from './pages/Contacto';
 import Privacidad from './pages/Privacidad';
 import Terminos from './pages/Terminos';
 import Playground from './pages/Playground';
+import NeuraGlassSection from './components/NeuraGlassSection';
 
 import Cursor from './components/Cursor';
 
@@ -31,11 +32,12 @@ function App() {
               <Route path="/esencia" element={<Navigate to="/" replace />} />
               <Route path="/" element={<Home />} />
               <Route path="/identidad" element={<Identidad />} />
-              <Route path="/arquitectura" element={<Arquitectura />} />
+              <Route path="/infraestructura" element={<Arquitectura />} />
               <Route path="/contacto" element={<Contacto />} />
               <Route path="/privacidad" element={<Privacidad />} />
               <Route path="/terminos" element={<Terminos />} />
               <Route path="/playground" element={<Playground />} />
+              <Route path="/neura-glass" element={<NeuraGlassSection />} />
             </Routes>
           </Layout>
         </Router>

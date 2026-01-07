@@ -24,12 +24,12 @@ export const servicesData: ServicePortal[] = [
         color: '#ff2a6d' // Neon Red
     },
     {
-        id: 'arquitectura',
+        id: 'infraestructura',
         titleKey: 'service.hyper',
         conceptKey: 'concept.hyper',
         descKey: 'cat.tech',
         image: digitalArchImg,
-        path: '/arquitectura',
+        path: '/infraestructura',
         color: '#05d9e8' // Cyan
     },
     {

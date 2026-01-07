@@ -29,7 +29,7 @@ const CASES = [
         year: '2025',
         img: techArchitectureImg,
         video: architectureVideo,
-        path: '/arquitectura',
+        path: '/infraestructura',
         ctaCopy: 'CONOCE NUESTRA INGENIERÍA'
     },
     {

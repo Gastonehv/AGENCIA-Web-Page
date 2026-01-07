@@ -206,7 +206,7 @@ const Navbar: React.FC = () => {
 
     const menuItems = [
         { path: '/', label: 'ESENCIA' },
-        { path: '/arquitectura', label: 'INFRAESTRUCTURA' },
+        { path: '/infraestructura', label: 'INFRAESTRUCTURA' },
         { path: '/automatizacion', label: 'AUTOMATIZACIÓN' },
         { path: '/identidad', label: 'IDENTIDAD' },
         { path: '/playground', label: 'PLAYGROUND' },
@@ -264,7 +264,7 @@ const Navbar: React.FC = () => {
                     onClick={() => {
                         if (location.pathname !== '/') {
                             const returnMap: Record<string, string> = {
-                                '/arquitectura': '#case-arquitectura',
+                                '/infraestructura': '#case-infraestructura',
                                 '/automatizacion': '#case-automatizacion',
                                 '/identidad': '#case-identidad'
                             };

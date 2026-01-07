@@ -380,16 +380,17 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         {/* PARALLAX IMAGE WINDOW */}
                         <div
                             ref={el => { cardsRef.current[i] = el; }}
+                            className="showcase-media-window"
                             style={{
                                 width: '100%',
-                                height: '55%', // PERCENTAGE BASED: Ensures perfect equality relative to card size (was 50vh)
+                                height: isMobile ? '250px' : '55%', // Fixed height on mobile
                                 overflow: 'hidden',
                                 borderRadius: '16px',
-                                marginBottom: '1.5rem', // Slightly reduced margin
+                                marginBottom: '1.5rem',
                                 position: 'relative',
                                 boxShadow: '0 30px 60px rgba(0,0,0,0.7)',
                                 border: '1px solid rgba(0,0,0,0.05)',
-                                flexShrink: 0 // Prevent crushing
+                                flexShrink: 0
                             }}>
                             {/* MEDIA CONTENT (VIDEO OR IMAGE) */}
                             {item.video ? (
@@ -400,26 +401,29 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     muted
                                     loop
                                     playsInline
+                                    webkit-playsinline="true"
+                                    className="showcase-video"
                                     style={{
-                                        width: '250%', // ULTRA WIDE for max parallax
+                                        width: isMobile ? '100%' : '250%',
                                         height: '100%',
                                         objectFit: 'cover',
-                                        position: 'absolute',
-                                        left: '-75%', // Centered (250 - 100) / 2
+                                        position: isMobile ? 'relative' : 'absolute',
+                                        left: isMobile ? '0' : '-75%',
                                         willChange: 'transform'
                                     }}
                                 />
                             ) : (
                                 <div
                                     ref={el => { imagesRef.current[i] = el; }}
+                                    className="showcase-image"
                                     style={{
-                                        width: '250%', // ULTRA WIDE
+                                        width: isMobile ? '100%' : '250%',
                                         height: '100%',
                                         backgroundImage: `url(${item.img})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
-                                        position: 'absolute',
-                                        left: '-75%'
+                                        position: isMobile ? 'relative' : 'absolute',
+                                        left: isMobile ? '0' : '-75%'
                                     }}
                                 />
                             )}
@@ -503,8 +507,18 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         max-width: 100% !important;
                         min-width: 100% !important;
                         height: auto !important;
+                        min-height: auto !important;
                         aspect-ratio: auto !important;
                         margin: 0 !important;
+                        padding: 1.5rem !important;
+                    }
+                    .showcase-media-window {
+                        height: 250px !important;
+                    }
+                    .showcase-video, .showcase-image {
+                        width: 100% !important;
+                        left: 0 !important;
+                        position: relative !important;
                     }
                 }
             `}</style>

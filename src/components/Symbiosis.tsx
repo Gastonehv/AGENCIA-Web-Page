@@ -284,11 +284,17 @@ const Symbiosis: React.FC = () => {
             </div>
             <style>{`
                 @media (max-width: 768px) {
+                    #simbiosis-startups {
+                        height: auto !important;
+                        overflow: visible !important;
+                        padding-bottom: 50px !important;
+                    }
                     .pillars-grid {
                         flex-direction: column !important;
                     }
                     .pillar-item {
                         min-height: 50vh; /* Taller cards on mobile */
+                        margin-bottom: 1.5rem;
                     }
                 }
             `}</style>

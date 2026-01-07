@@ -43,6 +43,7 @@ const Symbiosis: React.FC = () => {
                 loop
                 muted
                 playsInline
+                preload="metadata"
                 style={{
                     width: '100%',
                     height: '100%',
@@ -287,14 +288,20 @@ const Symbiosis: React.FC = () => {
                     #simbiosis-startups {
                         height: auto !important;
                         overflow: visible !important;
-                        padding-bottom: 50px !important;
+                        padding: 50px 0 !important;
                     }
                     .pillars-grid {
                         flex-direction: column !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        padding: 0 5% !important;
+                        gap: 2rem !important;
                     }
                     .pillar-item {
-                        min-height: 50vh; /* Taller cards on mobile */
-                        margin-bottom: 1.5rem;
+                        min-height: 70vh !important;
+                        width: 100% !important;
+                        max-width: 400px !important;
+                        margin: 0 auto 1.5rem auto !important;
                     }
                 }
             `}</style>

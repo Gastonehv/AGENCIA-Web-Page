@@ -501,6 +501,73 @@ const Arquitectura: React.FC = () => {
                         que cierran tratos antes del primer clic. Tu presencia es tu activo más valioso;
                         lo convertimos en una herramienta de dominio absoluto.
                     </p>
+
+                    {/* HUMAN TRANSLATION - WHAT THIS MEANS IN PLAIN LANGUAGE */}
+                    <div className="human-translation" style={{
+                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
+                        margin: '1.5rem auto 0',
+                        padding: isMobile ? '1rem' : '1.5rem 2rem',
+                        background: 'linear-gradient(135deg, rgba(0, 255, 153, 0.08) 0%, rgba(0, 229, 255, 0.05) 100%)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(0, 255, 153, 0.2)',
+                        position: 'relative',
+                        overflow: 'hidden'
+                    }}>
+                        {/* Label */}
+                        <div style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.65rem',
+                            color: '#00FF99',
+                            letterSpacing: '0.2em',
+                            marginBottom: '0.75rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem'
+                        }}>
+                            <span style={{
+                                width: '6px',
+                                height: '6px',
+                                background: '#00FF99',
+                                borderRadius: '50%',
+                                boxShadow: '0 0 10px #00FF99'
+                            }} />
+                            EN SIMPLE
+                        </div>
+                        {/* Human-friendly text */}
+                        <p style={{
+                            margin: 0,
+                            fontSize: isMobile ? '0.9rem' : '1.1rem',
+                            lineHeight: 1.7,
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            fontWeight: 300
+                        }}>
+                            No vendemos páginas; <strong style={{ color: '#fff', fontWeight: 600 }}>construimos el motor de tu negocio digital</strong>.
+                            Software que funciona sin errores, Apps que la gente ama usar
+                            y plataformas que escalan junto con tu ambición.
+                        </p>
+                        {/* Tech Stack Badges */}
+                        <div style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '0.5rem',
+                            marginTop: '1rem'
+                        }}>
+                            {['SaaS', 'Apps Multiplataforma', 'Ingeniería Headless'].map((tag) => (
+                                <span key={tag} style={{
+                                    padding: '0.35rem 0.8rem',
+                                    fontSize: '0.7rem',
+                                    fontFamily: 'var(--font-mono)',
+                                    color: '#00FF99',
+                                    background: 'rgba(0, 255, 153, 0.1)',
+                                    border: '1px solid rgba(0, 255, 153, 0.3)',
+                                    borderRadius: '20px',
+                                    letterSpacing: '0.05em'
+                                }}>
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
                 {/* SECTION 2: SaaS & Plataformas */}
@@ -548,6 +615,63 @@ const Arquitectura: React.FC = () => {
                         trascienden el código tradicional. Creamos máquinas de control robustas que eliminan
                         los cuellos de botella para que tu única limitación sea tu propia ambición.
                     </p>
+
+                    {/* HUMAN TRANSLATION - SECTION 2 */}
+                    <div className="human-translation" style={{
+                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
+                        margin: '1.5rem auto 0',
+                        padding: isMobile ? '1rem' : '1.5rem 2rem',
+                        background: 'linear-gradient(135deg, rgba(143, 0, 255, 0.08) 0%, rgba(0, 229, 255, 0.05) 100%)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(143, 0, 255, 0.2)',
+                        position: 'relative'
+                    }}>
+                        <div style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.65rem',
+                            color: '#8F00FF',
+                            letterSpacing: '0.2em',
+                            marginBottom: '0.75rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem'
+                        }}>
+                            <span style={{
+                                width: '6px', height: '6px',
+                                background: '#8F00FF',
+                                borderRadius: '50%',
+                                boxShadow: '0 0 10px #8F00FF'
+                            }} />
+                            EN SIMPLE
+                        </div>
+                        <p style={{
+                            margin: 0,
+                            fontSize: isMobile ? '0.9rem' : '1.1rem',
+                            lineHeight: 1.7,
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            fontWeight: 300
+                        }}>
+                            Es como tener un <strong style={{ color: '#fff', fontWeight: 600 }}>ejército digital trabajando para ti</strong>.
+                            Un sistema que responde WhatsApp, agenda citas y maneja tus ventas sin que tengas que mover un dedo.
+                            Eficiencia real, 24 horas al día.
+                        </p>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem' }}>
+                            {['Software a Medida', 'Aplicaciones Móviles', 'Páginas Ultrarrápidas'].map((tag) => (
+                                <span key={tag} style={{
+                                    padding: '0.35rem 0.8rem',
+                                    fontSize: '0.7rem',
+                                    fontFamily: 'var(--font-mono)',
+                                    color: '#8F00FF',
+                                    background: 'rgba(143, 0, 255, 0.1)',
+                                    border: '1px solid rgba(143, 0, 255, 0.3)',
+                                    borderRadius: '20px',
+                                    letterSpacing: '0.05em'
+                                }}>
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
                 {/* SECTION 3: Integración Total */}
@@ -596,6 +720,65 @@ const Arquitectura: React.FC = () => {
                         Conectamos cada fibra de tu negocio para que el frontend, el backend y tus herramientas
                         de gestión operen bajo un mismo pulso inteligente.
                     </p>
+
+                    {/* HUMAN TRANSLATION - SECTION 3 */}
+                    <div className="human-translation" style={{
+                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
+                        margin: '1.5rem auto 0',
+                        padding: isMobile ? '1rem' : '1.5rem 2rem',
+                        background: 'linear-gradient(135deg, rgba(0, 229, 255, 0.08) 0%, rgba(0, 255, 153, 0.05) 100%)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(0, 229, 255, 0.2)',
+                        position: 'relative'
+                    }}>
+                        <div style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.65rem',
+                            color: '#00E5FF',
+                            letterSpacing: '0.2em',
+                            marginBottom: '0.75rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            justifyContent: 'center'
+                        }}>
+                            <span style={{
+                                width: '6px', height: '6px',
+                                background: '#00E5FF',
+                                borderRadius: '50%',
+                                boxShadow: '0 0 10px #00E5FF'
+                            }} />
+                            EN SIMPLE
+                        </div>
+                        <p style={{
+                            margin: 0,
+                            fontSize: isMobile ? '0.9rem' : '1.1rem',
+                            lineHeight: 1.7,
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            fontWeight: 300,
+                            textAlign: 'center'
+                        }}>
+                            <strong style={{ color: '#fff', fontWeight: 600 }}>Todo conectado, todo funcionando</strong>.
+                            Tu web, tu app, tu CRM, tus pagos y tu inventario hablando el mismo idioma.
+                            Sin islas de información, sin caos. Un solo sistema que lo une todo.
+                        </p>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem', justifyContent: 'center' }}>
+                            {['APIs Conectadas', 'Cloud Nativo', 'Sistemas Unificados'].map((tag) => (
+                                <span key={tag} style={{
+                                    padding: '0.35rem 0.8rem',
+                                    fontSize: '0.7rem',
+                                    fontFamily: 'var(--font-mono)',
+                                    color: '#00E5FF',
+                                    background: 'rgba(0, 229, 255, 0.1)',
+                                    border: '1px solid rgba(0, 229, 255, 0.3)',
+                                    borderRadius: '20px',
+                                    letterSpacing: '0.05em'
+                                }}>
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
                 {/* FINAL COPY SECTION */}

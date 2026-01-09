@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScroll } from '../context/ScrollContext';
 import iconWhite from '../assets/logos/header-brain.png';
 import { servicesData } from '../data/services.ts';
@@ -132,19 +133,33 @@ const Navbar: React.FC = () => {
             // ZONE: CHAPTER 2 (Manifesto)
             else if (manifestoSection &&
                 currentY >= (manifestoSection.offsetTop - viewportHeight * 0.5) &&
-                currentY < (manifestoSection.offsetTop + manifestoSection.offsetHeight)) {
+                // EXTENDED ZONE: Add viewportHeight buffer to account for the last item's PIN spacing.
+                // This prevents dropping to "Default Speed" while the last item is still pinned.
+                currentY < (manifestoSection.offsetTop + manifestoSection.offsetHeight + viewportHeight)) {
 
                 targetSpeed = 600;
 
+                let closestDist = Infinity;
+                let closestIndex = -1;
+
+                // 1. Find the dominant item
                 for (let i = 0; i < manifestoItems.length; i++) {
                     const rect = manifestoItems[i].getBoundingClientRect();
                     const itemCenter = rect.top + rect.height / 2;
                     const screenCenter = viewportHeight / 2;
+                    const dist = Math.abs(itemCenter - screenCenter);
 
-                    if (Math.abs(itemCenter - screenCenter) < viewportHeight * 0.35) {
-                        targetSpeed = 60;
-                        break;
+                    if (dist < closestDist) {
+                        closestDist = dist;
+                        closestIndex = i;
                     }
+                }
+
+                // 2. Set speed based on dominant item (RHYTHMIC READING)
+                // Behavior: Fast transition (600) -> Lock & Read (9s) -> Fast transition
+                if (closestIndex !== -1 && closestDist < viewportHeight * 0.45) {
+                    const pinHeight = viewportHeight * 0.9;
+                    targetSpeed = pinHeight / 9; // ALL items last 9 seconds
                 }
             }
             // ZONE: CHAPTER 3 (Showcase - READING SLOW MOTION)
@@ -154,11 +169,22 @@ const Navbar: React.FC = () => {
 
                 targetSpeed = 40; // ULTRA SLOW FOR READING CARDS
             }
-            // ZONE: CHAPTER 4 (Simbiosis - SLOW DOWN)
-            else if (symbiosisSection &&
-                currentY >= (symbiosisSection.offsetTop - viewportHeight * 0.8) &&
-                currentY < (symbiosisSection.offsetTop + symbiosisSection.offsetHeight)) {
-                targetSpeed = 120; // MIDDLE GROUND
+            // ZONE: CHAPTER 4 (Simbiosis - ROBUST DETECTION via ScrollTrigger)
+            else if (symbiosisSection) {
+                // Try to get the exact GSAP Pin Trigger
+                const st = ScrollTrigger.getById('simbiosis-pin');
+
+                // Priority 1: Use GSAP Source of Truth
+                if (st && currentY >= st.start && currentY <= st.end) {
+                    const totalDistance = st.end - st.start;
+                    targetSpeed = totalDistance / 21; // 21 Seconds Exact
+                }
+                // Priority 2: Fallback to DOM (widened detection)
+                else if (currentY >= (symbiosisSection.offsetTop - viewportHeight * 1.5) &&
+                    currentY < (symbiosisSection.offsetTop + symbiosisSection.offsetHeight + viewportHeight)) {
+                    const totalDistance = viewportHeight * 2;
+                    targetSpeed = totalDistance / 21;
+                }
             }
             // ZONE: CHAPTER 5 (Nucleo - SLOW DOWN)
             else if (nucleoSection &&

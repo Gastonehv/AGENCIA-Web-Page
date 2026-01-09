@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
             colors: ['#0A66C2', '#0077B5'],
             gradient: 'linear-gradient(135deg, #0A66C2 0%, #0077B5 100%)',
             glow: '0 0 40px rgba(10, 102, 194, 0.6), 0 0 80px rgba(0, 119, 181, 0.4), 0 20px 60px rgba(10, 102, 194, 0.5)',
-            size: 64,
+            size: 54,
             yOffset: 0
         },
         {
@@ -27,7 +27,7 @@ const Footer: React.FC = () => {
             colors: ['#E1306C', '#833AB4'],
             gradient: 'linear-gradient(135deg, #833AB4 0%, #E1306C 50%, #FCAF45 100%)',
             glow: '0 0 40px rgba(225, 48, 108, 0.5), 0 0 80px rgba(131, 58, 180, 0.3), 0 20px 60px rgba(225, 48, 108, 0.4)',
-            size: 64,
+            size: 54,
             yOffset: 0
         },
         {
@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
             colors: ['#FFFFFF', '#E7E9EA'],
             gradient: 'linear-gradient(135deg, #FFFFFF 0%, #E7E9EA 100%)',
             glow: '0 0 40px rgba(255, 255, 255, 0.8), 0 0 80px rgba(231, 233, 234, 0.6), 0 20px 60px rgba(255, 255, 255, 0.7)',
-            size: 64,
+            size: 54,
             yOffset: 0
         },
         {
@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
             colors: ['#1877F2', '#0C5DC7'],
             gradient: 'linear-gradient(135deg, #1877F2 0%, #0C5DC7 100%)',
             glow: '0 0 40px rgba(24, 119, 242, 0.5), 0 0 80px rgba(24, 119, 242, 0.3), 0 20px 60px rgba(24, 119, 242, 0.4)',
-            size: 64,
+            size: 54,
             yOffset: 0
         },
         {
@@ -54,7 +54,7 @@ const Footer: React.FC = () => {
             colors: ['#000000', '#25F4EE'],
             gradient: 'linear-gradient(135deg, #000000 0%, #25F4EE 50%, #FE2C55 100%)',
             glow: '0 0 40px rgba(37, 244, 238, 0.4), 0 0 40px rgba(254, 44, 85, 0.4)',
-            size: 64,
+            size: 54,
             yOffset: 0
         },
         {
@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
             colors: ['#FF0000', '#CC0000'],
             gradient: 'linear-gradient(135deg, #FF0000 0%, #CC0000 100%)',
             glow: '0 0 40px rgba(255, 0, 0, 0.5), 0 0 80px rgba(204, 0, 0, 0.3), 0 20px 60px rgba(255, 0, 0, 0.4)',
-            size: 64,
+            size: 54,
             yOffset: 0
         },
         {
@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
             colors: ['#0057FF', '#003ECC'],
             gradient: 'linear-gradient(135deg, #0057FF 0%, #003ECC 100%)',
             glow: '0 0 40px rgba(0, 87, 255, 0.5), 0 0 80px rgba(0, 62, 204, 0.3)',
-            size: 64,
+            size: 54,
             yOffset: 0
         },
         {
@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
             colors: ['#333', '#000'],
             gradient: 'linear-gradient(135deg, #333333 0%, #000000 100%)',
             glow: '0 0 40px rgba(255, 255, 255, 0.2), 0 0 80px rgba(255, 255, 255, 0.1)',
-            size: 64,
+            size: 54,
             yOffset: 0
         }
     ];
@@ -158,18 +158,24 @@ const Footer: React.FC = () => {
         <footer style={{
             backgroundColor: '#000',
             color: '#FFF',
-            padding: '8vh 5%',
+            height: '100vh', // STRICT FULL SCREEN PAGE
+            padding: '6vh 5% 4vh 5%',
             position: 'relative',
             zIndex: 100,
-            borderTop: '1px solid rgba(255,255,255,0.05)'
+            borderTop: '1px solid rgba(255,255,255,0.05)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center', // CENTERED FOR INTEGRATION
+            gap: '4rem', // COHESIVE GAP
+            overflow: 'hidden' // No internal scrolling
         }}>
             <div style={{
                 maxWidth: '1400px',
                 margin: '0 auto',
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '4rem',
-                marginBottom: '4rem'
+                gap: '1.5rem',
+                marginBottom: '0' // Integrated
             }}>
                 {/* COLUMN 1: BRAND */}
                 <div>
@@ -177,9 +183,9 @@ const Footer: React.FC = () => {
                         src={footerLogo}
                         alt="AgencIA Logo"
                         style={{
-                            width: '200px',
+                            width: '160px',
                             height: 'auto',
-                            marginBottom: '1.5rem',
+                            marginBottom: '1rem',
                             filter: 'brightness(0) invert(1)'
                         }}
                     />
@@ -271,9 +277,9 @@ const Footer: React.FC = () => {
                             ref={sealRef}
                             data-no-magnetic="true"
                             style={{
-                                marginTop: '3rem',
-                                width: '240px',
-                                height: '120px',
+                                marginTop: '1.5rem',
+                                width: '160px',
+                                height: '80px',
                                 position: 'relative',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -285,7 +291,7 @@ const Footer: React.FC = () => {
                             }}>
 
                             {/* PURE SVG IMPLEMENTATION (No foreignObject) */}
-                            <svg width="240" height="120" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="160" height="80" viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     {/* The Dynamic Tricolor Gradient - VIBRANT FLAG COLORS */}
                                     <linearGradient id="mexico-shine-gradient" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="repeat" ref={gradientRef}>
@@ -305,12 +311,12 @@ const Footer: React.FC = () => {
 
                                     {/* MASK USING FILTERED IMAGE */}
                                     <mask id="seal-mask">
-                                        <image href={hechoEnMexicoLogo} width="240" height="120" filter="url(#turn-white)" />
+                                        <image href={hechoEnMexicoLogo} width="160" height="80" filter="url(#turn-white)" />
                                     </mask>
                                 </defs>
 
                                 {/* The Shine Layer (Masked) - No Dark Background, Pure Gradient */}
-                                <rect width="240" height="120" fill="url(#mexico-shine-gradient)" mask="url(#seal-mask)" />
+                                <rect width="160" height="80" fill="url(#mexico-shine-gradient)" mask="url(#seal-mask)" />
 
                                 {/* No overlay interference, just pure color first to fix the 'dark' issue */}
                             </svg>
@@ -412,8 +418,7 @@ const Footer: React.FC = () => {
 
             {/* BOTTOM BAR */}
             <div style={{
-                borderTop: '1px solid rgba(255,255,255,0.1)',
-                paddingTop: '2rem',
+                paddingTop: '3rem',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',

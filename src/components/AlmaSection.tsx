@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import almaLogo from '../assets/images/alma_logo_final.png';
-import auraVideo from '../assets/videos/Textura video AURA.mp4';
+import almaFondoVideo from '../assets/videos/A.L.M.A._fondo_smooth.mp4';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,13 +49,14 @@ const AlmaSection: React.FC = () => {
             className="alma-editorial-section"
             style={{
                 width: '100%',
+                minHeight: '100vh', // FORCE FULL SCREEN
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#FFFFFF',
                 position: 'relative',
-                padding: '2vh 0 6vh 0',
+                padding: '0', // Clean padding
                 zIndex: 10
             }}
         >
@@ -96,11 +97,12 @@ const AlmaSection: React.FC = () => {
                     }}>
                         <video
                             className="alma-video-element"
-                            src={auraVideo}
+                            src={almaFondoVideo}
                             autoPlay
                             muted
                             loop
                             playsInline
+                            preload="auto"
                             style={{
                                 width: '100%',
                                 height: '100%',

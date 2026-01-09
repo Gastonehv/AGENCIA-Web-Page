@@ -12,7 +12,7 @@ import AlmaSection from '../components/AlmaSection';
 import SEO from '../components/SEO';
 import StructuredData from '../components/StructuredData';
 // --- ASSETS (From Esencia) ---
-import essenceHeroVideo from '../assets/videos/esencia_hero.mp4';
+import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4';
 const videoSrc = essenceHeroVideo;
 import ceoImg from '../assets/team/ceo.jpg';
 import gaelImg from '../assets/team/gael_oracle.png';
@@ -30,6 +30,7 @@ const Home: React.FC = () => {
     const maskRef = useRef<SVGGElement>(null); // Target the Mask Group
     const containerRef = useRef<HTMLDivElement>(null);
     const pulseButtonRef = useRef<HTMLButtonElement>(null);
+    const ctaSectionRef = useRef<HTMLElement>(null); // New Ref for Pinning safety
 
     // TEAM DATA
     const team = [
@@ -105,7 +106,13 @@ const Home: React.FC = () => {
                         scrub: true,
                         anticipatePin: 1,
                         refreshPriority: 10,
-                        invalidateOnRefresh: true // Forced re-calculation on refresh
+                        invalidateOnRefresh: true,
+                        snap: {
+                            snapTo: 1,
+                            duration: { min: 0.2, max: 0.5 },
+                            delay: 0,
+                            ease: 'power1.inOut'
+                        }
                     }
                 });
 
@@ -135,30 +142,44 @@ const Home: React.FC = () => {
                         end: "+=60%", // Holds the member in center for 60% of viewport height
                         pin: true,
                         pinSpacing: true, // Adds physical space
-                        id: `rift-pin-${i}`
+                        id: `rift-pin-${i}`,
+                        snap: {
+                            snapTo: 1,
+                            duration: { min: 0.1, max: 0.3 },
+                            ease: 'power1.inOut'
+                        }
                     });
                 });
 
-                // Pin ALMA Section for reading (Maximum Friction)
+                // ALMA SECTION - MAGNETIC PIN RESTORED
                 ScrollTrigger.create({
                     trigger: ".alma-portal-container",
                     start: "center center",
-                    end: "+=150%", // MAXIMIZED: Impossible to miss
+                    end: "+=150%", // Holds screen for reading
                     pin: true,
-                    pinSpacing: true
+                    pinSpacing: true,
+                    snap: {
+                        snapTo: 1,
+                        duration: { min: 0.2, max: 0.8 },
+                        delay: 0.1,
+                        ease: 'power2.inOut'
+                    }
                 });
 
                 // --- SYMBIOSIS LOGIC MOVED TO COMPONENT ---
                 // The pinning for #simbiosis and .pillar-item is now handled inside Symbiosis.tsx
                 // to ensure correct DOM access and context scoping.
 
-                // --- FOOTER FAREWELL FRICTION ---
+                // --- FOOTER FAREWELL FRICTION (MAGNETIC SNAP) ---
                 ScrollTrigger.create({
                     trigger: "footer",
-                    start: "bottom bottom",
-                    end: "+=50%", // Short pause at the very end
-                    pin: true,
-                    pinSpacing: true
+                    start: "top bottom", // Starts when footer enters
+                    end: "bottom bottom", // Ends at the literal bottom of the page
+                    snap: {
+                        snapTo: 1,
+                        duration: { min: 0.3, max: 0.8 },
+                        ease: 'power1.inOut'
+                    }
                 });
 
                 const openRift = (target: HTMLElement) => {
@@ -335,6 +356,12 @@ const Home: React.FC = () => {
                         pin: true,
                         scrub: 1, // Smooth interaction
                         anticipatePin: 1,
+                        snap: {
+                            snapTo: [0, 1], // Snap to Start (SOMOS) AND End (Form)
+                            duration: { min: 0.3, max: 0.8 },
+                            delay: 0.1,
+                            ease: 'power2.inOut'
+                        }
                     }
                 });
 
@@ -344,46 +371,106 @@ const Home: React.FC = () => {
                 // Now they will just be visible by default CSS (opacity: 1) and scroll naturally.
 
 
-                // 2. The Guillotine Impact (Main Headlines)
-                // We animate the inner containers UP from the "basement"
-                tlIdentidad.to('.guillotine-reveal', {
-                    y: '0%', // Slam into place
-                    duration: 0.8, // Snappier than 1s
-                    stagger: 0.5, // 0.5s stagger with 0.8s duration ensures 98% completion before next start (Math-perfect)
-                    ease: 'power4.out' // The "Heavy Slab" easing
+                // 2. The Guillotine Impact (Main Headlines - from bottom) - 2X SLOWER
+                tlIdentidad.to('.guillotine-reveal:not(.agencia-logo-reveal)', {
+                    y: '0%', // Slam from bottom
+                    duration: 1.6, // 2x slower (was 0.8)
+                    stagger: 1, // 2x slower (was 0.5)
+                    ease: 'power4.out'
                 }, 0.2);
+
+                // 2b. AGENCIA Logo enters from RIGHT - 2X SLOWER
+                tlIdentidad.to('.agencia-logo-reveal', {
+                    x: '0%', // Slide from right
+                    duration: 2, // 2x slower (was 1)
+                    ease: 'power4.out'
+                }, 3.6); // Adjusted timing for new stagger
 
                 // 3. The Green Line (Draws vertically)
                 tlIdentidad.fromTo('.identidad-green-line',
                     { scaleY: 0, transformOrigin: 'top center' },
-                    { scaleY: 1, duration: 0.6, ease: 'power2.inOut' },
-                    ">+0.2" // Wait slightly after headlines
+                    { scaleY: 1, duration: 1.2, ease: 'power2.inOut' }, // 2x slower
+                    ">+0.4" // Wait slightly after headlines
                 );
 
-                // 4. Body Text (Neural Data Stream)
+                // 4. Body Text (Neural Data Stream) - 2X SLOWER
                 tlIdentidad.fromTo('.identidad-body-line',
                     { x: -30, opacity: 0, filter: 'blur(8px)' },
                     {
                         x: 0,
                         opacity: 1,
                         filter: 'blur(0px)',
-                        duration: 0.8,
-                        stagger: 1.5,
+                        duration: 1.6, // 2x slower
+                        stagger: 3, // 2x slower
                         ease: 'power2.out'
                     },
                     ">" // Immediately after line draws
                 );
 
-                // 5. Exit (Clean Sweep)
-                tlIdentidad.to(['.identidad-chapter-label', '.guillotine-reveal', '.identidad-green-line', '.identidad-body-line', '.identidad-body-container'], {
-                    y: '-100%', // Exit upwards
+                // 5. Exit (Clean Sweep) - All elements fade and exit together
+                tlIdentidad.to('#identidad', {
                     opacity: 0,
                     duration: 2,
                     ease: 'power2.in'
-                }, 8); // HUGE pause to read everything
+                }, 16);
 
 
-                // --- 5. EDITORIAL CONTACT CTA (Master Pro) ---
+                // --- 5. CTA SECTION ANIMATION (STICKY SCRUB) ---
+                if (ctaSectionRef.current) {
+                    const ctaTl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: ctaSectionRef.current,
+                            start: 'top top',
+                            end: '+=500%', // Increased Duration to accommodate PAUSE
+                            pin: true,
+                            pinSpacing: true,
+                            scrub: 1,
+                            anticipatePin: 1,
+                            snap: {
+                                snapTo: (value) => {
+                                    // TRIGGER LOGIC: If user pushes past the initial pause zone 
+                                    // (roughly 20% of the scroll budget), snap them to the end immediately.
+                                    return value < 0.2 ? 0 : 1;
+                                },
+                                duration: { min: 0.5, max: 1.2 }, // Slightly longer for "automatic" feel
+                                delay: 0.02, // Near instant 
+                                ease: 'expo.out' // Snappy but smooth finish
+                            }
+                        }
+                    });
+
+                    // THE COREOGRAPHY
+                    ctaTl.addLabel("somos"); // START STATE
+
+                    // 0. VISUAL PAUSE (HOLD SOMOS)
+                    ctaTl.to({}, { duration: 1 });
+
+                    // 1. EXIT SEQUENCE (AUTOMATIC TRIGGER START)
+                    ctaTl.to('.cta-somos-text', {
+                        opacity: 0,
+                        y: -80, // More movement for "launch" feel
+                        duration: 0.6,
+                        ease: 'power3.in'
+                    });
+
+                    ctaTl.to('.cta-brain-container', {
+                        y: '-35vh',
+                        scale: 0.5,
+                        duration: 1, // Longer, more cinematic
+                        ease: 'power4.inOut'
+                    }, "<");
+
+                    ctaTl.to('.cta-invitation-container', {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'power3.out'
+                    }, ">-0.4");
+
+                    ctaTl.addLabel("final"); // END STATE
+                }
+
+                // Pulse button entrance (still works)
                 if (pulseButtonRef.current) {
                     const btn = pulseButtonRef.current;
 
@@ -582,7 +669,7 @@ const Home: React.FC = () => {
                     gap: '2rem', // COMPACT: Reduced gap between columns
                     position: 'relative',
                     zIndex: 40,
-                    overflow: 'hidden',
+                    // overflow removed to prevent text clipping
                     perspective: '1000px',
                     transformStyle: 'preserve-3d',
                 }}>
@@ -593,74 +680,91 @@ const Home: React.FC = () => {
                     <div style={{ flex: '2 1 400px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                         {/* CHAPTER LABEL REMOVED */}
                         <h2 className="identidad-headline-1" style={{
-                            fontSize: 'clamp(2rem, 4vw, 3.5rem)', // COMPACT: Reduced max size significantly
+                            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
                             fontWeight: 900,
-                            lineHeight: 0.95,
+                            lineHeight: 1.1, // Increased to prevent clipping
                             letterSpacing: '-0.02em',
                             color: '#000',
                             margin: 0,
                             textTransform: 'uppercase',
                             display: 'flex',
                             flexDirection: 'column',
-                            alignItems: 'flex-start'
+                            alignItems: 'flex-start',
+                            gap: '0' // No gap - tight block
                         }}>
-                            {/* MASK 1 */}
-                            <div style={{ overflow: 'hidden' }}>
-                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)' }}>NO SOMOS UNA</div>
+                            {/* MASK 1 - NIVEL 2 profundidad */}
+                            <div style={{ overflow: 'hidden', padding: '10px 30px 25px 30px', margin: '-10px -30px -25px -30px', marginTop: '0.8rem' }}>
+                                <div className="guillotine-reveal" style={{ transform: 'translateY(150%)', textShadow: '5px 10px 20px rgba(0,0,0,0.45)' }}>NO SOMOS UNA</div>
                             </div>
-                            {/* MASK 2 */}
-                            <div style={{ overflow: 'hidden' }}>
-                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)', color: '#888888' }}>AGENCIA CON IA.</div>
+                            {/* MASK 2 - NIVEL 4 profundidad (más lejos) */}
+                            <div style={{ overflow: 'hidden', padding: '10px 20px 18px 20px', margin: '-10px -20px -18px -20px' }}>
+                                <div className="guillotine-reveal" style={{ transform: 'translateY(150%)', color: '#888888', textShadow: '3px 6px 12px rgba(0,0,0,0.25)' }}>AGENCIA CON IA.</div>
                             </div>
                         </h2>
 
                         <h2 className="identidad-headline-2" style={{
-                            fontSize: 'clamp(2.5rem, 5vw, 5rem)', // COMPACT: Reduced max size significantly
+                            fontSize: 'clamp(2.5rem, 5vw, 5rem)',
                             fontWeight: 900,
-                            lineHeight: 0.85,
+                            lineHeight: 1.1, // Increased to prevent clipping
                             letterSpacing: '-0.02em',
                             color: '#00FF99',
-                            margin: '0.5rem 0 0', // Spacing
+                            marginTop: '2.5rem', // More space from previous section - visual break
                             textTransform: 'uppercase',
                             display: 'flex',
                             flexDirection: 'column',
-                            alignItems: 'flex-start'
+                            alignItems: 'flex-start',
+                            gap: '0' // No gap - tight block
                         }}>
-                            {/* MASK 3 */}
-                            <div style={{ overflow: 'hidden' }}>
-                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)', textShadow: '0 0 30px rgba(0,255,153,0.4)' }}>
+                            {/* MASK 3 - SOMOS LA IA - NIVEL 1 (más cerca, sombra más fuerte) */}
+                            <div style={{ overflow: 'hidden', padding: '10px 40px 35px 40px', margin: '-10px -40px -35px -40px' }}>
+                                <div className="guillotine-reveal" style={{ transform: 'translateY(150%)', textShadow: '8px 15px 30px rgba(0,0,0,0.55)' }}>
                                     SOMOS LA IA
                                 </div>
                             </div>
-                            {/* MASK 4 (COMO) */}
-                            <div style={{ overflow: 'hidden' }}>
-                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)', color: '#000', textShadow: 'none' }}>
-                                    COMO
+                            {/* MASK 4 - COMO + AGENCIA (SAME LINE) */}
+                            <div style={{
+                                width: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.3em',
+                                marginTop: '-0.5rem' // Tighter to SOMOS LA IA
+                            }}>
+                                {/* COMO - NIVEL 1 (mismo nivel que SOMOS LA IA) */}
+                                <div style={{ overflow: 'hidden', flexShrink: 0, padding: '25px 35px 30px 35px', margin: '-25px -35px -30px -35px' }}>
+                                    <div className="guillotine-reveal" style={{
+                                        transform: 'translateY(150%)',
+                                        color: '#000',
+                                        textShadow: '7px 12px 25px rgba(0,0,0,0.5)'
+                                    }}>
+                                        COMO
+                                    </div>
                                 </div>
-                            </div>
-                            {/* MASK 5 (Logo on its own line) */}
-                            <div style={{ overflow: 'hidden', width: '100%' }}>
-                                <div className="guillotine-reveal" style={{ transform: 'translateY(110%)', display: 'flex', alignItems: 'center' }}>
-                                    <img
-                                        src={officialTypography}
-                                        alt="AgencIA"
-                                        style={{
-                                            width: '100%',
-                                            maxWidth: '650px',
-                                            height: 'auto',
-                                            maxHeight: '12vh', // COMPACT: Even stricter height limit
-                                            objectFit: 'contain',
-                                            display: 'block',
-                                            marginTop: '0.5rem',
-                                            filter: 'contrast(1.1)'
-                                        }}
-                                    />
+                                {/* AGENCIA - horizontal animation */}
+                                <div style={{ overflow: 'hidden', flex: 1 }}>
+                                    <div className="guillotine-reveal agencia-logo-reveal" style={{
+                                        transform: 'translateX(110%)',
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    }}>
+                                        <img
+                                            src={officialTypography}
+                                            alt="AgencIA"
+                                            style={{
+                                                width: 'auto',
+                                                maxWidth: '450px',
+                                                height: 'clamp(2.2rem, 5vw, 4.2rem)',
+                                                objectFit: 'contain',
+                                                display: 'block',
+                                                filter: 'contrast(1.1)'
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </h2>
 
                         <div className="identidad-body-container" style={{
-                            marginTop: '1.5rem', // COMPACT: Reduced spacing
+                            marginTop: '0.5rem', // Closer to headlines
                             paddingLeft: '1.5rem',
                             // Border removed here, replaced by dedicated div below
                             display: 'flex',
@@ -681,39 +785,42 @@ const Home: React.FC = () => {
                                 transformOrigin: 'top center'
                             }} />
 
-                            {/* Line 1 */}
+                            {/* Line 1 - NIVEL 3 */}
                             <p className="identidad-body-line" style={{
                                 fontFamily: 'var(--font-body)',
-                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', // COMPACT: Slightly smaller base
-                                lineHeight: 1.3, // Tighter leading
+                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
+                                lineHeight: 1.3,
                                 maxWidth: '600px',
                                 color: '#333',
-                                margin: 0
+                                margin: 0,
+                                textShadow: '2px 4px 8px rgba(0,0,0,0.2)'
                             }}>
                                 Trascendemos la estética convencional.
                             </p>
 
-                            {/* Line 2 */}
+                            {/* Line 2 - NIVEL 2 */}
                             <p className="identidad-body-line" style={{
                                 fontFamily: 'var(--font-body)',
-                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', // COMPACT: Slightly smaller base
-                                lineHeight: 1.3, // Tighter leading
+                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
+                                lineHeight: 1.3,
                                 maxWidth: '600px',
                                 color: '#333',
-                                margin: 0
+                                margin: 0,
+                                textShadow: '3px 6px 12px rgba(0,0,0,0.28)'
                             }}>
                                 Orquestamos sistemas de inteligencia visual que no solo comunican, sino que dominan el entorno digital.
                             </p>
 
-                            {/* Line 3 (Strong) */}
+                            {/* Line 3 - NIVEL 1 (más cerca, más marcada) */}
                             <p className="identidad-body-line" style={{
                                 fontFamily: 'var(--font-body)',
-                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', // COMPACT
+                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
                                 lineHeight: 1.3,
                                 maxWidth: '600px',
                                 color: '#000',
                                 fontWeight: 800,
-                                margin: '0.5rem 0 0'
+                                margin: '0.5rem 0 0',
+                                textShadow: '4px 8px 16px rgba(0,0,0,0.35)'
                             }}>
                                 Simbiosis absoluta entre intuición humana y precisión algorítmica.
                             </p>
@@ -871,67 +978,137 @@ const Home: React.FC = () => {
                     }
                 `}</style>
 
-                {/* 8. CTA SECTION */}
-                <section id="contacto" style={{ minHeight: '100vh', padding: '12vh 0', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF', color: '#000', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_006_UMBRAL</span>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>UMBRAL</span>
-                    </div>
+                {/* 8. CTA SECTION - PINNED ANIMATION RESTORED */}
+                <section
+                    ref={ctaSectionRef} // Attached Ref
+                    id="contacto"
+                    className="cta-section"
+                    style={{
+                        height: '100vh', // Viewport height (GSAP adds scroll space)
+                        width: '100%',
+                        position: 'relative',
+                        backgroundColor: '#FFFFFF',
+                        overflow: 'hidden', // Clean edges
+                        zIndex: 50 // Ensure it sits on top of previous gradients
+                    }}
+                >
+                    {/* PINNED CONTENT CONTAINER */}
+                    <div
+                        className="cta-pinned-content"
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center', // Back to center
+                            alignItems: 'center',
+                            position: 'relative',
+                            paddingTop: '0'
+                        }}
+                    >
+                        {/* CHAPTER LABEL */}
+                        <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
+                            <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_006_UMBRAL</span>
+                            <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>UMBRAL</span>
+                        </div>
 
-                    {/* BLOCK 1: IDENTITY */}
-                    <h2 style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', textAlign: 'center', fontWeight: 900, marginBottom: '-5.5rem', letterSpacing: '-0.05em', zIndex: 10, position: 'relative' }}>
-                        SOMOS
-                    </h2>
-                    <div style={{ width: 'clamp(350px, 60vw, 900px)', opacity: 1, marginBottom: '-2rem' }}>
-                        <img src={footerLogo} alt="AgencIA Logo" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                    </div>
-
-                    {/* BLOCK 2: INVITATION */}
-                    <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', textAlign: 'center', fontWeight: 900, marginBottom: '3rem', letterSpacing: '-0.05em', color: '#333' }}>
-                        ¿TIENES UNA IDEA?
-                    </h2>
-
-                    <Link to="/contacto">
-                        <button
-                            ref={pulseButtonRef}
+                        {/* SOMOS text */}
+                        <h2
+                            className="cta-somos-text"
                             style={{
-                                padding: 'clamp(0.8rem, 2vh, 1.2rem) clamp(1.5rem, 8vw, 4rem)', // Responsive padding
-                                background: '#000',
-                                color: '#FFF',
-                                border: '1px solid #000',
-                                borderRadius: '0px',
-                                fontWeight: '900',
-                                fontSize: 'clamp(0.85rem, 4vw, 1.1rem)', // Responsive font size
-                                cursor: 'pointer',
+                                fontSize: 'clamp(3rem, 8vw, 6rem)',
+                                textAlign: 'center',
+                                fontWeight: 900,
+                                margin: '0 0 2vh 0', // Standard margin
+                                letterSpacing: '-0.05em',
+                                color: '#000',
                                 position: 'relative',
-                                transition: 'all 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
-                                letterSpacing: 'clamp(0.1em, 2vw, 0.25em)', // Responsive letter spacing
-                                textTransform: 'uppercase',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 'clamp(0.5rem, 3vw, 1.5rem)', // Responsive gap
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-                                width: 'auto',
-                                maxWidth: '92vw' // Prevent extreme width
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.backgroundColor = '#FFF';
-                                e.currentTarget.style.color = '#000';
-                                e.currentTarget.style.padding = 'clamp(0.8rem, 2vh, 1.2rem) clamp(2rem, 9vw, 4.5rem)';
-                                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,255,153,0.15)';
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.backgroundColor = '#000';
-                                e.currentTarget.style.color = '#FFF';
-                                e.currentTarget.style.padding = 'clamp(0.8rem, 2vh, 1.2rem) clamp(1.5rem, 8vw, 4rem)';
-                                e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+                                zIndex: 2
                             }}
                         >
-                            <span style={{ position: 'relative', zIndex: 1 }}>Tómate un café virtual</span>
-                            <span style={{ fontSize: '1.4rem', transition: 'transform 0.3s ease' }} className="cta-arrow">→</span>
-                        </button>
-                    </Link>
+                            SOMOS
+                        </h2>
 
+                        {/* BRAIN + AGENCIA LOGO */}
+                        <div
+                            className="cta-brain-container"
+                            style={{
+                                width: 'clamp(400px, 80vw, 1200px)', // Keep width MAX
+                                maxHeight: '65vh', // SAFE HEIGHT to ensure Pin works (75vh was too risky)
+                                marginBottom: '1rem',
+                                position: 'relative',
+                                zIndex: 1,
+                                transformOrigin: 'center center',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <img src={footerLogo} alt="AgencIA Logo" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+                        </div>
+
+                        {/* CTA CONTENT - Hidden initially */}
+                        <div
+                            className="cta-invitation-container"
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                position: 'absolute',
+                                top: '55%', // Positioned relative to viewport height
+                                left: '50%',
+                                transform: 'translateX(-50%) translateY(50px)', // Centered horizontally
+                                width: '100%',
+                                opacity: 0,
+                                zIndex: 5
+                            }}
+                        >
+                            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', textAlign: 'center', fontWeight: 900, marginBottom: '2rem', letterSpacing: '-0.05em', color: '#333' }}>
+                                ¿TIENES UNA IDEA?
+                            </h2>
+
+                            <Link to="/contacto">
+                                <button
+                                    ref={pulseButtonRef}
+                                    style={{
+                                        padding: 'clamp(0.8rem, 2vh, 1.2rem) clamp(1.5rem, 8vw, 4rem)',
+                                        background: '#000',
+                                        color: '#FFF',
+                                        border: '1px solid #000',
+                                        borderRadius: '0px',
+                                        fontWeight: '900',
+                                        fontSize: 'clamp(0.85rem, 4vw, 1.1rem)',
+                                        cursor: 'pointer',
+                                        position: 'relative',
+                                        transition: 'all 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
+                                        letterSpacing: 'clamp(0.1em, 2vw, 0.25em)',
+                                        textTransform: 'uppercase',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 'clamp(0.5rem, 3vw, 1.5rem)',
+                                        boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+                                        width: 'auto',
+                                        maxWidth: '92vw'
+                                    }}
+                                    onMouseEnter={e => {
+                                        e.currentTarget.style.backgroundColor = '#FFF';
+                                        e.currentTarget.style.color = '#000';
+                                        e.currentTarget.style.padding = 'clamp(0.8rem, 2vh, 1.2rem) clamp(2rem, 9vw, 4.5rem)';
+                                        e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,255,153,0.15)';
+                                    }}
+                                    onMouseLeave={e => {
+                                        e.currentTarget.style.backgroundColor = '#000';
+                                        e.currentTarget.style.color = '#FFF';
+                                        e.currentTarget.style.padding = 'clamp(0.8rem, 2vh, 1.2rem) clamp(1.5rem, 8vw, 4rem)';
+                                        e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+                                    }}
+                                >
+                                    <span style={{ position: 'relative', zIndex: 1 }}>Tómate un café virtual</span>
+                                    <span style={{ fontSize: '1.4rem', transition: 'transform 0.3s ease' }} className="cta-arrow">→</span>
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
                 </section>
 
                 {/* --- PHYSICAL GRADIENT BRIDGE: WHITE -> BLACK (To Footer) --- */}
@@ -940,14 +1117,14 @@ const Home: React.FC = () => {
                     height: '150px',
                     background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)',
                     position: 'relative',
-                    zIndex: 20 // Natural flow
+                    zIndex: 20
                 }} />
 
                 {/* 7. FOOTER */}
                 <Footer />
 
-            </div >
-        </main >
+            </div>
+        </main>
     );
 };
 

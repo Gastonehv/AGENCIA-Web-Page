@@ -1,8 +1,7 @@
 import { useRef, useState, useEffect, useLayoutEffect } from 'react';
-// import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import ProjectModal from './ProjectModal';
 import { useScroll } from '../context/ScrollContext'; // Import useScroll
 import techArchitectureImg from '../assets/images/architecture_digital.jpg';
 import architectureVideo from '../assets/videos/arquitectura.mp4';
@@ -76,7 +75,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
-    const [activeProject, setActiveProject] = useState<any>(null);
+    const navigate = useNavigate();
     const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -199,11 +198,11 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
                 // ... (Logic continues inside) ...
 
-                // 1. Initial Headline Pause
-                scrollTimeline.to({}, { duration: viewportWidth * 1.0 });
+                // 1. Initial Headline Pause (reduced by half)
+                scrollTimeline.to({}, { duration: viewportWidth * 0.5 });
 
                 let currentX = 0;
-                cardContainerRefs.current.forEach((card, i) => {
+                cardContainerRefs.current.forEach((card) => {
                     if (!card) return;
                     const cardCenter = card.offsetLeft + card.offsetWidth / 2;
                     let targetX = (viewportWidth / 2) - cardCenter;
@@ -215,7 +214,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             x: targetX, ease: "none", duration: distance
                         });
                     }
-                    let pauseDuration = i === 0 ? viewportWidth * 0.9 : viewportWidth * 0.5;
+                    // Uniform pause for all cards (homogeneous movement)
+                    const pauseDuration = viewportWidth * 0.5;
                     scrollTimeline.to({}, { duration: pauseDuration });
                     currentX = targetX;
                 });
@@ -343,7 +343,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         key={i}
                         ref={el => { cardContainerRefs.current[i] = el; }} // OUTER REFERENCE FOR POSITIONING
                         className="showcase-card"
-                        onClick={() => setActiveProject(item)} // OPEN MODAL
+                        onClick={() => navigate(item.path)} // NAVIGATE TO PAGE
                         style={{
                             textDecoration: 'none',
                             width: cardWidth, // Strict Width
@@ -527,12 +527,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 }
             `}</style>
 
-            {/* PROJECT MODAL */}
-            <ProjectModal
-                key={activeProject?.id || 'none'}
-                project={activeProject}
-                onClose={() => setActiveProject(null)}
-            />
+            {/* MODALS REMOVED - Now navigating directly to pages */}
 
             {/* FLOATING CASE INDICATOR (Desktop Only) */}
             <div

@@ -1,49 +1,21 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // OPTIMIZED ASSETS (Production Candidates)
-import videoPillar1 from '../assets/videos/simbiosis_001.mp4'; // New User Asset
-import videoPillar2 from '../assets/videos/simbiosis_002.mp4'; // New User Asset
-import videoPillar3 from '../assets/videos/simbiosis_003.mp4'; // New User Asset
+import videoPillar1 from '../assets/videos/simbiosis_001_opt.mp4';
+import videoPillar2 from '../assets/videos/simbiosis_002_opt.mp4';
+import videoPillar3 from '../assets/videos/simbiosis_003_opt.mp4';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Symbiosis: React.FC = () => {
-    const sectionRef = useRef<HTMLDivElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
-
-    // ASSET INFRASTRUCTURE
-    const chartAssets = {
-        pillar1: { src: videoPillar1, type: 'video' as const },
-        pillar2: { src: videoPillar2, type: 'video' as const },
-        pillar3: { src: videoPillar3, type: 'video' as const }
-    };
-
-    // HYBRID MEDIA PLAYER (Supports SVG & Video)
-    const MediaPlayer = ({ src, type }: { src: string, type: 'video' | 'image' }) => {
-        if (type === 'image') {
-            return (
-                <img
-                    src={src}
-                    alt="Data Visualization"
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block'
-                    }}
-                />
-            );
-        }
+// MEMOIZED MEDIA PLAYER - Defined OUTSIDE component to prevent re-renders
+const MediaPlayer = memo(({ src, type }: { src: string, type: 'video' | 'image' }) => {
+    if (type === 'image') {
         return (
-            <video
+            <img
                 src={src}
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
+                alt="Data Visualization"
                 style={{
                     width: '100%',
                     height: '100%',
@@ -52,13 +24,52 @@ const Symbiosis: React.FC = () => {
                 }}
             />
         );
-    };
+    }
+    return (
+        <video
+            src={src}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block'
+            }}
+        />
+    );
+});
+
+// Asset configuration
+const chartAssets = {
+    pillar1: { src: videoPillar1, type: 'video' as const },
+    pillar2: { src: videoPillar2, type: 'video' as const },
+    pillar3: { src: videoPillar3, type: 'video' as const }
+};
+
+const Symbiosis: React.FC = () => {
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const titleRef = useRef<HTMLHeadingElement>(null);
 
     useEffect(() => {
         const ctx = gsap.matchMedia();
 
         // 1. DESKTOP ANIMATIONS (> 800px)
         ctx.add("(min-width: 800px)", () => {
+            // PIN: Section stays fixed while user scrolls through it
+            ScrollTrigger.create({
+                trigger: sectionRef.current,
+                start: 'top top',
+                end: '+=100%', // Stay pinned for 100vh of scroll
+                pin: true,
+                pinSpacing: true,
+                id: 'symbiosis-pin'
+            });
+
+            // Title animation
             if (titleRef.current) {
                 gsap.from(titleRef.current, {
                     scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
@@ -67,7 +78,7 @@ const Symbiosis: React.FC = () => {
             }
         });
 
-        // 2. MOBILE ANIMATIONS (< 800px)
+        // 2. MOBILE ANIMATIONS (< 800px) - No pin on mobile
         ctx.add("(max-width: 799px)", () => {
             gsap.from(titleRef.current, {
                 scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
@@ -95,7 +106,8 @@ const Symbiosis: React.FC = () => {
                 position: 'relative',
                 display: 'flex', flexDirection: 'column',
                 zIndex: 200,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                scrollSnapAlign: 'start' // CSS snap for smooth positioning
             }}
         >
             {/* MINIMALIST DOT GRID */}

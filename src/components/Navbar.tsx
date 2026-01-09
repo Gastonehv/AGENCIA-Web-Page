@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScroll } from '../context/ScrollContext';
 import iconWhite from '../assets/logos/header-brain.png';
 import { servicesData } from '../data/services.ts';
@@ -169,22 +168,15 @@ const Navbar: React.FC = () => {
 
                 targetSpeed = 40; // ULTRA SLOW FOR READING CARDS
             }
-            // ZONE: CHAPTER 4 (Simbiosis - ROBUST DETECTION via ScrollTrigger)
-            else if (symbiosisSection) {
-                // Try to get the exact GSAP Pin Trigger
-                const st = ScrollTrigger.getById('simbiosis-pin');
+            // ZONE: CHAPTER 4 (Simbiosis - 21s Master Speed)
+            else if (symbiosisSection &&
+                currentY >= (symbiosisSection.offsetTop - viewportHeight * 0.5) &&
+                currentY < (symbiosisSection.offsetTop + symbiosisSection.offsetHeight + viewportHeight * 1.5)) {
 
-                // Priority 1: Use GSAP Source of Truth
-                if (st && currentY >= st.start && currentY <= st.end) {
-                    const totalDistance = st.end - st.start;
-                    targetSpeed = totalDistance / 21; // 21 Seconds Exact
-                }
-                // Priority 2: Fallback to DOM (widened detection)
-                else if (currentY >= (symbiosisSection.offsetTop - viewportHeight * 1.5) &&
-                    currentY < (symbiosisSection.offsetTop + symbiosisSection.offsetHeight + viewportHeight)) {
-                    const totalDistance = viewportHeight * 2;
-                    targetSpeed = totalDistance / 21;
-                }
+                // We target 21s for the entire section interaction
+                // (Entering + Pin duration + Exiting)
+                const totalEstimatedDistance = viewportHeight * 2.2;
+                targetSpeed = totalEstimatedDistance / 21;
             }
             // ZONE: CHAPTER 5 (Nucleo - SLOW DOWN)
             else if (nucleoSection &&

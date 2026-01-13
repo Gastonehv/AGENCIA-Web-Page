@@ -98,7 +98,7 @@ const DNAHelixContent = () => {
         const height = 140;
         const radius = 7.0;
         const turns = 2.0; // Majestic Twist
-        const lineWidth = 120;
+
 
         const pos = [];
         const linePos = [];
@@ -108,6 +108,7 @@ const DNAHelixContent = () => {
         const rnd = [];
 
         const cLogic = new THREE.Color("#00FFFF");
+
         const cSoul = new THREE.Color("#FF0080");
         const cBridge = new THREE.Color("#FFFFFF");
 

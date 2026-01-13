@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { useScroll } from '../context/ScrollContext';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import iconWhite from '../assets/logos/header-brain.png';
 import { servicesData } from '../data/services.ts';
 
@@ -168,15 +169,29 @@ const Navbar: React.FC = () => {
 
                 targetSpeed = 40; // ULTRA SLOW FOR READING CARDS
             }
-            // ZONE: CHAPTER 4 (Simbiosis - 21s Master Speed)
-            else if (symbiosisSection &&
-                currentY >= (symbiosisSection.offsetTop - viewportHeight * 0.5) &&
-                currentY < (symbiosisSection.offsetTop + symbiosisSection.offsetHeight + viewportHeight * 1.5)) {
+            // ZONE: CHAPTER 4 (Simbiosis - ROBUST DETECTION via ScrollTrigger)
+            else if (symbiosisSection) {
+                // Try to get the exact GSAP Pin Trigger
+                const st = ScrollTrigger.getById('simbiosis-pin');
 
-                // We target 21s for the entire section interaction
-                // (Entering + Pin duration + Exiting)
-                const totalEstimatedDistance = viewportHeight * 2.2;
-                targetSpeed = totalEstimatedDistance / 21;
+                let startPos = symbiosisSection.offsetTop;
+                let endPos = startPos + (viewportHeight * 2); // Fallback: 200vh (100vh section + 100vh pin)
+
+                // Priority 1: Use GSAP Source of Truth if available
+                if (st) {
+                    startPos = st.start;
+                    endPos = st.end;
+                }
+
+                // Buffer to start adjusting speed slightly before hitting the section
+                const buffer = viewportHeight * 0.5;
+
+                if (currentY >= (startPos - buffer) && currentY < endPos) {
+                    const totalDistance = endPos - startPos;
+                    // Target: Traverse the pinned distance in exactly 21 seconds
+                    // Speed = Distance / Time
+                    targetSpeed = totalDistance / 21;
+                }
             }
             // ZONE: CHAPTER 5 (Nucleo - SLOW DOWN)
             else if (nucleoSection &&

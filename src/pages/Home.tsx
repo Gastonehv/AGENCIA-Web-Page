@@ -338,81 +338,91 @@ const Home: React.FC = () => {
                 // Note: We target the narrative container background, not the body, to avoid breaking Background3D
                 tlHero.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2, ease: 'power2.inOut' }, 4);
 
-                // Phase 5: IA Explosion (Optimized)
+                // Phase 5: IA PORTAL (The Zoom Event)
                 tlHero.to('.hero-char-ia', {
-                    scale: 15, // Reduced from 60 to prevent lag
-                    opacity: 0,
-                    duration: 1.5, // Slightly faster
-                    ease: 'power4.in'
+                    scale: 80, // Massive Zoom (Portal Effect)
+                    filter: 'blur(0px)', // No blur, purely geometric
+                    opacity: 0, // Fades out only at max expansion
+                    duration: 1.5, // Cinematic entry speed
+                    ease: 'expo.in' // Slow start, infinite finish speed (Warp)
                 }, 5);
 
 
-                // --- 4. IDENTIDAD REVEAL (The Architect / Guillotine) ---
+
+
+
+
+                // --- 4. IDENTIDAD REVEAL (The Entropy / Nolan Effect) ---
                 const tlIdentidad = gsap.timeline({
                     scrollTrigger: {
                         trigger: '#identidad',
                         start: 'top top',
-                        end: '+=800%', // Good long pin
+                        end: '+=1500%', // Balanced Speed (Faster than 2500%, Slower than 800%)
                         pin: true,
-                        scrub: 1, // Smooth interaction
-                        anticipatePin: 1,
-                        snap: {
-                            snapTo: [0, 1], // Snap to Start (SOMOS) AND End (Form)
-                            duration: { min: 0.3, max: 0.8 },
-                            delay: 0.1,
-                            ease: 'power2.inOut'
-                        }
+                        scrub: 1.5, // Smoother scrub
+                        anticipatePin: 1
                     }
                 });
 
-                // 1. Chapter Labels (Static visibility for "approach" effect)
-                // REMOVED fromTo opacity tween to satisfy user request:
-                // "debe de aparecer desde que aparece marco azul... e ir subiendo"
-                // Now they will just be visible by default CSS (opacity: 1) and scroll naturally.
+                // PHASE 1: THE ARRIVAL (Instant Entry)
+                tlIdentidad.to('.entropy-el', {
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    transform: 'scale(1)',
+                    duration: 4,
+                    stagger: 2,
+                    ease: 'power2.out'
+                }, 0.1); // Starts almost immediately (0.1)
 
+                // PHASE 2: THE IGNITION (Focus on "SOMOS LA IA")
+                tlIdentidad.to('.entropy-catchphrase', {
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    transform: 'scale(1)',
+                    color: '#000',
+                    duration: 3,
+                    ease: 'expo.out'
+                }, ">-0.5");
 
-                // 2. The Guillotine Impact (Main Headlines - from bottom) - 2X SLOWER
-                tlIdentidad.to('.guillotine-reveal:not(.agencia-logo-reveal)', {
-                    y: '0%', // Slam from bottom
-                    duration: 1.6, // 2x slower (was 0.8)
-                    stagger: 1, // 2x slower (was 0.5)
+                // PHASE 3: NEON SURGE (The Nolan Moment)
+                tlIdentidad.to('.entropy-catchphrase', {
+                    color: '#00FF99',
+                    textShadow: '0 0 40px rgba(0,255,153,0.6), 0 0 80px rgba(0,255,153,0.4)',
+                    duration: 2,
                     ease: 'power4.out'
-                }, 0.2);
+                }, ">");
 
-                // 2b. AGENCIA Logo enters from RIGHT - 2X SLOWER
-                tlIdentidad.to('.agencia-logo-reveal', {
-                    x: '0%', // Slide from right
-                    duration: 2, // 2x slower (was 1)
-                    ease: 'power4.out'
-                }, 3.6); // Adjusted timing for new stagger
+                // Reveal "COMO [LOGO]"
+                tlIdentidad.to('.entropy-finish', {
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    duration: 3,
+                    ease: 'power2.out'
+                }, ">-1");
 
-                // 3. The Green Line (Draws vertically)
-                tlIdentidad.fromTo('.identidad-green-line',
-                    { scaleY: 0, transformOrigin: 'top center' },
-                    { scaleY: 1, duration: 1.2, ease: 'power2.inOut' }, // 2x slower
-                    ">+0.4" // Wait slightly after headlines
-                );
+                // DRAW LINE (New Animation)
+                tlIdentidad.to('.entropy-line', {
+                    scaleY: 1,
+                    duration: 3,
+                    ease: 'power2.inOut'
+                }, ">-1.5");
 
-                // 4. Body Text (Neural Data Stream) - 2X SLOWER
-                tlIdentidad.fromTo('.identidad-body-line',
-                    { x: -30, opacity: 0, filter: 'blur(8px)' },
-                    {
-                        x: 0,
-                        opacity: 1,
-                        filter: 'blur(0px)',
-                        duration: 1.6, // 2x slower
-                        stagger: 3, // 2x slower
-                        ease: 'power2.out'
-                    },
-                    ">" // Immediately after line draws
-                );
+                // PHASE 4: DATA STREAM (Body Text)
+                tlIdentidad.to('.entropy-body', {
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                    filter: 'blur(0px)',
+                    duration: 3,
+                    stagger: 1,
+                    ease: 'power2.out'
+                }, ">-1.5");
 
-                // 5. Exit (Clean Sweep) - All elements fade and exit together
+                // 5. Exit (Read Pause -> Clean Sweep)
                 tlIdentidad.to('#identidad', {
                     opacity: 0,
-                    duration: 2,
+                    duration: 4,
                     ease: 'power2.in'
-                }, 16);
+                }, ">+1.5"); // Minimal pause: 1.5 units (just enough to finish the sentence)
 
 
                 // --- 5. CTA SECTION ANIMATION (STICKY SCRUB) ---
@@ -660,174 +670,154 @@ const Home: React.FC = () => {
                 {/* 3. IDENTIDAD MASTERPIECE */}
                 <section id="identidad" style={{
                     minHeight: '100vh',
-                    padding: '3rem 5% 3rem 5%', // COMPACT: Reduced padding to force fit
+                    padding: '2rem 5% 2rem 5%', // Compact Padding
                     backgroundColor: '#FFFFFF',
                     display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center', // Revert to center to vertically center the whole block
-                    justifyContent: 'center',
-                    gap: '2rem', // COMPACT: Reduced gap between columns
+                    flexDirection: 'column', // Force Stack for perfect centering
+                    alignItems: 'center', // Horizontally center
+                    justifyContent: 'center', // Vertically center in 100vh
+                    gap: '4vh', // Dynamic spacing
                     position: 'relative',
                     zIndex: 40,
-                    // overflow removed to prevent text clipping
                     perspective: '1000px',
                     transformStyle: 'preserve-3d',
                 }}>
-                    {/* COLUMN 1: MARKER (Hidden on small mobile if needed, or just flexed) */}
-                    {/* MARKER REMOVED FOR VISUAL PURITY */}
-
                     {/* COLUMN 2: CONTENT (Main Text) */}
-                    <div style={{ flex: '2 1 400px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        {/* CHAPTER LABEL REMOVED */}
-                        <h2 className="identidad-headline-1" style={{
-                            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                            fontWeight: 900,
-                            lineHeight: 1.1, // Increased to prevent clipping
-                            letterSpacing: '-0.02em',
-                            color: '#000',
-                            margin: 0,
-                            textTransform: 'uppercase',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start',
-                            gap: '0' // No gap - tight block
-                        }}>
-                            {/* MASK 1 - NIVEL 2 profundidad */}
-                            <div style={{ overflow: 'hidden', padding: '10px 30px 25px 30px', margin: '-10px -30px -25px -30px', marginTop: '0.8rem' }}>
-                                <div className="guillotine-reveal" style={{ transform: 'translateY(150%)', textShadow: '5px 10px 20px rgba(0,0,0,0.45)' }}>NO SOMOS UNA</div>
-                            </div>
-                            {/* MASK 2 - NIVEL 4 profundidad (más lejos) */}
-                            <div style={{ overflow: 'hidden', padding: '10px 20px 18px 20px', margin: '-10px -20px -18px -20px' }}>
-                                <div className="guillotine-reveal" style={{ transform: 'translateY(150%)', color: '#888888', textShadow: '3px 6px 12px rgba(0,0,0,0.25)' }}>AGENCIA CON IA.</div>
-                            </div>
-                        </h2>
+                    <div className="identidad-headline-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', perspective: '1000px', width: '100%', maxWidth: '800px' }}>
 
-                        <h2 className="identidad-headline-2" style={{
-                            fontSize: 'clamp(2.5rem, 5vw, 5rem)',
-                            fontWeight: 900,
-                            lineHeight: 1.1, // Increased to prevent clipping
-                            letterSpacing: '-0.02em',
-                            color: '#00FF99',
-                            marginTop: '2.5rem', // More space from previous section - visual break
-                            textTransform: 'uppercase',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start',
-                            gap: '0' // No gap - tight block
-                        }}>
-                            {/* MASK 3 - SOMOS LA IA - NIVEL 1 (más cerca, sombra más fuerte) */}
-                            <div style={{ overflow: 'hidden', padding: '10px 40px 35px 40px', margin: '-10px -40px -35px -40px' }}>
-                                <div className="guillotine-reveal" style={{ transform: 'translateY(150%)', textShadow: '8px 15px 30px rgba(0,0,0,0.55)' }}>
-                                    SOMOS LA IA
-                                </div>
-                            </div>
-                            {/* MASK 4 - COMO + AGENCIA (SAME LINE) */}
-                            <div style={{
-                                width: '100%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.3em',
-                                marginTop: '-0.5rem' // Tighter to SOMOS LA IA
-                            }}>
-                                {/* COMO - NIVEL 1 (mismo nivel que SOMOS LA IA) */}
-                                <div style={{ overflow: 'hidden', flexShrink: 0, padding: '25px 35px 30px 35px', margin: '-25px -35px -30px -35px' }}>
-                                    <div className="guillotine-reveal" style={{
-                                        transform: 'translateY(150%)',
-                                        color: '#000',
-                                        textShadow: '7px 12px 25px rgba(0,0,0,0.5)'
-                                    }}>
-                                        COMO
-                                    </div>
-                                </div>
-                                {/* AGENCIA - horizontal animation */}
-                                <div style={{ overflow: 'hidden', flex: 1 }}>
-                                    <div className="guillotine-reveal agencia-logo-reveal" style={{
-                                        transform: 'translateX(110%)',
-                                        display: 'flex',
-                                        alignItems: 'center'
-                                    }}>
-                                        <img
-                                            src={officialTypography}
-                                            alt="AgencIA"
-                                            style={{
-                                                width: 'auto',
-                                                maxWidth: '450px',
-                                                height: 'clamp(2.2rem, 5vw, 4.2rem)',
-                                                objectFit: 'contain',
-                                                display: 'block',
-                                                filter: 'contrast(1.1)'
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </h2>
-
-                        <div className="identidad-body-container" style={{
-                            marginTop: '0.5rem', // Closer to headlines
-                            paddingLeft: '1.5rem',
-                            // Border removed here, replaced by dedicated div below
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '1rem', // Space between thoughts
-                            position: 'relative',
-                            zIndex: 2
-                        }}>
-                            {/* THE GREEN LINE (Animated) */}
-                            <div className="identidad-green-line" style={{
-                                position: 'absolute',
-                                left: 0,
-                                top: 0,
-                                bottom: 0,
-                                width: '4px',
-                                backgroundColor: '#00FF99',
-                                transform: 'scaleY(0)', // Start hidden
-                                transformOrigin: 'top center'
-                            }} />
-
-                            {/* Line 1 - NIVEL 3 */}
-                            <p className="identidad-body-line" style={{
-                                fontFamily: 'var(--font-body)',
-                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
-                                lineHeight: 1.3,
-                                maxWidth: '600px',
-                                color: '#333',
+                        {/* BLOCK 1: NO SOMOS UNA AGENCIA... */}
+                        <div className="entropy-block-1" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                            <h2 className="entropy-el" style={{
+                                fontSize: 'clamp(1.5rem, 3.5vw, 3rem)', // Reduced Size
+                                fontWeight: 900,
                                 margin: 0,
-                                textShadow: '2px 4px 8px rgba(0,0,0,0.2)'
-                            }}>
-                                Trascendemos la estética convencional.
-                            </p>
-
-                            {/* Line 2 - NIVEL 2 */}
-                            <p className="identidad-body-line" style={{
-                                fontFamily: 'var(--font-body)',
-                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
-                                lineHeight: 1.3,
-                                maxWidth: '600px',
-                                color: '#333',
-                                margin: 0,
-                                textShadow: '3px 6px 12px rgba(0,0,0,0.28)'
-                            }}>
-                                Orquestamos sistemas de inteligencia visual que no solo comunican, sino que dominan el entorno digital.
-                            </p>
-
-                            {/* Line 3 - NIVEL 1 (más cerca, más marcada) */}
-                            <p className="identidad-body-line" style={{
-                                fontFamily: 'var(--font-body)',
-                                fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
-                                lineHeight: 1.3,
-                                maxWidth: '600px',
+                                lineHeight: 1.1,
                                 color: '#000',
-                                fontWeight: 800,
-                                margin: '0.5rem 0 0',
-                                textShadow: '4px 8px 16px rgba(0,0,0,0.35)'
+                                opacity: 0,
+                                filter: 'blur(20px)',
+                                transform: 'scale(0.8)',
+                                willChange: 'opacity, filter, transform'
                             }}>
-                                Simbiosis absoluta entre intuición humana y precisión algorítmica.
-                            </p>
+                                NO SOMOS UNA
+                            </h2>
+                            <h2 className="entropy-el" style={{
+                                fontSize: 'clamp(1.5rem, 3.5vw, 3rem)', // Reduced Size
+                                fontWeight: 900,
+                                margin: 0,
+                                lineHeight: 1.1,
+                                color: '#888',
+                                opacity: 0,
+                                filter: 'blur(30px)',
+                                transform: 'scale(0.7)',
+                                willChange: 'opacity, filter, transform'
+                            }}>
+                                AGENCIA CON IA.
+                            </h2>
                         </div>
 
+                        {/* BLOCK 2: SOMOS LA IA... */}
+                        <div className="entropy-block-2" style={{ marginTop: '1rem' }}>
+                            <h2 className="entropy-catchphrase" style={{
+                                fontSize: 'clamp(2rem, 5vw, 4.5rem)', // Reduced Size
+                                fontWeight: 900,
+                                margin: 0,
+                                lineHeight: 1,
+                                color: '#333',
+                                opacity: 0,
+                                filter: 'blur(40px)',
+                                transform: 'scale(1.2)',
+                                willChange: 'opacity, filter, transform, color, text-shadow'
+                            }}>
+                                SOMOS LA IA
+                            </h2>
+                            <div className="entropy-finish" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginTop: '0.3rem', opacity: 0, filter: 'blur(20px)' }}>
+                                <h2 style={{ fontSize: 'clamp(2rem, 5vw, 4.5rem)', fontWeight: 900, margin: 0, lineHeight: 1, color: '#000' }}>COMO</h2>
+                                <img
+                                    src={officialTypography}
+                                    alt="AgencIA"
+                                    style={{
+                                        height: 'clamp(1.8rem, 4.5vw, 4rem)', // Tuned for crispness
+                                        width: 'auto',
+                                        objectFit: 'contain',
+                                        imageRendering: 'auto' // Let browser handle smoothing
+                                    }}
+                                />
+                            </div>
+                        </div>
 
                     </div>
+
+                    <div className="identidad-body-container" style={{
+                        marginTop: '1.5rem',
+                        paddingLeft: '1.5rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.8rem',
+                        position: 'relative',
+                        // borderLeft removed
+                    }}>
+                        {/* ANIMATED VERTICAL LINE */}
+                        <div className="entropy-line" style={{
+                            position: 'absolute',
+                            left: 0,
+                            top: 0,
+                            bottom: 0,
+                            width: '3px',
+                            backgroundColor: '#00FF99', // Neon Acccent
+                            boxShadow: '0 0 10px rgba(0,255,153,0.5)',
+                            transformOrigin: 'top',
+                            transform: 'scaleY(0)', // Start hidden
+                        }} />
+
+                        {/* Line 1 */}
+                        <p className="entropy-body" style={{
+                            fontFamily: 'var(--font-body)',
+                            fontSize: 'clamp(0.9rem, 1.2vw, 1.15rem)',
+                            lineHeight: 1.3,
+                            maxWidth: '550px',
+                            color: '#333',
+                            margin: 0,
+                            opacity: 0,
+                            transform: 'translateY(20px)',
+                            filter: 'blur(10px)'
+                        }}>
+                            Trascendemos la estética convencional.
+                        </p>
+
+                        {/* Line 2 - NIVEL 2 */}
+                        <p className="entropy-body" style={{
+                            fontFamily: 'var(--font-body)',
+                            fontSize: 'clamp(0.9rem, 1.2vw, 1.15rem)',
+                            lineHeight: 1.3,
+                            maxWidth: '550px',
+                            color: '#333',
+                            margin: 0,
+                            opacity: 0,
+                            transform: 'translateY(20px)',
+                            filter: 'blur(10px)',
+                            textShadow: '3px 6px 12px rgba(0,0,0,0.28)'
+                        }}>
+                            Orquestamos sistemas de inteligencia visual que no solo comunican, sino que dominan el entorno digital.
+                        </p>
+
+                        {/* Line 3 - NIVEL 1 (más cerca, más marcada) */}
+                        <p className="entropy-body" style={{
+                            fontFamily: 'var(--font-body)',
+                            fontSize: 'clamp(0.9rem, 1.2vw, 1.15rem)',
+                            lineHeight: 1.3,
+                            maxWidth: '550px',
+                            color: '#000',
+                            fontWeight: 800,
+                            margin: '0.3rem 0 0',
+                            opacity: 0,
+                            transform: 'translateY(20px)',
+                            filter: 'blur(10px)',
+                            textShadow: '4px 8px 16px rgba(0,0,0,0.35)'
+                        }}>
+                            Simbiosis absoluta entre intuición humana y precisión algorítmica.
+                        </p>
+                    </div>
+
                 </section>
 
                 {/* --- PHYSICAL GRADIENT BRIDGE: WHITE -> BLACK --- */}
@@ -1123,8 +1113,8 @@ const Home: React.FC = () => {
                 {/* 7. FOOTER */}
                 <Footer />
 
-            </div>
-        </main>
+            </div >
+        </main >
     );
 };
 

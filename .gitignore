@@ -25,3 +25,6 @@ dist-ssr
 
 # Large video files (GitHub limit: 100MB)
 src/assets/videos/Textura video AURA.mp4
+
+# Local Netlify folder
+.netlify

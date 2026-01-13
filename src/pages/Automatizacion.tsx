@@ -484,6 +484,61 @@ const Automatizacion: React.FC = () => {
                     }}>
                         Las tareas repetitivas devoran tu tiempo y tu margen. En AgencIA diseñamos <strong style={{ color: '#00FF99' }}>ecosistemas de gestión empresarial</strong> que centralizan operaciones, inventarios, clientes y finanzas en una sola interfaz. Tu negocio opera en piloto automático mientras tú te enfocas en lo que realmente importa: crecer.
                     </p>
+
+                    {/* HUMAN TRANSLATION - SECTION 1 */}
+                    <div className="human-translation" style={{
+                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
+                        margin: '1.5rem auto 0',
+                        padding: isMobile ? '1rem' : '1.5rem 2rem',
+                        background: 'linear-gradient(135deg, rgba(0, 255, 153, 0.08) 0%, rgba(0, 229, 255, 0.05) 100%)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(0, 255, 153, 0.2)',
+                        position: 'relative',
+                        textAlign: 'left'
+                    }}>
+                        <div style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.65rem',
+                            color: '#00FF99',
+                            letterSpacing: '0.2em',
+                            marginBottom: '0.75rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem'
+                        }}>
+                            <span style={{
+                                width: '6px',
+                                height: '6px',
+                                background: '#00FF99',
+                                borderRadius: '50%',
+                                boxShadow: '0 0 10px #00FF99'
+                            }} />
+                            EN SIMPLE
+                        </div>
+                        <p style={{
+                            margin: 0,
+                            fontSize: isMobile ? '0.9rem' : '1.1rem',
+                            lineHeight: 1.7,
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            fontWeight: 300
+                        }}>
+                            Cambiamos el <strong style={{ color: '#fff', fontWeight: 600 }}>caos por orden automático</strong>.
+                            Sistemas que trabajan mientras tú descansas, gestionando clientes e inventarios sin errores humanos.
+                        </p>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem' }}>
+                            {['Eficiencia Total', 'Cero Errores', 'Ahorro de Tiempo'].map((tag) => (
+                                <span key={tag} style={{
+                                    padding: '0.35rem 0.8rem',
+                                    fontSize: '0.7rem',
+                                    fontFamily: 'var(--font-mono)',
+                                    color: '#00FF99',
+                                    background: 'rgba(0, 255, 153, 0.1)',
+                                    border: '1px solid rgba(0, 255, 153, 0.3)',
+                                    borderRadius: '20px'
+                                }}>{tag}</span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
                 {/* SECTION 2: Agentes IA */}
@@ -534,6 +589,62 @@ const Automatizacion: React.FC = () => {
                     }}>
                         ¿Y si tus procesos pensaran por sí mismos? Desplegamos <strong style={{ color: '#00E5FF' }}>agentes de IA que ejecutan, deciden y optimizan</strong> sin intervención humana. Desde atención al cliente 24/7 hasta análisis predictivo y generación de reportes. Tu equipo se libera para tareas de alto valor mientras la IA maneja lo demás.
                     </p>
+
+                    {/* HUMAN TRANSLATION - SECTION 2 */}
+                    <div className="human-translation" style={{
+                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
+                        margin: '1.5rem auto 0',
+                        padding: isMobile ? '1rem' : '1.5rem 2rem',
+                        background: 'linear-gradient(135deg, rgba(0, 229, 255, 0.08) 0%, rgba(0, 255, 153, 0.05) 100%)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(0, 229, 255, 0.2)',
+                        position: 'relative',
+                        textAlign: isMobile ? 'left' : 'right'
+                    }}>
+                        <div style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.65rem',
+                            color: '#00E5FF',
+                            letterSpacing: '0.2em',
+                            marginBottom: '0.75rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            justifyContent: isMobile ? 'flex-start' : 'flex-end'
+                        }}>
+                            <span style={{
+                                width: '6px',
+                                height: '6px',
+                                background: '#00E5FF',
+                                borderRadius: '50%',
+                                boxShadow: '0 0 10px #00E5FF'
+                            }} />
+                            EN SIMPLE
+                        </div>
+                        <p style={{
+                            margin: 0,
+                            fontSize: isMobile ? '0.9rem' : '1.1rem',
+                            lineHeight: 1.7,
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            fontWeight: 300
+                        }}>
+                            Tu equipo se libera para <strong style={{ color: '#fff', fontWeight: 600 }}>tareas de alto valor</strong> mientras la IA maneja lo operativo.
+                            Es como tener un ejército digital trabajando 24/7 sin distracciones.
+                        </p>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem', justifyContent: isMobile ? 'flex-start' : 'flex-end' }}>
+                            {['Control Absoluto', 'Sistemas Conectados', 'Visión 360'].map((tag) => (
+                                <span key={tag} style={{
+                                    padding: '0.35rem 0.8rem',
+                                    fontSize: '0.7rem',
+                                    fontFamily: 'var(--font-mono)',
+                                    color: '#00E5FF',
+                                    background: 'rgba(0, 229, 255, 0.1)',
+                                    border: '1px solid rgba(0, 229, 255, 0.3)',
+                                    borderRadius: '20px'
+                                }}>{tag}</span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
                 {/* SECTION 3: Flujos Conectados */}
@@ -586,6 +697,62 @@ const Automatizacion: React.FC = () => {
                     }}>
                         Tus herramientas actuales no colaboran, compiten. Creamos <strong style={{ color: '#FF6B35' }}>integraciones que conectan CRM, e-commerce, contabilidad y logística</strong> en un flujo continuo. Cada dato en su lugar, cada proceso eslabonado. Sin copiar y pegar. Sin errores humanos. Solo eficiencia pura.
                     </p>
+
+                    {/* HUMAN TRANSLATION - SECTION 3 */}
+                    <div className="human-translation" style={{
+                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
+                        margin: '1.5rem auto 0',
+                        padding: isMobile ? '1rem' : '1.5rem 2rem',
+                        background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(0, 255, 153, 0.05) 100%)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 107, 53, 0.2)',
+                        position: 'relative',
+                        textAlign: isMobile ? 'left' : 'center'
+                    }}>
+                        <div style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.65rem',
+                            color: '#FF6B35',
+                            letterSpacing: '0.2em',
+                            marginBottom: '0.75rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            justifyContent: isMobile ? 'flex-start' : 'center'
+                        }}>
+                            <span style={{
+                                width: '6px',
+                                height: '6px',
+                                background: '#FF6B35',
+                                borderRadius: '50%',
+                                boxShadow: '0 0 10px #FF6B35'
+                            }} />
+                            EN SIMPLE
+                        </div>
+                        <p style={{
+                            margin: 0,
+                            fontSize: isMobile ? '0.9rem' : '1.1rem',
+                            lineHeight: 1.7,
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            fontWeight: 300
+                        }}>
+                            <strong style={{ color: '#fff', fontWeight: 600 }}>Todo conectado, todo funcionando</strong>.
+                            Tu web, tu CRM y tu inventario hablando el mismo idioma. Sin copiar y pegar datos; solo eficiencia pura.
+                        </p>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem', justifyContent: isMobile ? 'flex-start' : 'center' }}>
+                            {['Eficiencia Real', 'ROI Inmediato', 'Futuro Digital'].map((tag) => (
+                                <span key={tag} style={{
+                                    padding: '0.35rem 0.8rem',
+                                    fontSize: '0.7rem',
+                                    fontFamily: 'var(--font-mono)',
+                                    color: '#FF6B35',
+                                    background: 'rgba(255, 107, 53, 0.1)',
+                                    border: '1px solid rgba(255, 107, 53, 0.3)',
+                                    borderRadius: '20px'
+                                }}>{tag}</span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
                 {/* FINAL COPY SECTION */}

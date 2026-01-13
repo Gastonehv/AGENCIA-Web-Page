@@ -14,9 +14,10 @@ import Contacto from './pages/Contacto';
 import Privacidad from './pages/Privacidad';
 import Terminos from './pages/Terminos';
 import Playground from './pages/Playground';
-import NeuraGlassSection from './components/NeuraGlassSection';
-
+import NarrativePrototype from './pages/NarrativePrototype';
 import Cursor from './components/Cursor';
+
+
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Layout>
             <Navbar />
             <Routes>
+              <Route path="/narrativa-v1" element={<NarrativePrototype />} />
               <Route path="/automatizacion" element={<Automatizacion />} />
               <Route path="/esencia" element={<Navigate to="/" replace />} />
               <Route path="/" element={<Home />} />
@@ -37,7 +39,6 @@ function App() {
               <Route path="/privacidad" element={<Privacidad />} />
               <Route path="/terminos" element={<Terminos />} />
               <Route path="/playground" element={<Playground />} />
-              <Route path="/neura-glass" element={<NeuraGlassSection />} />
             </Routes>
           </Layout>
         </Router>

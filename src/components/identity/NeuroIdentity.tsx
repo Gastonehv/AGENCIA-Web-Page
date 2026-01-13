@@ -51,13 +51,13 @@ const NeuroIdentity: React.FC = () => {
                 }}>
                     <span style={{
                         color: '#fff',
-                        fontSize: '10px',
+                        fontSize: 'clamp(10px, 3vw, 12px)',
                         letterSpacing: '0.3em',
                         fontFamily: 'monospace',
                         textTransform: 'uppercase',
                         opacity: 0.8
                     }}>
-                        Scroll to Initialize Sequence
+                        DESLIZA PARA INICIAR SECUENCIA
                     </span>
                 </div>
             </div>

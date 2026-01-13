@@ -310,7 +310,7 @@ const Symbiosis: React.FC = () => {
                         gap: 2rem !important;
                     }
                     .pillar-item {
-                        min-height: 70vh !important;
+                        min-height: 60vh !important;
                         width: 100% !important;
                         max-width: 400px !important;
                         margin: 0 auto 1.5rem auto !important;

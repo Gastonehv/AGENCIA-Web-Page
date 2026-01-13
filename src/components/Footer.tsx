@@ -158,7 +158,8 @@ const Footer: React.FC = () => {
         <footer style={{
             backgroundColor: '#000',
             color: '#FFF',
-            height: '100vh', // STRICT FULL SCREEN PAGE
+            minHeight: '100vh', // Adaptable full screen
+            height: 'auto',
             padding: '6vh 5% 4vh 5%',
             position: 'relative',
             zIndex: 100,
@@ -167,7 +168,7 @@ const Footer: React.FC = () => {
             flexDirection: 'column',
             justifyContent: 'center', // CENTERED FOR INTEGRATION
             gap: '4rem', // COHESIVE GAP
-            overflow: 'hidden' // No internal scrolling
+            overflow: 'visible' // Allow content to flow
         }}>
             <div style={{
                 maxWidth: '1400px',

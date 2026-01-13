@@ -315,7 +315,7 @@ const Navbar: React.FC = () => {
                         cursor: 'pointer',
                         zIndex: 10001,
                         pointerEvents: 'auto',
-                        padding: isMobile ? '0.4rem 0.8rem' : '0.5rem 1.2rem',
+                        padding: isMobile ? '0.6rem 1rem' : '0.5rem 1.2rem', // Increased touch target
                         borderRadius: '40px',
                         transition: 'all 0.3s ease'
                     }}

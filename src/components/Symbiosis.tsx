@@ -299,25 +299,28 @@ const Symbiosis: React.FC = () => {
                 @media (max-width: 768px) {
                     #simbiosis-startups {
                         height: auto !important;
+                        min-height: 100vh !important;
                         overflow: visible !important;
-                        padding: 50px 0 !important;
+                        padding: 80px 0 !important;
                     }
                     .pillars-grid {
                         flex-direction: column !important;
                         align-items: center !important;
-                        justify-content: center !important;
-                        padding: 0 5% !important;
+                        justify-content: flex-start !important;
+                        padding: 0 1rem !important;
                         gap: 2rem !important;
+                        width: 100% !important;
+                        max-width: 100% !important;
                     }
                     .pillar-item {
-                        min-height: 60vh !important;
+                        min-height: 50vh !important;
                         width: 100% !important;
-                        max-width: 400px !important;
-                        margin: 0 auto 1.5rem auto !important;
+                        max-width: 100% !important;
+                        margin: 0 !important;
                     }
                 }
             `}</style>
-        </section>
+        </section >
     );
 };
 

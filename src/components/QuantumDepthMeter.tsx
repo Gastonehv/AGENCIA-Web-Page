@@ -104,30 +104,7 @@ const QuantumDepthMeter: React.FC = () => {
                 </div>
             </div>
 
-            {/* SIDE LABELS / DECORATION (HUD FEEL) */}
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '4px',
-                paddingBottom: '5px'
-            }}>
-                <div style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.65rem',
-                    color: '#00FF99', // GREEN
-                    letterSpacing: '0.2em',
-                    fontWeight: 900,
-                    opacity: 0.8
-                }}>
-                    MEDIDOR.EXE
-                </div>
-                <div style={{
-                    width: '30px',
-                    height: '1px',
-                    background: 'linear-gradient(to right, #00FF99, transparent)', // GREEN
-                    opacity: 0.5
-                }} />
-            </div>
+
 
             <style>{`
                 .quantum-depth-meter {

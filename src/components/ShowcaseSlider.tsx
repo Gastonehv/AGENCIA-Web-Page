@@ -121,9 +121,9 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
         const handleResize = () => {
             const w = window.innerWidth;
             if (w <= 768) setCardWidth('85vw');
-            else if (w <= 1024) setCardWidth('45vw');
-            else if (w <= 1440) setCardWidth('30vw');
-            else setCardWidth('30vw');
+            else if (w <= 1024) setCardWidth('60vw'); // Tablet wider
+            else if (w <= 1440) setCardWidth('50vw'); // Laptop wider
+            else setCardWidth('45vw'); // Desktop wider (Cinematic)
         };
 
         handleResize(); // Init
@@ -175,24 +175,32 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
             // 4. TIMELINE
 
-            // 4. TIMELINE (DESKTOP ONLY)
+            // 4. TIMELINE (ALL DEVICES - Pinning Enabled)
             // Use existing 'mm' from line 148
 
-            // DESKTOP: Horizontal Scroll logic
-            mm.add("(min-width: 769px)", () => {
+            // UNIFIED: Horizontal Scroll logic for BOTH Desktop and Mobile
+            mm.add("all", () => {
                 const viewportWidth = getViewportWidth();
                 const totalScrollWidth = getScrollWidth();
                 const maxScroll = -(totalScrollWidth - viewportWidth);
+
+                // Adjust scroll length for mobile feel if needed
+                const isMobile = window.innerWidth <= 768;
+                const scrollLength = isMobile
+                    ? totalScrollWidth + viewportWidth * 2.0 // Shorter scroll on mobile
+                    : totalScrollWidth + viewportWidth * 4.0; // Longer on desktop
 
                 scrollTimeline = gsap.timeline({
                     scrollTrigger: {
                         trigger: containerRef.current,
                         start: "top top",
-                        end: () => `+=${totalScrollWidth + viewportWidth * 4.0}`,
+                        end: () => `+=${scrollLength}`,
                         pin: true,
                         scrub: 0.5,
                         invalidateOnRefresh: true,
-                        id: 'showcase-scroll'
+                        id: 'showcase-scroll',
+                        // MAGNETIC SNAPPING REMOVED
+                        // snap: { ... }
                     }
                 });
 
@@ -202,7 +210,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 scrollTimeline.to({}, { duration: viewportWidth * 0.5 });
 
                 let currentX = 0;
-                cardContainerRefs.current.forEach((card) => {
+                cardContainerRefs.current.forEach((card, i) => { // Added index 'i'
                     if (!card) return;
                     const cardCenter = card.offsetLeft + card.offsetWidth / 2;
                     let targetX = (viewportWidth / 2) - cardCenter;
@@ -214,6 +222,10 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             x: targetX, ease: "none", duration: distance
                         });
                     }
+
+                    // ADD SNAP LABEL WHEN CENTERED
+                    scrollTimeline.addLabel(`card-${i}`);
+
                     // Uniform pause for all cards (homogeneous movement)
                     const pauseDuration = viewportWidth * 0.5;
                     scrollTimeline.to({}, { duration: pauseDuration });
@@ -227,32 +239,29 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 }
                 scrollTimeline.to({}, { duration: 0.15 });
 
-                // PARALLAX (Desktop Only)
+                // PARALLAX: INVERTED (Flow Direction) - HD QUALITY
+                const parallaxRange = 13;
+
                 imagesRef.current.forEach((img, i) => {
                     if (!img || !cardsRef.current[i]) return;
                     gsap.fromTo(img,
-                        { xPercent: -30 },
+                        { xPercent: parallaxRange },  // Start Right
                         {
-                            xPercent: 30,
+                            xPercent: -parallaxRange, // End Left (Moves WITH card)
                             ease: "none",
                             force3D: true,
                             scrollTrigger: {
                                 trigger: cardsRef.current[i],
                                 containerAnimation: scrollTimeline,
-                                start: "left right",
-                                end: "right left",
-                                scrub: true,
-                                id: `parallax-${i}`
+                                start: "left 95%",
+                                end: "right 5%",
+                                scrub: 0.25, // SMOOTHED for High FPS (0.1 was too raw)
+                                id: `parallax-smooth-${i}` // Force refresh
                             }
                         }
                     );
                 });
             });
-
-            // MOBILE: No GSAP Pinning/Scroll - Native Vertical Stack
-            // (Handled via CSS injected below)
-
-
 
             // Refresh to ensure all start/end points are correct with new styles
             ScrollTrigger.refresh();
@@ -383,14 +392,17 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             className="showcase-media-window"
                             style={{
                                 width: '100%',
-                                height: isMobile ? '250px' : '55%', // Fixed height on mobile
+                                height: isMobile ? '250px' : 'auto', // Auto height lets aspect ratio drive dimensions
+                                aspectRatio: isMobile ? 'auto' : '16/9', // RESTORED CINEMATIC RATIO
                                 overflow: 'hidden',
                                 borderRadius: '16px',
                                 marginBottom: '1.5rem',
                                 position: 'relative',
                                 boxShadow: '0 30px 60px rgba(0,0,0,0.7)',
                                 border: '1px solid rgba(0,0,0,0.05)',
-                                flexShrink: 0
+                                flexShrink: 0,
+                                transform: 'translateZ(0)', // FORCE GPU MASK
+                                willChange: 'transform'     // OPTIMIZE REPAINTS
                             }}>
                             {item.video ? (
                                 <video
@@ -405,12 +417,15 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     poster={item.img}
                                     className="showcase-video"
                                     style={{
-                                        width: isMobile ? '100%' : '250%',
+                                        width: '140%', // REDUCED ZOOM (Sharper)
                                         height: '100%',
                                         objectFit: 'cover',
-                                        position: isMobile ? 'relative' : 'absolute',
-                                        left: isMobile ? '0' : '-75%',
-                                        willChange: 'transform'
+                                        position: 'absolute',
+                                        left: '-20%', // Re-centered for 140%
+                                        top: 0,
+                                        willChange: 'transform',
+                                        backfaceVisibility: 'hidden',
+                                        transform: 'translate3d(0,0,0)'
                                     }}
                                 />
                             ) : (
@@ -418,13 +433,15 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     ref={el => { imagesRef.current[i] = el; }}
                                     className="showcase-image"
                                     style={{
-                                        width: isMobile ? '100%' : '250%',
+                                        width: '140%',
                                         height: '100%',
                                         backgroundImage: `url(${item.img})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
-                                        position: isMobile ? 'relative' : 'absolute',
-                                        left: isMobile ? '0' : '-75%'
+                                        position: 'absolute',
+                                        left: '-20%',
+                                        top: 0,
+                                        backfaceVisibility: 'hidden'
                                     }}
                                 />
                             )}
@@ -482,48 +499,71 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
             <style>{`
                 @media (max-width: 768px) {
-                    /* FORCE VERTICAL STACK ON MOBILE */
+                @media (max-width: 768px) {
+                    /* MOBILE: GSAP PINNING ENABLED (Vertical Scroll drives Horizontal movement) */
                     .showcase-slider-container {
-                        height: auto !important;
-                        overflow: visible !important;
-                         background-color: #FFF !important;
+                        height: 100vh !important;
+                        overflow: hidden !important; /* Critical for Pinning */
+                        background-color: #FFF !important;
+                        display: flex;
+                        align-items: center;
                     }
+
                     .showcase-track {
-                        flex-direction: column !important;
-                        width: 100% !important;
-                        height: auto !important;
-                        padding: 100px 5vw 50px 5vw !important;
-                        gap: 2rem !important;
-                        transform: none !important; /* Kill GSAP transform */
-                    }
-                    .showcase-headline {
-                        min-width: 100% !important;
-                        height: auto !important;
-                        margin-bottom: 2rem !important;
-                        margin-right: 0 !important;
-                        align-items: flex-start !important;
-                    }
-                    .showcase-card {
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        min-width: 100% !important;
-                        height: auto !important;
-                        min-height: auto !important;
-                        aspect-ratio: auto !important;
-                        margin: 0 !important;
-                        padding: 1.5rem !important;
-                    }
-                    .showcase-media-window {
-                        height: 200px !important;
-                        min-height: 200px !important;
-                    }
-                    .showcase-video, .showcase-image {
-                        width: 100% !important;
+                        display: flex !important;
+                        flex-direction: row !important;
+                        width: max-content !important;
                         height: 100% !important;
-                        left: 0 !important;
-                        position: relative !important;
-                        object-fit: cover !important;
+                        padding: 0 5vw !important;
+                        gap: 1rem !important;
+                        /* Transform is handled by GSAP now */
+                        align-items: center !important;
                     }
+
+                    .showcase-headline {
+                        min-width: 90vw !important; /* Wider headline on mobile */
+                        height: auto !important;
+                        margin-bottom: 0 !important;
+                        margin-right: 1rem !important;
+                        align-items: flex-start !important;
+                        flex-shrink: 0;
+                        padding-left: 1rem;
+                    }
+
+                    .showcase-card {
+                        width: 85vw !important;
+                        max-width: 85vw !important;
+                        min-width: 85vw !important;
+                        height: 70vh !important;
+                        margin: 0 !important;
+                        padding: 1.5rem 1.5rem 80px 1.5rem !important;
+                        flex-shrink: 0;
+                        border-right: 1px solid rgba(0,0,0,0.05);
+                        overflow-y: hidden !important;
+                    }
+
+                    .showcase-media-window {
+                        height: 40% !important;
+                        min-height: 200px !important;
+                        flex-shrink: 0;
+                        overflow: hidden !important;
+                    }
+
+                    .showcase-video, .showcase-image {
+                        width: 140% !important; /* Minimized Mobile Math */
+                        height: 100% !important;
+                        left: -20% !important;
+                        position: absolute !important;
+                        top: 0 !important;
+                        object-fit: cover !important;
+                        backface-visibility: hidden !important;
+                        transform: translate3d(0,0,0) !important;
+                    }
+
+                    .floating-button {
+                        display: none !important;
+                    }
+                }
                 }
             `}</style>
 
@@ -532,6 +572,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
             {/* FLOATING CASE INDICATOR (Desktop Only) */}
             <div
                 ref={indicatorRef}
+                className="floating-button"
                 style={{
                     position: 'fixed',
                     top: 0,

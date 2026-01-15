@@ -183,6 +183,8 @@ const Services: React.FC = () => {
                 className="services-slider"
                 style={{
                     display: 'flex',
+                    flexDirection: 'row', // Explicitly set row
+                    flexWrap: 'nowrap',   // Explicitly prevent wrapping
                     gap: 'clamp(1rem, 5vw, 5vw)',
                     // Padding handled via CSS/GSAP matchMedia primarily, defaults for desktop:
                     width: 'fit-content',
@@ -202,6 +204,7 @@ const Services: React.FC = () => {
                         .portal-card {
                             width: 30vw !important;
                             min-width: 400px;
+                            flex-shrink: 0;
                         }
                     }
                     @media (max-width: 768px) {
@@ -214,6 +217,7 @@ const Services: React.FC = () => {
                             width: 100vw !important; /* Full Screen Width */
                             height: 100vh !important; /* Full Screen Height */
                             min-width: 100vw !important;
+                            flex-shrink: 0;
                             border-radius: 0 !important; /* Edge to edge */
                             border: none !important;
                             border-right: 1px solid rgba(255,255,255,0.1) !important;
@@ -239,7 +243,8 @@ const Services: React.FC = () => {
                             perspective: '1000px',
                             zIndex: 20, // Ensure it's above other elements
                             pointerEvents: 'all', // Force pointer events
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            flexShrink: 0 // Explicit inline fallback
                         }}
                         onMouseMove={(e) => {
                             if (window.innerWidth <= 768) return; // Disable hover tilt on mobile

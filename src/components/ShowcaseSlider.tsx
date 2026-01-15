@@ -512,8 +512,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             }}>{item.id}</span>
                         </div>
                         <p style={{
-                            marginTop: 'auto',
-                            paddingTop: '1rem', // Reduced from 2rem
+                            marginTop: '1.5rem', // Changed from auto to fixed to ensure visibility
+                            paddingTop: '0.5rem',
                             fontSize: 'clamp(0.9rem, 1vw, 1.1rem)', // FLUID FONTS
                             lineHeight: 1.5, // Slightly tighter
                             color: '#444',
@@ -530,7 +530,6 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
             </div>
 
             <style>{`
-                @media (max-width: 768px) {
                 @media (max-width: 768px) {
                     /* MOBILE: GSAP PINNING ENABLED (Vertical Scroll drives Horizontal movement) */
                     .showcase-slider-container {
@@ -568,7 +567,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         min-width: 85vw !important;
                         height: 70vh !important;
                         margin: 0 !important;
-                        padding: 1.5rem 1.5rem 80px 1.5rem !important;
+                        padding: 1.5rem 1.5rem 2rem 1.5rem !important;
                         flex-shrink: 0;
                         border-right: 1px solid rgba(0,0,0,0.05);
                         overflow-y: hidden !important;

@@ -9,6 +9,8 @@ import SoulManifesto from '../components/SoulManifesto';
 import Symbiosis from '../components/Symbiosis';
 import Footer from '../components/Footer';
 import AlmaSection from '../components/AlmaSection';
+import GlitchPortal from '../components/GlitchPortal';
+import type { GlitchPortalHandle } from '../components/GlitchPortal';
 import SEO from '../components/SEO';
 import StructuredData from '../components/StructuredData';
 // --- ASSETS (From Esencia) ---
@@ -31,6 +33,7 @@ const Home: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const pulseButtonRef = useRef<HTMLButtonElement>(null);
     const ctaSectionRef = useRef<HTMLElement>(null); // New Ref for Pinning safety
+    const glitchRef = useRef<GlitchPortalHandle>(null);
 
     // TEAM DATA
     const team = [
@@ -429,13 +432,14 @@ const Home: React.FC = () => {
                 // Trigger when the CTA section hits the middle/start of viewport
                 ScrollTrigger.create({
                     trigger: '#contacto',
-                    start: 'top bottom', // Start flashing as soon as Contacto enters viewport
-                    end: 'top center',
+                    start: 'top bottom',
                     onEnter: () => {
-                        gsap.fromTo('#flash-overlay',
-                            { opacity: 1, mixBlendMode: 'normal' }, // Normal white flash
-                            { opacity: 0, duration: 0.5, ease: 'power2.out', overwrite: true }
-                        );
+                        // GLITCH: SIMBIOSIS -> SOMOS (Entry)
+                        glitchRef.current?.trigger(0.8);
+                    },
+                    onLeaveBack: () => {
+                        // GLITCH: SOMOS -> SIMBIOSIS (Return)
+                        glitchRef.current?.trigger(0.35);
                     }
                 });
 
@@ -461,18 +465,11 @@ const Home: React.FC = () => {
                                 ease: 'expo.out' // Snappy but smooth finish
                             },
                             onLeave: () => {
-                                // FLASHBANG TRIGGER
-                                gsap.fromTo('#flash-overlay',
-                                    { opacity: 1 },
-                                    { opacity: 0, duration: 0.2, ease: 'power4.out', overwrite: true }
-                                );
+                                // NO ACTION ON LEAVE
                             },
                             onEnterBack: () => {
-                                // REVERSE FLASH (Optional, keeps it alive)
-                                gsap.fromTo('#flash-overlay',
-                                    { opacity: 0.8 },
-                                    { opacity: 0, duration: 0.3, ease: 'power4.out', overwrite: true }
-                                );
+                                // GLITCH ON RETURN FROM FOOTER (DISABLED - USER REQUESTED SIMBIOSIS ONLY)
+                                // glitchRef.current?.trigger(0.3);
                             }
                         }
                     });
@@ -483,7 +480,7 @@ const Home: React.FC = () => {
                     // 0. VISUAL PAUSE (HOLD SOMOS)
                     ctaTl.to({}, { duration: 1 });
 
-                    // 1. EXIT SEQUENCE (AUTOMATIC TRIGGER START)
+                    // 1. EXIT SEQUENCE (AUTOMATIC TRIGGER START) - RESTORED ORIGINAL
                     ctaTl.to('.cta-somos-text', {
                         opacity: 0,
                         y: -80, // More movement for "launch" feel
@@ -559,6 +556,8 @@ const Home: React.FC = () => {
                 ]
             }} />
             {loading && <Loader onComplete={handleLoaderComplete} />}
+
+            <GlitchPortal ref={glitchRef} />
 
             {/* 0. WHITE VOID (Replaces Background3D) */}
             <div style={{ position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none', backgroundColor: '#FFFFFF' }} />
@@ -1041,7 +1040,7 @@ const Home: React.FC = () => {
                                 fontSize: 'clamp(3rem, 8vw, 6rem)',
                                 textAlign: 'center',
                                 fontWeight: 900,
-                                margin: '0 0 2vh 0', // Standard margin
+                                margin: '0 0 2vh 0',
                                 letterSpacing: '-0.05em',
                                 color: '#000',
                                 position: 'relative',

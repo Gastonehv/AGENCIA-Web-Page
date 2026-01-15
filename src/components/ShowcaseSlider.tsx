@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScroll } from '../context/ScrollContext'; // Import useScroll
 import techArchitectureImg from '../assets/images/architecture_digital.jpg';
-import architectureVideo from '../assets/videos/arquitectura.mp4';
+import architectureVideo from "../assets/videos/infraestructura_final_opt.mp4";
 import automationVideo from '../assets/videos/automatizacion.mp4';
 import identidadVideo from '../assets/videos/IDENTIDAD VISUAL.mp4';
 
@@ -34,7 +34,7 @@ const CASES = [
     {
         id: '02',
         title: 'AUTOMATIZACIÓN',
-        subtitle: 'Eficiencia Imposible // Maquinaria Autónoma',
+        subtitle: 'Eficiencia Imposible // Sistemas Autónomos',
         desc: 'El fin de la micro-gestión. Agentes autónomos que operan tu negocio 24/7 con precisión quirúrgica.',
         fullDesc: 'Implementamos la "Plataforma 360", un ecosistema donde la IA asume el control operativo. Ventas, soporte y agendamiento ocurren simultáneamente, liberando al humano para la estrategia pura.',
         humanDesc: 'Imagina un ejército de empleados perfectos que no duermen, no piden vacaciones y no cometen errores. Venden, atienden y organizan tu empresa mientras tú te enfocas en crecer.',
@@ -122,8 +122,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
             const w = window.innerWidth;
             if (w <= 768) setCardWidth('85vw');
             else if (w <= 1024) setCardWidth('60vw'); // Tablet wider
-            else if (w <= 1440) setCardWidth('50vw'); // Laptop wider
-            else setCardWidth('45vw'); // Desktop wider (Cinematic)
+            else if (w <= 1440) setCardWidth('40vw'); // Adjusted for better proportions
+            else setCardWidth('35vw'); // NARROWER for more specialized "Portal" look
         };
 
         handleResize(); // Init
@@ -187,8 +187,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 // Adjust scroll length for mobile feel if needed
                 const isMobile = window.innerWidth <= 768;
                 const scrollLength = isMobile
-                    ? totalScrollWidth + viewportWidth * 2.0 // Shorter scroll on mobile
-                    : totalScrollWidth + viewportWidth * 4.0; // Longer on desktop
+                    ? totalScrollWidth + viewportWidth * 2.0 // Slightly more budget for mobile touch control
+                    : totalScrollWidth + viewportWidth * 2.5;
 
                 scrollTimeline = gsap.timeline({
                     scrollTrigger: {
@@ -206,8 +206,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
                 // ... (Logic continues inside) ...
 
-                // 1. Initial Headline Pause (reduced by half)
-                scrollTimeline.to({}, { duration: viewportWidth * 0.5 });
+                // 1. Initial Headline Flow (minimum pause)
+                scrollTimeline.to({}, { duration: viewportWidth * 0.1 });
 
                 let currentX = 0;
                 cardContainerRefs.current.forEach((card, i) => { // Added index 'i'
@@ -226,8 +226,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     // ADD SNAP LABEL WHEN CENTERED
                     scrollTimeline.addLabel(`card-${i}`);
 
-                    // Uniform pause for all cards (homogeneous movement)
-                    const pauseDuration = viewportWidth * 0.5;
+                    // Kinetic Flow: Minimal pause to maintain velocity differential
+                    const pauseDuration = viewportWidth * 0.05;
                     scrollTimeline.to({}, { duration: pauseDuration });
                     currentX = targetX;
                 });
@@ -239,28 +239,45 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 }
                 scrollTimeline.to({}, { duration: 0.15 });
 
-                // PARALLAX: INVERTED (Flow Direction) - MAXIMUM INTENSITY
-                // Width 160% -> Range 18% = 28.8% Travel. Safety Margin 1.2%.
-                const parallaxRange = 18;
+                // PARALLAX v6: Counter-Movement (Inverted Direction for 2x Friction)
+                const parallaxRange = 10; // SAFE RANGE for 130% zoom
 
                 imagesRef.current.forEach((img, i) => {
                     if (!img || !cardsRef.current[i]) return;
-                    gsap.fromTo(img,
-                        { xPercent: parallaxRange },  // Start Right
-                        {
-                            xPercent: -parallaxRange, // End Left (Moves WITH card)
-                            ease: "none",
-                            force3D: true,
-                            scrollTrigger: {
-                                trigger: cardsRef.current[i],
-                                containerAnimation: scrollTimeline,
-                                start: "left 100%", // Start EXACTLY when entering viewport
-                                end: "right 0%",    // End EXACTLY when exiting
-                                scrub: 0.25,
-                                id: `parallax-max-${i}`
-                            }
+
+                    const tl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: cardsRef.current[i],
+                            containerAnimation: scrollTimeline,
+                            start: "left 100%",
+                            end: "right 0%",
+                            scrub: 0.1,
+                            id: `parallax-focal-${i}`
                         }
-                    );
+                    });
+
+                    tl.set(img, { xPercent: 0, scale: 1.0, rotateY: 0 }); // Entrance: Centered
+                    tl.to(img, {
+                        xPercent: -parallaxRange, // SWING LEFT
+                        scale: 1.1,
+                        rotateY: 4,
+                        duration: 0.35,
+                        ease: "power1.inOut"
+                    }); // Swing to Start Position
+                    tl.to(img, {
+                        xPercent: parallaxRange, // SWING RIGHT (Counter to Slider Left)
+                        scale: 1.1,
+                        rotateY: -4,
+                        duration: 0.3,
+                        ease: "none"
+                    }); // MAIN FOCAL PARALLAX (Counter-Flow)
+                    tl.to(img, {
+                        xPercent: 0,
+                        scale: 1.0,
+                        rotateY: 0,
+                        duration: 0.35,
+                        ease: "power1.inOut"
+                    }); // Exit: Back to center
                 });
             });
 
@@ -394,17 +411,27 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             style={{
                                 width: '100%',
                                 height: isMobile ? '250px' : 'auto',
-                                aspectRatio: isMobile ? 'auto' : '14/9', // USER SUGGESTION: Better Parallax Physics
+                                aspectRatio: isMobile ? 'auto' : '4/3', // USER SUGGESTION: Narrower for focus
                                 overflow: 'hidden',
                                 borderRadius: '16px',
-                                marginBottom: '1rem', // Reduced from 1.5rem to save space
+                                marginBottom: '1rem',
                                 position: 'relative',
+                                backgroundColor: '#000', // MASK FOR GAPS
                                 boxShadow: '0 30px 60px rgba(0,0,0,0.7)',
                                 border: '1px solid rgba(0,0,0,0.05)',
                                 flexShrink: 0,
                                 transform: 'translateZ(0)', // FORCE GPU MASK
                                 willChange: 'transform'     // OPTIMIZE REPAINTS
                             }}>
+                            {/* VIGNETTE OVERLAY - FOR DEPTH */}
+                            <div style={{
+                                position: 'absolute',
+                                inset: 0,
+                                zIndex: 2,
+                                pointerEvents: 'none',
+                                boxShadow: 'inset 0 0 100px rgba(0,0,0,0.6)',
+                                borderRadius: '16px'
+                            }} />
                             {item.video ? (
                                 <video
                                     ref={el => { imagesRef.current[i] = el; }}
@@ -418,15 +445,16 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     poster={item.img}
                                     className="showcase-video"
                                     style={{
-                                        width: '160%', // INCREASED FOR MAX PARALLAX
+                                        width: '130%', // FOCAL ZOOM (130%) - OPTIMAL SHARPNESS
                                         height: '100%',
                                         objectFit: 'cover',
                                         position: 'absolute',
-                                        left: '-30%', // Centered for 160%
+                                        left: '-15%', // Perfectly centered for 130%
                                         top: 0,
                                         willChange: 'transform',
                                         backfaceVisibility: 'hidden',
-                                        transform: 'translate3d(0,0,0)'
+                                        transform: 'translate3d(0,0,0)',
+                                        perspective: '1000px'
                                     }}
                                 />
                             ) : (
@@ -434,13 +462,13 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     ref={el => { imagesRef.current[i] = el; }}
                                     className="showcase-image"
                                     style={{
-                                        width: '160%',
+                                        width: '130%',
                                         height: '100%',
                                         backgroundImage: `url(${item.img})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         position: 'absolute',
-                                        left: '-30%',
+                                        left: '-15%',
                                         top: 0,
                                         backfaceVisibility: 'hidden'
                                     }}

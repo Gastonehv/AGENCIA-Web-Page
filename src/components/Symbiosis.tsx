@@ -3,9 +3,9 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // OPTIMIZED ASSETS (Production Candidates)
-import videoPillar1 from '../assets/videos/simbiosis_001_opt.mp4';
-import videoPillar2 from '../assets/videos/simbiosis_002_opt.mp4';
-import videoPillar3 from '../assets/videos/simbiosis_003_opt.mp4';
+import videoElite from '../assets/videos/simbiosis_001_opt.mp4';
+import videoEscalabilidad from '../assets/videos/simbiosis_002_opt.mp4';
+import videoDominio from '../assets/videos/simbiosis_003_opt.mp4';
 import CinematicTitle from './CinematicTitle';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -44,11 +44,11 @@ const MediaPlayer = memo(({ src, type }: { src: string, type: 'video' | 'image' 
     );
 });
 
-// Asset configuration
+// Asset configuration - Semantically Named
 const chartAssets = {
-    pillar1: { src: videoPillar1, type: 'video' as const },
-    pillar2: { src: videoPillar2, type: 'video' as const },
-    pillar3: { src: videoPillar3, type: 'video' as const }
+    elite: { src: videoElite, type: 'video' as const },
+    escalabilidad: { src: videoEscalabilidad, type: 'video' as const },
+    dominio: { src: videoDominio, type: 'video' as const }
 };
 
 const Symbiosis: React.FC = () => {
@@ -242,7 +242,7 @@ const Symbiosis: React.FC = () => {
                         <div style={{ flex: '1 1 auto', position: 'relative', overflow: 'hidden' }}>
                             <div style={{ position: 'absolute', inset: 0, backgroundColor: '#000', zIndex: 0, pointerEvents: 'none' }} />
                             <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', minHeight: 0, flex: 1 }}>
-                                {chartAssets.pillar1 && <MediaPlayer src={chartAssets.pillar1.src} type={chartAssets.pillar1.type} />}
+                                {chartAssets.elite && <MediaPlayer src={chartAssets.elite.src} type={chartAssets.elite.type} />}
                             </div>
                         </div>
                         {/* FOOTER */}
@@ -264,7 +264,7 @@ const Symbiosis: React.FC = () => {
                     }}>
                         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '1.5rem', zIndex: 10, background: 'linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)' }}>
                             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#00f3ff', letterSpacing: '0.15em', fontWeight: 700, marginBottom: '5px' }}>
-                                /// 02_INFRAESTRUCTURA
+                                /// 02_ESCALABILIDAD
                             </div>
                             <h3 style={{ color: '#FFF', fontSize: '1.8rem', fontWeight: 800, margin: 0, letterSpacing: '-0.03em', lineHeight: 0.9 }}>
                                 ESCALABILIDAD<br />TOTAL
@@ -273,7 +273,7 @@ const Symbiosis: React.FC = () => {
                         <div style={{ flex: '1 1 auto', position: 'relative', overflow: 'hidden' }}>
                             <div style={{ position: 'absolute', inset: 0, backgroundColor: '#000', zIndex: 0, pointerEvents: 'none' }} />
                             <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', minHeight: 0, flex: 1 }}>
-                                {chartAssets.pillar2 && <MediaPlayer src={chartAssets.pillar2.src} type={chartAssets.pillar2.type} />}
+                                {chartAssets.escalabilidad && <MediaPlayer src={chartAssets.escalabilidad.src} type={chartAssets.escalabilidad.type} />}
                             </div>
                         </div>
                         <div style={{ padding: '1rem', background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
@@ -303,7 +303,7 @@ const Symbiosis: React.FC = () => {
                         <div style={{ flex: '1 1 auto', position: 'relative', overflow: 'hidden' }}>
                             <div style={{ position: 'absolute', inset: 0, backgroundColor: '#000', zIndex: 0, pointerEvents: 'none' }} />
                             <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', minHeight: 0, flex: 1 }}>
-                                {chartAssets.pillar3 && <MediaPlayer src={chartAssets.pillar3.src} type={chartAssets.pillar3.type} />}
+                                {chartAssets.dominio && <MediaPlayer src={chartAssets.dominio.src} type={chartAssets.dominio.type} />}
                             </div>
                         </div>
                         <div style={{ padding: '1rem', background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.1)' }}>

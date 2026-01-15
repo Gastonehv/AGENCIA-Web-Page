@@ -17,29 +17,29 @@ interface ShowcaseSliderProps {
 const CASES = [
     {
         id: '01',
-        title: 'SISTEMAS & INFRAESTRUCTURA',
-        subtitle: 'Arquitectura Soberana // Escala Global',
-        desc: 'Sistemas digitales que no solo existen, dominan. Ecosistemas soberanos diseñados para resistir tráfico masivo y operaciones críticas.',
-        fullDesc: 'Construimos la columna vertebral de tu imperio digital. Dejamos el "código limpio" para los amateurs; nosotros programamos plataformas resistentes a tráfico extremo y seguridad inexpugnable.',
-        humanDesc: 'Tu negocio necesita un motor, no una carcasa. Creamos sistemas que aguantan millones de usuarios y procesan operaciones críticas en milisegundos. Si se cae, pierdes dinero. Con nosotros, no se cae.',
-        services: 'Desarrollo de Sistemas, Arquitecturas Sovereign, Ingeniería de Nube',
-        humanServices: 'Sistemas a Medida, Nube de Alta Disponibilidad, Base de Datos Robusta',
+        title: 'PÁGINAS WEB Y APPS',
+        subtitle: 'Arquitectura Soberana // Diseño de Autoridad',
+        desc: 'Sistemas y sitios digitales que no solo existen, dominan. Ecosistemas diseñados para resistir tráfico masivo y operaciones críticas.',
+        fullDesc: 'Construimos la interfaz de tu autoridad. Creamos plataformas web y aplicaciones de alto rendimiento que proyectan poder y escalan tu negocio sin límites.',
+        humanDesc: 'Tu negocio necesita un activo digital, no un folleto. Hacemos webs y apps que aguantan millones de usuarios y se cargan en milisegundos. Si no domina, no es AgencIA.',
+        services: 'Desarrollo Web de Élite, Apps Inmersivas, SaaS Escalables',
+        humanServices: 'Webs Premium, Apps para Negocio, Plataformas de Software',
         buttonCopy: 'NIVEL DE ACCESO: HUMANO',
         year: '2025',
         img: techArchitectureImg,
         video: architectureVideo,
         path: '/infraestructura',
-        ctaCopy: 'INICIAR ARQUITECTURA'
+        ctaCopy: 'CONSTRUIR ACTIVOS'
     },
     {
         id: '02',
-        title: 'AUTOMATIZACIÓN & IA',
-        subtitle: 'Eficiencia Imposible // Sistemas Autónomos',
+        title: 'AUTOMATIZACIÓN E IA',
+        subtitle: 'Software Inteligente // Sistemas Autónomos',
         desc: 'El fin de la micro-gestión. Implementamos cerebros digitales que optimizan procesos y escalan tu operación sin intervención humana.',
-        fullDesc: 'Implementamos la "Plataforma 360", un ecosistema donde la IA asume el control operativo de tu negocio. Ventas, soporte y agendamiento ocurren simultáneamente con precisión quirúrgica.',
-        humanDesc: 'Imagina un ejército de agentes perfectos que no duermen, no piden vacaciones y no cometen errores. Venden, atienden y organizan tu empresa mientras tú te enfocas en liderar.',
-        services: 'Agentes Autónomos de IA, Flujos Operativos, Automatización 360',
-        humanServices: 'Vendedor IA 24/7, Procesos Automáticos, Inteligencia de Negocio',
+        fullDesc: 'Implementamos la "Plataforma 360", un ecosistema donde la IA asume el control operativo de tu negocio. Ventas, soporte y agendamiento ocurren solos con precisión absoluta.',
+        humanDesc: 'Imagina un ejército de clones perfectos que venden, atienden y organizan tu empresa mientras tú te enfocas en liderar su crecimiento.',
+        services: 'Agentes Autónomos de IA, Flujos Automáticos, Sistemas de Control',
+        humanServices: 'Vendedor IA 24/7, Procesos en Piloto Automático, Ahorro Operativo',
         buttonCopy: 'VERSIÓN SIMPLIFICADA',
         year: '2025',
         img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop',
@@ -49,16 +49,16 @@ const CASES = [
     },
     {
         id: '03',
-        title: 'WEB & PRODUCTO DIGITAL',
-        subtitle: 'Interfaz de Autoridad // SaaS & Apps',
-        desc: 'No diseñamos folletos, construimos activos. Experiencias web de culto y plataformas SaaS diseñadas con psicología de conversión y rendimiento de élite.',
-        fullDesc: 'Trascendemos lo visual para diseñar sistemas que proyectan autoridad absoluta. Tu web o SaaS dejará de competir para empezar a reinar en su mercado mediante diseño intencional y arquitectura de vanguardia.',
-        humanDesc: 'La gente asume que tu producto es tan bueno como se ve tu web. Hacemos que tu marca se vea tan poderosa y profesional que la confianza del cliente sea instantánea e indudable.',
-        services: 'Desarrollo Web Inmersivo, Plataformas SaaS, Apps de Autoridad',
-        humanServices: 'Webs que Venden, Sistemas SaaS, Diseño de Producto Premium',
+        title: 'BRANDING Y DISEÑO',
+        subtitle: 'La Cara de tu Autoridad // Estética Premium',
+        desc: 'No diseñamos logos, codificamos respeto. Estética inmersiva que provoca deseo inmediato y posiciona tu marca como líder indiscutible.',
+        fullDesc: 'Trascendemos lo visual para diseñar sistemas de identidad que dominan el mercado. Tu marca dejará de competir para empezar a reinar en la mente de tus clientes.',
+        humanDesc: 'La gente compra por cómo se siente. Hacemos que tu marca se vea tan poderosa y profesional que la confianza de tus clientes sea inmediata e indudable.',
+        services: 'Identidad Visual de Lujo, Diseño de Interfaz Pro, Motion Design',
+        humanServices: 'Imagen de Líder, Diseño que Impacta, Animaciones de Cine',
         buttonCopy: 'ENTENDER EL CONCEPTO',
         year: '2025',
-        img: identidadVideo, // Using video as img for poster/fallback
+        img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop',
         video: identidadVideo,
         path: '/identidad',
         ctaCopy: 'CONSTRUIR AUTORIDAD'
@@ -570,7 +570,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         padding: 1.5rem !important;
                         flex-shrink: 0;
                         border-right: 1px solid rgba(0,0,0,0.05);
-                        overflow-y: hidden !important;
+                        overflow-y: visible !important; /* FIXED: Allow text to be visible */
                     }
 
                     .showcase-media-window {

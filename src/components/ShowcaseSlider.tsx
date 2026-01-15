@@ -485,7 +485,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         }}>
                             <div>
                                 <h3 className="showcase-title" style={{
-                                    fontSize: isMobile ? '1.8rem' : '2.5rem',
+                                    fontSize: isMobile ? '1.5rem' : '2.5rem', // REDUCED ON MOBILE
                                     fontWeight: 800,
                                     margin: '0 0 0.5rem 0',
                                     color: '#000',
@@ -512,8 +512,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             }}>{item.id}</span>
                         </div>
                         <p style={{
-                            marginTop: '1.5rem', // Changed from auto to fixed to ensure visibility
-                            paddingTop: '0.5rem',
+                            marginTop: isMobile ? '0.75rem' : '1.5rem', // TIGHTER ON MOBILE
+                            paddingTop: '0.25rem',
                             fontSize: 'clamp(0.9rem, 1vw, 1.1rem)', // FLUID FONTS
                             lineHeight: 1.5, // Slightly tighter
                             color: '#444',
@@ -565,17 +565,17 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         width: 85vw !important;
                         max-width: 85vw !important;
                         min-width: 85vw !important;
-                        height: 70vh !important;
+                        height: 75vh !important; /* INCREASED FOR BREATHING ROOM */
                         margin: 0 !important;
-                        padding: 1.5rem 1.5rem 2rem 1.5rem !important;
+                        padding: 1.5rem !important;
                         flex-shrink: 0;
                         border-right: 1px solid rgba(0,0,0,0.05);
                         overflow-y: hidden !important;
                     }
 
                     .showcase-media-window {
-                        height: 40% !important;
-                        min-height: 200px !important;
+                        height: 35% !important; /* REDUCED TO SAVE SPACE */
+                        min-height: 180px !important;
                         flex-shrink: 0;
                         overflow: hidden !important;
                     }

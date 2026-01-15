@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScroll } from '../context/ScrollContext'; // Import useScroll
 import techArchitectureImg from '../assets/images/architecture_digital.jpg';
 import architectureVideo from "../assets/videos/infraestructura_final_opt.mp4";
-import automationVideo from '../assets/videos/automatizacion.mp4';
+import automationVideo from '../assets/videos/automatizacion_final_opt.mp4';
 import identidadVideo from '../assets/videos/IDENTIDAD VISUAL.mp4';
 
 gsap.registerPlugin(ScrollTrigger);

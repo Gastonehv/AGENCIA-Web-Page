@@ -239,8 +239,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 }
                 scrollTimeline.to({}, { duration: 0.15 });
 
-                // PARALLAX v6: Counter-Movement (Inverted Direction for 2x Friction)
-                const parallaxRange = 10; // SAFE RANGE for 130% zoom
+                // PARALLAX v7: Natural Aspect (16:9 native vs 4:3 window)
+                const parallaxRange = 8; // ULTRA SAFE: Uses natural extra width
 
                 imagesRef.current.forEach((img, i) => {
                     if (!img || !cardsRef.current[i]) return;
@@ -252,32 +252,32 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             start: "left 100%",
                             end: "right 0%",
                             scrub: 0.1,
-                            id: `parallax-focal-${i}`
+                            id: `parallax-natural-${i}`
                         }
                     });
 
-                    tl.set(img, { xPercent: 0, scale: 1.0, rotateY: 0 }); // Entrance: Centered
+                    tl.set(img, { xPercent: 0, scale: 1.0, rotateY: 0 }); // Native Center
                     tl.to(img, {
-                        xPercent: -parallaxRange, // SWING LEFT
-                        scale: 1.1,
-                        rotateY: 4,
+                        xPercent: -parallaxRange,
+                        scale: 1.05, // Almost invisible zoom, just for Z-feeling
+                        rotateY: 3, // Minimal jewelry volume
                         duration: 0.35,
                         ease: "power1.inOut"
-                    }); // Swing to Start Position
+                    });
                     tl.to(img, {
-                        xPercent: parallaxRange, // SWING RIGHT (Counter to Slider Left)
-                        scale: 1.1,
-                        rotateY: -4,
+                        xPercent: parallaxRange,
+                        scale: 1.05,
+                        rotateY: -3,
                         duration: 0.3,
                         ease: "none"
-                    }); // MAIN FOCAL PARALLAX (Counter-Flow)
+                    }); // NATURAL COUNTER-MOVEMENT
                     tl.to(img, {
                         xPercent: 0,
                         scale: 1.0,
                         rotateY: 0,
                         duration: 0.35,
                         ease: "power1.inOut"
-                    }); // Exit: Back to center
+                    }); // Reset
                 });
             });
 
@@ -445,11 +445,11 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     poster={item.img}
                                     className="showcase-video"
                                     style={{
-                                        width: '130%', // FOCAL ZOOM (130%) - OPTIMAL SHARPNESS
+                                        width: '133.33%', // NATIVE 16:9 OVER 4:3 WINDOW (1.77 / 1.33 = 1.333)
                                         height: '100%',
                                         objectFit: 'cover',
                                         position: 'absolute',
-                                        left: '-15%', // Perfectly centered for 130%
+                                        left: '-16.66%', // PERFECT NATIVE CENTER ((133.33 - 100) / 2)
                                         top: 0,
                                         willChange: 'transform',
                                         backfaceVisibility: 'hidden',
@@ -462,13 +462,13 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     ref={el => { imagesRef.current[i] = el; }}
                                     className="showcase-image"
                                     style={{
-                                        width: '130%',
+                                        width: '133.33%',
                                         height: '100%',
                                         backgroundImage: `url(${item.img})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         position: 'absolute',
-                                        left: '-15%',
+                                        left: '-16.66%',
                                         top: 0,
                                         backfaceVisibility: 'hidden'
                                     }}

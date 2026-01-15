@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import videoPillar1 from '../assets/videos/simbiosis_001_opt.mp4';
 import videoPillar2 from '../assets/videos/simbiosis_002_opt.mp4';
 import videoPillar3 from '../assets/videos/simbiosis_003_opt.mp4';
+import CinematicTitle from './CinematicTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,7 +37,7 @@ const MediaPlayer = memo(({ src, type }: { src: string, type: 'video' | 'image' 
             style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'cover',
+                objectFit: 'contain', // Changed from 'cover' to show full video scale
                 display: 'block'
             }}
         />
@@ -101,91 +102,111 @@ const Symbiosis: React.FC = () => {
             ref={sectionRef}
             id="simbiosis-startups"
             style={{
-                height: '100vh',
-                background: 'linear-gradient(180deg, #FFFFFF 0%, #F5F7FA 25%, #E2E8F0 50%, #F5F7FA 75%, #FFFFFF 100%)',
+                height: '100vh', // LOCKED: Strictly one screen
+                backgroundColor: '#000000',
+                color: '#FFFFFF',
                 position: 'relative',
                 display: 'flex', flexDirection: 'column',
                 zIndex: 200,
-                overflow: 'hidden',
-                scrollSnapAlign: 'start' // CSS snap for smooth positioning
+                overflow: 'hidden', // Contain everything
+                scrollSnapAlign: 'start'
             }}
         >
-            {/* MINIMALIST DOT GRID */}
-            <div className="dot-grid" style={{
-                position: 'absolute', inset: '-100px',
-                backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.15) 1px, transparent 1px)',
-                backgroundSize: '32px 32px', opacity: 0.6, pointerEvents: 'none', zIndex: 4,
-                willChange: 'transform'
+            {/* GRID OVERLAY - Subtle Tech Feel */}
+            {/* LIVING NOISE TEXTURE */}
+            <div style={{
+                position: 'absolute', inset: -50,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`,
+                opacity: 0.15, // VISIBLE NOW
+                mixBlendMode: 'normal',
+                pointerEvents: 'none',
+                animation: 'noise-shift 0.2s infinite',
+                zIndex: 1
             }} />
+            <style>{`
+                @keyframes noise-shift {
+                    0% { transform: translate(0,0); }
+                    10% { transform: translate(-5px,-5px); }
+                    20% { transform: translate(-10px,5px); }
+                    30% { transform: translate(5px,-10px); }
+                    40% { transform: translate(-5px,15px); }
+                    50% { transform: translate(-10px,5px); }
+                    60% { transform: translate(15px,0); }
+                    70% { transform: translate(0,10px); }
+                    80% { transform: translate(-15px,0); }
+                    90% { transform: translate(10px,5px); }
+                    100% { transform: translate(5px,0); }
+                }
+            `}</style>
 
             {/* MAIN DASHBOARD */}
             <div style={{
                 position: 'relative',
                 zIndex: 10,
-                maxWidth: '95%',
+                maxWidth: '96%', // Wider spread
                 width: '100%',
                 margin: '0 auto',
                 height: '100%',
-                padding: '120px 2% 40px',
+                padding: '2vh 2% 2vh', // Compact vertical padding
                 boxSizing: 'border-box',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '4vh',
-                justifyContent: 'center'
+                justifyContent: 'space-between' // Spread title and cards evenly
             }}>
 
-                {/* header row */}
+                {/* HEADER: RESTRUCTURED - Kicker above, Title+Manifesto on same line */}
                 <div style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-end',
-                    flexWrap: 'wrap',
-                    gap: '2rem'
+                    marginBottom: '2vh',
+                    borderBottom: '1px solid rgba(255,255,255,0.2)',
+                    paddingBottom: '1vh'
                 }}>
-                    {/* TITLE */}
-                    <div>
-                        <div style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ height: '2px', background: '#000', width: '30px' }} />
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.3em', color: '#000', textTransform: 'uppercase', fontWeight: 600 }}>
-                                ACELERADORA_DE_IMPACTO
-                            </span>
-                        </div>
-                        <h2 ref={titleRef} style={{
-                            fontSize: 'clamp(3rem, 5vw, 5rem)',
-                            fontWeight: 900,
-                            lineHeight: 0.85,
-                            letterSpacing: '-0.04em',
-                            margin: 0,
-                            textTransform: 'uppercase',
-                            color: '#000'
-                        }}>
-                            SIMBIOSIS
-                        </h2>
+                    {/* 1. KICKER - OWN LINE */}
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#00FF99', marginBottom: '0.5rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                        <span>/// SISTEMA_OPERATIVO_DE_CRECIMIENTO</span>
+                        <span style={{ width: '40px', height: '1px', backgroundColor: '#00FF99' }}></span>
                     </div>
 
-                    {/* STATEMENT */}
-                    <div style={{ maxWidth: '500px', textAlign: 'right', paddingBottom: '0.5rem' }}>
-                        <h3 style={{
-                            fontSize: 'clamp(1rem, 1.5vw, 1.5rem)',
-                            fontWeight: 700,
-                            lineHeight: 1.2,
-                            color: '#000',
-                            margin: '0 0 10px 0',
-                            letterSpacing: '-0.02em'
+                    {/* 2. TITLE + MANIFESTO ROW */}
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'flex-end',
+                        justifyContent: 'space-between',
+                        flexWrap: 'wrap',
+                        gap: '1rem'
+                    }}>
+                        {/* TITLE */}
+                        <h2 ref={titleRef} style={{
+                            fontSize: 'clamp(4rem, 13vw, 12rem)',
+                            lineHeight: 0.85,
+                            letterSpacing: '-0.06em',
+                            margin: 0,
+                            textTransform: 'uppercase',
+                            color: '#FFF',
+                            whiteSpace: 'nowrap',
+                            flex: '1 1 auto'
                         }}>
-                            ¿Tienes una Startup con tracción?
-                        </h3>
-                        <p style={{
-                            fontFamily: 'var(--font-body)',
-                            fontSize: 'clamp(0.8rem, 1vw, 1rem)',
-                            lineHeight: 1.5,
-                            color: '#555',
-                            margin: 0
-                        }}>
-                            Evaluamos fit técnico y equity en <strong style={{ color: '#000', fontWeight: 800 }}>48 horas.</strong><br />
-                            Infraestructura, Talento y Capital listos para escalar.
-                        </p>
+                            <CinematicTitle
+                                text="SIMBIOSIS"
+                                stagger={0.06}
+                            />
+                        </h2>
+
+                        {/* MANIFESTO */}
+                        <div className="manifesto-block" style={{ textAlign: 'right', maxWidth: '350px', flexShrink: 0 }}>
+                            <h3 style={{
+                                fontSize: 'clamp(1rem, 1.3vw, 1.5rem)',
+                                fontWeight: 600,
+                                color: '#FFF',
+                                margin: 0,
+                                textTransform: 'uppercase',
+                                letterSpacing: '-0.02em',
+                                lineHeight: 1.2
+                            }}>
+                                No buscamos clientes.<br />
+                                <span style={{ color: '#888' }}>Buscamos imperios.</span>
+                            </h3>
+                        </div>
                     </div>
                 </div>
 
@@ -195,9 +216,9 @@ const Symbiosis: React.FC = () => {
                     flexDirection: 'row',
                     gap: '1.5vw',
                     flex: '1 1 auto',
-                    minHeight: 0,
+                    minHeight: 0, // CRITICAL: Allow grid to shrink to fit
                     width: '100%',
-                    overflow: 'visible'
+                    overflow: 'hidden'
                 }}>
 
                     {/* CARD 1: SOCIOS */}
@@ -211,24 +232,24 @@ const Symbiosis: React.FC = () => {
                         {/* HEADER */}
                         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '1.5rem', zIndex: 10, background: 'linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)' }}>
                             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#FF40FF', letterSpacing: '0.15em', fontWeight: 700, marginBottom: '5px' }}>
-                                /// 01_ALIANZA
+                                /// 01_ÉLITE
                             </div>
                             <h3 style={{ color: '#FFF', fontSize: '1.8rem', fontWeight: 800, margin: 0, letterSpacing: '-0.03em', lineHeight: 0.9 }}>
-                                SOCIOS DE<br />CÓDIGO
+                                INGENIERÍA<br />DE ÉLITE
                             </h3>
                         </div>
                         {/* MEDIA */}
                         <div style={{ flex: '1 1 auto', position: 'relative', overflow: 'hidden' }}>
-                            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '30px 30px', zIndex: 0, pointerEvents: 'none' }} />
-                            <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', minHeight: '300px' }}>
+                            <div style={{ position: 'absolute', inset: 0, backgroundColor: '#000', zIndex: 0, pointerEvents: 'none' }} />
+                            <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', minHeight: 0, flex: 1 }}>
                                 {chartAssets.pillar1 && <MediaPlayer src={chartAssets.pillar1.src} type={chartAssets.pillar1.type} />}
                             </div>
                         </div>
                         {/* FOOTER */}
-                        <div style={{ padding: '1.5rem', background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div style={{ padding: '1rem', background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                             <p style={{ color: '#888', fontSize: '0.8rem', margin: 0, lineHeight: 1.4 }}>
                                 CTO Fraccional & Dev Team.<br />
-                                <span style={{ color: '#FFF' }}>MVP en 4 Semanas.</span>
+                                <span style={{ color: '#FFF' }}>De idea a mercado en 30 días. Sin excusas.</span>
                             </p>
                         </div>
                     </div>
@@ -250,12 +271,12 @@ const Symbiosis: React.FC = () => {
                             </h3>
                         </div>
                         <div style={{ flex: '1 1 auto', position: 'relative', overflow: 'hidden' }}>
-                            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '30px 30px', zIndex: 0, pointerEvents: 'none' }} />
-                            <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', minHeight: '300px' }}>
+                            <div style={{ position: 'absolute', inset: 0, backgroundColor: '#000', zIndex: 0, pointerEvents: 'none' }} />
+                            <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', minHeight: 0, flex: 1 }}>
                                 {chartAssets.pillar2 && <MediaPlayer src={chartAssets.pillar2.src} type={chartAssets.pillar2.type} />}
                             </div>
                         </div>
-                        <div style={{ padding: '1.5rem', background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div style={{ padding: '1rem', background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                             <p style={{ color: '#888', fontSize: '0.8rem', margin: 0, lineHeight: 1.4 }}>
                                 AWS / Google Cloud Partners.<br />
                                 <span style={{ color: '#FFF' }}>99.9% Uptime Garantizado.</span>
@@ -263,7 +284,7 @@ const Symbiosis: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* CARD 3: INVERSIÓN */}
+                    {/* CARD 3: ALINEACIÓN */}
                     <div className="pillar-item" style={{
                         flex: '1 1 0px', minWidth: 0,
                         position: 'relative', display: 'flex', flexDirection: 'column',
@@ -273,22 +294,22 @@ const Symbiosis: React.FC = () => {
                     }}>
                         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '1.5rem', zIndex: 10, background: 'linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)' }}>
                             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#00FF99', letterSpacing: '0.15em', fontWeight: 700, marginBottom: '5px' }}>
-                                /// 03_CAPITAL
+                                /// 03_DOMINIO
                             </div>
                             <h3 style={{ color: '#FFF', fontSize: '1.8rem', fontWeight: 800, margin: 0, letterSpacing: '-0.03em', lineHeight: 0.9 }}>
-                                ID PARA<br />INVERSIÓN
+                                DOMINIO DE<br />MERCADO
                             </h3>
                         </div>
                         <div style={{ flex: '1 1 auto', position: 'relative', overflow: 'hidden' }}>
-                            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '30px 30px', zIndex: 0, pointerEvents: 'none' }} />
-                            <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', minHeight: '300px' }}>
+                            <div style={{ position: 'absolute', inset: 0, backgroundColor: '#000', zIndex: 0, pointerEvents: 'none' }} />
+                            <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', minHeight: 0, flex: 1 }}>
                                 {chartAssets.pillar3 && <MediaPlayer src={chartAssets.pillar3.src} type={chartAssets.pillar3.type} />}
                             </div>
                         </div>
-                        <div style={{ padding: '1.5rem', background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div style={{ padding: '1rem', background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                             <p style={{ color: '#888', fontSize: '0.8rem', margin: 0, lineHeight: 1.4 }}>
-                                Pitch Decks & Data Rooms.<br />
-                                <span style={{ color: '#FFF' }}>Autoridad de Mercado.</span>
+                                Infraestructura & Talento.<br />
+                                <span style={{ color: '#FFF' }}>Tú pones la visión, nosotros el motor.</span>
                             </p>
                         </div>
                     </div>
@@ -301,22 +322,35 @@ const Symbiosis: React.FC = () => {
                         height: auto !important;
                         min-height: 100vh !important;
                         overflow: visible !important;
-                        padding: 80px 0 !important;
+                        padding: 60px 0 !important;
+                    }
+                    #simbiosis-startups h2 {
+                        font-size: clamp(3rem, 18vw, 6rem) !important;
+                        white-space: normal !important;
+                        line-height: 0.9 !important;
+                        text-align: left !important;
+                        width: 100% !important;
                     }
                     .pillars-grid {
                         flex-direction: column !important;
                         align-items: center !important;
                         justify-content: flex-start !important;
-                        padding: 0 1rem !important;
-                        gap: 2rem !important;
+                        padding: 0 1.5rem !important;
+                        gap: 2.5rem !important;
                         width: 100% !important;
                         max-width: 100% !important;
                     }
                     .pillar-item {
-                        min-height: 50vh !important;
+                        min-height: 400px !important;
                         width: 100% !important;
                         max-width: 100% !important;
                         margin: 0 !important;
+                    }
+                    #simbiosis-startups .manifesto-block {
+                        text-align: left !important;
+                        align-self: flex-start !important;
+                        margin-top: 1rem !important;
+                        max-width: 100% !important;
                     }
                 }
             `}</style>

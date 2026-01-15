@@ -496,10 +496,9 @@ const Arquitectura: React.FC = () => {
                         textAlign: 'left',
                         textShadow: '0 2px 4px rgba(0,0,0,0.9)'
                     }}>
-                        Construimos <strong style={{ color: '#00FF99' }}>ecosistemas digitales soberanos</strong>:
-                        desde aplicaciones que soportan millones de transacciones hasta portales corporativos
-                        que cierran tratos antes del primer clic. Tu presencia es tu activo más valioso;
-                        lo convertimos en una herramienta de dominio absoluto.
+                        El software barato se rompe justo cuando tienes éxito. Diseñamos para
+                        <strong style={{ color: '#00FF99' }}>100,000 usuarios concurrentes</strong>,
+                        no para demos de 5 minutos. Si tu web se cae, pierdes dinero. Nosotros aseguramos que eso nunca pase.
                     </p>
 
                     {/* HUMAN TRANSLATION - WHAT THIS MEANS IN PLAIN LANGUAGE */}
@@ -531,7 +530,7 @@ const Arquitectura: React.FC = () => {
                                 borderRadius: '50%',
                                 boxShadow: '0 0 10px #00FF99'
                             }} />
-                            EN SIMPLE
+                            VERDAD FINANCIERA
                         </div>
                         {/* Human-friendly text */}
                         <p style={{
@@ -541,9 +540,8 @@ const Arquitectura: React.FC = () => {
                             color: 'rgba(255, 255, 255, 0.9)',
                             fontWeight: 300
                         }}>
-                            No vendemos páginas; <strong style={{ color: '#fff', fontWeight: 600 }}>construimos el motor de tu negocio digital</strong>.
-                            Software que funciona sin errores, Apps que la gente ama usar
-                            y plataformas que escalan junto con tu ambición.
+                            <strong style={{ color: '#fff', fontWeight: 600 }}>Tu web actual es un folleto estático.</strong>
+                            Nosotros construimos armas de conversión masiva preparadas para escalar.
                         </p>
                         {/* Tech Stack Badges */}
                         <div style={{
@@ -610,10 +608,9 @@ const Arquitectura: React.FC = () => {
                         textAlign: isMobile ? 'left' : 'right',
                         textShadow: '0 2px 4px rgba(0,0,0,0.9)'
                     }}>
-                        El software lento tiene un costo oculto: tu crecimiento. Forjamos
-                        <strong style={{ color: '#8F00FF' }}> ecosistemas SaaS y aplicaciones empresariales</strong> que
-                        trascienden el código tradicional. Creamos máquinas de control robustas que eliminan
-                        los cuellos de botella para que tu única limitación sea tu propia ambición.
+                        El software lento tiene un costo oculto: tu crecimiento.
+                        <strong style={{ color: '#8F00FF' }}> El empleado más caro es el error humano.</strong>
+                        Nuestros sistemas cuestan menos, no se enferman y no duermen.
                     </p>
 
                     {/* HUMAN TRANSLATION - SECTION 2 */}
@@ -642,7 +639,7 @@ const Arquitectura: React.FC = () => {
                                 borderRadius: '50%',
                                 boxShadow: '0 0 10px #8F00FF'
                             }} />
-                            EN SIMPLE
+                            REALIDAD OPERATIVA
                         </div>
                         <p style={{
                             margin: 0,
@@ -651,9 +648,8 @@ const Arquitectura: React.FC = () => {
                             color: 'rgba(255, 255, 255, 0.9)',
                             fontWeight: 300
                         }}>
-                            Es como tener un <strong style={{ color: '#fff', fontWeight: 600 }}>ejército digital trabajando para ti</strong>.
-                            Un sistema que responde WhatsApp, agenda citas y maneja tus ventas sin que tengas que mover un dedo.
-                            Eficiencia real, 24 horas al día.
+                            Es como tener un <strong style={{ color: '#fff', fontWeight: 600 }}>ejército digital 24/7</strong>.
+                            Un sistema que responde WhatsApp, agenda citas y maneja tus ventas sin intervención.
                         </p>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem' }}>
                             {['Software a Medida', 'Aplicaciones Móviles', 'Páginas Ultrarrápidas'].map((tag) => (
@@ -715,10 +711,9 @@ const Arquitectura: React.FC = () => {
                         textAlign: isMobile ? 'left' : 'center',
                         textShadow: '0 2px 4px rgba(0,0,0,0.9)'
                     }}>
-                        Un componente aislado no sostiene nada. Integramos APIs, capas de datos y servicios cloud
-                        para crear un <strong style={{ color: '#00E5FF' }}>organismo digital vivo</strong>.
-                        Conectamos cada fibra de tu negocio para que el frontend, el backend y tus herramientas
-                        de gestión operen bajo un mismo pulso inteligente.
+                        Un componente aislado es un punto de fallo.
+                        <strong style={{ color: '#00E5FF' }}> Tu CRM no sabe lo que vende tu Web. Esa desconexión te cuesta dinero.</strong>
+                        Unificamos todos tus datos en tiempo real para que dejes de perder ventas.
                     </p>
 
                     {/* HUMAN TRANSLATION - SECTION 3 */}
@@ -748,7 +743,7 @@ const Arquitectura: React.FC = () => {
                                 borderRadius: '50%',
                                 boxShadow: '0 0 10px #00E5FF'
                             }} />
-                            EN SIMPLE
+                            VERDAD TÉCNICA
                         </div>
                         <p style={{
                             margin: 0,
@@ -758,9 +753,8 @@ const Arquitectura: React.FC = () => {
                             fontWeight: 300,
                             textAlign: 'center'
                         }}>
-                            <strong style={{ color: '#fff', fontWeight: 600 }}>Todo conectado, todo funcionando</strong>.
-                            Tu web, tu app, tu CRM, tus pagos y tu inventario hablando el mismo idioma.
-                            Sin islas de información, sin caos. Un solo sistema que lo une todo.
+                            <strong style={{ color: '#fff', fontWeight: 600 }}>Silos de datos = Muerte lenta.</strong>
+                            Conectamos tu web, tu app y tus pagos para que funcionen como un solo organismo.
                         </p>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem', justifyContent: 'center' }}>
                             {['APIs Conectadas', 'Cloud Nativo', 'Sistemas Unificados'].map((tag) => (

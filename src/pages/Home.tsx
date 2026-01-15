@@ -379,7 +379,7 @@ const Home: React.FC = () => {
                     opacity: 1,
                     filter: 'blur(0px)',
                     transform: 'scale(1)',
-                    color: '#000',
+                    color: '#FFF',
                     duration: 3,
                     ease: 'expo.out'
                 }, ">-0.5");
@@ -425,6 +425,20 @@ const Home: React.FC = () => {
                 }, ">+1.5"); // Minimal pause: 1.5 units (just enough to finish the sentence)
 
 
+                // --- FLASHBANG TRIGGER (Link jumping from Symbiosis -> CTA) ---
+                // Trigger when the CTA section hits the middle/start of viewport
+                ScrollTrigger.create({
+                    trigger: '#contacto',
+                    start: 'top bottom', // Start flashing as soon as Contacto enters viewport
+                    end: 'top center',
+                    onEnter: () => {
+                        gsap.fromTo('#flash-overlay',
+                            { opacity: 1, mixBlendMode: 'normal' }, // Normal white flash
+                            { opacity: 0, duration: 0.5, ease: 'power2.out', overwrite: true }
+                        );
+                    }
+                });
+
                 // --- 5. CTA SECTION ANIMATION (STICKY SCRUB) ---
                 if (ctaSectionRef.current) {
                     const ctaTl = gsap.timeline({
@@ -445,6 +459,20 @@ const Home: React.FC = () => {
                                 duration: { min: 0.5, max: 1.2 }, // Slightly longer for "automatic" feel
                                 delay: 0.02, // Near instant 
                                 ease: 'expo.out' // Snappy but smooth finish
+                            },
+                            onLeave: () => {
+                                // FLASHBANG TRIGGER
+                                gsap.fromTo('#flash-overlay',
+                                    { opacity: 1 },
+                                    { opacity: 0, duration: 0.2, ease: 'power4.out', overwrite: true }
+                                );
+                            },
+                            onEnterBack: () => {
+                                // REVERSE FLASH (Optional, keeps it alive)
+                                gsap.fromTo('#flash-overlay',
+                                    { opacity: 0.8 },
+                                    { opacity: 0, duration: 0.3, ease: 'power4.out', overwrite: true }
+                                );
                             }
                         }
                     });
@@ -644,12 +672,12 @@ const Home: React.FC = () => {
 
                             {/* LINE 2: ESENCIA (Giant) */}
                             <div style={{
-                                display: 'flex', gap: '0.1em', whiteSpace: 'nowrap', flexWrap: 'nowrap',
-                                width: '100%', justifyContent: 'center', alignItems: 'center', // Force center alignment and full width
-                                transform: 'translateX(-0.04em)' // NANO SHIFT (Barely there)
+                                display: 'flex', gap: '0', whiteSpace: 'nowrap', flexWrap: 'nowrap', // REMOVED GAP 0.1em to prevent splitting
+                                width: '100%', justifyContent: 'center', alignItems: 'center',
+                                transform: 'translateX(-0.04em)'
                             }}>
                                 {/* PART 2A: ESENC (Will Fade Away) */}
-                                <span className="word-esenc" style={{ display: 'inline-flex', flexShrink: 0 }}>
+                                <span className="word-esenc" style={{ display: 'inline-flex', flexShrink: 0, letterSpacing: '-0.02em' }}>
                                     <span className="hero-char-main">E</span>
                                     <span className="hero-char-main">S</span>
                                     <span className="hero-char-main">E</span>
@@ -658,9 +686,9 @@ const Home: React.FC = () => {
                                 </span>
 
                                 {/* PART 2B: IA (The Final Survivor) */}
-                                <span className="word-ia-wrapper" style={{ display: 'inline-flex', flexShrink: 0 }}>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow' }}>I</span>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow' }}>A</span>
+                                <span className="word-ia-wrapper" style={{ display: 'inline-flex', flexShrink: 0, letterSpacing: '-0.02em' }}>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow', transformOrigin: 'center' }}>I</span>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow', transformOrigin: 'center' }}>A</span>
                                 </span>
                             </div>
                         </h1>
@@ -781,7 +809,8 @@ const Home: React.FC = () => {
                             transform: 'translateY(20px)',
                             filter: 'blur(10px)'
                         }}>
-                            Trascendemos la estética convencional.
+                            No hacemos "diseño bonito". Construimos interfaces que<br />
+                            <strong style={{ color: '#00FF99' }}>imponen autoridad</strong> y capturan mercado.
                         </p>
 
                         {/* Line 2 - NIVEL 2 */}
@@ -797,7 +826,7 @@ const Home: React.FC = () => {
                             filter: 'blur(10px)',
                             textShadow: '3px 6px 12px rgba(0,0,0,0.28)'
                         }}>
-                            Orquestamos sistemas de inteligencia visual que no solo comunican, sino que dominan el entorno digital.
+                            Estética superior. Ejecución quirúrgica. Resultados financieros.
                         </p>
 
                         {/* Line 3 - NIVEL 1 (más cerca, más marcada) */}
@@ -814,7 +843,7 @@ const Home: React.FC = () => {
                             filter: 'blur(10px)',
                             textShadow: '4px 8px 16px rgba(0,0,0,0.35)'
                         }}>
-                            Simbiosis absoluta entre intuición humana y precisión algorítmica.
+                            Creatividad humana. Velocidad de máquina.
                         </p>
                     </div>
 
@@ -886,6 +915,9 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* 7. SIMBIOSIS */}
+                {/* GRADIENT BRIDGE: WHITE -> BLACK (Smooth Descent) */}
+                <div style={{ height: '20vh', background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)', width: '100%', position: 'relative', zIndex: 15 }} />
+
                 <div id="simbiosis" style={{ position: 'relative' }}>
                     {/* CAP 005 REMOVED */}
                     <Symbiosis />

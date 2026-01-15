@@ -628,8 +628,8 @@ const Automatizacion: React.FC = () => {
                             color: 'rgba(255, 255, 255, 0.9)',
                             fontWeight: 300
                         }}>
-                            Tu equipo se libera para <strong style={{ color: '#fff', fontWeight: 600 }}>tareas de alto valor</strong> mientras la IA maneja lo operativo.
-                            Es como tener un ejército digital trabajando 24/7 sin distracciones.
+                            <strong style={{ color: '#fff', fontWeight: 600 }}>Para un equipo humano de 20 personas</strong>, coordinar ventas, soporte y despliegue en 100ms es imposible.
+                            Para AgencIA, es solo un martes por la mañana.
                         </p>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem', justifyContent: isMobile ? 'flex-start' : 'flex-end' }}>
                             {['Control Absoluto', 'Sistemas Conectados', 'Visión 360'].map((tag) => (

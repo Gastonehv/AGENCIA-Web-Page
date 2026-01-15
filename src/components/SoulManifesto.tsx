@@ -21,8 +21,8 @@ const MANIFESTO = [
         body: ["Fusionamos sensibilidad artística visceral", "con potencia de cálculo masiva.", "Donde otros ven simples 'prompts',", "nosotros vemos partituras complejas."],
     },
     {
-        title: "NO BUSCAMOS CLIENTES. BUSCAMOS CÓMPLICES.",
-        body: ["Si buscas lo seguro", "el mundo está lleno de opciones.", "Pero si buscas redefinir las reglas...", "bienvenido a casa."],
+        title: "LA MEDIOCRIDAD ES EL ENEMIGO",
+        body: ["Si buscas lo seguro,", "el mundo está lleno de agencias.", "Pero si buscas lo imposible,", "bienvenido a casa."],
     }
 ];
 

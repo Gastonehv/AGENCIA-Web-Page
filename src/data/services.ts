@@ -1,6 +1,6 @@
 import genesisImg from '../assets/images/genesis-sneaker.jpg';
 import digitalArchImg from '../assets/images/architecture-interface.png';
-import cognitiveEcoImg from '../assets/images/ai-processor.jpg';
+
 import processSyncImg from '../assets/images/automation-growth.jpg';
 
 export interface ServicePortal {
@@ -32,15 +32,7 @@ export const servicesData: ServicePortal[] = [
         path: '/infraestructura',
         color: '#05d9e8' // Cyan
     },
-    {
-        id: 'inteligencia',
-        titleKey: 'service.cortex',
-        conceptKey: 'concept.cortex',
-        descKey: 'cat.ai',
-        image: cognitiveEcoImg,
-        path: '/ia-generativa',
-        color: '#7700ff' // Electric Purple
-    },
+
     {
         id: 'automatizacion',
         titleKey: 'service.nexus',

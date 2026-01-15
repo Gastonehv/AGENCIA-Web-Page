@@ -18,50 +18,50 @@ const CASES = [
     {
         id: '01',
         title: 'INFRAESTRUCTURA',
-        subtitle: 'Arquitectura de Software & Ecosistemas',
-        desc: 'Desarrollamos ecosistemas digitales soberanos: aplicaciones escalables, software SAS y plataformas web de alta complejidad.',
-        fullDesc: 'Construimos infraestructura digital desde cero, optimizada para velocidad extrema y escalabilidad global. Dejamos atrás las limitaciones comerciales para entregar soluciones de ingeniería pura que dominan el mercado.',
-        humanDesc: 'No vendemos páginas; construimos el motor de tu negocio digital. Software que funciona sin errores, Apps que la gente ama usar y plataformas que escalan junto con tu ambición.',
-        services: 'SaaS, Apps Multiplataforma, Ingeniería Headless',
-        humanServices: 'Software a medida, Aplicaciones móviles, Páginas ultrarrápidas',
+        subtitle: 'Arquitectura Soberana // Escala Global',
+        desc: 'Sistemas digitales que no solo existen, dominan. Ecosistemas soberanos diseñados para resistir tráfico masivo y operaciones críticas.',
+        fullDesc: 'Construimos la columna vertebral de tu imperio digital. Dejamos el "código limpio" para los amateurs; nosotros programamos con eficiencia de nivel militar para velocidad extrema y seguridad absoluta.',
+        humanDesc: 'Tu negocio necesita un motor, no una carcasa. Creamos plataformas que aguantan millones de usuarios y procesan ventas en milisegundos. Si se cae, pierdes dinero. Con nosotros, no se cae.',
+        services: 'SaaS de Alto Rendimiento, Apps Nativas, Ingeniería Headless',
+        humanServices: 'Plataformas Robustas, Apps Ultra-rápidas, Sistemas a Medida',
         buttonCopy: 'TRADUCCIÓN PARA HUMANOS',
         year: '2025',
         img: techArchitectureImg,
         video: architectureVideo,
         path: '/infraestructura',
-        ctaCopy: 'CONOCE NUESTRA INGENIERÍA'
+        ctaCopy: 'INICIAR ARQUITECTURA'
     },
     {
         id: '02',
         title: 'AUTOMATIZACIÓN',
-        subtitle: 'Eficiencia Imposible // Plataforma 360',
-        desc: 'El control total de tu empresa en un solo lugar. CRM, Chatbots inteligentes y flujos autónomos que operan 24/7.',
-        fullDesc: 'Implementamos la "Plataforma 360", un ecosistema de gestión total que integra CRM, ventas y atención al cliente. Nuestros agentes autónomos resuelven, agendan y venden mientras tu equipo se enfoca en la estrategia.',
-        humanDesc: 'Es como tener un ejército digital trabajando para ti. Un sistema que responde WhatsApp, agenda citas y maneja tus ventas sin que tengas que mover un dedo. Eficiencia real, 24 horas al día.',
+        subtitle: 'Eficiencia Imposible // Maquinaria Autónoma',
+        desc: 'El fin de la micro-gestión. Agentes autónomos que operan tu negocio 24/7 con precisión quirúrgica.',
+        fullDesc: 'Implementamos la "Plataforma 360", un ecosistema donde la IA asume el control operativo. Ventas, soporte y agendamiento ocurren simultáneamente, liberando al humano para la estrategia pura.',
+        humanDesc: 'Imagina un ejército de empleados perfectos que no duermen, no piden vacaciones y no cometen errores. Venden, atienden y organizan tu empresa mientras tú te enfocas en crecer.',
         services: 'Ecosistema 360, Agentes Autónomos, Flujos CRM',
-        humanServices: 'Vendedor digital, Oficina automática, Todo conectado',
-        buttonCopy: 'MODO MENOS TÉCNICO',
+        humanServices: 'Vendedor IA, Oficina Automática, Procesos Sin Manos',
+        buttonCopy: 'VERSIÓN SIMPLIFICADA',
         year: '2025',
         img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop',
         video: automationVideo,
         path: '/automatizacion',
-        ctaCopy: 'CONOCE EL ECOSISTEMA'
+        ctaCopy: 'ACTIVAR ECOSISTEMA'
     },
     {
         id: '03',
         title: 'IDENTIDAD',
-        subtitle: 'Estética & Experiencia Multisensorial',
-        desc: 'Diseño que se siente. Creamos marcas que no solo se ven bien, sino que provocan una respuesta visceral en el mercado.',
-        fullDesc: 'Trasscendemos lo visual para diseñar experiencias multisensoriales completas. Forjamos identidades que respiran, se mueven y comunican autoridad a través de cada píxel, sonido y micro-interacción.',
-        humanDesc: 'Tu marca es tu firma en el mundo. No hacemos logos estáticos; creamos sistemas vivos que inspiran respeto y confianza. Es el arte de verse (y sentirse) como el líder.',
+        subtitle: 'Génesis de Autoridad // Impacto Visceral',
+        desc: 'No diseñamos logos. Codificamos autoridad en la mente de tu mercado. Estética que provoca deseo inmediato.',
+        fullDesc: 'Trascendemos lo visual para diseñar sistemas de control de percepción. Tu marca dejará de competir para empezar a reinar. Es el arte de ganar la guerra antes de que empiece la batalla.',
+        humanDesc: 'La gente compra por cómo se siente. Hacemos que tu marca se vea tan poderosa y profesional que la competencia se vuelva irrelevante. Diseño que intimida y seduce al mismo tiempo.',
         services: 'Branding Multisensorial, UI/UX de Lujo, Motion Pro',
-        humanServices: 'Marca sensorial, Diseño premium, Animaciones elegantes',
-        buttonCopy: 'MODO SENCILLO',
+        humanServices: 'Imagen de Líder, Diseño Premium, Animaciones de Cine',
+        buttonCopy: 'EXPLICACIÓN SENCILLA',
         year: '2025',
         img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop',
         video: identidadVideo,
         path: '/identidad',
-        ctaCopy: 'CONOCE EL ARTE'
+        ctaCopy: 'FORJAR AUTORIDAD'
     },
 ];
 
@@ -239,8 +239,9 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 }
                 scrollTimeline.to({}, { duration: 0.15 });
 
-                // PARALLAX: INVERTED (Flow Direction) - HD QUALITY
-                const parallaxRange = 13;
+                // PARALLAX: INVERTED (Flow Direction) - MAXIMUM INTENSITY
+                // Width 160% -> Range 18% = 28.8% Travel. Safety Margin 1.2%.
+                const parallaxRange = 18;
 
                 imagesRef.current.forEach((img, i) => {
                     if (!img || !cardsRef.current[i]) return;
@@ -253,10 +254,10 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             scrollTrigger: {
                                 trigger: cardsRef.current[i],
                                 containerAnimation: scrollTimeline,
-                                start: "left 95%",
-                                end: "right 5%",
-                                scrub: 0.25, // SMOOTHED for High FPS (0.1 was too raw)
-                                id: `parallax-smooth-${i}` // Force refresh
+                                start: "left 100%", // Start EXACTLY when entering viewport
+                                end: "right 0%",    // End EXACTLY when exiting
+                                scrub: 0.25,
+                                id: `parallax-max-${i}`
                             }
                         }
                     );
@@ -392,11 +393,11 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             className="showcase-media-window"
                             style={{
                                 width: '100%',
-                                height: isMobile ? '250px' : 'auto', // Auto height lets aspect ratio drive dimensions
-                                aspectRatio: isMobile ? 'auto' : '16/9', // RESTORED CINEMATIC RATIO
+                                height: isMobile ? '250px' : 'auto',
+                                aspectRatio: isMobile ? 'auto' : '14/9', // USER SUGGESTION: Better Parallax Physics
                                 overflow: 'hidden',
                                 borderRadius: '16px',
-                                marginBottom: '1.5rem',
+                                marginBottom: '1rem', // Reduced from 1.5rem to save space
                                 position: 'relative',
                                 boxShadow: '0 30px 60px rgba(0,0,0,0.7)',
                                 border: '1px solid rgba(0,0,0,0.05)',
@@ -417,11 +418,11 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     poster={item.img}
                                     className="showcase-video"
                                     style={{
-                                        width: '140%', // REDUCED ZOOM (Sharper)
+                                        width: '160%', // INCREASED FOR MAX PARALLAX
                                         height: '100%',
                                         objectFit: 'cover',
                                         position: 'absolute',
-                                        left: '-20%', // Re-centered for 140%
+                                        left: '-30%', // Centered for 160%
                                         top: 0,
                                         willChange: 'transform',
                                         backfaceVisibility: 'hidden',
@@ -433,13 +434,13 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     ref={el => { imagesRef.current[i] = el; }}
                                     className="showcase-image"
                                     style={{
-                                        width: '140%',
+                                        width: '160%',
                                         height: '100%',
                                         backgroundImage: `url(${item.img})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         position: 'absolute',
-                                        left: '-20%',
+                                        left: '-30%',
                                         top: 0,
                                         backfaceVisibility: 'hidden'
                                     }}
@@ -484,10 +485,13 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         </div>
                         <p style={{
                             marginTop: 'auto',
-                            paddingTop: '2rem',
-                            fontSize: '1.1rem',
-                            lineHeight: 1.6,
-                            color: '#444'
+                            paddingTop: '1rem', // Reduced from 2rem
+                            fontSize: 'clamp(0.9rem, 1vw, 1.1rem)', // FLUID FONTS
+                            lineHeight: 1.5, // Slightly tighter
+                            color: '#444',
+                            // Ensure valid flex behavior
+                            whiteSpace: 'normal',
+                            overflow: 'hidden'
                         }}>
                             {item.desc}
                         </p>
@@ -550,9 +554,9 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     }
 
                     .showcase-video, .showcase-image {
-                        width: 140% !important; /* Minimized Mobile Math */
+                        width: 160% !important; /* Max Mobile Parallax */
                         height: 100% !important;
-                        left: -20% !important;
+                        left: -30% !important;
                         position: absolute !important;
                         top: 0 !important;
                         object-fit: cover !important;

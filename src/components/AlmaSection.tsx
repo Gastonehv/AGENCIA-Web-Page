@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import almaLogo from '../assets/images/alma_logo_final.png';
-import almaFondoVideo from '../assets/videos/A.L.M.A._fondo_smooth.mp4';
+import almaFondoVideo from '../assets/videos/alma_fondo_v3_opt.mp4';
 
 gsap.registerPlugin(ScrollTrigger);
 

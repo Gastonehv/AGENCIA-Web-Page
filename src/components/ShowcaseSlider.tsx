@@ -4,9 +4,9 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useScroll } from '../context/ScrollContext'; // Import useScroll
 import techArchitectureImg from '../assets/images/architecture_digital.jpg';
-import architectureVideo from "../assets/videos/infraestructura_final_opt.mp4";
+import architectureVideo from "../assets/videos/web_apps_final_opt.mp4";
 import automationVideo from '../assets/videos/automatizacion_final_opt.mp4';
-import identidadVideo from '../assets/videos/IDENTIDAD VISUAL.mp4';
+import marketingVideo from '../assets/videos/marketing_final_opt.mp4';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,7 +18,7 @@ const CASES = [
     {
         id: '01',
         title: 'PÁGINAS WEB Y APPS',
-        subtitle: 'Arquitectura Soberana // Diseño de Autoridad',
+        subtitle: 'Arquitectura para Alto Rendimiento',
         desc: 'Sistemas y sitios digitales que no solo existen, dominan. Ecosistemas diseñados para resistir tráfico masivo y operaciones críticas.',
         fullDesc: 'Construimos la interfaz de tu autoridad. Creamos plataformas web y aplicaciones de alto rendimiento que proyectan poder y escalan tu negocio sin límites.',
         humanDesc: 'Tu negocio necesita un activo digital, no un folleto. Hacemos webs y apps que aguantan millones de usuarios y se cargan en milisegundos. Si no domina, no es AgencIA.',
@@ -34,7 +34,7 @@ const CASES = [
     {
         id: '02',
         title: 'AUTOMATIZACIÓN E IA',
-        subtitle: 'Software Inteligente // Sistemas Autónomos',
+        subtitle: 'Sistemas que Operan por Ti',
         desc: 'El fin de la micro-gestión. Implementamos cerebros digitales que optimizan procesos y escalan tu operación sin intervención humana.',
         fullDesc: 'Implementamos la "Plataforma 360", un ecosistema donde la IA asume el control operativo de tu negocio. Ventas, soporte y agendamiento ocurren solos con precisión absoluta.',
         humanDesc: 'Imagina un ejército de clones perfectos que venden, atienden y organizan tu empresa mientras tú te enfocas en liderar su crecimiento.',
@@ -49,19 +49,19 @@ const CASES = [
     },
     {
         id: '03',
-        title: 'BRANDING Y DISEÑO',
-        subtitle: 'La Cara de tu Autoridad // Estética Premium',
-        desc: 'No diseñamos logos, codificamos respeto. Estética inmersiva que provoca deseo inmediato y posiciona tu marca como líder indiscutible.',
-        fullDesc: 'Trascendemos lo visual para diseñar sistemas de identidad que dominan el mercado. Tu marca dejará de competir para empezar a reinar en la mente de tus clientes.',
-        humanDesc: 'La gente compra por cómo se siente. Hacemos que tu marca se vea tan poderosa y profesional que la confianza de tus clientes sea inmediata e indudable.',
-        services: 'Identidad Visual de Lujo, Diseño de Interfaz Pro, Motion Design',
-        humanServices: 'Imagen de Líder, Diseño que Impacta, Animaciones de Cine',
+        title: 'ESTRATEGIA Y MARKETING',
+        subtitle: 'Ingeniería para Dominar tu Mercado',
+        desc: 'No diseñamos logos, codificamos respeto. Estrategia de crecimiento e identidad inmersiva diseñada para posicionarte como líder indiscutible.',
+        fullDesc: 'Trascendemos lo visual para diseñar sistemas de dominio de mercado. Tu marca dejará de competir para empezar a reinar mediante estrategias de adquisición y conversión de alto impacto.',
+        humanDesc: 'El marketing de AgencIA no es publicidad, es conquista. Hacemos que tu marca se vea tan poderosa que la confianza de tus clientes sea absoluta y la competencia se vuelva irrelevante.',
+        services: 'Estrategia de Crecimiento, Marketing de Autoridad, Branding Pro',
+        humanServices: 'Ventas Escalables, Imagen de Líder, Campaños de Alto Impacto',
         buttonCopy: 'ENTENDER EL CONCEPTO',
         year: '2025',
         img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop',
-        video: identidadVideo,
+        video: marketingVideo,
         path: '/identidad',
-        ctaCopy: 'CONSTRUIR AUTORIDAD'
+        ctaCopy: 'DOMINAR MERCADO'
     },
 ];
 
@@ -234,7 +234,9 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
                 if (currentX > maxScroll) {
                     scrollTimeline.to(sliderRef.current, {
-                        x: maxScroll, ease: "none", duration: Math.abs(maxScroll - currentX)
+                        x: maxScroll,
+                        ease: "none",
+                        duration: Math.abs(maxScroll - currentX)
                     });
                 }
                 scrollTimeline.to({}, { duration: 0.15 });
@@ -485,9 +487,9 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         }}>
                             <div>
                                 <h3 className="showcase-title" style={{
-                                    fontSize: isMobile ? '1.5rem' : '2.5rem', // REDUCED ON MOBILE
+                                    fontSize: isMobile ? '1.4rem' : '2.5rem', // FURTHER REDUCED ON MOBILE
                                     fontWeight: 800,
-                                    margin: '0 0 0.5rem 0',
+                                    margin: '0 0 0.25rem 0', // TIGHTER
                                     color: '#000',
                                     textTransform: 'uppercase',
                                     letterSpacing: '-1px',
@@ -512,8 +514,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             }}>{item.id}</span>
                         </div>
                         <p style={{
-                            marginTop: isMobile ? '0.75rem' : '1.5rem', // TIGHTER ON MOBILE
-                            paddingTop: '0.25rem',
+                            marginTop: isMobile ? '0.5rem' : '1.5rem', // TIGHTER ON MOBILE
+                            paddingTop: '0.1rem',
                             fontSize: 'clamp(0.9rem, 1vw, 1.1rem)', // FLUID FONTS
                             lineHeight: 1.5, // Slightly tighter
                             color: '#444',
@@ -526,7 +528,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     </div>
                 ))}
 
-                <div style={{ minWidth: '10vw' }} />
+                <div style={{ minWidth: '40vw' }} />
             </div>
 
             <style>{`
@@ -565,17 +567,17 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         width: 85vw !important;
                         max-width: 85vw !important;
                         min-width: 85vw !important;
-                        height: 75vh !important; /* INCREASED FOR BREATHING ROOM */
+                        height: 82vh !important; /* INCREASED TO 82VH FOR FULL TEXT VISIBILITY */
                         margin: 0 !important;
                         padding: 1.5rem !important;
                         flex-shrink: 0;
                         border-right: 1px solid rgba(0,0,0,0.05);
-                        overflow-y: visible !important; /* FIXED: Allow text to be visible */
+                        overflow-y: visible !important;
                     }
 
                     .showcase-media-window {
-                        height: 35% !important; /* REDUCED TO SAVE SPACE */
-                        min-height: 180px !important;
+                        height: 30% !important; /* REDUCED TO 30% TO GIVE TEXT MORE ROOM */
+                        min-height: 150px !important;
                         flex-shrink: 0;
                         overflow: hidden !important;
                     }

@@ -275,157 +275,138 @@ const Home: React.FC = () => {
                     });
                 });
 
-                // --- 3. ESENCIA HERO TIMELINE ---
-                const tlHero = gsap.timeline({
+                // --- 3. UNIFIED NARRATIVE TIMELINE (Cero Vacío) ---
+                const tlNarrative = gsap.timeline({
                     scrollTrigger: {
-                        trigger: '.narrative-hero', // The section containing ESENCIA text
+                        trigger: '.narrative-wrapper',
                         start: 'top top',
-                        end: '+=800%',
+                        end: '+=1500%', // Balanced budget for a cinematic experience
                         pin: true,
-                        scrub: 0.5,
+                        scrub: true, // ZERO LAG: Instant response to scroll
                         anticipatePin: 1,
                         refreshPriority: 8
                     }
                 });
 
-                // Phase 1: "ESENC" Vanishes to clear the stage
-                tlHero.to('.word-esenc', {
+                // FORCED MASTER DURATION: 20 units (Scale 0-20)
+                tlNarrative.to({}, { duration: 20 }, 0);
+
+                // --- PHASE 1: ESENCIA (T=0 to T=8) ---
+
+                // ESENC Vanishes
+                tlNarrative.to('.word-esenc', {
                     opacity: 0,
                     filter: 'blur(30px)',
-                    duration: 1.5,
+                    duration: 2,
                     ease: 'power2.inOut'
                 }, 0);
 
-                // Phase 2: "NUESTRA" Descends and Grows to match IA
-                tlHero.to('.word-nuestra', {
-                    y: '100%', // Moves down to line 2 (approx)
-                    scale: 2.5, // GROWS to match the big font size
-                    x: 0, // RESTORED DEFAULT CENTER
-                    duration: 2,
-                    ease: 'power2.inOut'
-                }, 0.5); // Starts while ESENC is fading
-
-                // Phase 3 (SYNCED): "IA" turns Green (Radioactive) AS Nuestra descends
-                tlHero.to('.hero-char-ia', {
-                    color: '#00FF99', // PALETTE: Verde Turquesa Fosforescente
-                    textShadow: '0 0 30px rgba(0,255,153,1), 0 0 60px rgba(0,255,153,0.8)', // OPTIMIZED: Reduced bloom radius
-                    scale: 1.1,
-
-                    duration: 3, // Match increased duration for stability
-                    ease: 'power2.out'
-                }, 0.5);
-
-                // ADDED PAUSE TO PERSIST GREEN IA
-                tlHero.to({}, { duration: 2 });
-
-                // SIMULTANEOUSLY: Nuestra disappears AT THE END of the descent
-                // SMOOTHER FADE: Extended duration to avoid visual jump
-                tlHero.to('.word-nuestra', {
-                    opacity: 0,
-                    filter: 'blur(20px)',
-                    duration: 1.5, // Prolonged fade
-                    ease: 'power2.inOut'
-                }, 1.5); // Starts mid-descent, ends slightly after impact (3.0)
-
-                // Phase 3: VIDEO SCALING (Floating -> Immersive)
-                tlHero.to('.liquid-container', {
-                    scale: 1,
-                    borderRadius: '0rem',
-                    boxShadow: '0 0 0 rgba(0,0,0,0)',
+                // NUESTRA Descends
+                tlNarrative.to('.word-nuestra', {
+                    y: '100%',
+                    scale: 2.5,
                     duration: 3,
                     ease: 'power2.inOut'
                 }, 1);
 
-                // Phase 4: FADE OUT to WHITE
-                tlHero.to('.liquid-container', { opacity: 0, duration: 2, ease: 'power2.inOut' }, 4);
-                // Note: We target the narrative container background, not the body, to avoid breaking Background3D
-                tlHero.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2, ease: 'power2.inOut' }, 4);
+                // IA Greens
+                tlNarrative.to('.hero-char-ia', {
+                    color: '#00FF99',
+                    textShadow: '0 0 30px rgba(0,255,153,1), 0 0 60px rgba(0,255,153,0.8)',
+                    scale: 1.1,
+                    duration: 4,
+                    ease: 'power2.out'
+                }, 1);
 
-                // Phase 5: IA PORTAL (The Zoom Event)
-                tlHero.to('.hero-char-ia', {
-                    scale: 80, // Massive Zoom (Portal Effect)
-                    filter: 'blur(0px)', // No blur, purely geometric
-                    opacity: 0, // Fades out only at max expansion
-                    duration: 1.5, // Cinematic entry speed
-                    ease: 'expo.in' // Slow start, infinite finish speed (Warp)
-                }, 5);
+                // Video Scaling (Floating -> Full)
+                tlNarrative.to('.liquid-container', {
+                    scale: 1,
+                    borderRadius: '0rem',
+                    boxShadow: '0 0 0 rgba(0,0,0,0)',
+                    duration: 4,
+                    ease: 'power2.inOut'
+                }, 1);
+
+                // Fade to White (Preparation for Manifest)
+                tlNarrative.to('.liquid-container', { opacity: 0, duration: 2 }, 6);
+                tlNarrative.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2 }, 6);
+
+                // IA Portal Zoom (Death of Hero)
+                tlNarrative.to('.hero-char-ia', {
+                    scale: 80,
+                    opacity: 0,
+                    duration: 1.5,
+                    ease: 'expo.in'
+                }, 7);
+
+                // CLEANUP: Hide Hero Section
+                tlNarrative.to('.narrative-hero', { display: 'none', duration: 0.1 }, 8.5);
 
 
+                // --- PHASE 2: IDENTIDAD (BIRTH AT T=6 to T=18) ---
 
+                // Show Identidad section early (Overlapping with Hero's preparation)
+                tlNarrative.set('#identidad', { display: 'flex', autoAlpha: 0 }, 6);
+                tlNarrative.to('#identidad', { autoAlpha: 1, duration: 1 }, 6);
 
-
-
-                // --- 4. IDENTIDAD REVEAL (The Entropy / Nolan Effect) ---
-                const tlIdentidad = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: '#identidad',
-                        start: 'top top',
-                        end: '+=1500%', // Balanced Speed (Faster than 2500%, Slower than 800%)
-                        pin: true,
-                        scrub: 1.5, // Smoother scrub
-                        anticipatePin: 1
-                    }
-                });
-
-                // PHASE 1: THE ARRIVAL (Instant Entry)
-                tlIdentidad.to('.entropy-el', {
+                // NO SOMOS UNA AGENCIA (Impact Delivery for Step 14)
+                tlNarrative.to('.entropy-el', {
                     opacity: 1,
                     filter: 'blur(0px)',
                     transform: 'scale(1)',
-                    duration: 4,
-                    stagger: 2,
-                    ease: 'power2.out'
-                }, 0.1); // Starts almost immediately (0.1)
+                    duration: 1.5,
+                    stagger: 0.4,
+                    ease: 'power4.out'
+                }, 7.5);
 
-                // PHASE 2: THE IGNITION (Focus on "SOMOS LA IA")
-                tlIdentidad.to('.entropy-catchphrase', {
+                // SOMOS LA IA
+                tlNarrative.to('.entropy-catchphrase', {
                     opacity: 1,
                     filter: 'blur(0px)',
                     transform: 'scale(1)',
                     color: '#FFF',
-                    duration: 3,
+                    duration: 2,
                     ease: 'expo.out'
-                }, ">-0.5");
+                }, 10);
 
-                // PHASE 3: NEON SURGE (The Nolan Moment)
-                tlIdentidad.to('.entropy-catchphrase', {
+                tlNarrative.to('.entropy-catchphrase', {
                     color: '#00FF99',
                     textShadow: '0 0 40px rgba(0,255,153,0.6), 0 0 80px rgba(0,255,153,0.4)',
-                    duration: 2,
+                    duration: 1.5,
                     ease: 'power4.out'
-                }, ">");
+                }, 11.5);
 
                 // Reveal "COMO [LOGO]"
-                tlIdentidad.to('.entropy-finish', {
+                tlNarrative.to('.entropy-finish', {
                     opacity: 1,
                     filter: 'blur(0px)',
-                    duration: 3,
+                    duration: 2,
                     ease: 'power2.out'
-                }, ">-1");
+                }, 13);
 
-                // DRAW LINE (New Animation)
-                tlIdentidad.to('.entropy-line', {
+                // DRAW LINE
+                tlNarrative.to('.entropy-line', {
                     scaleY: 1,
-                    duration: 3,
+                    duration: 1.5,
                     ease: 'power2.inOut'
-                }, ">-1.5");
+                }, 14);
 
                 // PHASE 4: DATA STREAM (Body Text)
-                tlIdentidad.to('.entropy-body', {
+                tlNarrative.to('.entropy-body', {
                     opacity: 1,
                     transform: 'translateY(0)',
                     filter: 'blur(0px)',
-                    duration: 3,
-                    stagger: 1,
+                    duration: 2,
+                    stagger: 0.6,
                     ease: 'power2.out'
-                }, ">-1.5");
+                }, 15);
 
                 // 5. Exit (Read Pause -> Clean Sweep)
-                tlIdentidad.to('#identidad', {
+                tlNarrative.to('#identidad', {
                     opacity: 0,
-                    duration: 4,
+                    duration: 3,
                     ease: 'power2.in'
-                }, ">+1.5"); // Minimal pause: 1.5 units (just enough to finish the sentence)
+                }, 18);
 
 
                 // --- FLASHBANG TRIGGER (Link jumping from Symbiosis -> CTA) ---
@@ -696,15 +677,15 @@ const Home: React.FC = () => {
 
                 {/* 3. IDENTIDAD MASTERPIECE */}
                 <section id="identidad" style={{
-                    minHeight: '100vh',
-                    padding: '2rem 5% 2rem 5%', // Compact Padding
+                    position: 'absolute',
+                    inset: 0,
+                    padding: '2rem 5% 2rem 5%',
                     backgroundColor: '#FFFFFF',
-                    display: 'flex',
-                    flexDirection: 'column', // Force Stack for perfect centering
-                    alignItems: 'center', // Horizontally center
-                    justifyContent: 'center', // Vertically center in 100vh
-                    gap: '4vh', // Dynamic spacing
-                    position: 'relative',
+                    display: 'none', // Initially hidden, revealed by timeline
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4vh',
                     zIndex: 40,
                     perspective: '1000px',
                     transformStyle: 'preserve-3d',

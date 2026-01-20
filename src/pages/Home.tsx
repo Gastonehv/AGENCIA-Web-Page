@@ -104,7 +104,7 @@ const Home: React.FC = () => {
                     scrollTrigger: {
                         trigger: ".portal-wrapper",
                         start: "top top",
-                        end: "+=200%",
+                        end: "+=300%",
                         pin: true,
                         scrub: true,
                         anticipatePin: 1,
@@ -119,16 +119,16 @@ const Home: React.FC = () => {
                     }
                 });
 
+                // Primero se abre la máscara
                 tlPortal.fromTo([maskRef.current, ".portal-text-overlay"],
                     { scale: 1, transformOrigin: 'center center' },
-                    { scale: 80, ease: 'power2.in', duration: 1 } // Increased scale for safe clearance
+                    { scale: 80, ease: 'power2.in', duration: 1 }
                 )
-                    .to(".portal-text-overlay", { opacity: 0, duration: 1, ease: 'none' }, 0) // Linear fade throughout the whole scale
-                    .to(".portal-overlay", { autoAlpha: 0, duration: 0.1 }, "-=0.1") // End of Portal Scrub
+                    .to(".portal-text-overlay", { opacity: 0, duration: 1, ease: 'none' }, 0)
+                    .to(".portal-overlay", { autoAlpha: 0, duration: 0.1 }, "-=0.1")
+                    .to(".scroll-indicator", { opacity: 0, duration: 0.1, ease: 'power2.out' }, "-=0.2");
 
-                    .to(".scroll-indicator", {
-                        opacity: 0, duration: 0.1, ease: 'power2.out'
-                    }, "-=0.2");
+
 
                 // --- 3. MATCH MEDIA (Mobile/Desktop) ---
                 const mm = gsap.matchMedia();
@@ -275,144 +275,173 @@ const Home: React.FC = () => {
                     });
                 });
 
-                // --- 3. UNIFIED NARRATIVE TIMELINE (Cero Vacío) ---
-                const tlNarrative = gsap.timeline({
+                // --- 3. ESENCIA HERO TIMELINE ---
+                const tlHero = gsap.timeline({
                     scrollTrigger: {
-                        trigger: '.narrative-wrapper',
+                        trigger: '.narrative-hero', // The section containing ESENCIA text
                         start: 'top top',
-                        end: '+=1500%', // Balanced budget for a cinematic experience
+                        end: '+=300%',
                         pin: true,
-                        scrub: true, // ZERO LAG: Instant response to scroll
+                        scrub: 0.5,
                         anticipatePin: 1,
                         refreshPriority: 8
                     }
                 });
 
-                // FORCED MASTER DURATION: 20 units (Scale 0-20)
-                tlNarrative.to({}, { duration: 20 }, 0);
+                // MASTER DURATION: Forces a 10s virtual timeline for precise % calculations
+                tlHero.to({}, { duration: 10 }, 0);
 
-                // --- PHASE 1: ESENCIA (T=0 to T=8) ---
-
-                // ESENC Vanishes
-                tlNarrative.to('.word-esenc', {
+                // Phase 1: "ESENC" Vanishes to clear the stage
+                tlHero.to('.word-esenc', {
                     opacity: 0,
                     filter: 'blur(30px)',
-                    duration: 2,
+                    duration: 1.5,
                     ease: 'power2.inOut'
                 }, 0);
 
-                // NUESTRA Descends & Fades
-                tlNarrative.to('.word-nuestra', {
-                    y: '100%',
-                    scale: 2.5,
+                // Phase 2: "NUESTRA" Descends and Grows to match IA
+                tlHero.to('.word-nuestra', {
+                    y: '100%', // Moves down to line 2 (approx)
+                    scale: 2.5, // GROWS to match the big font size
+                    x: 0, // RESTORED DEFAULT CENTER
+                    duration: 2,
+                    ease: 'power2.inOut'
+                }, 0.5); // Starts while ESENC is fading
+
+                // Phase 3 (SYNCED): "IA" turns Green (Radioactive) AS Nuestra descends
+                tlHero.to('.hero-char-ia', {
+                    color: '#00FF99', // PALETTE: Verde Turquesa Fosforescente
+                    textShadow: '0 0 30px rgba(0,255,153,1), 0 0 60px rgba(0,255,153,0.8)', // OPTIMIZED: Reduced bloom radius
+                    scale: 1.1,
+
+                    duration: 3, // Match increased duration for stability
+                    ease: 'power2.out'
+                }, 0.5)
+                    // SYNC LIQUID LAYER TO FADE (V33: KEEP background-video-main VISIBLE)
+                    .to(".liquid-container", {
+                        opacity: 0,
+                        duration: 3,
+                        ease: 'power2.inOut'
+                    }, 0.5)
+                    // FADE OUT ESSENCE BACKGROUND (Neural Network) 
+                    // To clear the stage as IA grows, with 63% precision:
+                    // Start 0.5, End 6.3 (63% of scroll) => Duration 5.8
+                    .to(document.querySelectorAll(".essence-background"), {
+                        opacity: 0,
+                        duration: 5.8,
+                        ease: 'power2.in'
+                    }, 0.5);
+
+                // ADDED PAUSE TO PERSIST GREEN IA
+                tlHero.to({}, { duration: 2 });
+
+                // SIMULTANEOUSLY: Nuestra disappears AT THE END of the descent
+                // SMOOTHER FADE: Extended duration to avoid visual jump
+                tlHero.to('.word-nuestra', {
+                    opacity: 0,
+                    filter: 'blur(20px)',
+                    duration: 1.5, // Prolonged fade
+                    ease: 'power2.inOut'
+                }, 1.5); // Starts mid-descent, ends slightly after impact (3.0)
+
+                // Phase 3: VIDEO SCALING (Floating -> Immersive)
+                tlHero.to('.liquid-container', {
+                    scale: 1,
+                    borderRadius: '0rem',
+                    boxShadow: '0 0 0 rgba(0,0,0,0)',
                     duration: 3,
                     ease: 'power2.inOut'
                 }, 1);
 
-                tlNarrative.to('.word-nuestra', {
+                // We keep narrative-wrapper transparent to show EtherBackground behind it
+                // tlHero.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2, ease: 'power2.inOut' }, 4);
+
+                // Phase 5: IA PORTAL (The Zoom Event)
+                // Start at 7.0 (giving more time to see the green IA)
+                tlHero.to('.hero-char-ia', {
+                    scale: 80,
+                    filter: 'blur(0px)',
                     opacity: 0,
-                    filter: 'blur(20px)',
                     duration: 1.5,
-                    ease: 'power2.inOut'
-                }, 4.5);
-
-                // IA Greens
-                tlNarrative.to('.hero-char-ia', {
-                    color: '#00FF99',
-                    textShadow: '0 0 30px rgba(0,255,153,1), 0 0 60px rgba(0,255,153,0.8)',
-                    scale: 1.1,
-                    duration: 4,
-                    ease: 'power2.out'
-                }, 1);
-
-                // Video Scaling (Floating -> Full)
-                tlNarrative.to('.liquid-container', {
-                    scale: 1,
-                    borderRadius: '0rem',
-                    boxShadow: '0 0 0 rgba(0,0,0,0)',
-                    duration: 4,
-                    ease: 'power2.inOut'
-                }, 1);
-
-                // KILL THE LIGHTS: Fade to White & Hide Video
-                tlNarrative.to('.liquid-container', { opacity: 0, display: 'none', duration: 2 }, 6);
-                tlNarrative.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2 }, 6);
-
-                // IA Portal Zoom (Death of Hero)
-                tlNarrative.to('.hero-char-ia', {
-                    scale: 120,
-                    opacity: 0,
-                    duration: 2,
                     ease: 'expo.in'
-                }, 6.5);
+                }, 7);
 
-                // ATOMIC CLEANUP: Ensure Hero is GONE
-                tlNarrative.set('.narrative-hero', { display: 'none', autoAlpha: 0 }, 8.5);
 
-                // --- PHASE 2: IDENTIDAD ---
 
-                // Show Identidad section early (Background must block everything)
-                tlNarrative.set('#identidad', { display: 'flex', autoAlpha: 0, zIndex: 100 }, 7.5);
-                tlNarrative.to('#identidad', { autoAlpha: 1, duration: 1 }, 7.5);
 
-                // NO SOMOS UNA AGENCIA (Impact Delivery for Step 14)
-                tlNarrative.to('.entropy-el', {
+
+
+                // --- 4. IDENTIDAD REVEAL (The Entropy / Nolan Effect) ---
+                const tlIdentidad = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: '#identidad',
+                        start: 'top top',
+                        end: '+=1500%', // Balanced Speed (Faster than 2500%, Slower than 800%)
+                        pin: true,
+                        scrub: 0.5, // Instant response (Dedo del usuario)
+                        anticipatePin: 1
+                    }
+                });
+
+                // PHASE 1: THE ARRIVAL (Instant Entry)
+                tlIdentidad.to('.entropy-el', {
                     opacity: 1,
                     filter: 'blur(0px)',
                     transform: 'scale(1)',
-                    duration: 1.5,
-                    stagger: 0.4,
-                    ease: 'power4.out'
-                }, 7.5);
+                    duration: 4,
+                    stagger: 2,
+                    ease: 'power2.out'
+                }, 0); // Latencia Cero (Tiempo 0)
 
-                // SOMOS LA IA
-                tlNarrative.to('.entropy-catchphrase', {
+                // PHASE 2: THE IGNITION (Focus on "SOMOS LA IA")
+                tlIdentidad.to('.entropy-catchphrase', {
                     opacity: 1,
                     filter: 'blur(0px)',
                     transform: 'scale(1)',
                     color: '#FFF',
-                    duration: 2,
+                    duration: 3,
                     ease: 'expo.out'
-                }, 10);
+                }, ">-0.5");
 
-                tlNarrative.to('.entropy-catchphrase', {
+                // PHASE 3: NEON SURGE (The Nolan Moment)
+                tlIdentidad.to('.entropy-catchphrase', {
                     color: '#00FF99',
                     textShadow: '0 0 40px rgba(0,255,153,0.6), 0 0 80px rgba(0,255,153,0.4)',
-                    duration: 1.5,
+                    duration: 2,
                     ease: 'power4.out'
-                }, 11.5);
+                }, ">");
 
                 // Reveal "COMO [LOGO]"
-                tlNarrative.to('.entropy-finish', {
+                tlIdentidad.to('.entropy-finish', {
                     opacity: 1,
                     filter: 'blur(0px)',
-                    duration: 2,
+                    duration: 3,
                     ease: 'power2.out'
-                }, 13);
+                }, ">-1");
 
-                // DRAW LINE
-                tlNarrative.to('.entropy-line', {
+                // DRAW LINE (New Animation)
+                tlIdentidad.to('.entropy-line', {
                     scaleY: 1,
-                    duration: 1.5,
+                    duration: 3,
                     ease: 'power2.inOut'
-                }, 14);
+                }, ">-1.5");
 
                 // PHASE 4: DATA STREAM (Body Text)
-                tlNarrative.to('.entropy-body', {
+                tlIdentidad.to('.entropy-body', {
                     opacity: 1,
                     transform: 'translateY(0)',
                     filter: 'blur(0px)',
-                    duration: 2,
-                    stagger: 0.6,
+                    duration: 3,
+                    stagger: 1,
                     ease: 'power2.out'
-                }, 15);
+                }, ">-1.5");
 
                 // 5. Exit (Read Pause -> Clean Sweep)
-                tlNarrative.to('#identidad', {
+                tlIdentidad.to('#identidad', {
                     opacity: 0,
-                    duration: 3,
+                    duration: 4,
                     ease: 'power2.in'
-                }, 18);
+                }, ">+1.5"); // Minimal pause: 1.5 units (just enough to finish the sentence)
 
 
                 // --- FLASHBANG TRIGGER (Link jumping from Symbiosis -> CTA) ---
@@ -525,7 +554,7 @@ const Home: React.FC = () => {
     // canRenderSlider removed to prevent layout thrashing
 
     return (
-        <main ref={containerRef}>
+        <main ref={containerRef} style={{ backgroundColor: 'transparent' }}>
             <SEO
                 title="Agencia de Ingeniería Digital & Automatización"
                 description="Especialistas en Arquitectura Digital, Sistemas de Automatización 360 e Identidad Visual de Alta Fidelidad. Operamos a un nivel de eficiencia imposible para humanos."
@@ -543,11 +572,9 @@ const Home: React.FC = () => {
                 ]
             }} />
             {loading && <Loader onComplete={handleLoaderComplete} />}
-
             <GlitchPortal ref={glitchRef} />
 
-            {/* 0. WHITE VOID (Replaces Background3D) */}
-            <div style={{ position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none', backgroundColor: '#FFFFFF' }} />
+            {/* <HexGridBackground isVisible={isHexVisible} scrollProgress={hexProgress} /> */}
 
             {/* --- PORTAL WRAPPER (Pinned Entry) --- */}
             <div className="portal-wrapper" style={{ height: '100vh', width: '100%', position: 'relative', overflow: 'hidden', zIndex: 20 }}>
@@ -616,8 +643,9 @@ const Home: React.FC = () => {
 
                 {/* BACKGROUND VIDEO (LATA AGENCIA) */}
                 <div className="liquid-container" style={{
-                    position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', backgroundColor: '#FFFFFF',
-                    overflow: 'hidden', opacity: 1 // Managed by GSAP
+                    position: 'fixed', inset: 0, zIndex: 2, pointerEvents: 'none',
+                    backgroundColor: 'transparent',
+                    overflow: 'hidden', opacity: 1
                 }}>
                     <video src={videoSrc} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
@@ -683,15 +711,15 @@ const Home: React.FC = () => {
 
                 {/* 3. IDENTIDAD MASTERPIECE */}
                 <section id="identidad" style={{
-                    position: 'absolute',
-                    inset: 0,
-                    padding: '2rem 5% 2rem 5%',
+                    minHeight: '100vh',
+                    padding: '2rem 5% 2rem 5%', // Compact Padding
                     backgroundColor: '#FFFFFF',
-                    display: 'none', // Initially hidden, revealed by timeline
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '4vh',
+                    display: 'flex',
+                    flexDirection: 'column', // Force Stack for perfect centering
+                    alignItems: 'center', // Horizontally center
+                    justifyContent: 'center', // Vertically center in 100vh
+                    gap: '4vh', // Dynamic spacing
+                    position: 'relative',
                     zIndex: 40,
                     perspective: '1000px',
                     transformStyle: 'preserve-3d',
@@ -835,39 +863,20 @@ const Home: React.FC = () => {
 
                 </section>
 
-                {/* --- PHYSICAL GRADIENT BRIDGE: WHITE -> BLACK --- */}
-                <div style={{
-                    width: '100%',
-                    height: '150px',
-                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)',
-                    position: 'relative',
-                    zIndex: 35 // Between 40 (Identidad) and 30 (Manifesto)
-                }} />
 
                 {/* 4. SOUL MANIFESTO */}
-                <section id="manifesto" className="soul-narrative-section" style={{ position: 'relative', zIndex: 30, backgroundColor: '#000', color: '#FFF' }}>
-                    {/* CAP 002 REMOVED */}
+                <section id="manifesto" className="soul-narrative-section" style={{ position: 'relative', zIndex: 40, backgroundColor: 'transparent', color: '#FFF' }}>
                     <SoulManifesto />
                 </section>
 
-                {/* --- PHYSICAL GRADIENT BRIDGE: BLACK -> WHITE --- */}
-                <div style={{
-                    width: '100%',
-                    height: '150px',
-                    background: 'linear-gradient(to bottom, #000000 0%, #FFFFFF 100%)',
-                    position: 'relative',
-                    zIndex: 45 // Between 30 (Manifesto) and 50 (Showcase)
-                }} />
 
                 {/* 5. SHOWCASE SLIDER */}
                 <section id="capacidades" className="identity-section" style={{ position: 'relative', zIndex: 50, marginTop: '0', backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
-                    {/* CAP 003 REMOVED */}
                     <ShowcaseSlider initialHash={hash} />
                 </section>
 
                 {/* 6. TEAM RIFT */}
                 <section id="nucleo" className="team-list" style={{ minHeight: '100vh', padding: '0 0 10vh', backgroundColor: '#FFFFFF', color: '#000', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                    {/* CAP 004 REMOVED */}
                     <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', margin: '6rem 0', fontWeight: 900, textAlign: 'center', letterSpacing: '0.02em', wordSpacing: '0.2em', color: '#000' }}>EL NÚCLEO</h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         {team.map((member) => (
@@ -905,7 +914,6 @@ const Home: React.FC = () => {
                 <div style={{ height: '20vh', background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)', width: '100%', position: 'relative', zIndex: 15 }} />
 
                 <div id="simbiosis" style={{ position: 'relative' }}>
-                    {/* CAP 005 REMOVED */}
                     <Symbiosis />
                 </div>
 

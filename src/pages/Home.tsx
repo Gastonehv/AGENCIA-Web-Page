@@ -301,13 +301,20 @@ const Home: React.FC = () => {
                     ease: 'power2.inOut'
                 }, 0);
 
-                // NUESTRA Descends
+                // NUESTRA Descends & Fades
                 tlNarrative.to('.word-nuestra', {
                     y: '100%',
                     scale: 2.5,
                     duration: 3,
                     ease: 'power2.inOut'
                 }, 1);
+
+                tlNarrative.to('.word-nuestra', {
+                    opacity: 0,
+                    filter: 'blur(20px)',
+                    duration: 1.5,
+                    ease: 'power2.inOut'
+                }, 4.5);
 
                 // IA Greens
                 tlNarrative.to('.hero-char-ia', {
@@ -327,27 +334,26 @@ const Home: React.FC = () => {
                     ease: 'power2.inOut'
                 }, 1);
 
-                // Fade to White (Preparation for Manifest)
-                tlNarrative.to('.liquid-container', { opacity: 0, duration: 2 }, 6);
+                // KILL THE LIGHTS: Fade to White & Hide Video
+                tlNarrative.to('.liquid-container', { opacity: 0, display: 'none', duration: 2 }, 6);
                 tlNarrative.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2 }, 6);
 
                 // IA Portal Zoom (Death of Hero)
                 tlNarrative.to('.hero-char-ia', {
-                    scale: 80,
+                    scale: 120,
                     opacity: 0,
-                    duration: 1.5,
+                    duration: 2,
                     ease: 'expo.in'
-                }, 7);
+                }, 6.5);
 
-                // CLEANUP: Hide Hero Section
-                tlNarrative.to('.narrative-hero', { display: 'none', duration: 0.1 }, 8.5);
+                // ATOMIC CLEANUP: Ensure Hero is GONE
+                tlNarrative.set('.narrative-hero', { display: 'none', autoAlpha: 0 }, 8.5);
 
+                // --- PHASE 2: IDENTIDAD ---
 
-                // --- PHASE 2: IDENTIDAD (BIRTH AT T=6 to T=18) ---
-
-                // Show Identidad section early (Overlapping with Hero's preparation)
-                tlNarrative.set('#identidad', { display: 'flex', autoAlpha: 0 }, 6);
-                tlNarrative.to('#identidad', { autoAlpha: 1, duration: 1 }, 6);
+                // Show Identidad section early (Background must block everything)
+                tlNarrative.set('#identidad', { display: 'flex', autoAlpha: 0, zIndex: 100 }, 7.5);
+                tlNarrative.to('#identidad', { autoAlpha: 1, duration: 1 }, 7.5);
 
                 // NO SOMOS UNA AGENCIA (Impact Delivery for Step 14)
                 tlNarrative.to('.entropy-el', {

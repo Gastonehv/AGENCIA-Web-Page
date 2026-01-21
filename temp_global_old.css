@@ -1,0 +1,254 @@
+﻿/* HIDE CURSOR for Custom Cursor Implementation */
+@media (pointer: fine) {
+
+    body,
+    a,
+    button,
+    input,
+    textarea,
+    select {
+        cursor: none !important;
+    }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    /* Force Void Black */
+    color: var(--color-text);
+    font-family: 'Manrope', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+    border: none;
+    background: none;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Lenis Recommended Styles */
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
+/* Canvas default - No touch-action restrictions to allow full OrbitControls */
+canvas {
+    outline: none;
+}
+
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+}
+
+@keyframes pulse-neon {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(0, 255, 153, 0.6);
+    }
+
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 50px rgba(0, 255, 153, 0.9);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(0, 255, 153, 0.6);
+    }
+}
+
+@keyframes bio-flow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.bio-text {
+    background: linear-gradient(270deg,
+            #0044FF 0%,
+            #00AEFF 25%,
+            #FFFFFF 50%,
+            #00AEFF 75%,
+            #0044FF 100%);
+    background-size: 200% auto;
+    color: transparent !important;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: bio-flow 2s linear infinite;
+    /* Maintain Shadow via Filter if clip eats it, or rely on inheritance */
+    /* Note: text-shadow usually renders poorly with transparent text clip. 
+       We might need drop-shadow filter. */
+    filter: drop-shadow(0 0 10px rgba(0, 68, 255, 0.8));
+}
+
+/* ===== MOBILE TOUCH SCROLL FIXES ===== */
+
+/* Ensure horizontal scroll containers work with touch */
+@media (max-width: 768px) {
+
+    /* Allow vertical scroll on pages with fixed 3D backgrounds */
+    body {
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+    }
+
+    /* ===== SHOWCASE SLIDER (INGENIER├ìA CREATIVA) ===== */
+    .showcase-card {
+        min-width: 100% !important;
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .showcase-headline {
+        min-width: 100% !important;
+        padding: 0 5vw !important;
+    }
+    
+    .showcase-media-window {
+        height: 220px !important;
+        min-height: 220px !important;
+    }
+    
+    .showcase-video, .showcase-image {
+        width: 100% !important;
+        left: 0 !important;
+        position: relative !important;
+    }
+
+    /* ===== IDENTITY SECTION ===== */
+    #identidad {
+        padding: 80px 5% 50px 5% !important;
+        min-height: auto !important;
+        gap: 1rem !important;
+    }
+    
+    .identidad-headline-1,
+    .identidad-headline-2 {
+        font-size: 1.8rem !important;
+        line-height: 1 !important;
+    }
+    
+    .identidad-headline-2 img {
+        max-width: 85vw !important;
+        max-height: 10vh !important;
+    }
+    
+    .identidad-body-container {
+        padding-left: 1rem !important;
+        margin-top: 1rem !important;
+    }
+    
+    .identidad-body-line {
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
+    }
+
+    /* ===== SYMBIOSIS SECTION ===== */
+    #simbiosis-startups {
+        height: auto !important;
+        overflow: visible !important;
+        padding: 50px 0 !important;
+    }
+    
+    .pillars-grid {
+        flex-direction: column !important;
+        padding: 0 5% !important;
+    }
+    
+    .pillar-item {
+        min-height: 60vh !important;
+        margin-bottom: 2rem !important;
+    }
+
+    /* Architecture section text boxes */
+    .arch-text {
+        max-width: 95vw !important;
+        padding: 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .arch-title {
+        font-size: 1.6rem !important;
+    }
+
+    /* Disable 3D controls on mobile to allow native scroll */
+    canvas {
+        touch-action: none;
+        pointer-events: none;
+    }
+
+    /* But allow content areas to receive touch */
+    .arch-section,
+    .final-copy-section {
+        pointer-events: auto !important;
+    }
+    
+    /* ===== VIDEO AUTOPLAY FIX (iOS) ===== */
+    video {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+}

@@ -1,4 +1,4 @@
-
+﻿
 import { useRef, useLayoutEffect } from 'react'; // Added useLayoutEffect
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,49 +10,43 @@ gsap.registerPlugin(ScrollTrigger);
 const MANIFESTO = [
     {
         title: "EN LA ERA DEL RUIDO INFINITO",
-        body: ["La tecnología ha democratizado la creación,", "pero ha mercantilizado el alma,", "En este frenesí de velocidad,", "hemos olvidado por qué creamos."],
+        body: ["La tecnolog├¡a ha democratizado la creaci├│n,", "pero ha mercantilizado el alma,", "En este frenes├¡ de velocidad,", "hemos olvidado por qu├® creamos."],
     },
     {
         title: "EL ALGORITMO NO TIENE PULSO",
-        body: ["La IA es el pincel más poderoso,", "pero sigue siendo solo eso: un pincel.", "Buscamos 'el error hermoso',", "esa chispa que la lógica pura jamás descubriría."],
+        body: ["La IA es el pincel m├ís poderoso,", "pero sigue siendo solo eso: un pincel.", "Buscamos 'el error hermoso',", "esa chispa que la l├│gica pura jam├ís descubrir├¡a."],
     },
     {
         title: "ARQUITECTOS DE LA NUEVA REALIDAD",
-        body: ["Fusionamos sensibilidad artística visceral", "con potencia de cálculo masiva.", "Donde otros ven simples 'prompts',", "nosotros vemos partituras complejas."],
+        body: ["Fusionamos sensibilidad art├¡stica visceral", "con potencia de c├ílculo masiva.", "Donde otros ven simples 'prompts',", "nosotros vemos partituras complejas."],
     },
     {
-        title: "LA MEDIOCRIDAD ES EL ENEMIGO",
-        body: ["Si buscas lo seguro,", "el mundo está lleno de agencias.", "Pero si buscas lo imposible,", "bienvenido a casa."],
+        title: "NO BUSCAMOS CLIENTES. BUSCAMOS C├ôMPLICES.",
+        body: ["Si buscas lo seguro", "el mundo est├í lleno de opciones.", "Pero si buscas redefinir las reglas...", "bienvenido a casa."],
     }
 ];
 
 const SoulManifesto = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const trackRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
-            if (!trackRef.current || !containerRef.current) return;
+            // TARGET THE LAST ITEM FOR A BRAKE
+            // We pin pieces independently to ensure smoother flow in flex container if needed,
+            // but pinning the specific item works best.
+            const lastItem = document.querySelector(`.manifesto-item-${MANIFESTO.length - 1}`);
 
-            const totalWidth = trackRef.current.scrollWidth;
-            const viewportWidth = window.innerWidth;
-            const amountToScroll = totalWidth - viewportWidth;
-
-            // ELITE SWEEP: Horizontal Scroll Logic
-            gsap.to(trackRef.current, {
-                x: -amountToScroll,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top top",
-                    end: () => `+=${amountToScroll}`,
-                    pin: true,
-                    scrub: 1,
-                    invalidateOnRefresh: true,
-                    anticipatePin: 1,
-                    id: "manifesto-horizontal"
-                }
-            });
+            if (lastItem) {
+                ScrollTrigger.create({
+                    trigger: lastItem,
+                    start: "center center", // When content hits center
+                    end: "+=106%", // USER REQUEST: Specific timing "106%"
+                    pin: true,     // STOP MOVEMENT
+                    pinSpacing: true, // Ensure next section pushes it (displaces), doesn't overlap
+                    scrub: true,   // Smooth
+                    id: "manifesto-brake"
+                });
+            }
 
         }, containerRef);
 
@@ -60,52 +54,47 @@ const SoulManifesto = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="manifesto-section" id="manifiesto" style={{
+        <section ref={containerRef} className="manifesto-section" style={{
             position: 'relative',
             backgroundColor: '#000',
             color: '#FFF',
+            padding: '10vh 0 15vh', // REDUCED BUFFER: Faster transition to next chapter (Orig 80vh)
             width: '100%',
-            height: '100vh',
-            overflow: 'hidden'
+            overflow: 'hidden' // Important for pinning context
         }}>
-            <div
-                ref={trackRef}
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    height: '100%',
-                    width: 'fit-content',
-                    alignItems: 'center',
-                    willChange: 'transform'
-                }}
-            >
-
-                {/* MANIFESTO ITEMS */}
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0',
+                width: '100%',
+                alignItems: 'center'
+            }}>
                 {MANIFESTO.map((item, i) => (
                     <div
                         key={i}
                         className={`manifesto-item manifesto-item-${i}`}
                         style={{
-                            width: '100vw',
-                            height: '100vh',
+                            minHeight: '100vh',
+                            width: '90%',
+                            maxWidth: '1200px',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'center',
                             textAlign: 'center',
-                            padding: 'clamp(1rem, 5vw, 2rem)',
-                            flexShrink: 0
+                            padding: 'clamp(1rem, 5vw, 2rem)', // Responsive padding
+                            // Debug border removed
                         }}
                     >
                         <h2 style={{
-                            fontSize: 'clamp(1.8rem, 8vw, 7rem)',
+                            fontSize: 'clamp(1.8rem, 8vw, 7rem)', // Lowered min size
                             lineHeight: 0.9,
                             textTransform: 'uppercase',
                             marginBottom: '3rem',
-                            color: '#FFF',
+                            color: '#FFF', // High Contrast
                             fontFamily: 'var(--font-heading, sans-serif)',
                             fontWeight: 900,
-                            maxWidth: '90%',
+                            maxWidth: '100%',
                             letterSpacing: '-0.02em',
                         }}>
                             <ScrambleText
@@ -113,6 +102,7 @@ const SoulManifesto = () => {
                                 speed={1.5}
                                 iridescent={true}
                                 finalColor="#FFFFFF"
+                            // Self-triggering is more reliable here
                             />
                         </h2>
 
@@ -125,15 +115,12 @@ const SoulManifesto = () => {
                         }}>
                             {item.body.map((line, j) => (
                                 <p key={j} style={{ margin: '0 0 0.8rem 0' }}>
-                                    <AsciiRipple text={line} autoTrigger={true} />
+                                    <AsciiRipple text={line} />
                                 </p>
                             ))}
                         </div>
                     </div>
                 ))}
-
-                {/* FINAL BUFFER FOR TRANSITION */}
-                <div style={{ width: '30vw', flexShrink: 0 }} />
             </div>
         </section>
     );

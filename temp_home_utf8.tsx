@@ -1,26 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+﻿import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Loader from '../components/Loader';
 import { useScroll } from '../context/ScrollContext';
-import EssenceBackground from '../components/EssenceBackground';
-import SoulManifesto from '../components/SoulManifesto';
 import ShowcaseSlider from '../components/ShowcaseSlider';
+import SoulManifesto from '../components/SoulManifesto';
 import Symbiosis from '../components/Symbiosis';
 import Footer from '../components/Footer';
 import AlmaSection from '../components/AlmaSection';
-import GlitchPortal from '../components/GlitchPortal';
-import type { GlitchPortalHandle } from '../components/GlitchPortal';
 import SEO from '../components/SEO';
 import StructuredData from '../components/StructuredData';
 // --- ASSETS (From Esencia) ---
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4';
 const videoSrc = essenceHeroVideo;
-import officialTypography from '../assets/logos/agencia_typography_official.png';
 import ceoImg from '../assets/team/ceo.jpg';
 import gaelImg from '../assets/team/gael_oracle.png';
 import footerLogo from '../assets/logo_agencia_full.png';
+import officialTypography from '../assets/logos/agencia_typography_official.png';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -34,14 +31,12 @@ const Home: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const pulseButtonRef = useRef<HTMLButtonElement>(null);
     const ctaSectionRef = useRef<HTMLElement>(null); // New Ref for Pinning safety
-    const glitchRef = useRef<GlitchPortalHandle>(null);
-    // Scroll state for neural networks (previously Essence)
 
     // TEAM DATA
     const team = [
         { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
-        { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
-        { id: 3, role: 'LEAD DEVELOPER', name: 'Tejedor de Código', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1000&auto=format&fit=crop', scale: 1.35 },
+        { id: 2, role: 'CTO /\nAI LEAD', name: 'Or├ículo\nde Datos', img: gaelImg, scale: 1.6 },
+        { id: 3, role: 'LEAD DEVELOPER', name: 'Tejedor de C├│digo', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1000&auto=format&fit=crop', scale: 1.35 },
         { id: 4, role: 'UX/UI DIRECTOR', name: 'Escultor de Interfaces', img: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=1000&auto=format&fit=crop', scale: 1.35 },
     ];
 
@@ -106,7 +101,7 @@ const Home: React.FC = () => {
                     scrollTrigger: {
                         trigger: ".portal-wrapper",
                         start: "top top",
-                        end: "+=300%",
+                        end: "+=200%",
                         pin: true,
                         scrub: true,
                         anticipatePin: 1,
@@ -121,16 +116,16 @@ const Home: React.FC = () => {
                     }
                 });
 
-                // Primero se abre la máscara
                 tlPortal.fromTo([maskRef.current, ".portal-text-overlay"],
                     { scale: 1, transformOrigin: 'center center' },
-                    { scale: 80, ease: 'power2.in', duration: 1 }
+                    { scale: 80, ease: 'power2.in', duration: 1 } // Increased scale for safe clearance
                 )
-                    .to(".portal-text-overlay", { opacity: 0, duration: 1, ease: 'none' }, 0)
-                    .to(".portal-overlay", { autoAlpha: 0, duration: 0.1 }, "-=0.1")
-                    .to(".scroll-indicator", { opacity: 0, duration: 0.1, ease: 'power2.out' }, "-=0.2");
+                    .to(".portal-text-overlay", { opacity: 0, duration: 1, ease: 'none' }, 0) // Linear fade throughout the whole scale
+                    .to(".portal-overlay", { autoAlpha: 0, duration: 0.1 }, "-=0.1") // End of Portal Scrub
 
-
+                    .to(".scroll-indicator", {
+                        opacity: 0, duration: 0.1, ease: 'power2.out'
+                    }, "-=0.2");
 
                 // --- 3. MATCH MEDIA (Mobile/Desktop) ---
                 const mm = gsap.matchMedia();
@@ -282,16 +277,13 @@ const Home: React.FC = () => {
                     scrollTrigger: {
                         trigger: '.narrative-hero', // The section containing ESENCIA text
                         start: 'top top',
-                        end: '+=300%',
+                        end: '+=800%',
                         pin: true,
                         scrub: 0.5,
                         anticipatePin: 1,
                         refreshPriority: 8
                     }
                 });
-
-                // MASTER DURATION: Forces a 10s virtual timeline for precise % calculations
-                tlHero.to({}, { duration: 10 }, 0);
 
                 // Phase 1: "ESENC" Vanishes to clear the stage
                 tlHero.to('.word-esenc', {
@@ -318,37 +310,19 @@ const Home: React.FC = () => {
 
                     duration: 3, // Match increased duration for stability
                     ease: 'power2.out'
-                }, 0.5)
-                    // SYNC LIQUID LAYER TO FADE (V33: KEEP background-video-main VISIBLE)
-                    .to(".liquid-container", {
-                        opacity: 0,
-                        duration: 3,
-                        ease: 'power2.inOut'
-                    }, 0.5)
-                    // FADE OUT ESSENCE WRAPPER (Neural Network) 
-                    // CRITICAL: Total extinction but KEEP DOM NODE for stability
-                    .to(".essence-fixed-wrapper", {
-                        opacity: 0,
-                        autoAlpha: 0, // Better than just opacity
-                        display: 'none', // Performance boost
-                        duration: 0.8,
-                        ease: 'power1.in'
-                    }, 0.1);
+                }, 0.5);
 
-                // --- THE PAUSE: NUESTRA ESENCIA on Video Card ---
-                // We hold the alignment for a significant amount of scroll
-                tlHero.to({}, { duration: 6 }, 2.5); // Extended from 4 to 6
-
-                // Phase 3.5: IA Persists Green
+                // ADDED PAUSE TO PERSIST GREEN IA
                 tlHero.to({}, { duration: 2 });
 
-                // SIMULTANEOUSLY: Nuestra disappears BEFORE the zoom
+                // SIMULTANEOUSLY: Nuestra disappears AT THE END of the descent
+                // SMOOTHER FADE: Extended duration to avoid visual jump
                 tlHero.to('.word-nuestra', {
                     opacity: 0,
                     filter: 'blur(20px)',
-                    duration: 1.5,
+                    duration: 1.5, // Prolonged fade
                     ease: 'power2.inOut'
-                }, 8.5); // Fading out later to stay during the pause
+                }, 1.5); // Starts mid-descent, ends slightly after impact (3.0)
 
                 // Phase 3: VIDEO SCALING (Floating -> Immersive)
                 tlHero.to('.liquid-container', {
@@ -359,18 +333,19 @@ const Home: React.FC = () => {
                     ease: 'power2.inOut'
                 }, 1);
 
-                // We keep narrative-wrapper transparent to show EtherBackground behind it
-                // tlHero.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2, ease: 'power2.inOut' }, 4);
+                // Phase 4: FADE OUT to WHITE
+                tlHero.to('.liquid-container', { opacity: 0, duration: 2, ease: 'power2.inOut' }, 4);
+                // Note: We target the narrative container background, not the body, to avoid breaking Background3D
+                tlHero.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2, ease: 'power2.inOut' }, 4);
 
                 // Phase 5: IA PORTAL (The Zoom Event)
-                // Shifted to 10.5 total duration area
                 tlHero.to('.hero-char-ia', {
-                    scale: 80,
-                    filter: 'blur(0px)',
-                    opacity: 0,
-                    duration: 1.5,
-                    ease: 'expo.in'
-                }, 10.5);
+                    scale: 80, // Massive Zoom (Portal Effect)
+                    filter: 'blur(0px)', // No blur, purely geometric
+                    opacity: 0, // Fades out only at max expansion
+                    duration: 1.5, // Cinematic entry speed
+                    ease: 'expo.in' // Slow start, infinite finish speed (Warp)
+                }, 5);
 
 
 
@@ -384,27 +359,27 @@ const Home: React.FC = () => {
                         start: 'top top',
                         end: '+=1500%', // Balanced Speed (Faster than 2500%, Slower than 800%)
                         pin: true,
-                        scrub: 0.5, // Instant response (Dedo del usuario)
+                        scrub: 1.5, // Smoother scrub
                         anticipatePin: 1
                     }
                 });
 
-                // PHASE 1: THE ARRIVAL (Faster Entry for Visibility)
+                // PHASE 1: THE ARRIVAL (Instant Entry)
                 tlIdentidad.to('.entropy-el', {
                     opacity: 1,
                     filter: 'blur(0px)',
                     transform: 'scale(1)',
-                    duration: 3,
-                    stagger: 1.2, // Faster sequence
+                    duration: 4,
+                    stagger: 2,
                     ease: 'power2.out'
-                }, 0.2); // Start almost immediately
+                }, 0.1); // Starts almost immediately (0.1)
 
                 // PHASE 2: THE IGNITION (Focus on "SOMOS LA IA")
                 tlIdentidad.to('.entropy-catchphrase', {
                     opacity: 1,
                     filter: 'blur(0px)',
                     transform: 'scale(1)',
-                    color: '#FFF',
+                    color: '#000',
                     duration: 3,
                     ease: 'expo.out'
                 }, ">-0.5");
@@ -450,23 +425,6 @@ const Home: React.FC = () => {
                 }, ">+1.5"); // Minimal pause: 1.5 units (just enough to finish the sentence)
 
 
-                // --- HEXGRID TRIGGER (Manifiesto Section) ---
-
-                // --- FLASHBANG TRIGGER (Link jumping from Symbiosis -> CTA) ---
-                // Trigger when the CTA section hits the middle/start of viewport
-                ScrollTrigger.create({
-                    trigger: '#contacto',
-                    start: 'top bottom',
-                    onEnter: () => {
-                        // GLITCH: SIMBIOSIS -> SOMOS (Entry)
-                        glitchRef.current?.trigger(0.8);
-                    },
-                    onLeaveBack: () => {
-                        // GLITCH: SOMOS -> SIMBIOSIS (Return)
-                        glitchRef.current?.trigger(0.35);
-                    }
-                });
-
                 // --- 5. CTA SECTION ANIMATION (STICKY SCRUB) ---
                 if (ctaSectionRef.current) {
                     const ctaTl = gsap.timeline({
@@ -487,13 +445,6 @@ const Home: React.FC = () => {
                                 duration: { min: 0.5, max: 1.2 }, // Slightly longer for "automatic" feel
                                 delay: 0.02, // Near instant 
                                 ease: 'expo.out' // Snappy but smooth finish
-                            },
-                            onLeave: () => {
-                                // NO ACTION ON LEAVE
-                            },
-                            onEnterBack: () => {
-                                // GLITCH ON RETURN FROM FOOTER (DISABLED - USER REQUESTED SIMBIOSIS ONLY)
-                                // glitchRef.current?.trigger(0.3);
                             }
                         }
                     });
@@ -504,7 +455,7 @@ const Home: React.FC = () => {
                     // 0. VISUAL PAUSE (HOLD SOMOS)
                     ctaTl.to({}, { duration: 1 });
 
-                    // 1. EXIT SEQUENCE (AUTOMATIC TRIGGER START) - RESTORED ORIGINAL
+                    // 1. EXIT SEQUENCE (AUTOMATIC TRIGGER START)
                     ctaTl.to('.cta-somos-text', {
                         opacity: 0,
                         y: -80, // More movement for "launch" feel
@@ -562,10 +513,10 @@ const Home: React.FC = () => {
     // canRenderSlider removed to prevent layout thrashing
 
     return (
-        <main ref={containerRef} style={{ backgroundColor: 'transparent' }}>
+        <main ref={containerRef}>
             <SEO
-                title="Agencia de Ingeniería Digital & Automatización"
-                description="Especialistas en Arquitectura Digital, Sistemas de Automatización 360 e Identidad Visual de Alta Fidelidad. Operamos a un nivel de eficiencia imposible para humanos."
+                title="Agencia de Ingenier├¡a Digital & Automatizaci├│n"
+                description="Especialistas en Arquitectura Digital, Sistemas de Automatizaci├│n 360 e Identidad Visual de Alta Fidelidad. Operamos a un nivel de eficiencia imposible para humanos."
             />
             <StructuredData data={{
                 "@context": "https://schema.org",
@@ -573,18 +524,16 @@ const Home: React.FC = () => {
                 "name": "AgencIA",
                 "url": "https://www.agenciamx.app",
                 "logo": "https://www.agenciamx.app/logo.png",
-                "description": "Agencia líder en Transformación Digital e Inteligencia Artificial.",
+                "description": "Agencia l├¡der en Transformaci├│n Digital e Inteligencia Artificial.",
                 "sameAs": [
                     "https://www.linkedin.com/company/agencia",
                     "https://instagram.com/agencia"
                 ]
             }} />
             {loading && <Loader onComplete={handleLoaderComplete} />}
-            <GlitchPortal ref={glitchRef} />
-            {/* SECTIONS */}
-            <div className="essence-fixed-wrapper" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-                <EssenceBackground />
-            </div>
+
+            {/* 0. WHITE VOID (Replaces Background3D) */}
+            <div style={{ position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none', backgroundColor: '#FFFFFF' }} />
 
             {/* --- PORTAL WRAPPER (Pinned Entry) --- */}
             <div className="portal-wrapper" style={{ height: '100vh', width: '100%', position: 'relative', overflow: 'hidden', zIndex: 20 }}>
@@ -653,9 +602,8 @@ const Home: React.FC = () => {
 
                 {/* BACKGROUND VIDEO (LATA AGENCIA) */}
                 <div className="liquid-container" style={{
-                    position: 'fixed', inset: 0, zIndex: 2, pointerEvents: 'none',
-                    backgroundColor: 'transparent',
-                    overflow: 'hidden', opacity: 1
+                    position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', backgroundColor: '#FFFFFF',
+                    overflow: 'hidden', opacity: 1 // Managed by GSAP
                 }}>
                     <video src={videoSrc} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
@@ -696,12 +644,12 @@ const Home: React.FC = () => {
 
                             {/* LINE 2: ESENCIA (Giant) */}
                             <div style={{
-                                display: 'flex', gap: '0', whiteSpace: 'nowrap', flexWrap: 'nowrap', // REMOVED GAP 0.1em to prevent splitting
-                                width: '100%', justifyContent: 'center', alignItems: 'center',
-                                transform: 'translateX(-0.04em)'
+                                display: 'flex', gap: '0.1em', whiteSpace: 'nowrap', flexWrap: 'nowrap',
+                                width: '100%', justifyContent: 'center', alignItems: 'center', // Force center alignment and full width
+                                transform: 'translateX(-0.04em)' // NANO SHIFT (Barely there)
                             }}>
                                 {/* PART 2A: ESENC (Will Fade Away) */}
-                                <span className="word-esenc" style={{ display: 'inline-flex', flexShrink: 0, letterSpacing: '-0.02em' }}>
+                                <span className="word-esenc" style={{ display: 'inline-flex', flexShrink: 0 }}>
                                     <span className="hero-char-main">E</span>
                                     <span className="hero-char-main">S</span>
                                     <span className="hero-char-main">E</span>
@@ -710,9 +658,9 @@ const Home: React.FC = () => {
                                 </span>
 
                                 {/* PART 2B: IA (The Final Survivor) */}
-                                <span className="word-ia-wrapper" style={{ display: 'inline-flex', flexShrink: 0, letterSpacing: '-0.02em' }}>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow', transformOrigin: 'center' }}>I</span>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow', transformOrigin: 'center' }}>A</span>
+                                <span className="word-ia-wrapper" style={{ display: 'inline-flex', flexShrink: 0 }}>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow' }}>I</span>
+                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow' }}>A</span>
                                 </span>
                             </div>
                         </h1>
@@ -833,8 +781,7 @@ const Home: React.FC = () => {
                             transform: 'translateY(20px)',
                             filter: 'blur(10px)'
                         }}>
-                            No hacemos "diseño bonito". Construimos interfaces que<br />
-                            <strong style={{ color: '#00FF99' }}>imponen autoridad</strong> y capturan mercado.
+                            Trascendemos la est├®tica convencional.
                         </p>
 
                         {/* Line 2 - NIVEL 2 */}
@@ -850,10 +797,10 @@ const Home: React.FC = () => {
                             filter: 'blur(10px)',
                             textShadow: '3px 6px 12px rgba(0,0,0,0.28)'
                         }}>
-                            Estética superior. Ejecución quirúrgica. Resultados financieros.
+                            Orquestamos sistemas de inteligencia visual que no solo comunican, sino que dominan el entorno digital.
                         </p>
 
-                        {/* Line 3 - NIVEL 1 (más cerca, más marcada) */}
+                        {/* Line 3 - NIVEL 1 (m├ís cerca, m├ís marcada) */}
                         <p className="entropy-body" style={{
                             fontFamily: 'var(--font-body)',
                             fontSize: 'clamp(0.9rem, 1.2vw, 1.15rem)',
@@ -867,27 +814,46 @@ const Home: React.FC = () => {
                             filter: 'blur(10px)',
                             textShadow: '4px 8px 16px rgba(0,0,0,0.35)'
                         }}>
-                            Creatividad humana. Velocidad de máquina.
+                            Simbiosis absoluta entre intuici├│n humana y precisi├│n algor├¡tmica.
                         </p>
                     </div>
 
                 </section>
 
+                {/* --- PHYSICAL GRADIENT BRIDGE: WHITE -> BLACK --- */}
+                <div style={{
+                    width: '100%',
+                    height: '150px',
+                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)',
+                    position: 'relative',
+                    zIndex: 35 // Between 40 (Identidad) and 30 (Manifesto)
+                }} />
 
                 {/* 4. SOUL MANIFESTO */}
-                <section id="manifesto" className="soul-narrative-section" style={{ position: 'relative', zIndex: 40, backgroundColor: 'transparent', color: '#FFF' }}>
+                <section id="manifesto" className="soul-narrative-section" style={{ position: 'relative', zIndex: 30, backgroundColor: '#000', color: '#FFF' }}>
+                    {/* CAP 002 REMOVED */}
                     <SoulManifesto />
                 </section>
 
+                {/* --- PHYSICAL GRADIENT BRIDGE: BLACK -> WHITE --- */}
+                <div style={{
+                    width: '100%',
+                    height: '150px',
+                    background: 'linear-gradient(to bottom, #000000 0%, #FFFFFF 100%)',
+                    position: 'relative',
+                    zIndex: 45 // Between 30 (Manifesto) and 50 (Showcase)
+                }} />
 
                 {/* 5. SHOWCASE SLIDER */}
                 <section id="capacidades" className="identity-section" style={{ position: 'relative', zIndex: 50, marginTop: '0', backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
+                    {/* CAP 003 REMOVED */}
                     <ShowcaseSlider initialHash={hash} />
                 </section>
 
                 {/* 6. TEAM RIFT */}
                 <section id="nucleo" className="team-list" style={{ minHeight: '100vh', padding: '0 0 10vh', backgroundColor: '#FFFFFF', color: '#000', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                    <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', margin: '6rem 0', fontWeight: 900, textAlign: 'center', letterSpacing: '0.02em', wordSpacing: '0.2em', color: '#000' }}>EL NÚCLEO</h2>
+                    {/* CAP 004 REMOVED */}
+                    <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', margin: '6rem 0', fontWeight: 900, textAlign: 'center', letterSpacing: '0.02em', wordSpacing: '0.2em', color: '#000' }}>EL N├ÜCLEO</h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         {team.map((member) => (
                             <div key={member.id} className="rift-row" style={{ position: 'relative', width: '100%', height: '60vh', minHeight: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
@@ -920,10 +886,8 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* 7. SIMBIOSIS */}
-                {/* GRADIENT BRIDGE: WHITE -> BLACK (Smooth Descent) */}
-                <div style={{ height: '20vh', background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)', width: '100%', position: 'relative', zIndex: 15 }} />
-
                 <div id="simbiosis" style={{ position: 'relative' }}>
+                    {/* CAP 005 REMOVED */}
                     <Symbiosis />
                 </div>
 
@@ -1034,7 +998,7 @@ const Home: React.FC = () => {
                     >
                         {/* CHAPTER LABEL */}
                         <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                            <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_006_UMBRAL</span>
+                            <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAP├ìTULO_006_UMBRAL</span>
                             <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>UMBRAL</span>
                         </div>
 
@@ -1045,7 +1009,7 @@ const Home: React.FC = () => {
                                 fontSize: 'clamp(3rem, 8vw, 6rem)',
                                 textAlign: 'center',
                                 fontWeight: 900,
-                                margin: '0 0 2vh 0',
+                                margin: '0 0 2vh 0', // Standard margin
                                 letterSpacing: '-0.05em',
                                 color: '#000',
                                 position: 'relative',
@@ -1090,7 +1054,7 @@ const Home: React.FC = () => {
                             }}
                         >
                             <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', textAlign: 'center', fontWeight: 900, marginBottom: '2rem', letterSpacing: '-0.05em', color: '#333' }}>
-                                ¿TIENES UNA IDEA?
+                                ┬┐TIENES UNA IDEA?
                             </h2>
 
                             <Link to="/contacto">
@@ -1129,8 +1093,8 @@ const Home: React.FC = () => {
                                         e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
                                     }}
                                 >
-                                    <span style={{ position: 'relative', zIndex: 1 }}>Tómate un café virtual</span>
-                                    <span style={{ fontSize: '1.4rem', transition: 'transform 0.3s ease' }} className="cta-arrow">→</span>
+                                    <span style={{ position: 'relative', zIndex: 1 }}>T├│mate un caf├® virtual</span>
+                                    <span style={{ fontSize: '1.4rem', transition: 'transform 0.3s ease' }} className="cta-arrow">ÔåÆ</span>
                                 </button>
                             </Link>
                         </div>

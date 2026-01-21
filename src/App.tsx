@@ -16,14 +16,12 @@ import Terminos from './pages/Terminos';
 import Playground from './pages/Playground';
 import NarrativePrototype from './pages/NarrativePrototype';
 import Cursor from './components/Cursor';
-import EssenceBackground from './components/EssenceBackground';
 
 function App() {
   return (
     <LanguageProvider>
       <ScrollProvider>
         <Router>
-          <EssenceBackground />
           <Cursor />
           <ScrollToTop />
           <Layout>

@@ -1,107 +1,152 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
- * EssenceBackground - Red Neuronal Animada (Versión Senior Refinada)
- * zIndex: 0 - Actúa como fondo global tras el Layout transparente
+ * EssenceBackground - ALMA High-Performance Cinematic Implementation
+ * Versión optimizada: Se elimina ctx.filter (causante del lag) y se sustituye
+ * por simulación de profundidad mediante niveles de opacidad y escala.
  */
-const EssenceBackground: React.FC = () => {
+const EssenceBackground = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const mouseRef = useRef({ x: null as number | null, y: null as number | null, radius: 300 });
+    const mouseRef = useRef({ x: null as number | null, y: null as number | null, radius: 250 });
 
     useEffect(() => {
+        // Force body background to transparent to allow fixed background to show 
+        // if it were behind, but here we move it to z-index 0
+        const originalBodyBg = document.body.style.backgroundColor;
+        document.body.style.backgroundColor = 'transparent';
+
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const ctx = canvas.getContext('2d', { alpha: false }); // Optimización de rendimiento
+
+        const ctx = canvas.getContext('2d', { alpha: false }); // Optimización de contexto
         if (!ctx) return;
 
         let animationFrameId: number;
         let particles: Particle[] = [];
-        let w = window.innerWidth;
-        let h = window.innerHeight;
 
         const resize = () => {
-            w = window.innerWidth;
-            h = window.innerHeight;
-            canvas.width = w;
-            canvas.height = h;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             init();
         };
 
         class Particle {
-            x = 0; y = 0; z = 0; vx = 0; vy = 0; size = 0; opacity = 0; charge = 0;
+            x!: number;
+            y!: number;
+            z!: number;
+            baseSize!: number;
+            opacity!: number;
+            baseSpeedX!: number;
+            baseSpeedY!: number;
+            speedX!: number;
+            speedY!: number;
+            charge!: number;
 
-            constructor() { this.reset(); }
+            constructor() {
+                this.init();
+            }
 
-            reset() {
-                this.x = Math.random() * w;
-                this.y = Math.random() * h;
+            init() {
+                this.x = Math.random() * canvas!.width;
+                this.y = Math.random() * canvas!.height;
+
+                // Coordenada Z (0 = fondo, 1 = frente)
                 this.z = Math.random();
-                // BASE SIZE: Minimalist dots (0.8px to 2.3px)
-                this.size = this.z * 1.5 + 0.8;
-                this.opacity = this.z * 0.4 + 0.2;
-                this.vx = (Math.random() - 0.5) * (this.z * 1.2 + 0.3);
-                this.vy = (Math.random() - 0.5) * (this.z * 1.2 + 0.3);
+
+                // Atributos basados en Z para evitar cálculos de filtro pesados
+                this.baseSize = this.z * 2.5 + 0.5;
+                this.opacity = this.z * 0.6 + 0.1;
+
+                // Velocidad proporcional a la profundidad (efecto paralaje)
+                this.baseSpeedX = (Math.random() - 0.5) * (this.z * 1.8 + 0.4);
+                this.baseSpeedY = (Math.random() - 0.5) * (this.z * 1.8 + 0.4);
+
+                this.speedX = this.baseSpeedX;
+                this.speedY = this.baseSpeedY;
                 this.charge = 0;
             }
 
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0) this.x = w;
-                if (this.x > w) this.x = 0;
-                if (this.y < 0) this.y = h;
-                if (this.y > h) this.y = 0;
+                this.x += this.speedX;
+                this.y += this.speedY;
 
+                // Recuperación elástica (Inercia de ALMA)
+                this.speedX += (this.baseSpeedX - this.speedX) * 0.08;
+                this.speedY += (this.baseSpeedY - this.speedY) * 0.08;
+
+                if (this.x > canvas!.width) this.x = 0;
+                else if (this.x < 0) this.x = canvas!.width;
+                if (this.y > canvas!.height) this.y = 0;
+                else if (this.y < 0) this.y = canvas!.height;
+
+                // Interacción reactiva ágil
                 if (mouseRef.current.x !== null && mouseRef.current.y !== null) {
                     const dx = mouseRef.current.x - this.x;
                     const dy = mouseRef.current.y - this.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < mouseRef.current.radius) {
-                        this.charge = (mouseRef.current.radius - dist) / mouseRef.current.radius;
-                        // SUBTLE REPULSION
-                        this.x -= (dx / dist) * this.charge * 2.5;
-                        this.y -= (dy / dist) * this.charge * 2.5;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < mouseRef.current.radius) {
+                        const force = (mouseRef.current.radius - distance) / mouseRef.current.radius;
+                        // Solo los nodos cercanos al frente reaccionan con violencia cinética
+                        const pushFactor = force * (12 * this.z + 3);
+                        this.speedX -= (dx / distance) * pushFactor;
+                        this.speedY -= (dy / distance) * pushFactor;
+                        this.charge = force;
                     } else {
-                        this.charge *= 0.92;
+                        this.charge *= 0.9;
                     }
                 } else {
-                    this.charge *= 0.92;
+                    this.charge *= 0.9;
                 }
             }
 
             draw() {
+                const finalSize = this.baseSize + (this.charge * 3 * this.z);
+                const finalOpacity = Math.min(1, this.opacity + (this.charge * 0.5));
+
                 ctx!.beginPath();
-                // ELEGANT GROWTH: Only 1.5px extra max
-                ctx!.arc(this.x, this.y, this.size + this.charge * 1.5, 0, Math.PI * 2);
-                ctx!.fillStyle = `rgba(0, 0, 0, ${Math.min(0.7, this.opacity + this.charge * 0.15)})`;
+                ctx!.arc(this.x, this.y, finalSize, 0, Math.PI * 2);
+                // Usamos colores sólidos con alpha para máxima velocidad
+                ctx!.fillStyle = `rgba(0, 0, 0, ${finalOpacity})`;
                 ctx!.fill();
             }
         }
 
         const init = () => {
             particles = [];
-            const count = Math.min((w * h) / 7500, 180);
-            for (let i = 0; i < count; i++) particles.push(new Particle());
+            // Ajustamos densidad según resolución para mantener FPS
+            const count = Math.min((canvas.width * canvas.height) / 10000, 150);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+            // Dibujar los de atrás primero
+            particles.sort((a, b) => a.z - b.z);
         };
 
         const drawPlexus = () => {
-            const maxDist = 180;
+            const maxDistance = 180;
+            ctx!.lineCap = 'round';
+
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
-                    const p1 = particles[i], p2 = particles[j];
-                    if (Math.abs(p1.z - p2.z) > 0.45) continue;
-                    const dx = p1.x - p2.x, dy = p1.y - p2.y;
-                    const distSq = dx * dx + dy * dy;
-                    if (distSq < maxDist * maxDist) {
-                        const dist = Math.sqrt(distSq);
-                        const baseOpacity = (1 - dist / maxDist) * 0.4 * ((p1.z + p2.z) / 2);
-                        // VIBRANT BUT SUBTLE OPACITY
-                        ctx!.strokeStyle = `rgba(0, 0, 0, ${baseOpacity + (p1.charge + p2.charge) * 0.12})`;
-                        // ULTRA-THIN LINES: 0.3px to 1.1px base + 0.4px interaction glow
-                        ctx!.lineWidth = (0.3 + p1.z * 0.8) + (p1.charge + p2.charge) * 0.4;
+                    // Solo conectar si están en planos de profundidad similares (Z-culling)
+                    if (Math.abs(particles[i].z - particles[j].z) > 0.25) continue;
+
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distanceSq = dx * dx + dy * dy; // Usar distancia al cuadrado es más rápido
+
+                    if (distanceSq < maxDistance * maxDistance) {
+                        const distance = Math.sqrt(distanceSq);
+                        const avgZ = (particles[i].z + particles[j].z) / 2;
+                        const opacity = (1 - distance / maxDistance) * 0.4 * avgZ;
+
+                        ctx!.strokeStyle = `rgba(0, 0, 0, ${opacity + (particles[i].charge * 0.2)})`;
+                        ctx!.lineWidth = (0.3 + avgZ) + (particles[i].charge * 1.2);
+
                         ctx!.beginPath();
-                        ctx!.moveTo(p1.x, p1.y);
-                        ctx!.lineTo(p2.x, p2.y);
+                        ctx!.moveTo(particles[i].x, particles[i].y);
+                        ctx!.lineTo(particles[j].x, particles[j].y);
                         ctx!.stroke();
                     }
                 }
@@ -109,34 +154,75 @@ const EssenceBackground: React.FC = () => {
         };
 
         const animate = () => {
-            ctx.fillStyle = '#f8fafc';
-            ctx.fillRect(0, 0, w, h);
+            // Fondo sólido para evitar transparencias costosas en el canvas
+            ctx!.fillStyle = '#f8fafc';
+            ctx!.fillRect(0, 0, canvas.width, canvas.height);
+
             drawPlexus();
-            particles.forEach(p => { p.update(); p.draw(); });
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
             animationFrameId = requestAnimationFrame(animate);
         };
 
-        const onMouseMove = (e: MouseEvent) => { mouseRef.current.x = e.clientX; mouseRef.current.y = e.clientY; };
-        const onMouseLeave = () => { mouseRef.current.x = null; mouseRef.current.y = null; };
+        const handleMouseMove = (e: MouseEvent) => {
+            mouseRef.current.x = e.clientX;
+            mouseRef.current.y = e.clientY;
+        };
+
+        const handleMouseLeave = () => {
+            mouseRef.current.x = null;
+            mouseRef.current.y = null;
+        };
 
         window.addEventListener('resize', resize);
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseleave', onMouseLeave);
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseleave', handleMouseLeave);
 
         resize();
         animate();
 
         return () => {
             window.removeEventListener('resize', resize);
-            window.removeEventListener('mousemove', onMouseMove);
-            window.removeEventListener('mouseleave', onMouseLeave);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseleave', handleMouseLeave);
             cancelAnimationFrame(animationFrameId);
+            document.body.style.backgroundColor = originalBodyBg;
         };
     }, []);
 
     return (
-        <div className="essence-background" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', backgroundColor: '#f8fafc' }}>
-            <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }} />
+        <div
+            className="essence-bg-container"
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                zIndex: 0,
+                overflow: 'hidden',
+                backgroundColor: '#f8fafc',
+                pointerEvents: 'none'
+            }}
+        >
+            {/* Capas de fondo con CSS Blur (mucho más eficiente que Canvas Blur) */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-[-10%] right-[-5%] w-[100%] h-[100%] rounded-full bg-blue-100/30 blur-[120px]" />
+                <div className="absolute bottom-[-15%] left-[-10%] w-[90%] h-[90%] rounded-full bg-slate-200/40 blur-[120px]" />
+            </div>
+
+            <canvas
+                ref={canvasRef}
+                className="absolute inset-0 block"
+                style={{ width: '100%', height: '100%' }}
+            />
+
+            {/* Textura de ruido ligera */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
         </div>
     );
 };

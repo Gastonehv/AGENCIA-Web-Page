@@ -44,7 +44,6 @@ const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoT
         let waves: Array<{ startPos: number; startTime: number; id: number }> = [];
         let animId: number | null = null;
         let isHover = false;
-        let origW: number | null = null;
 
         // Simple touch detection
         const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;

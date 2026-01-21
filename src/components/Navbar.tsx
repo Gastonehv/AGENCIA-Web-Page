@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
-import { useScroll } from '../context/ScrollContext';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import iconWhite from '../assets/logos/header-brain.png';
 import { servicesData } from '../data/services.ts';

@@ -32,101 +32,134 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
                 }
             });
 
-            // 1. Counter Animation (00 -> 100)
-            const counterObj = { val: 0 };
-            tl.to(counterObj, {
-                val: 100,
-                duration: 2.0, // Slightly longer for drama
-                ease: "power2.inOut",
-                onUpdate: () => {
-                    if (counterRef.current) {
-                        counterRef.current.innerText = Math.floor(counterObj.val).toString().padStart(3, '0');
-                    }
+            // --- SC: HYBRID REAL-TIME LOADER (Visuals + Real Logic) ---
+
+            // 0. Setup Real Load Listener
+            let isLoaded = false;
+            // Check if already loaded (e.g. refresh)
+            if (document.readyState === 'complete') {
+                isLoaded = true;
+            } else {
+                window.addEventListener('load', () => { isLoaded = true; checkLoadRelease(); });
+                // Fallback: Force release after 5s to prevent infinite hanging on broken assets
+                setTimeout(() => { isLoaded = true; checkLoadRelease(); }, 5000);
+            }
+
+            const counterObj = { val: 0 }; // Defined properly in scope
+
+            // Helper to release the lock
+            const checkLoadRelease = () => {
+                if (isLoaded && tl && tl.paused()) {
+                    tl.play();
+                }
+            };
+
+            // 1. HONEST PROGRESS SEQUENCE (0 -> 99%)
+            // SC: Replaced "Fake Boost" with linear information reveal. 25% per concept.
+
+            const sequenceWords = ["ESTRATEGIA", "DISEÑO", "TECNOLOGÍA", "FUTURO"];
+            const steps = sequenceWords.length; // 4 steps
+            const totalDuration = 2.0; // Total time for words
+            const stepDuration = totalDuration / steps;
+
+            sequenceWords.forEach((word, index) => {
+                const endPct = (index + 1) * 25 - (index === steps - 1 ? 1 : 0); // End at 99 for last step
+
+                const startTime = index * stepDuration;
+
+                // Word Appearance
+                tl.to(textRef.current, {
+                    opacity: 1,
+                    duration: 0.1,
+                    onStart: () => { if (textRef.current) textRef.current.innerText = word; }
+                }, startTime)
+
+                    // Counter Progress for this Step
+                    .to(counterObj, {
+                        val: endPct,
+                        duration: stepDuration, // Linear filling
+                        ease: "none", // Honest linear time
+                        onUpdate: () => {
+                            if (counterRef.current) counterRef.current.innerText = Math.floor(counterObj.val).toString().padStart(3, '0');
+                        }
+                    }, startTime)
+
+                // Word Disappearance (except last one)
+                if (index < steps - 1) {
+                    tl.to(textRef.current, { opacity: 0, duration: 0.1 }, startTime + stepDuration - 0.1);
                 }
             });
 
-            // 2. Rapid Word Cycling (Kinetic Typography)
-            // Removed "AGENCIA" from loop to treat it specially
-            const sequenceWords = ["ESTRATEGIA", "DISEÑO", "TECNOLOGÍA", "FUTURO"];
+            // Last word "FUTURO" stays visible and enters destabilization
 
-            sequenceWords.forEach((word, index) => {
-                tl.to(textRef.current, {
-                    opacity: 1,
-                    duration: 0.05,
-                    onStart: () => {
-                        if (textRef.current) textRef.current.innerText = word;
-                    }
-                }, index * 0.4) // Slower pace for readability
-                    .to(textRef.current, {
-                        opacity: 0,
-                        duration: 0.05,
-                        delay: 0.25
-                    });
+            // Parallel: Violent Shake while loading
+            tl.to(textRef.current, {
+                x: () => (Math.random() - 0.5) * 10, // Jitter
+                y: () => (Math.random() - 0.5) * 10,
+                filter: 'blur(2px)',
+                textShadow: '2px 0 #00ffff, -2px 0 #ff00ff', // Chromatic Aberration
+                duration: 0.05,
+                repeat: 30, // Shake for 1.5s
+                yoyo: true
+            }, "<");
+
+            // 4. THE REALITY CHECK (Pause if not loaded)
+            tl.call(() => {
+                if (!isLoaded) {
+                    tl.pause();
+                }
             });
 
-            // 3. THE DISRUPTIVE FINALE (The "Flash Bang")
+            // 4.5. SINGULARITY COLLAPSE (Release Sequence)
+            // Text sucks in before exploding
+            tl.to(textRef.current, {
+                scale: 0.1, // SINGULARITY
+                opacity: 0,
+                duration: 0.2, // Fast suck
+                ease: "back.in(2)",
+                filter: 'blur(10px)'
+            });
 
-            // A. "AGENCIA" appears with glitch/shake effect
-            tl.set(textRef.current, {
-                text: "AGENCIA",
-                opacity: 1,
-                scale: 1,
-                filter: 'blur(0px)'
-            })
+            // 5. THE RELEASE (100% + EXPLOSION)
+            tl.addLabel("explosion")
+                .to(counterObj, {
+                    val: 100,
+                    duration: 0.1,
+                    onUpdate: () => {
+                        if (counterRef.current) {
+                            counterRef.current.innerText = "100";
+                            counterRef.current.style.color = "#00FF99";
+                        }
+                    }
+                }, "explosion")
                 .to(textRef.current, {
-                    duration: 0.05,
-                    x: -5, // Shake
-                    y: 5,
-                    color: '#00ffff' // Cyan glitch
-                })
-                .to(textRef.current, {
-                    duration: 0.05,
-                    x: 5,
-                    y: -5,
-                    color: '#ff00ff' // Magenta glitch
-                })
-                .to(textRef.current, {
-                    duration: 0.05,
-                    x: 0,
-                    y: 0,
-                    color: '#fff',
-                    scale: 1.5 // Start growing
-                })
-
-                // B. Aggressive Expansion into the camera (Singularity)
-                .to(textRef.current, {
-                    scale: 50, // Massive scale - fly through the text
+                    scale: 100, // Zoom into the void
                     opacity: 0,
                     duration: 0.4,
-                    ease: "expo.in",
-                    filter: 'blur(20px)'
-                })
-
-                // C. SCREEN FLASH (White Out)
+                    ease: "expo.in"
+                }, "explosion")
                 .to(containerRef.current, {
                     backgroundColor: '#ffffff',
-                    duration: 0.05,
-                    ease: "power4.out"
-                }, "-=0.1") // Overlap with text explosion
-
-                // D. Fade back to Black & Logo Reveal
+                    duration: 0.1
+                }, "explosion+=0.1")
                 .to(containerRef.current, {
                     backgroundColor: '#000000',
-                    duration: 0.5,
-                    ease: "power2.in"
+                    duration: 0.1 // Fast fade to black background for logo contrast
                 })
+                // RESTORED: THE BRAIN LOGO REVEAL
                 .fromTo(logoRef.current,
-                    { scale: 2, opacity: 0, filter: 'blur(20px)' },
+                    { scale: 3, opacity: 0, filter: 'blur(20px)' },
                     { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.8, ease: "expo.out" },
-                    "-=0.4"
+                    "-=0.1"
                 )
-
-                // 4. Exit Animation (Curtain Up)
+                // Hold logo for a split second before curtain up
+                .to(logoRef.current, {
+                    duration: 0.5
+                })
                 .to(containerRef.current, {
                     yPercent: -100,
                     duration: 0.8,
-                    ease: "power4.inOut",
-                    delay: 0.5
+                    ease: "power4.inOut"
                 });
 
         }, containerRef);

@@ -11,17 +11,26 @@ interface AsciiRippleProps {
     className?: string;
     style?: React.CSSProperties;
     autoTrigger?: boolean;
+    trigger?: any; // New prop
 }
 
-const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoTrigger = false }) => {
+const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoTrigger = false, trigger }) => {
     const elementRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
         const el = elementRef.current;
         if (!el) return;
 
+        // ... [EXISTING LOGIC REMAINS, but we add trigger watcher] ...
+        // Note: Writing full logic again is expensive, I will use a separate useEffect for the trigger or inject it into the main one.
+        // BUT replace_file_content requires replacing the block. 
+        // Strategy: I will replace the top part to add props, and then add a specific useEffect for the trigger.
+
+        // Actually, let's keep it simple. I'll just add the trigger watcher at the bottom of the existing useEffect logic if I can find a good insertion point, OR just replace the whole useEffect if needed.
+        // It's safer to just restart the logic if trigger changes.
+
         // --- ANIMATION LOGIC ---
-        // Constants
+        // Constants (Redefined inside scope)
         const WAVE_THRESH = 3;
         const CHAR_MULT = 3;
         const ANIM_STEP = 40;
@@ -41,11 +50,10 @@ const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoT
         const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
         const cfg = {
-            dur: isTouch ? 2000 : 600, // Slower/Breathing speed
-            // Lighter chars (removed heavy blocks) for subtlety
+            dur: isTouch ? 2000 : 600,
             chars: '.,·-─~+:;=*π""┐┌┘┴┬╗╔╝╚╬╠╣╩╦║!?&#$@0123456789',
             preserveSpaces: true,
-            spread: isTouch ? 1.0 : 0.3, // Slightly less wide than before
+            spread: isTouch ? 1.0 : 0.3,
         };
 
         const updateCursorPos = (e: MouseEvent) => {
@@ -101,21 +109,11 @@ const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoT
 
         const stop = () => {
             el.textContent = origTxt;
-            // Reset width
-            if (origW !== null) {
-                el.style.width = "";
-                origW = null;
-            }
             isAnim = false;
         };
 
         const start = () => {
             if (isAnim) return;
-            // Lock width to prevent layout shift
-            if (origW === null) {
-                origW = el.getBoundingClientRect().width;
-                el.style.width = `${origW}px`;
-            }
             isAnim = true;
 
             const animate = () => {
@@ -155,21 +153,23 @@ const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoT
         el.addEventListener('mouseleave', handleLeave);
 
         // --- AUTO-ANIMATION ("FLASHAZOS") ---
-        // Triggered via prop OR touch devices (legacy support)
         let autoAnimInterval: number | undefined;
         if (isTouch || autoTrigger) {
-            // Randomize start time slightly to avoid robotic sync
             const randomDelay = Math.random() * 2000;
-
             setTimeout(() => {
                 autoAnimInterval = setInterval(() => {
                     if (!isAnim) {
-                        // Randomize "cursor" position for the wave origin
                         cursorPos = Math.floor(Math.random() * origTxt.length);
                         startWave();
                     }
-                }, 4000 + Math.random() * 3000); // Trigger every 4-7 seconds (Randomized)
+                }, 4000 + Math.random() * 3000);
             }, randomDelay);
+        }
+
+        // --- SC: TRIGGER RESPONSE ---
+        if (trigger) {
+            cursorPos = Math.floor(Math.random() * origTxt.length);
+            startWave();
         }
 
         // Cleanup
@@ -180,7 +180,7 @@ const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoT
             el.removeEventListener('mousemove', handleMove);
             el.removeEventListener('mouseleave', handleLeave);
         };
-    }, [text]); // Re-run if text changes
+    }, [text, trigger]); // Dependency updated
 
     return (
         <span
@@ -189,9 +189,8 @@ const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoT
             style={{
                 display: 'inline-block',
                 cursor: 'pointer',
-                // Ensure monospace for alignment
-                // fontFamily: 'monospace', // Inherited usually
-                whiteSpace: 'pre-wrap', // Handle wrapping
+                fontFamily: 'var(--font-mono, monospace)', // SC: FORCED MONO to prevent "brincos"
+                whiteSpace: 'pre-wrap',
                 ...style
             }}
         >

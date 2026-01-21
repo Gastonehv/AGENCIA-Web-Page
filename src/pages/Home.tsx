@@ -14,6 +14,7 @@ import GlitchPortal from '../components/GlitchPortal';
 import type { GlitchPortalHandle } from '../components/GlitchPortal';
 import SEO from '../components/SEO';
 import StructuredData from '../components/StructuredData';
+import ChapterHUD from '../components/ChapterHUD';
 // --- ASSETS (From Esencia) ---
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4';
 const videoSrc = essenceHeroVideo;
@@ -35,6 +36,10 @@ const Home: React.FC = () => {
     const pulseButtonRef = useRef<HTMLButtonElement>(null);
     const ctaSectionRef = useRef<HTMLElement>(null); // New Ref for Pinning safety
     const glitchRef = useRef<GlitchPortalHandle>(null);
+
+    // CHAPTER HUD STATE
+    const [activeChapter, setActiveChapter] = useState('ESENCIA');
+    const [chapterNum, setChapterNum] = useState('1');
     // Scroll state for neural networks (previously Essence)
 
     // TEAM DATA
@@ -112,7 +117,7 @@ const Home: React.FC = () => {
                         anticipatePin: 1,
                         refreshPriority: 10,
                         invalidateOnRefresh: true,
-                        snap: {
+                        snap: window.innerWidth <= 768 ? undefined : {
                             snapTo: 1,
                             duration: { min: 0.2, max: 0.5 },
                             delay: 0,
@@ -132,7 +137,7 @@ const Home: React.FC = () => {
 
 
 
-                // --- 3. MATCH MEDIA (Mobile/Desktop) ---
+                // --- 3. TEAM RIFT ANIMATIONS ---
                 const mm = gsap.matchMedia();
 
                 // TEAM RIFT ANIMATIONS
@@ -148,7 +153,7 @@ const Home: React.FC = () => {
                         pin: true,
                         pinSpacing: true, // Adds physical space
                         id: `rift-pin-${i}`,
-                        snap: {
+                        snap: window.innerWidth <= 768 ? undefined : {
                             snapTo: 1,
                             duration: { min: 0.1, max: 0.3 },
                             ease: 'power1.inOut'
@@ -163,7 +168,7 @@ const Home: React.FC = () => {
                     end: "+=150%", // Holds screen for reading
                     pin: true,
                     pinSpacing: true,
-                    snap: {
+                    snap: window.innerWidth <= 768 ? undefined : { // DISABLE aggressive snap on mobile
                         snapTo: 1,
                         duration: { min: 0.2, max: 0.8 },
                         delay: 0.1,
@@ -171,20 +176,31 @@ const Home: React.FC = () => {
                     }
                 });
 
-                // --- SYMBIOSIS LOGIC MOVED TO COMPONENT ---
-                // The pinning for #simbiosis and .pillar-item is now handled inside Symbiosis.tsx
-                // to ensure correct DOM access and context scoping.
+                // --- 4. CHAPTER HUD TRACKING (SC: Robust Implementation) ---
+                const chapters = [
+                    { id: '#hero', name: 'ESENCIA', num: '1' },
+                    { id: '#identidad', name: 'IDENTIDAD', num: '2' },
+                    { id: '#manifesto', name: 'EL MANIFIESTO', num: '3' },
+                    { id: '#capacidades', name: 'INGENIERÍA CREATIVA', num: '4' },
+                    { id: '#nucleo', name: 'EL NÚCLEO', num: '5' },
+                    { id: '#simbiosis', name: 'SIMBIOSIS', num: '6' },
+                    { id: '#contacto', name: 'EL SALTO', num: '7' },
+                ];
 
-                // --- FOOTER FAREWELL FRICTION (MAGNETIC SNAP) ---
-                ScrollTrigger.create({
-                    trigger: "footer",
-                    start: "top bottom", // Starts when footer enters
-                    end: "bottom bottom", // Ends at the literal bottom of the page
-                    snap: {
-                        snapTo: 1,
-                        duration: { min: 0.3, max: 0.8 },
-                        ease: 'power1.inOut'
-                    }
+                chapters.forEach(chapter => {
+                    ScrollTrigger.create({
+                        trigger: chapter.id,
+                        start: "top 50%",
+                        end: "bottom 50%",
+                        onEnter: () => {
+                            setActiveChapter(chapter.name);
+                            setChapterNum(chapter.num);
+                        },
+                        onEnterBack: () => {
+                            setActiveChapter(chapter.name);
+                            setChapterNum(chapter.num);
+                        }
+                    });
                 });
 
                 const openRift = (target: HTMLElement) => {
@@ -372,44 +388,36 @@ const Home: React.FC = () => {
                     ease: 'expo.in'
                 }, 10.5);
 
-
-
-
-
-
                 // --- 4. IDENTIDAD REVEAL (The Entropy / Nolan Effect) ---
                 const tlIdentidad = gsap.timeline({
                     scrollTrigger: {
                         trigger: '#identidad',
                         start: 'top top',
-                        end: '+=1500%', // Balanced Speed (Faster than 2500%, Slower than 800%)
+                        end: '+=1500%',
                         pin: true,
-                        scrub: 0.5, // Instant response (Dedo del usuario)
+                        scrub: 0.5,
                         anticipatePin: 1
                     }
                 });
 
-                // PHASE 1: THE ARRIVAL (Faster Entry for Visibility)
                 tlIdentidad.to('.entropy-el', {
                     opacity: 1,
                     filter: 'blur(0px)',
                     transform: 'scale(1)',
                     duration: 3,
-                    stagger: 1.2, // Faster sequence
+                    stagger: 1.2,
                     ease: 'power2.out'
-                }, 0.2); // Start almost immediately
+                }, 0.2);
 
-                // PHASE 2: THE IGNITION (Focus on "SOMOS LA IA")
                 tlIdentidad.to('.entropy-catchphrase', {
                     opacity: 1,
                     filter: 'blur(0px)',
                     transform: 'scale(1)',
-                    color: '#FFF',
+                    color: '#888888', // SC: CORRECTION - Gray instead of White (Invisible)
                     duration: 3,
                     ease: 'expo.out'
                 }, ">-0.5");
 
-                // PHASE 3: NEON SURGE (The Nolan Moment)
                 tlIdentidad.to('.entropy-catchphrase', {
                     color: '#00FF99',
                     textShadow: '0 0 40px rgba(0,255,153,0.6), 0 0 80px rgba(0,255,153,0.4)',
@@ -417,7 +425,6 @@ const Home: React.FC = () => {
                     ease: 'power4.out'
                 }, ">");
 
-                // Reveal "COMO [LOGO]"
                 tlIdentidad.to('.entropy-finish', {
                     opacity: 1,
                     filter: 'blur(0px)',
@@ -425,14 +432,12 @@ const Home: React.FC = () => {
                     ease: 'power2.out'
                 }, ">-1");
 
-                // DRAW LINE (New Animation)
                 tlIdentidad.to('.entropy-line', {
                     scaleY: 1,
                     duration: 3,
                     ease: 'power2.inOut'
                 }, ">-1.5");
 
-                // PHASE 4: DATA STREAM (Body Text)
                 tlIdentidad.to('.entropy-body', {
                     opacity: 1,
                     transform: 'translateY(0)',
@@ -442,72 +447,49 @@ const Home: React.FC = () => {
                     ease: 'power2.out'
                 }, ">-1.5");
 
-                // 5. Exit (Read Pause -> Clean Sweep)
                 tlIdentidad.to('#identidad', {
                     opacity: 0,
                     duration: 4,
                     ease: 'power2.in'
-                }, ">+1.5"); // Minimal pause: 1.5 units (just enough to finish the sentence)
+                }, ">+1.5");
 
-
-                // --- HEXGRID TRIGGER (Manifiesto Section) ---
-
-                // --- FLASHBANG TRIGGER (Link jumping from Symbiosis -> CTA) ---
-                // Trigger when the CTA section hits the middle/start of viewport
                 ScrollTrigger.create({
                     trigger: '#contacto',
                     start: 'top bottom',
                     onEnter: () => {
-                        // GLITCH: SIMBIOSIS -> SOMOS (Entry)
                         glitchRef.current?.trigger(0.8);
                     },
                     onLeaveBack: () => {
-                        // GLITCH: SOMOS -> SIMBIOSIS (Return)
                         glitchRef.current?.trigger(0.35);
                     }
                 });
 
-                // --- 5. CTA SECTION ANIMATION (STICKY SCRUB) ---
                 if (ctaSectionRef.current) {
                     const ctaTl = gsap.timeline({
                         scrollTrigger: {
                             trigger: ctaSectionRef.current,
                             start: 'top top',
-                            end: '+=500%', // Increased Duration to accommodate PAUSE
+                            end: '+=500%',
                             pin: true,
                             pinSpacing: true,
                             scrub: 1,
                             anticipatePin: 1,
                             snap: {
                                 snapTo: (value) => {
-                                    // TRIGGER LOGIC: If user pushes past the initial pause zone 
-                                    // (roughly 20% of the scroll budget), snap them to the end immediately.
                                     return value < 0.2 ? 0 : 1;
                                 },
-                                duration: { min: 0.5, max: 1.2 }, // Slightly longer for "automatic" feel
-                                delay: 0.02, // Near instant 
-                                ease: 'expo.out' // Snappy but smooth finish
-                            },
-                            onLeave: () => {
-                                // NO ACTION ON LEAVE
-                            },
-                            onEnterBack: () => {
-                                // GLITCH ON RETURN FROM FOOTER (DISABLED - USER REQUESTED SIMBIOSIS ONLY)
-                                // glitchRef.current?.trigger(0.3);
+                                duration: { min: 0.5, max: 1.2 },
+                                delay: 0.02,
+                                ease: 'expo.out'
                             }
                         }
                     });
 
-                    // THE COREOGRAPHY
-                    ctaTl.addLabel("somos"); // START STATE
-
-                    // 0. VISUAL PAUSE (HOLD SOMOS)
+                    ctaTl.addLabel("somos");
                     ctaTl.to({}, { duration: 1 });
-
-                    // 1. EXIT SEQUENCE (AUTOMATIC TRIGGER START) - RESTORED ORIGINAL
                     ctaTl.to('.cta-somos-text', {
                         opacity: 0,
-                        y: -80, // More movement for "launch" feel
+                        y: -80,
                         duration: 0.6,
                         ease: 'power3.in'
                     });
@@ -515,7 +497,7 @@ const Home: React.FC = () => {
                     ctaTl.to('.cta-brain-container', {
                         y: '-35vh',
                         scale: 0.5,
-                        duration: 1, // Longer, more cinematic
+                        duration: 1,
                         ease: 'power4.inOut'
                     }, "<");
 
@@ -526,13 +508,11 @@ const Home: React.FC = () => {
                         ease: 'power3.out'
                     }, ">-0.4");
 
-                    ctaTl.addLabel("final"); // END STATE
+                    ctaTl.addLabel("final");
                 }
 
-                // Pulse button entrance (still works)
                 if (pulseButtonRef.current) {
                     const btn = pulseButtonRef.current;
-
                     gsap.from(btn, {
                         scrollTrigger: {
                             trigger: btn,
@@ -545,17 +525,9 @@ const Home: React.FC = () => {
                     });
                 }
 
-
-            }, containerRef);
-
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
+            }, containerRef.current || undefined);
 
             return () => { ctx.revert(); };
-        } else if (loading) {
-            if (lenis) lenis.stop();
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
         }
     }, [loading, lenis, hash]);
 
@@ -595,7 +567,7 @@ const Home: React.FC = () => {
                             <mask id="logo-mask">
                                 <rect x="-10%" y="-10%" width="120%" height="120%" fill="white" />
                                 <g ref={maskRef} style={{ transformOrigin: 'center' }}>
-                                    <svg viewBox="0 0 17009 2588" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                                    <svg viewBox="0 0 17009 2588" width="75%" height="75%" x="12.5%" y="12.5%" preserveAspectRatio="xMidYMid meet">
                                         <g fill="black">
                                             {logoPaths.map((d, i) => (
                                                 d.startsWith('M') ? <path key={i} d={d} /> : <polygon key={i} points={d} />
@@ -609,7 +581,7 @@ const Home: React.FC = () => {
 
                         {/* BLACK TEXT OVERLAY (Fades out to reveal video) */}
                         <g className="portal-text-overlay" style={{ transformOrigin: 'center' }}>
-                            <svg viewBox="0 0 17009 2588" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                            <svg viewBox="0 0 17009 2588" width="75%" height="75%" x="12.5%" y="12.5%" preserveAspectRatio="xMidYMid meet">
                                 <g fill="black">
                                     {logoPaths.map((d, i) => (
                                         d.startsWith('M') ? <path key={i} d={d} /> : <polygon key={i} points={d} />
@@ -657,7 +629,7 @@ const Home: React.FC = () => {
                     backgroundColor: 'transparent',
                     overflow: 'hidden', opacity: 1
                 }}>
-                    <video src={videoSrc} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <video src={videoSrc} autoPlay muted loop playsInline webkit-playsinline="true" preload="metadata" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
 
                 {/* 1. NARRATIVE HERO (ESENCIA TEXT) */}
@@ -757,7 +729,7 @@ const Home: React.FC = () => {
                                 fontWeight: 900,
                                 margin: 0,
                                 lineHeight: 1.1,
-                                color: '#888',
+                                color: '#222', // SC: Increased contrast for visibility
                                 opacity: 0,
                                 filter: 'blur(30px)',
                                 transform: 'scale(0.7)',
@@ -1032,11 +1004,6 @@ const Home: React.FC = () => {
                             paddingTop: '0'
                         }}
                     >
-                        {/* CHAPTER LABEL */}
-                        <div style={{ position: 'absolute', top: '2rem', right: '5%', fontFamily: 'var(--font-mono)', color: '#000', opacity: 0.5, zIndex: 10, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'right' }}>
-                            <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>/// CAPÍTULO_006_UMBRAL</span>
-                            <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>UMBRAL</span>
-                        </div>
 
                         {/* SOMOS text */}
                         <h2
@@ -1150,6 +1117,8 @@ const Home: React.FC = () => {
                 <Footer />
 
             </div >
+            {/* HUD DE CAPÍTULOS (WOW!) - SC: Moved to top level for stability */}
+            <ChapterHUD currentChapter={activeChapter} chapterNumber={chapterNum} />
         </main >
     );
 };

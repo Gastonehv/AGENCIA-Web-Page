@@ -114,8 +114,9 @@ const EssenceBackground = () => {
 
         const init = () => {
             particles = [];
-            // Ajustamos densidad según resolución para mantener FPS
-            const count = Math.min((canvas.width * canvas.height) / 10000, 150);
+            // Ajustamos densidad según resolución para mantener FPS - Optimización SC
+            const isMobile = window.innerWidth <= 768;
+            const count = isMobile ? 30 : Math.min((canvas.width * canvas.height) / 10000, 150);
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }

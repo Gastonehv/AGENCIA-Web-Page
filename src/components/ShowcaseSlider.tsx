@@ -443,7 +443,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     loop
                                     playsInline
                                     webkit-playsinline="true"
-                                    preload="auto"
+                                    preload="metadata"
                                     poster={item.img}
                                     className="showcase-video"
                                     style={{

@@ -12,229 +12,18 @@ const Navbar: React.FC = () => {
     const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
     const location = useLocation();
     const navigate = useNavigate();
-    const { lenis } = useScroll();
 
     const [isOpen, setIsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState<string | null>(null);
     const [isMobile, setIsMobile] = useState(false);
-    const [isAutopilot, setIsAutopilot] = useState(false);
 
     const tl = useRef<gsap.core.Timeline | null>(null);
-    const autopilotTween = useRef<gsap.core.Tween | null>(null);
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
         checkMobile();
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
-    const autopilotRef = useRef(false);
-
-    const stopAutopilot = () => {
-        autopilotRef.current = false;
-        if (autopilotTween.current) {
-            autopilotTween.current.kill();
-            autopilotTween.current = null;
-        }
-        setIsAutopilot(false);
-        // Remove listeners
-        window.removeEventListener('wheel', stopAutopilot);
-        window.removeEventListener('touchstart', stopAutopilot);
-        window.removeEventListener('keydown', handleKeyStop);
-    };
-
-    const handleKeyStop = (e: KeyboardEvent) => {
-        // Stop on any key interaction designed to scroll
-        if (['ArrowUp', 'ArrowDown', 'Space', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.code)) {
-            stopAutopilot();
-        }
-    };
-
-    const startAutopilot = () => {
-        if (!lenis) return;
-
-        // Ensure we are in a stopped state before starting
-        stopAutopilot();
-        setIsAutopilot(true);
-        autopilotRef.current = true;
-
-        const totalHeight = document.body.scrollHeight - window.innerHeight;
-        const currentScroll = window.scrollY;
-
-        if (currentScroll >= totalHeight - 10) {
-            // Already at bottom, maybe restart?
-            lenis.scrollTo(0, { immediate: true });
-            // Add a small delay to let visual reset happen before scrolling down
-            setTimeout(() => {
-                startActualScroll(0, totalHeight);
-            }, 100);
-            return;
-        }
-
-        startActualScroll(currentScroll, totalHeight);
-    };
-
-    const startActualScroll = (_startPos: number, maxPos: number) => {
-        if (!lenis) return;
-
-        // CONFIGURATION
-        const SPEED_HERO = 2160; // Doubled from 1080
-        const SPEED_DEFAULT = 450;
-
-        const LERP_FACTOR = 0.05;
-
-        // Reading Zone: 20% to 80% of viewport
-
-
-        // Start fast if at top
-        let currentActualSpeed = isAutopilot ? 0 : SPEED_HERO;
-
-        let lastTime = performance.now();
-
-        // Optimized: live collection to handle React re-renders/mounts
-        const manifestoItems = document.getElementsByClassName('manifesto-item');
-
-        const tick = (time: number) => {
-            if (!autopilotRef.current) return;
-
-            const deltaTime = (time - lastTime) / 1000;
-            lastTime = time;
-
-            const currentY = window.scrollY; // Or lenis.scroll
-
-            // Check end condition
-            if (currentY >= maxPos - 5) {
-                stopAutopilot();
-                return;
-            }
-
-            // 1. DETERMINE TARGET SPEED based on context
-            let targetSpeed = SPEED_DEFAULT;
-            const viewportHeight = window.innerHeight;
-
-            const identidadSection = document.getElementById('identidad');
-            const manifestoSection = document.getElementById('manifesto');
-            const showcaseSection = document.getElementById('showcase-slider'); // Chapter 003
-            const symbiosisSection = document.getElementById('simbiosis-startups');
-            const nucleoSection = document.getElementById('nucleo');
-
-            // ZONE: HERO
-            if (currentY < viewportHeight * 0.9) {
-                targetSpeed = SPEED_HERO;
-            }
-            // ZONE: CHAPTER 1 (Identidad)
-            else if (identidadSection &&
-                currentY >= (identidadSection.offsetTop - viewportHeight * 0.5) &&
-                currentY < (identidadSection.offsetTop + identidadSection.offsetHeight)) {
-
-                targetSpeed = 900;
-            }
-            // ZONE: CHAPTER 2 (Manifesto)
-            else if (manifestoSection &&
-                currentY >= (manifestoSection.offsetTop - viewportHeight * 0.5) &&
-                // EXTENDED ZONE: Add viewportHeight buffer to account for the last item's PIN spacing.
-                // This prevents dropping to "Default Speed" while the last item is still pinned.
-                currentY < (manifestoSection.offsetTop + manifestoSection.offsetHeight + viewportHeight)) {
-
-                targetSpeed = 600;
-
-                let closestDist = Infinity;
-                let closestIndex = -1;
-
-                // 1. Find the dominant item
-                for (let i = 0; i < manifestoItems.length; i++) {
-                    const rect = manifestoItems[i].getBoundingClientRect();
-                    const itemCenter = rect.top + rect.height / 2;
-                    const screenCenter = viewportHeight / 2;
-                    const dist = Math.abs(itemCenter - screenCenter);
-
-                    if (dist < closestDist) {
-                        closestDist = dist;
-                        closestIndex = i;
-                    }
-                }
-
-                // 2. Set speed based on dominant item (RHYTHMIC READING)
-                // Behavior: Fast transition (600) -> Lock & Read (9s) -> Fast transition
-                if (closestIndex !== -1 && closestDist < viewportHeight * 0.45) {
-                    const pinHeight = viewportHeight * 0.9;
-                    targetSpeed = pinHeight / 9; // ALL items last 9 seconds
-                }
-            }
-            // ZONE: CHAPTER 3 (Showcase - READING SLOW MOTION)
-            else if (showcaseSection &&
-                currentY >= (showcaseSection.offsetTop - viewportHeight * 0.3) &&
-                currentY < (showcaseSection.offsetTop + showcaseSection.offsetHeight)) {
-
-                targetSpeed = 40; // ULTRA SLOW FOR READING CARDS
-            }
-            // ZONE: CHAPTER 4 (Simbiosis - ROBUST DETECTION via ScrollTrigger)
-            else if (symbiosisSection) {
-                // Try to get the exact GSAP Pin Trigger
-                const st = ScrollTrigger.getById('simbiosis-pin');
-
-                let startPos = symbiosisSection.offsetTop;
-                let endPos = startPos + (viewportHeight * 2); // Fallback: 200vh (100vh section + 100vh pin)
-
-                // Priority 1: Use GSAP Source of Truth if available
-                if (st) {
-                    startPos = st.start;
-                    endPos = st.end;
-                }
-
-                // Buffer to start adjusting speed slightly before hitting the section
-                const buffer = viewportHeight * 0.5;
-
-                if (currentY >= (startPos - buffer) && currentY < endPos) {
-                    const totalDistance = endPos - startPos;
-                    // Target: Traverse the pinned distance in exactly 21 seconds
-                    // Speed = Distance / Time
-                    targetSpeed = totalDistance / 21;
-                }
-            }
-            // ZONE: CHAPTER 5 (Nucleo - SLOW DOWN)
-            else if (nucleoSection &&
-                currentY >= (nucleoSection.offsetTop - viewportHeight * 0.8) &&
-                currentY < (nucleoSection.offsetTop + nucleoSection.offsetHeight)) {
-                targetSpeed = 120; // MIDDLE GROUND
-            }
-
-            // 2. INTERPOLATE SPEED (Smooth acceleration/deceleration)
-            currentActualSpeed += (targetSpeed - currentActualSpeed) * LERP_FACTOR;
-
-            // 3. MOVE
-            const moveStep = currentActualSpeed * deltaTime;
-            const nextY = currentY + moveStep;
-
-            lenis.scrollTo(nextY, { immediate: true });
-
-            requestAnimationFrame(tick);
-        };
-
-        // Start loop
-
-        // Wait a frame to ensure layout is settled? usually safe here.
-        requestAnimationFrame(tick);
-
-        // Add listeners to break autopilot on user interaction
-        // Small timeout to avoid the click itself triggering stop
-        setTimeout(() => {
-            window.addEventListener('wheel', stopAutopilot, { passive: true });
-            window.addEventListener('touchstart', stopAutopilot, { passive: true });
-            window.addEventListener('keydown', handleKeyStop);
-        }, 200);
-    };
-
-
-    // Cleanup on unmount
-    useEffect(() => {
-        return () => {
-            if (autopilotTween.current) autopilotTween.current.kill();
-            window.removeEventListener('wheel', stopAutopilot);
-            window.removeEventListener('touchstart', stopAutopilot);
-            window.removeEventListener('keydown', handleKeyStop);
-        };
     }, []);
 
     const menuItems = [
@@ -269,6 +58,24 @@ const Navbar: React.FC = () => {
                     rotateX: 20,
                     filter: 'blur(10px)'
                 }, '-=0.5');
+
+            // --- SMART GHOST MENU LOGIC (SC: Anti-Collision) ---
+            // Detect proximity to large headers (Simbiosis, etc)
+            const highImpactSections = ['#simbiosis', '.manifesto-section', '#hero'];
+            highImpactSections.forEach(selector => {
+                const targetEl = document.querySelector(selector);
+                if (targetEl) {
+                    ScrollTrigger.create({
+                        trigger: targetEl,
+                        start: "top 10%",
+                        end: "bottom 10%",
+                        onEnter: () => gsap.to('.universal-control-widget', { opacity: 0.2, scale: 0.85, duration: 0.5 }),
+                        onLeave: () => gsap.to('.universal-control-widget', { opacity: 1, scale: 1, duration: 0.5 }),
+                        onEnterBack: () => gsap.to('.universal-control-widget', { opacity: 0.2, scale: 0.85, duration: 0.5 }),
+                        onLeaveBack: () => gsap.to('.universal-control-widget', { opacity: 1, scale: 1, duration: 0.5 }),
+                    });
+                }
+            });
 
         }, navRef);
         return () => ctx.revert();
@@ -383,78 +190,6 @@ const Navbar: React.FC = () => {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', zIndex: 10001 }}>
-                    <div
-                        onClick={() => {
-                            if (isAutopilot) {
-                                stopAutopilot();
-                            } else {
-                                startAutopilot();
-                            }
-                        }}
-                        style={{
-                            display: isMobile ? 'none' : 'flex',
-                            alignItems: 'center',
-                            gap: '0.8rem',
-                            cursor: 'pointer',
-                            padding: '0.5rem 1.2rem',
-                            background: isAutopilot ? 'rgba(0, 255, 153, 0.2)' : 'rgba(0, 0, 0, 0.6)',
-                            border: `1px solid ${isAutopilot ? 'rgba(0, 255, 153, 0.5)' : 'rgba(255, 255, 255, 0.2)'}`,
-                            borderRadius: '40px',
-                            transition: 'all 0.3s ease',
-                            backdropFilter: 'blur(10px)'
-                        }}
-                        onMouseEnter={e => {
-                            gsap.to(e.currentTarget, {
-                                background: 'rgba(0, 255, 153, 0.15)',
-                                borderColor: 'rgba(0, 255, 153, 0.4)',
-                                scale: 1.02,
-                                duration: 0.3
-                            });
-                        }}
-                        onMouseLeave={e => {
-                            if (!isAutopilot) {
-                                gsap.to(e.currentTarget, {
-                                    background: 'rgba(0, 0, 0, 0.6)',
-                                    borderColor: 'rgba(255, 255, 255, 0.2)',
-                                    scale: 1,
-                                    duration: 0.3
-                                });
-                            } else {
-                                gsap.to(e.currentTarget, {
-                                    scale: 1,
-                                    duration: 0.3
-                                });
-                            }
-                        }}
-                    >
-                        <div style={{
-                            width: '8px',
-                            height: '8px',
-                            background: isAutopilot ? '#00FF99' : '#ffffff',
-                            borderRadius: '50%',
-                            boxShadow: isAutopilot ? '0 0 10px #00FF99' : 'none',
-                            transition: 'all 0.3s ease',
-                            animation: isAutopilot ? 'pulse-green 1.5s infinite' : 'none'
-                        }} />
-                        <span style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.85rem',
-                            letterSpacing: '0.1em',
-                            color: isAutopilot ? '#00FF99' : '#ffffff',
-                            textShadow: isAutopilot ? '0 0 15px rgba(0,255,153,0.5)' : 'none',
-                            transition: 'all 0.3s ease'
-                        }}>
-                            {isAutopilot ? 'PILOTO ACTIVO' : 'PILOTO AUTOMÁTICO'}
-                        </span>
-                    </div>
-
-                    <style>{`
-                        @keyframes pulse-green {
-                            0% { box-shadow: 0 0 0 0 rgba(0, 255, 153, 0.7); }
-                            70% { box-shadow: 0 0 0 6px rgba(0, 255, 153, 0); }
-                            100% { box-shadow: 0 0 0 0 rgba(0, 255, 153, 0); }
-                        }
-                    `}</style>
                 </div>
             </div>
 

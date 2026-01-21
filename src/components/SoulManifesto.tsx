@@ -1,5 +1,5 @@
 
-import { useRef, useLayoutEffect } from 'react'; // Added useLayoutEffect
+import { useRef, useLayoutEffect, useState } from 'react'; // Added useLayoutEffect, useState
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrambleText from './ScrambleText';
@@ -29,29 +29,61 @@ const MANIFESTO = [
 const SoulManifesto = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
+    const [activeItem, setActiveItem] = useState(0); // Track active slide
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
-            if (!trackRef.current || !containerRef.current) return;
+            if (!containerRef.current) return;
 
-            const totalWidth = trackRef.current.scrollWidth;
-            const viewportWidth = window.innerWidth;
-            const amountToScroll = totalWidth - viewportWidth;
+            const items = gsap.utils.toArray<HTMLElement>('.manifesto-item');
 
-            // ELITE SWEEP: Horizontal Scroll Logic
-            gsap.to(trackRef.current, {
-                x: -amountToScroll,
-                ease: "none",
+            // Stack items absolutely via GSAP set
+            gsap.set(items, {
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100vh',
+                opacity: 0,
+                scale: 1.5, // Start large (coming to camera)
+                filter: 'blur(20px)',
+                pointerEvents: 'none' // SC: Fix - Prevent invisible items from blocking mouse
+            });
+
+            const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top top",
-                    end: () => `+=${amountToScroll}`,
+                    end: `+=${items.length * 250}%`, // SC: 250% per item = MUCH Slower Scroll
                     pin: true,
                     scrub: 1,
-                    invalidateOnRefresh: true,
-                    anticipatePin: 1,
-                    id: "manifesto-horizontal"
+                    id: "manifesto-void"
                 }
+            });
+
+            items.forEach((item, i) => {
+                // A. Item appears from "behind" the camera or abyss
+                tl.to(item, {
+                    opacity: 1,
+                    scale: 1,
+                    filter: 'blur(0px)',
+                    duration: 1,
+                    pointerEvents: 'all', // ENABLE INTERACTION
+                    ease: "power2.inOut",
+                    onStart: () => setActiveItem(i), // TRIGGER ANIMATION ON START
+                    onReverseComplete: () => setActiveItem(i - 1) // Optional: Handle reverse
+                })
+                    // B. Item stays for a bit (READING PAUSE)
+                    .to(item, { duration: 3 }) // SC: Increased from 0.5 to 3 (6x longer pause)
+                    // C. Item vanishes into the "Void" (scale down + blur)
+                    .to(item, {
+                        opacity: 0,
+                        scale: 0.5,
+                        filter: 'blur(30px)',
+                        duration: 1,
+                        pointerEvents: 'none', // DISABLE INTERACTION
+                        ease: "power2.inOut"
+                    });
             });
 
         }, containerRef);
@@ -60,7 +92,7 @@ const SoulManifesto = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="manifesto-section" id="manifiesto" style={{
+        <section ref={containerRef} className="manifesto-section" id="manifesto" style={{
             position: 'relative',
             backgroundColor: '#000',
             color: '#FFF',
@@ -71,30 +103,23 @@ const SoulManifesto = () => {
             <div
                 ref={trackRef}
                 style={{
-                    display: 'flex',
-                    flexDirection: 'row',
+                    position: 'relative',
                     height: '100%',
-                    width: 'fit-content',
-                    alignItems: 'center',
-                    willChange: 'transform'
+                    width: '100%',
                 }}
             >
-
                 {/* MANIFESTO ITEMS */}
                 {MANIFESTO.map((item, i) => (
                     <div
-                        key={i}
+                        key={item.title}
                         className={`manifesto-item manifesto-item-${i}`}
                         style={{
-                            width: '100vw',
-                            height: '100vh',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'center',
                             textAlign: 'center',
                             padding: 'clamp(1rem, 5vw, 2rem)',
-                            flexShrink: 0
                         }}
                     >
                         <h2 style={{
@@ -113,6 +138,7 @@ const SoulManifesto = () => {
                                 speed={1.5}
                                 iridescent={true}
                                 finalColor="#FFFFFF"
+                                trigger={activeItem === i} // REPLAY WHEN ACTIVE
                             />
                         </h2>
 
@@ -125,7 +151,11 @@ const SoulManifesto = () => {
                         }}>
                             {item.body.map((line, j) => (
                                 <p key={j} style={{ margin: '0 0 0.8rem 0' }}>
-                                    <AsciiRipple text={line} autoTrigger={true} />
+                                    <AsciiRipple
+                                        text={line}
+                                        autoTrigger={true}
+                                        trigger={activeItem === i} // FORCE WAVE WHEN ACTIVE
+                                    />
                                 </p>
                             ))}
                         </div>

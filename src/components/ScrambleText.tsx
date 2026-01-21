@@ -15,6 +15,7 @@ interface ScrambleTextProps {
     scrambleColor?: string;
     finalColor?: string;
     iridescent?: boolean;
+    trigger?: any; // Signal to replay animation
 }
 
 const ScrambleText: React.FC<ScrambleTextProps> = ({
@@ -26,6 +27,7 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
     scrambleColor = '#00FFFF',
     finalColor = '#FFFFFF',
     iridescent = false,
+    trigger,
 }) => {
     const elRef = useRef<HTMLSpanElement>(null);
     const isPlayingRef = useRef(false);
@@ -154,7 +156,7 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
         });
 
         return () => ctx.revert();
-    }, [text, speed, delay, scrambleColor, finalColor, iridescent]);
+    }, [text, speed, delay, scrambleColor, finalColor, iridescent, trigger]); // Trigger added dependency
 
     return (
         <span

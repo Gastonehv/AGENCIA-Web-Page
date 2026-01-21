@@ -33,6 +33,7 @@ const MediaPlayer = memo(({ src, type }: { src: string, type: 'video' | 'image' 
             loop
             muted
             playsInline
+            webkit-playsinline="true"
             preload="auto"
             style={{
                 width: '100%',

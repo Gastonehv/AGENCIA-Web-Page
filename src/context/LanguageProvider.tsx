@@ -29,6 +29,10 @@ const translations = {
         'contact.details': 'Coordenadas del Objetivo',
         'contact.send': 'Iniciar Protocolo',
         'contact.soon': 'Capacidad Operativa Al Límite',
+        '404.title': 'Detección de Vacío',
+        '404.description': 'Lo que no se encuentra, se construye. Estás en el epicentro de una nueva posibilidad digital.',
+        '404.backHome': 'Reiniciar Protocolo',
+        '404.goBack': 'Volver',
     },
     en: {
         'nav.services': 'Protocols',
@@ -56,6 +60,10 @@ const translations = {
         'contact.details': 'Mission Coordinates',
         'contact.send': 'Initiate Protocol',
         'contact.soon': 'Operational Capacity at Limit',
+        '404.title': 'Void Detected',
+        '404.description': 'What is not found, is built. You are at the epicenter of a new digital possibility.',
+        '404.backHome': 'Reset Protocol',
+        '404.goBack': 'Back',
     }
 } as const;
 

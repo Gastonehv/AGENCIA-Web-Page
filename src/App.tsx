@@ -16,6 +16,7 @@ import Terminos from './pages/Terminos';
 import Playground from './pages/Playground';
 import NarrativePrototype from './pages/NarrativePrototype';
 import Cursor from './components/Cursor';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
               <Route path="/privacidad" element={<Privacidad />} />
               <Route path="/terminos" element={<Terminos />} />
               <Route path="/playground" element={<Playground />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>
         </Router>

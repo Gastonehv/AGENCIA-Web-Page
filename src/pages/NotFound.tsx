@@ -27,8 +27,9 @@ const NotFound: React.FC = () => {
 
                 .face {
                     display: block;
-                    width: 320px;
-                    height: 380px;
+                    width: 100%;
+                    max-width: 320px;
+                    height: auto;
                     margin-bottom: 2rem;
                 }
 
@@ -117,6 +118,25 @@ const NotFound: React.FC = () => {
                     max-width: 600px;
                     opacity: 0;
                     animation: fadeIn 1s 1.5s forwards;
+                    padding: 0 1.5rem;
+                }
+
+                .error-phrase {
+                    font-size: 1.5rem;
+                    font-weight: 300;
+                    font-style: italic;
+                    margin-bottom: 2rem;
+                    color: #333;
+                    line-height: 1.4;
+                }
+
+                @media (max-width: 480px) {
+                    .error-phrase {
+                        font-size: 1.1rem;
+                    }
+                    .not-found-container {
+                        padding: 1rem;
+                    }
                 }
 
                 @keyframes fadeIn {
@@ -170,18 +190,13 @@ const NotFound: React.FC = () => {
                     </g>
                 </svg>
             </main>
-
             <div className="error-content">
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 300, fontStyle: 'italic', marginBottom: '2rem', color: '#333' }}>
+                <h2 className="error-phrase">
                     “{t('404.description')}”
                 </h2>
                 <button className="btn-primary" onClick={() => navigate('/')}>
                     {t('404.backHome')}
                 </button>
-            </div>
-
-            <div style={{ position: 'absolute', bottom: '3rem', fontSize: '0.6rem', letterSpacing: '1.5em', color: '#ccc', fontWeight: 700, textTransform: 'uppercase' }}>
-                AgencIA Digital
             </div>
         </div>
     );

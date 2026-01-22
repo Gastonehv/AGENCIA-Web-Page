@@ -130,22 +130,31 @@ const ChapterHUD: React.FC<ChapterHUDProps> = ({ currentChapter, chapterNumber }
                     transform: 'rotate(180deg)',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '1.2rem',
-                    opacity: progress > 2 ? 0.8 : 0.1,
-                    transition: 'opacity 0.5s ease'
+                    gap: '0.8rem',
+                    opacity: progress > 2 ? 1 : 0,
+                    transition: 'opacity 0.5s ease',
+                    // Micro Capsule Glass Style
+                    background: 'rgba(0, 0, 0, 0.3)',
+                    backdropFilter: 'blur(8px)',
+                    // FILO DE LUZ: Delicate white border + Top inset highlight
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.3)', // Stronger top light
+                    borderRadius: '2rem',
+                    padding: '1.5rem 0.4rem',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                 }}>
-                    <span style={{ fontSize: '0.65rem', color: '#000', fontWeight: 900, letterSpacing: '0.2em', textShadow: '0 0 15px rgba(255,255,255,1)' }}>
-                        CAPITULO_00{displayNumber}
+                    <span style={{ fontSize: '0.6rem', color: '#FFF', fontWeight: 800, letterSpacing: '0.2em', textShadow: '0 0 5px rgba(255,255,255,0.5)' }}>
+                        CAP_0{displayNumber}
                     </span>
-                    <span style={{ fontSize: '0.9rem', color: '#00FF99', fontWeight: 900, letterSpacing: '0.15em', textShadow: '0 0 3px rgba(0,0,0,0.2)' }}>
+                    <span style={{ fontSize: '0.75rem', color: '#00FF99', fontWeight: 900, letterSpacing: '0.15em', textShadow: '0 0 10px rgba(0,255,153,0.6)' }}>
                         {displayChapter}
                     </span>
                 </div>
 
                 {/* ODOMETER */}
                 <div className="hud-odometer" style={{
-                    display: 'flex', gap: '2px', height: '1rem', overflow: 'hidden', alignItems: 'flex-start',
-                    padding: '4px 6px', background: 'rgba(0,0,0,1)', borderRadius: '2px'
+                    display: 'flex', gap: '2px', height: '1rem', overflow: 'hidden', alignItems: 'center',
+                    padding: '4px 6px', background: '#000', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)'
                 }}>
                     {digits.map((digit, i) => (
                         <div key={i} style={{ width: '0.65rem', height: '1rem', position: 'relative' }}>
@@ -154,7 +163,7 @@ const ChapterHUD: React.FC<ChapterHUDProps> = ({ currentChapter, chapterNumber }
                                 transition: 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)', display: 'flex', flexDirection: 'column'
                             }}>
                                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (
-                                    <div key={n} style={{ height: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 900, color: digit === n.toString() ? '#00FF99' : 'rgba(255,255,255,0.1)' }}>
+                                    <div key={n} style={{ height: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', lineHeight: '1rem', fontWeight: 900, color: digit === n.toString() ? '#00FF99' : 'rgba(255,255,255,0.1)' }}>
                                         {n}
                                     </div>
                                 ))}

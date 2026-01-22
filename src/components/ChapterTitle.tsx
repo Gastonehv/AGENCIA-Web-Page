@@ -63,14 +63,15 @@ const ChapterTitle: React.FC<ChapterTitleProps> = ({ number, title, subtitle }) 
                     fontSize: '1rem',
                     color: 'var(--accent-color, #00FF99)',
                     letterSpacing: '0.3em',
-                    fontWeight: 600
+                    fontWeight: 700, // Thicker
+                    textShadow: '0 0 10px rgba(0, 255, 153, 0.5)' // Glow for visibility
                 }}>
                     CAPÍTULO {number}
                 </span>
                 <div ref={lineRef} style={{
                     width: '60px',
-                    height: '1px',
-                    backgroundColor: 'rgba(255,255,255,0.3)'
+                    height: '2px', // Thicker line
+                    backgroundColor: 'rgba(255,255,255,0.8)' // Much higher opacity
                 }} />
             </div>
 

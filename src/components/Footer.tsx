@@ -174,7 +174,7 @@ const Footer: React.FC = () => {
             <div style={{
                 position: 'relative',
                 zIndex: 10,
-                padding: 'clamp(2rem, 5vh, 4rem) 5% clamp(2rem, 5vh, 4rem) 5%', // Responsive padding
+                padding: 'clamp(8rem, 15vh, 12rem) 5% clamp(2rem, 5vh, 4rem) 5%', // DRASTICALLY INCREASED TOP PADDING
                 paddingRight: 'clamp(120px, 15vw, 300px)', // AGGRESSIVE SAFETY ZONE FOR HUB
                 display: 'flex',
                 flexDirection: 'column',

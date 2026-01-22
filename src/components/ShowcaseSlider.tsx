@@ -567,7 +567,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         width: 85vw !important;
                         max-width: 85vw !important;
                         min-width: 85vw !important;
-                        height: 82vh !important; /* INCREASED TO 82VH FOR FULL TEXT VISIBILITY */
+                        height: 70vh !important; /* REDUCED FROM 82VH TO 70VH FOR BETTER CONTEXT */
                         margin: 0 !important;
                         padding: 1.5rem !important;
                         flex-shrink: 0;
@@ -576,7 +576,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     }
 
                     .showcase-media-window {
-                        height: 30% !important; /* REDUCED TO 30% TO GIVE TEXT MORE ROOM */
+                        height: 40% !important; /* INCREASED FROM 30% TO 40% FOR IMPACT */
                         min-height: 150px !important;
                         flex-shrink: 0;
                         overflow: hidden !important;

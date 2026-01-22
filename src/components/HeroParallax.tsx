@@ -80,7 +80,7 @@ const HeroParallax: React.FC = () => {
 
             // SCENE 3
             gsap.set("#scene3", { y: 500 - 40, visibility: "visible" }); // Adjust based on height
-            
+
             const scene3 = gsap.timeline();
             ScrollTrigger.create({
                 animation: scene3,
@@ -111,7 +111,13 @@ const HeroParallax: React.FC = () => {
 
     return (
         <div ref={containerRef} className="wrapper" style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden' }}>
-            <div className="scrollElement" style={{ position: 'absolute', height: '6000px', width: '100%', top: 0, zIndex: 4 }}></div>
+            <div className="scrollElement" style={{
+                position: 'absolute',
+                height: typeof window !== 'undefined' && window.innerWidth <= 768 ? '3500px' : '6000px', // SC: Reduced mobile scroll
+                width: '100%',
+                top: 0,
+                zIndex: 4
+            }}></div>
 
             <svg ref={svgRef} className="parallax" viewBox="0 0 750 500" preserveAspectRatio="xMidYMax slice" style={{ width: '100%', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: 3 }}>
                 <defs>

@@ -206,6 +206,9 @@ const Services: React.FC = () => {
                             min-width: 400px;
                             flex-shrink: 0;
                         }
+                        .service-img-height {
+                            height: 55% !important;
+                        }
                     }
                     @media (max-width: 768px) {
                         .services-slider {
@@ -225,6 +228,9 @@ const Services: React.FC = () => {
                         .card-content {
                             border-radius: 0 !important;
                             border: none !important;
+                        }
+                        .service-img-height {
+                            height: 45% !important; /* Reduced height on mobile to free up space for text */
                         }
                     }
                 `}} />
@@ -297,9 +303,10 @@ const Services: React.FC = () => {
                         }}
                         >
                             {/* Image Container */}
-                            <div style={{
+                            <div className="service-img-height" style={{
                                 width: '100%',
-                                height: '55%', // Slightly reduced to give text more room
+                                // height handled by CSS class now
+
                                 overflow: 'hidden',
                                 position: 'relative',
                                 borderBottom: '1px solid rgba(255,255,255,0.05)'
@@ -366,10 +373,10 @@ const Services: React.FC = () => {
                                     </span>
                                     <h3 style={{
                                         fontFamily: 'var(--font-heading)',
-                                        fontSize: 'clamp(2rem, 8vw, 2.5rem)', // Responsive Heading
+                                        fontSize: 'clamp(1.8rem, 6vw, 2.5rem)', // Responsive Heading - Reduced min for mobile
                                         color: '#fff',
                                         margin: '0 0 0.5rem 0',
-                                        lineHeight: 0.9
+                                        lineHeight: 1.1 // Relaxed line height to prevent overlap
                                     }}>
                                         {t(portal.titleKey)}
                                     </h3>
@@ -380,7 +387,9 @@ const Services: React.FC = () => {
                                         textTransform: 'uppercase',
                                         letterSpacing: '0.1em',
                                         marginTop: '0.5rem',
-                                        maxWidth: '90%'
+                                        maxHeight: '30vh', // Prevent text from taking too much space
+                                        overflowY: 'auto', // Scroll if absolutely necessary on tiny screens
+                                        maxWidth: '100%' // Ensure full usage of available width
                                     }}>
                                         {t(portal.descKey)}
                                     </p>

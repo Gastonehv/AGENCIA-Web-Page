@@ -113,18 +113,7 @@ const Navbar: React.FC = () => {
                             setIsOpen(!isOpen);
                         }
                     }}
-                    style={{
-                        height: isMobile ? '60px' : '70px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: isMobile ? '0.6rem' : '0.8rem', // Reduced gap for "single piece" feel
-                        cursor: 'pointer',
-                        zIndex: 10001,
-                        pointerEvents: 'auto',
-                        padding: isMobile ? '0.6rem 1rem' : '0.5rem 1.2rem', // Increased touch target
-                        borderRadius: '40px',
-                        transition: 'all 0.3s ease'
-                    }}
+
                     className="universal-control-widget"
                     data-no-magnetic="true"
                     onMouseEnter={e => {
@@ -143,6 +132,21 @@ const Navbar: React.FC = () => {
                             duration: 0.5,
                             ease: 'power3.out'
                         });
+                    }}
+                    style={{
+                        height: isMobile ? '60px' : '70px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: isMobile ? '0.6rem' : '0.8rem',
+                        cursor: 'pointer',
+                        zIndex: 10001,
+                        pointerEvents: 'auto',
+                        padding: isMobile ? '0.6rem 1rem' : '0.5rem 1.2rem',
+                        borderRadius: '40px',
+                        transition: 'all 0.3s ease',
+                        background: isMobile ? 'rgba(255,255,255,0.15)' : 'transparent', // SC: Added mobile backdrop
+                        backdropFilter: isMobile ? 'blur(8px)' : 'none', // SC: Glassmorphism for mobile
+                        border: isMobile ? '1px solid rgba(255,255,255,0.2)' : 'none'
                     }}
                     onMouseLeave={e => {
                         const label = e.currentTarget.querySelector('.widget-label');

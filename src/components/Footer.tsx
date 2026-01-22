@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import footerLogo from '../assets/logo_agencia_full.png';
 import hechoEnMexicoLogo from '../assets/images/hecho_en_mexico.png';
+import HexGridBackground from './Footer/HexGridBackground';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -156,280 +157,295 @@ const Footer: React.FC = () => {
 
     return (
         <footer style={{
-            backgroundColor: '#000',
-            color: '#FFF',
-            minHeight: '100vh', // Adaptable full screen
-            height: 'auto',
-            padding: '6vh 5% 4vh 5%',
             position: 'relative',
-            zIndex: 100,
-            borderTop: '1px solid rgba(255,255,255,0.05)',
+            minHeight: '100vh',
+            width: '100%',
+            backgroundColor: '#000',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center', // CENTERED FOR INTEGRATION
-            gap: '4rem', // COHESIVE GAP
-            overflow: 'visible' // Allow content to flow
+            justifyContent: 'space-between', // Changed to utilize full height better
+
+            boxSizing: 'border-box' // Explicitly set border-box to handle padding correctly
         }}>
+            {/* BACKGROUND ANIMATION */}
+            <HexGridBackground />
+
+            {/* CONTENT WRAPPER */}
             <div style={{
-                maxWidth: '1400px',
-                margin: '0 auto',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '1.5rem',
-                marginBottom: '0' // Integrated
+                position: 'relative',
+                zIndex: 10,
+                padding: 'clamp(2rem, 5vh, 4rem) 5% clamp(2rem, 5vh, 4rem) 5%', // Responsive padding
+                paddingRight: 'clamp(120px, 15vw, 300px)', // AGGRESSIVE SAFETY ZONE FOR HUB
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1, // Push bottom bar down but keep this centered
+                gap: 'clamp(2rem, 4vh, 4rem)', // Responsive gap
+                width: '100%',
+                boxSizing: 'border-box'
             }}>
-                {/* COLUMN 1: BRAND */}
-                <div>
-                    <img
-                        src={footerLogo}
-                        alt="AgencIA Logo"
-                        style={{
-                            width: '160px',
-                            height: 'auto',
-                            marginBottom: '1rem',
-                            filter: 'brightness(0) invert(1)'
-                        }}
-                    />
-                    <p style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.9rem',
-                        lineHeight: 1.7,
-                        color: '#777',
-                        maxWidth: '350px'
+                <div
+                    className="footer-content-grid"
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        gap: '4rem',
+                        width: '100%',
+                        maxWidth: '1600px', // Wider max-width for cinematic feel
+                        margin: '0 auto',
+                        position: 'relative',
+                        zIndex: 20
                     }}>
-                        No somos una agencia con IA. Somos la IA como agencia. Lideramos la frontera de la transformación digital con arquitectura de código puro e identidad visual que respira.
-                    </p>
-                </div>
-
-                {/* COLUMN 2: QUICK LINKS */}
-                <div>
-                    <h3 style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.7rem',
-                        letterSpacing: '0.3em',
-                        color: '#00FF99',
-                        marginBottom: '1.5rem',
-                        textTransform: 'uppercase',
-                        opacity: 0.8
-                    }}>
-                        /// NAVEGACIÓN
-                    </h3>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                        {quickLinks.map((link, i) => (
-                            <li key={i} style={{ marginBottom: '0.8rem' }}>
-                                <Link
-                                    to={link.path}
-                                    style={{
-                                        color: '#AAA',
-                                        textDecoration: 'none',
-                                        fontSize: '0.9rem',
-                                        fontFamily: 'var(--font-body)',
-                                        transition: 'all 0.3s ease'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.color = '#00FF99';
-                                        e.currentTarget.style.paddingLeft = '5px';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.color = '#AAA';
-                                        e.currentTarget.style.paddingLeft = '0px';
-                                    }}
-                                >
-                                    {link.name}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* COLUMN 3: CONTACT */}
-                <div>
-                    <h3 style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.7rem',
-                        letterSpacing: '0.3em',
-                        color: '#00FF99',
-                        marginBottom: '1.5rem',
-                        textTransform: 'uppercase',
-                        opacity: 0.8
-                    }}>
-                        /// CONTACTO
-                    </h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                        <a
-                            href="mailto:hola@agenciamx.app"
+                    {/* --- COLUMN 1: BRAND ESSENCE (35%) --- */}
+                    <div style={{ flex: '1 1 350px', maxWidth: '500px' }}>
+                        <img
+                            src={footerLogo}
+                            alt="AgencIA Logo"
                             style={{
-                                color: '#AAA',
-                                textDecoration: 'none',
-                                fontSize: '0.9rem',
-                                transition: 'color 0.3s ease'
+                                width: '180px', // Slightly larger for impact
+                                height: 'auto',
+                                marginBottom: '1.5rem',
+                                filter: 'brightness(0) invert(1)',
+                                display: 'block'
                             }}
-                            onMouseEnter={(e) => e.currentTarget.style.color = '#00FF99'}
-                            onMouseLeave={(e) => e.currentTarget.style.color = '#AAA'}
-                        >
-                            hola@agenciamx.app
-                        </a>
-                        <p style={{ color: '#666', fontSize: '0.85rem', margin: 0, fontFamily: 'var(--font-mono)' }}>
-                            Xalapa, Veracruz, México
+                        />
+                        <p style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.95rem',
+                            lineHeight: 1.8,
+                            color: '#888',
+                            marginBottom: '2rem'
+                        }}>
+                            No somos una agencia con IA. Somos la IA como agencia. Lideramos la frontera de la transformación digital con arquitectura de código puro e identidad visual que respira.
                         </p>
 
-                        {/* HECHO EN MÉXICO: MASTERPIECE PURE SVG -- ROBUST FOR IOS */}
+                        {/* SOCIAL ICONS (Moved here per user request) */}
+                        <div
+                            ref={socialContainerRef}
+                            style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(4, 1fr)', // 4 per row
+                                gap: '1rem',
+                                width: '100%',
+                                maxWidth: '300px', // Control width
+                                marginBottom: '2rem' // Space before Seal
+                            }}
+                        >
+                            {socialLinks.map((social, i) => (
+                                <a
+                                    key={i}
+                                    href={social.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="social-icon-link"
+                                    style={{
+                                        width: '100%', // Fluid within grid
+                                        aspectRatio: '1/1', // Perfect square
+                                        borderRadius: '12px',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        textDecoration: 'none',
+                                        transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Bouncy
+                                        backgroundColor: 'rgba(255,255,255,0.03)',
+                                        position: 'relative',
+                                        overflow: 'hidden',
+                                        backdropFilter: 'blur(5px)'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
+                                        e.currentTarget.style.background = social.gradient;
+                                        e.currentTarget.style.transform = 'translateY(-5px) scale(1.05)';
+                                        e.currentTarget.style.boxShadow = social.glow;
+                                        const svg = e.currentTarget.querySelector('svg');
+                                        if (svg) {
+                                            (svg as SVGElement).style.fill = social.name === 'Twitter' ? '#000' : '#FFF';
+                                            (svg as SVGElement).style.transform = 'scale(1.2)';
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                                        e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                                        e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                                        e.currentTarget.style.boxShadow = 'none';
+                                        const svg = e.currentTarget.querySelector('svg');
+                                        if (svg) {
+                                            (svg as SVGElement).style.fill = '#FFF';
+                                            (svg as SVGElement).style.transform = 'scale(1)';
+                                        }
+                                    }}
+                                >
+                                    {getSocialIcon(social.name, 28)} {/* Fixed workable size for grid */}
+                                </a>
+                            ))}
+                        </div>
+
+                        {/* HECHO EN MÉXICO INTEGRATED HERE FOR BALANCE */}
                         <div
                             ref={sealRef}
                             data-no-magnetic="true"
                             style={{
-                                marginTop: '1.5rem',
-                                width: '160px',
-                                height: '80px',
+                                width: '140px',
+                                height: '70px',
                                 position: 'relative',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
                                 cursor: 'pointer',
-                                // Brightness boosted significantly for mobile screens
-                                filter: 'brightness(1.5) saturate(1.8) drop-shadow(0 0 20px rgba(255,255,255,0.3))',
-                                WebkitFilter: 'brightness(1.5) saturate(1.8) drop-shadow(0 0 20px rgba(255,255,255,0.3))' // Safari/Mobile support
-                            }}>
-
-                            {/* PURE SVG IMPLEMENTATION (No foreignObject) */}
-                            <svg width="160" height="80" viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
+                                filter: 'brightness(1.2) saturate(1.2) drop-shadow(0 0 20px rgba(255,255,255,0.1))',
+                                opacity: 0.8,
+                                transition: 'opacity 0.3s ease'
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                            onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
+                        >
+                            <svg width="140" height="70" viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
-                                    {/* The Dynamic Tricolor Gradient - VIBRANT FLAG COLORS */}
                                     <linearGradient id="mexico-shine-gradient" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="repeat" ref={gradientRef}>
-                                        <stop offset="0%" stopColor="#006847" /> {/* Official Mexico Flag Green */}
-                                        <stop offset="33%" stopColor="#FFFFFF" /> {/* White */}
-                                        <stop offset="66%" stopColor="#CE1126" /> {/* Official Mexico Flag Red */}
-                                        <stop offset="100%" stopColor="#006847" /> {/* Loop Connect */}
+                                        <stop offset="0%" stopColor="#006847" />
+                                        <stop offset="33%" stopColor="#FFFFFF" />
+                                        <stop offset="66%" stopColor="#CE1126" />
+                                        <stop offset="100%" stopColor="#006847" />
                                     </linearGradient>
-
-                                    {/* ROBUST FILTER TO TURN IMAGE WHITE FOR MASKING (iOS Fix) */}
                                     <filter id="turn-white">
-                                        <feColorMatrix type="matrix" values="0 0 0 0 1
-                                                                           0 0 0 0 1
-                                                                           0 0 0 0 1
-                                                                           0 0 0 1 0" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
                                     </filter>
-
-                                    {/* MASK USING FILTERED IMAGE */}
                                     <mask id="seal-mask">
                                         <image href={hechoEnMexicoLogo} width="160" height="80" filter="url(#turn-white)" />
                                     </mask>
                                 </defs>
-
-                                {/* The Shine Layer (Masked) - No Dark Background, Pure Gradient */}
                                 <rect width="160" height="80" fill="url(#mexico-shine-gradient)" mask="url(#seal-mask)" />
-
-                                {/* No overlay interference, just pure color first to fix the 'dark' issue */}
                             </svg>
                         </div>
                     </div>
-                </div>
 
-                {/* COLUMN 4: SOCIAL MEDIA - UNIFIED SIZE */}
-                <div>
-                    <h3 style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.75rem',
-                        letterSpacing: '0.2em',
-                        color: '#00FF99',
-                        marginBottom: '2rem',
-                        textTransform: 'uppercase'
-                    }}>
-                        /// SÍGUENOS
-                    </h3>
+                    {/* --- COLUMN 2: NAVIGATION & CONTACT (Centered Group) --- */}
                     <div
-                        ref={socialContainerRef}
+                        className="footer-nav-group"
                         style={{
+                            flex: '1 1 300px',
                             display: 'flex',
-                            gap: '1.2rem',
-                            flexWrap: 'wrap',
-                            alignItems: 'center', // Centered alignment
-                            position: 'relative',
-                            minHeight: '80px'
-                        }}
-                    >
-                        {socialLinks.map((social, i) => (
-                            <a
-                                key={i}
-                                href={social.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="social-icon-link"
-                                style={{
-                                    width: `${social.size}px`,
-                                    height: `${social.size}px`,
-                                    borderRadius: '18px',
-                                    border: '2px solid rgba(255,255,255,0.08)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    textDecoration: 'none',
-                                    transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                                    backgroundColor: 'rgba(255,255,255,0.02)',
-                                    position: 'relative',
-                                    overflow: 'visible',
-                                    // Removed Manual yOffset for consistency
-                                    backdropFilter: 'blur(10px)',
-                                    WebkitBackdropFilter: 'blur(10px)',
-                                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.borderColor = 'transparent';
-                                    e.currentTarget.style.background = social.gradient;
-                                    e.currentTarget.style.transform = `scale(1.15) rotate(5deg)`; // Simplified transform
-                                    e.currentTarget.style.boxShadow = social.glow;
-                                    const svg = e.currentTarget.querySelector('svg');
-                                    if (svg) {
-                                        (svg as SVGElement).style.fill = social.name === 'Twitter' ? '#000' : '#FFF';
-                                        (svg as SVGElement).style.filter = 'drop-shadow(0 0 8px rgba(255,255,255,0.8))';
-                                        (svg as SVGElement).style.transform = 'scale(1.1)';
-                                    }
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                                    e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
-                                    e.currentTarget.style.transform = `scale(1) rotate(0deg)`;
-                                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
-                                    const svg = e.currentTarget.querySelector('svg');
-                                    if (svg) {
-                                        (svg as SVGElement).style.fill = '#FFF';
-                                        (svg as SVGElement).style.filter = 'none';
-                                        (svg as SVGElement).style.transform = 'scale(1)';
-                                    }
-                                }}
-                            >
-                                {/* GRADIENT BACKGROUND LAYER */}
-                                <div style={{
-                                    position: 'absolute',
-                                    inset: '-2px',
-                                    background: social.gradient,
-                                    borderRadius: '18px',
-                                    opacity: 0.15,
-                                    zIndex: 0,
-                                    filter: 'blur(8px)',
-                                    pointerEvents: 'none'
-                                }} />
+                            gap: '4rem',
+                            justifyContent: 'center', // Center navigation block relative to available space
+                            flexWrap: 'wrap'
+                        }}>
+                        {/* NAV */}
+                        <div>
+                            <h3 style={{
+                                fontFamily: 'var(--font-mono)',
+                                fontSize: '0.75rem',
+                                letterSpacing: '0.2em',
+                                color: '#00FF99',
+                                marginBottom: '1.5rem',
+                                textTransform: 'uppercase',
+                                opacity: 0.9,
+                                borderBottom: '1px solid rgba(0,255,153,0.2)',
+                                paddingBottom: '0.5rem',
+                                display: 'inline-block'
+                            }}>
+                                /// NAVEGACIÓN
+                            </h3>
+                            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                {quickLinks.map((link, i) => (
+                                    <li key={i} style={{ marginBottom: '1rem' }}>
+                                        <Link
+                                            to={link.path}
+                                            style={{
+                                                color: '#CCC',
+                                                textDecoration: 'none',
+                                                fontSize: '1rem', // Legible font size
+                                                fontWeight: 300,
+                                                fontFamily: 'var(--font-body)',
+                                                transition: 'all 0.3s ease',
+                                                display: 'block'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.color = '#00FF99';
+                                                e.currentTarget.style.transform = 'translateX(5px)';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.color = '#CCC';
+                                                e.currentTarget.style.transform = 'translateX(0)';
+                                            }}
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
 
-                                {getSocialIcon(social.name, social.size)}
-                            </a>
-                        ))}
+                        {/* CONTACT */}
+                        <div>
+                            <h3 style={{
+                                fontFamily: 'var(--font-mono)',
+                                fontSize: '0.75rem',
+                                letterSpacing: '0.2em',
+                                color: '#00FF99',
+                                marginBottom: '1.5rem',
+                                textTransform: 'uppercase',
+                                opacity: 0.9,
+                                borderBottom: '1px solid rgba(0,255,153,0.2)',
+                                paddingBottom: '0.5rem',
+                                display: 'inline-block'
+                            }}>
+                                /// CONTACTO
+                            </h3>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <a
+                                    href="mailto:hola@agenciamx.app"
+                                    style={{
+                                        color: '#FFF',
+                                        textDecoration: 'none',
+                                        fontSize: '1.1rem',
+                                        fontWeight: 500,
+                                        transition: 'color 0.3s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.color = '#00FF99'}
+                                    onMouseLeave={(e) => e.currentTarget.style.color = '#FFF'}
+                                >
+                                    hola@agenciamx.app
+                                </a>
+                                <p style={{ color: '#888', fontSize: '0.9rem', margin: 0, fontFamily: 'var(--font-mono)' }}>
+                                    Xalapa, Veracruz, México
+                                </p>
+                            </div>
+                        </div>
                     </div>
+
+                    {/* --- COLUMN 3: SOCIALS (Align Right) --- */}
                 </div>
+
+                {/* Closing Content Wrapper Div - intentionally left closed in original code structure, assuming context is correct */}
+                {/* But wait, I am replacing the INNER content. I must remove the old 'Closing Content Wrapper' closing tag if I am rewriting the div contents. */}
+                {/* My replacement content STARTS inside the wrapper but includes the closing tag of the inner content? */}
+                {/* No, my TargetContent was the ENTIRE content block provided in previous files. */}
+                {/* Let's be careful. Layout: Wrapper(Refactor Target) -> Bottom Bar -> End. */}
+                {/* I will replace the large block of div content with the new flexible layout. */}
+
+
+                {/* Closing Content Wrapper */}
             </div>
 
-            {/* BOTTOM BAR */}
             <div style={{
-                paddingTop: '3rem',
+                position: 'relative',
+                zIndex: 10,
+                padding: '0 5% clamp(4rem, 10vh, 8rem) 5%', // MAXIMIZED BOTTOM PADDING
+                paddingRight: 'clamp(120px, 15vw, 300px)', // AGGRESSIVE SAFETY ZONE FOR HUB
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 flexWrap: 'wrap',
-                gap: '1rem'
-            }}>
+                gap: '1rem',
+                borderTop: '1px solid rgba(255,255,255,0.05)',
+                paddingTop: 'clamp(1.5rem, 3vh, 3rem)',
+                width: '100%',
+                boxSizing: 'border-box'
+            }} className="footer-bottom-bar">
                 <p style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.85rem',
-                    color: '#666',
+                    color: '#888', // LIGHTER GREY for better visibility
                     margin: 0
                 }}>
                     © {currentYear} AgencIA. Todos los derechos reservados. · A.L.M.A. es propiedad intelectual de AgencIA.
@@ -465,13 +481,52 @@ const Footer: React.FC = () => {
                     </Link>
                 </div>
             </div>
-        </footer>
+
+            <style>{`
+                @media (max-width: 900px) {
+                    /* FORCE VERTICAL STACK FOR FOOTER CONTENT */
+                    .footer-content-grid {
+                        flex-direction: column !important;
+                        gap: 3rem !important;
+                    }
+                    /* ALIGN ITEMS LEFT START */
+                    .footer-content-grid > div {
+                        width: 100% !important;
+                        flex: 1 1 auto !important;
+                        align-items: flex-start !important;
+                        justify-content: flex-start !important;
+                        text-align: left !important;
+                    }
+                     /* RESET SOCIAL ALIGNMENT */
+                    .footer-content-grid > div:last-child {
+                        align-items: flex-start !important; /* Forces Socials Left */
+                        margin-top: 1rem !important;
+                    }
+                    /* CENTER NAV GROUP STACK */
+                    .footer-nav-group {
+                        justify-content: flex-start !important;
+                        gap: 3rem !important;
+                    }
+                    /* BOTTOM BAR STACK */
+                    .footer-bottom-bar {
+                         flex-direction: column-reverse !important;
+                         align-items: flex-start !important;
+                        /* FORCE FULL WIDTH FOR TEXT CUT-OFF FIX */
+                        padding-right: 5% !important; 
+                        padding-left: 5% !important;
+                        padding-bottom: 9rem !important; /* EXTRA SPACE FOR HUD */
+                        width: 100% !important;
+                        box-sizing: border-box !important;
+                   }
+                }
+            `}</style>
+        </footer >
     );
 };
 
 // PREMIUM SVG SOCIAL ICONS - SCALED DYNAMICALLY
 const getSocialIcon = (name: string, size: number): React.ReactElement => {
-    const iconSize = Math.floor(size * 0.45); // 45% of container
+    const iconSize = Math.floor(size * 0.65); // INCREASED to 65% for better visibility
     const iconStyle = {
         fill: '#FFF',
         transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',

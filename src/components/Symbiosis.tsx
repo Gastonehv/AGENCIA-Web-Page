@@ -145,9 +145,9 @@ const Symbiosis: React.FC = () => {
                 <div style={{
                     position: 'absolute', inset: 0,
                     backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`,
-                    opacity: 0.12,
+                    opacity: 0.08, // REDUCED OPACITY FOR PERFORMANCE/CLEANLINESS
                     mixBlendMode: 'overlay',
-                    animation: 'technical-shimmer 0.1s infinite alternate'
+                    // animation: 'technical-shimmer 0.1s infinite alternate' // DISABLED ANIMATION FOR MOBILE PERFORMANCE
                 }} />
             </div>
 
@@ -348,7 +348,7 @@ const Symbiosis: React.FC = () => {
                         padding: 60px 0 !important;
                     }
                     #simbiosis-startups h2 {
-                        font-size: clamp(3rem, 18vw, 6rem) !important;
+                        font-size: clamp(3rem, 12vw, 6rem) !important; /* REDUCED MOBILE MAX FROM 18VW TO 12VW */
                         white-space: normal !important;
                         line-height: 0.9 !important;
                         text-align: left !important;

@@ -123,14 +123,16 @@ const SoulManifesto = () => {
                         }}
                     >
                         <h2 style={{
-                            fontSize: 'clamp(1.8rem, 8vw, 7rem)',
-                            lineHeight: 0.9,
+                            fontSize: 'clamp(1.5rem, 6vw, 7rem)', // Reduced min size for mobile
+                            lineHeight: 1.1, // Increased from 0.9 for better mobile wrapping
                             textTransform: 'uppercase',
-                            marginBottom: '3rem',
+                            marginBottom: 'clamp(1.5rem, 3vh, 3rem)', // Fluid margin
                             color: '#FFF',
                             fontFamily: 'var(--font-heading, sans-serif)',
                             fontWeight: 900,
-                            maxWidth: '90%',
+                            maxWidth: '100%', // Allow full width
+                            marginLeft: 'auto', // Force centering
+                            marginRight: 'auto', // Force centering
                             letterSpacing: '-0.02em',
                         }}>
                             <ScrambleText
@@ -143,11 +145,13 @@ const SoulManifesto = () => {
                         </h2>
 
                         <div className="manifesto-body" style={{
-                            fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
+                            fontSize: 'clamp(1rem, 2vw, 1.4rem)', // Slightly smaller min
                             lineHeight: 1.6,
                             color: '#BBB',
                             fontFamily: 'var(--font-mono, monospace)',
-                            maxWidth: '700px'
+                            maxWidth: '700px',
+                            marginLeft: 'auto',
+                            marginRight: 'auto'
                         }}>
                             {item.body.map((line, j) => (
                                 <p key={j} style={{ margin: '0 0 0.8rem 0' }}>

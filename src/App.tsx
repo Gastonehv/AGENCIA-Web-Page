@@ -26,7 +26,7 @@ function App() {
           <Cursor />
           <ScrollToTop />
           <Layout>
-            <Navbar />
+            {/* <Navbar /> SC: REMOVED as per user request. Gravity Orb is now the Universal Interface. */}
             <Routes>
               <Route path="/narrativa-v1" element={<NarrativePrototype />} />
               <Route path="/automatizacion" element={<Automatizacion />} />

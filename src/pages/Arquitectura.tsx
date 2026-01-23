@@ -428,7 +428,7 @@ const Arquitectura: React.FC = () => {
                     <h1 className="glitch-title" style={{
                         fontSize: 'clamp(2.5rem, 6vw, 6rem)',
                         textTransform: 'uppercase',
-                        fontWeight: 900,
+                        fontWeight: 800,
                         letterSpacing: '0.1em',
                         lineHeight: 0.9,
                         margin: 0,
@@ -792,7 +792,7 @@ const Arquitectura: React.FC = () => {
 
                     <h1 className="final-line-2" style={{
                         fontSize: 'clamp(2.5rem, 8vw, 8rem)',
-                        fontWeight: 900, textTransform: 'uppercase', lineHeight: 0.9,
+                        fontWeight: 800, textTransform: 'uppercase', lineHeight: 0.9,
                         marginBottom: '2rem',
                         background: 'linear-gradient(to bottom, #fff, #00FF99)',
                         WebkitBackgroundClip: 'text',

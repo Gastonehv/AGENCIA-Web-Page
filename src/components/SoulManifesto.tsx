@@ -119,7 +119,11 @@ const SoulManifesto = () => {
                             justifyContent: 'center',
                             alignItems: 'center',
                             textAlign: 'center',
-                            padding: 'clamp(1rem, 5vw, 2rem)',
+                            padding: 'clamp(2rem, 5vw, 4rem)', // SC: More breathing room for mobile
+                            width: '100%',
+                            maxWidth: '100vw',
+                            boxSizing: 'border-box', // Ensure padding doesn't cause overflow
+                            overflowWrap: 'break-word', // Ensure long words don't overflow
                         }}
                     >
                         <h2 style={{
@@ -129,7 +133,7 @@ const SoulManifesto = () => {
                             marginBottom: 'clamp(1.5rem, 3vh, 3rem)', // Fluid margin
                             color: '#FFF',
                             fontFamily: 'var(--font-heading, sans-serif)',
-                            fontWeight: 900,
+                            fontWeight: 800,
                             maxWidth: '100%', // Allow full width
                             marginLeft: 'auto', // Force centering
                             marginRight: 'auto', // Force centering

@@ -92,6 +92,9 @@ const Navbar: React.FC = () => {
         }
     }, [isOpen]);
 
+    // SC: Disable old navbar on mobile to make way for Gravity Orb
+    if (isMobile) return null;
+
     return (
         <nav ref={navRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 9999, pointerEvents: 'none' }}>
             <div style={{
@@ -175,7 +178,7 @@ const Navbar: React.FC = () => {
 
                     <span className="widget-label" style={{
                         fontFamily: 'var(--font-mono)',
-                        fontWeight: 900,
+                        fontWeight: 800,
                         fontSize: isMobile ? '1rem' : '1.3rem', // Punchier size
                         letterSpacing: isMobile ? '0.1em' : '0.15em', // Integrated spacing
                         color: '#000',
@@ -241,7 +244,7 @@ const Navbar: React.FC = () => {
                                         display: 'block',
                                         fontFamily: 'var(--font-heading)',
                                         fontSize: 'clamp(2rem, 5vw, 4.5rem)',
-                                        fontWeight: 900,
+                                        fontWeight: 800,
                                         color: '#ffffff',
                                         textDecoration: 'none',
                                         textTransform: 'uppercase',

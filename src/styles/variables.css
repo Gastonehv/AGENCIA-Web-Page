@@ -11,8 +11,11 @@
   --color-glass: rgba(255, 255, 255, 0.05);
   --color-glass-border: rgba(255, 255, 255, 0.1);
 
+  /* Fonts */
+  /* Fonts imported in index.html for performance */
+
   /* Typography */
-  --font-heading: 'Manrope', sans-serif;
+  --font-heading: 'Syne', sans-serif;
   --font-body: 'Manrope', sans-serif;
   --font-mono: 'Space Mono', 'Roboto Mono', monospace;
 

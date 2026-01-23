@@ -293,8 +293,14 @@ const Cursor: React.FC = () => {
         };
     }, [location]);
 
-    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (isTouch) return null;
+    // --- HYBRID DEVICE SUPPORT (FIX: Invisible Cursor on Touch Laptops) ---
+    // Instead of checking maxTouchPoints (which is >0 on Surface/Laptops),
+    // we check if the primary input mechanism is a "fine" pointer (Mouse/Trackpad).
+    // This matches the CSS media query that hides the default cursor.
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+    // Safety check for strictly touch devices (Mobile/Tablet without mouse)
+    if (!hasFinePointer) return null;
 
     return (
         <div
@@ -307,7 +313,7 @@ const Cursor: React.FC = () => {
                 width: '30px',
                 height: '30px',
                 pointerEvents: 'none',
-                zIndex: 9999,
+                zIndex: 100000,
                 mixBlendMode: 'difference'
             }}
         >
@@ -332,7 +338,7 @@ const Cursor: React.FC = () => {
                     top: '50%', left: '50%',
                     transform: 'translate(-50%, -50%)',
                     fontFamily: 'var(--font-mono)',
-                    fontWeight: 900,
+                    fontWeight: 800,
                     fontSize: '8px',
                     color: '#000',
                     letterSpacing: '1px',

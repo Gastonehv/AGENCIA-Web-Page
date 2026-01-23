@@ -114,7 +114,7 @@ const HeroOverlay: React.FC = () => {
             {/* INJECT STYLES FOR OVERRIDE IF NEEDED or pass via style prop properly */}
             <style>{`
                 .scroll-hint h2 {
-                    font-family: var(--font-body) !important;
+                    fontFamily: var(--font-mono) !important;
                     font-size: 0.9rem !important;
                     letter-spacing: 0.5em !important;
                     color: rgba(255,255,255,0.6) !important;

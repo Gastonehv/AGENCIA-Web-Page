@@ -146,7 +146,7 @@ const ChapterHUD: React.FC<ChapterHUDProps> = ({ currentChapter, chapterNumber }
                     <span style={{ fontSize: '0.6rem', color: '#FFF', fontWeight: 800, letterSpacing: '0.2em', textShadow: '0 0 5px rgba(255,255,255,0.5)' }}>
                         CAP_0{displayNumber}
                     </span>
-                    <span style={{ fontSize: '0.75rem', color: '#00FF99', fontWeight: 900, letterSpacing: '0.15em', textShadow: '0 0 10px rgba(0,255,153,0.6)' }}>
+                    <span style={{ fontSize: '0.75rem', color: '#00FF99', fontWeight: 800, letterSpacing: '0.15em', textShadow: '0 0 10px rgba(0,255,153,0.6)' }}>
                         {displayChapter}
                     </span>
                 </div>
@@ -163,7 +163,7 @@ const ChapterHUD: React.FC<ChapterHUDProps> = ({ currentChapter, chapterNumber }
                                 transition: 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)', display: 'flex', flexDirection: 'column'
                             }}>
                                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (
-                                    <div key={n} style={{ height: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', lineHeight: '1rem', fontWeight: 900, color: digit === n.toString() ? '#00FF99' : 'rgba(255,255,255,0.1)' }}>
+                                    <div key={n} style={{ height: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', lineHeight: '1rem', fontWeight: 800, color: digit === n.toString() ? '#00FF99' : 'rgba(255,255,255,0.1)' }}>
                                         {n}
                                     </div>
                                 ))}

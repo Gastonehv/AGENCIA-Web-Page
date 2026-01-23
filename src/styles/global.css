@@ -216,7 +216,7 @@ canvas {
 
     .pillars-grid {
         flex-direction: column !important;
-        padding: 0 5% !important;
+        padding: 0 !important;
     }
 
     .pillar-item {

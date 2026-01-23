@@ -116,24 +116,26 @@ const AlmaSection: React.FC = () => {
                 {/* EDITORIAL DATA BLOCK */}
                 <div style={{
                     width: '100%',
+                    maxWidth: '85%', // SC: Added max-width constraint for breathing room
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: '0.8rem',
                     fontFamily: 'var(--font-mono)',
                     textAlign: 'center',
-                    padding: '0 5%'
+                    padding: '0 1rem', // SC: Explicit padding
+                    margin: '0 auto' // Center the block
                 }}>
                     {/* ACRONYM DEFINITION - SINGLE LINE */}
                     <span style={{
                         fontSize: 'clamp(0.6rem, 1.2vw, 0.75rem)',
-                        letterSpacing: 'clamp(0.1em, 1vw, 0.4em)', // Reduced for mobile
+                        letterSpacing: 'clamp(0.1em, 1.5vw, 0.4em)', // Adjusted clamp
                         color: '#000',
                         fontWeight: 700,
                         textTransform: 'uppercase',
-                        whiteSpace: 'normal', // Allow wrap on small screens
+                        whiteSpace: 'normal',
                         textAlign: 'center',
-                        lineHeight: 1.4
+                        lineHeight: 1.6 // Increased line height
                     }}>
                         ALGORITMO LÓGICO DE MENTE ARTIFICIAL
                     </span>
@@ -142,14 +144,14 @@ const AlmaSection: React.FC = () => {
                     <p style={{
                         margin: 0,
                         fontSize: 'clamp(0.55rem, 1vw, 0.65rem)',
-                        letterSpacing: '0.25em',
-                        color: '#333', // Darker for better visibility
+                        letterSpacing: '0.15em', // Reduced from 0.25em to fit better
+                        color: '#333',
                         textTransform: 'uppercase',
                         lineHeight: 1.8,
                         maxWidth: '600px',
                         opacity: 0.8
                     }}>
-                        A.L.M.A. es una propiedad intelectual de <strong style={{ color: '#000', fontWeight: 900 }}>AgencIA</strong>. <br />
+                        A.L.M.A. es una propiedad intelectual de <strong style={{ color: '#000', fontWeight: 800 }}>AgencIA</strong>. <br />
                         Sistemas de orquestación propietaria. All rights reserved.
                     </p>
                 </div>

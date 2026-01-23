@@ -77,7 +77,14 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
 
             const getChaos = () => {
                 let s = "";
-                for (let i = 0; i < length; i++) s += CHARS[Math.floor(Math.random() * CHARS.length)];
+                for (let i = 0; i < length; i++) {
+                    // PRESERVE SPACES to ensure word wrapping works consistently
+                    if (text[i] === ' ') {
+                        s += ' ';
+                    } else {
+                        s += CHARS[Math.floor(Math.random() * CHARS.length)];
+                    }
+                }
                 return s;
             };
 
@@ -117,8 +124,14 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
                         const revealIdx = Math.floor(progress * length);
                         let newText = "";
                         for (let i = 0; i < length; i++) {
-                            if (i < revealIdx) newText += text[i];
-                            else newText += CHARS[Math.floor(Math.random() * CHARS.length)];
+                            if (i < revealIdx) {
+                                newText += text[i];
+                            } else if (text[i] === ' ') {
+                                // PRESERVE SPACES in the scrambled part too
+                                newText += ' ';
+                            } else {
+                                newText += CHARS[Math.floor(Math.random() * CHARS.length)];
+                            }
                         }
                         el.innerText = newText;
                     },

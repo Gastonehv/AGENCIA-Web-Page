@@ -374,7 +374,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                                     <span style={{
                                         fontFamily: 'var(--font-mono)',
                                         fontSize: isMobile ? '0.7rem' : '0.85rem',
-                                        fontWeight: 900,
+                                        fontWeight: 800,
                                         letterSpacing: isMobile ? '0.2em' : '0.4em',
                                         color: '#00FF99',
                                         textShadow: '0 0 10px rgba(0, 255, 153, 0.5)'

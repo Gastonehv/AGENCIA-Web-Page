@@ -713,7 +713,7 @@ const Home: React.FC = () => {
                         <div className="entropy-block-1" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                             <h2 className="entropy-el" style={{
                                 fontSize: 'clamp(1.5rem, 3.5vw, 3rem)', // Reduced Size
-                                fontWeight: 900,
+                                fontWeight: 800,
                                 margin: 0,
                                 lineHeight: 1.1,
                                 color: '#000',
@@ -726,7 +726,7 @@ const Home: React.FC = () => {
                             </h2>
                             <h2 className="entropy-el" style={{
                                 fontSize: 'clamp(1.5rem, 3.5vw, 3rem)', // Reduced Size
-                                fontWeight: 900,
+                                fontWeight: 800,
                                 margin: 0,
                                 lineHeight: 1.1,
                                 color: '#222', // SC: Increased contrast for visibility
@@ -743,7 +743,7 @@ const Home: React.FC = () => {
                         <div className="entropy-block-2" style={{ marginTop: '1rem' }}>
                             <h2 className="entropy-catchphrase" style={{
                                 fontSize: 'clamp(2rem, 5vw, 4.5rem)', // Reduced Size
-                                fontWeight: 900,
+                                fontWeight: 800,
                                 margin: 0,
                                 lineHeight: 1,
                                 color: '#333',

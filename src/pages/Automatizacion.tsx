@@ -777,7 +777,7 @@ const Automatizacion: React.FC = () => {
 
                     <h1 className="final-auto-2" style={{
                         fontSize: 'clamp(2.5rem, 8vw, 8rem)',
-                        fontWeight: 900,
+                        fontWeight: 800,
                         textTransform: 'uppercase',
                         lineHeight: 0.9,
                         marginBottom: '2rem',

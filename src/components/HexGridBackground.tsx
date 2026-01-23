@@ -24,14 +24,17 @@ const HexGridBackground: React.FC<HexGridBackgroundProps> = ({ isVisible = true,
         // --- CONSTANTS FROM ARTIST (Ana Tudor) ---
         const HEX_CRAD = 32;
         const HEX_BG = '#171717';
-        const HEX_HL = '#2a2a2a';
+        const HEX_HL = '#2a2a2a'; // Dark grey baseline
         const HEX_HLW = 2;
         const HEX_GAP = 4;
+
+        // CUSTOM GREEN PALETTE (User Request: "Mas visible el color verde")
         const NEON_PALETE = [
-            '#cb3301', '#ff0066', '#ff6666', '#feff99',
-            '#ffff67', '#ccff66', '#99fe00', '#fe99ff',
-            '#ff99cb', '#fe349a', '#cc99fe', '#6599ff',
-            '#00ccff', '#ffffff'
+            '#00FF00', // Pure Green
+            '#39FF14', // Neon Green
+            '#ccff00', // Acid Green
+            '#00FA9A', // Spring Green
+            '#7FFF00'  // Chartreuse
         ];
         const T_SWITCH = 64;
 
@@ -145,11 +148,14 @@ const HexGridBackground: React.FC<HexGridBackgroundProps> = ({ isVisible = true,
             highlight(ct: CanvasRenderingContext2D, offsetX: number, r: number, g: number, b: number) {
                 this.items.forEach(item => {
                     const dist = source ? sqrt(pow(item.x + offsetX - source.x, 2) + pow(item.y - source.y, 2)) : 0;
-                    const weight = 1.2 * pow(0.5 * (sin(dist / _min * PI - t / T_SWITCH * PI) + 1), 2);
+                    // Boosted brightness from 1.2 to 2.5 for maximum "visible green" impact
+                    const weight = 2.5 * pow(0.5 * (sin(dist / _min * PI - t / T_SWITCH * PI) + 1), 2);
 
                     if (weight > 0.1) {
-                        ct.strokeStyle = `rgba(${r},${g},${b},${weight})`;
-                        item.highlight(ct, offsetX, weight);
+                        // Clamp alpha to max 1.0 to avoid invalid rgba values
+                        const alpha = Math.min(1, weight);
+                        ct.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+                        item.highlight(ct, offsetX, alpha);
                     }
                 });
             }

@@ -105,7 +105,7 @@ const SideNav: React.FC = () => {
                         transition: 'all 0.3s ease',
                         pointerEvents: 'none',
                         whiteSpace: 'nowrap',
-                        fontWeight: 900,
+                        fontWeight: 800,
                         backgroundColor: 'rgba(0,0,0,0.8)',
                         padding: '4px 10px',
                         borderRadius: '4px',

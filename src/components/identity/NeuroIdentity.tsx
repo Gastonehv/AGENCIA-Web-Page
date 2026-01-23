@@ -112,7 +112,7 @@ const NeuroIdentity: React.FC = () => {
 
                 {/* 2. DIVE */}
                 <div ref={textRef2} style={{ ...textStyle, transform: 'translate(-50%, 50%)' }}>
-                    <h2 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 900, textTransform: 'uppercase', lineHeight: 0.9 }}>
+                    <h2 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 800, textTransform: 'uppercase', lineHeight: 0.9 }}>
                         NO DISEÑAMOS<br />LOGOS
                     </h2>
                     <p style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginTop: '2rem', borderLeft: '3px solid #FF0080', paddingLeft: '1rem', display: 'inline-block' }}>
@@ -122,7 +122,7 @@ const NeuroIdentity: React.FC = () => {
 
                 {/* 3. VOYAGE */}
                 <div ref={textRef3} style={{ ...textStyle, transform: 'translate(-50%, -50%) scale(0.8)' }}>
-                    <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 900, lineHeight: 1 }}>
+                    <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 800, lineHeight: 1 }}>
                         SI TE VES BARATO<br />
                         <span style={{ color: '#FF0080' }}>TE PAGAN BARATO</span>
                     </h2>

@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import GravityOrb from './GravityOrb';
+import TouchTracker from './TouchTracker';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,6 +46,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <div className="layout-wrapper" style={{ position: 'relative', zIndex: 1 }}>
             {children}
+            <GravityOrb />
+            <TouchTracker />
         </div>
     );
 };

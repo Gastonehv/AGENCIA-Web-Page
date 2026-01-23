@@ -122,11 +122,31 @@ const Symbiosis: React.FC = () => {
                 {/* 1. DATA GRID (ASCENSION MOVEMENT) */}
                 <div style={{
                     position: 'absolute', inset: -200, // Oversized for movement
-                    backgroundImage: `linear-gradient(rgba(0, 255, 153, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 153, 0.2) 1px, transparent 1px)`,
-                    backgroundSize: 'clamp(30px, 5vw, 60px) clamp(30px, 5vw, 60px)',
-                    opacity: 0.7,
+                    backgroundImage: `linear-gradient(rgba(0, 255, 153, 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 153, 0.4) 1px, transparent 1px)`,
+                    backgroundSize: '20px 20px', // SMALLER GRID (Fixed 20px)
+                    opacity: 0.5, // INCREASED VISIBILITY
                     animation: 'grid-ascension 40s linear infinite'
-                }} />
+                }}>
+                    {/* PULSE LAYER - INSIDE GRID TO MOVE WITH IT */}
+                    <div style={{
+                        position: 'absolute', inset: 0,
+                        backgroundImage: `linear-gradient(rgba(0, 255, 153, 1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 153, 1) 1px, transparent 1px)`,
+                        backgroundSize: '20px 20px',
+                        mixBlendMode: 'screen',
+                        // MASK: Digital Water Ripple (Concentric Rings)
+                        maskImage: 'repeating-radial-gradient(circle at bottom left, transparent 0, transparent 10%, #000 10%, #000 11%, transparent 11%, transparent 20%)',
+                        WebkitMaskImage: 'repeating-radial-gradient(circle at bottom left, transparent 0, transparent 10%, #000 10%, #000 11%, transparent 11%, transparent 20%)',
+                        maskSize: '100% 100%',
+                        WebkitMaskSize: '100% 100%',
+                        maskPosition: 'bottom left',
+                        WebkitMaskPosition: 'bottom left',
+                        maskRepeat: 'no-repeat',
+                        WebkitMaskRepeat: 'no-repeat',
+                        animation: 'pulse-expansion 4s steps(60) infinite linear', // Continuous flow
+                        willChange: 'mask-size, -webkit-mask-size',
+                        pointerEvents: 'none'
+                    }} />
+                </div>
 
                 {/* 2. SCANLINES */}
                 <div style={{
@@ -155,6 +175,10 @@ const Symbiosis: React.FC = () => {
                 @keyframes grid-ascension {
                     0% { transform: translate(0, 0); }
                     100% { transform: translate(-60px, -60px); }
+                }
+                @keyframes pulse-expansion {
+                    0% { mask-size: 0% 0%; -webkit-mask-size: 0% 0%; }
+                    100% { mask-size: 300% 300%; -webkit-mask-size: 300% 300%; }
                 }
                 @keyframes technical-shimmer {
                     from { opacity: 0.1; transform: scale(1); }
@@ -343,12 +367,12 @@ const Symbiosis: React.FC = () => {
                 @media (max-width: 768px) {
                     #simbiosis-startups {
                         height: auto !important;
-                        min-height: 100vh !important;
-                        overflow: visible !important;
-                        padding: 60px 0 !important;
+                        min-height: auto !important; /* Allow section to shrink to content */
+                        overflow: hidden !important; /* CLIP the grid buffer */
+                        padding: 60px 0 20px 0 !important; /* Tight bottom padding */
                     }
                     #simbiosis-startups h2 {
-                        font-size: clamp(3rem, 12vw, 6rem) !important; /* REDUCED MOBILE MAX FROM 18VW TO 12VW */
+                        font-size: clamp(3rem, 12vw, 6rem) !important;
                         white-space: normal !important;
                         line-height: 0.9 !important;
                         text-align: left !important;
@@ -356,9 +380,9 @@ const Symbiosis: React.FC = () => {
                     }
                     .pillars-grid {
                         flex-direction: column !important;
-                        align-items: center !important;
+                        align-items: stretch !important; /* Changed from center to stretch */
                         justify-content: flex-start !important;
-                        padding: 0 1.5rem !important;
+                        padding: 0 !important; /* Removed 1.5rem padding */
                         gap: 2.5rem !important;
                         width: 100% !important;
                         max-width: 100% !important;

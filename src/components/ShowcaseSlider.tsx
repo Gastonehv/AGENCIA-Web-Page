@@ -350,7 +350,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         color: '#000',
                         marginBottom: '2rem',
                         fontFamily: 'var(--font-heading)',
-                        fontWeight: 900,
+                        fontWeight: 800,
                         textShadow: '0px 10px 30px rgba(0,0,0,0.1)'
                     }}>
                         INGENIERÍA<br />
@@ -506,7 +506,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             </div>
                             <span style={{
                                 fontSize: isMobile ? '2.5rem' : '4rem',
-                                fontWeight: 900,
+                                fontWeight: 800,
                                 color: '#AAAAAA',
                                 lineHeight: 0.8,
                                 alignSelf: isMobile ? 'flex-end' : 'flex-start',
@@ -590,7 +590,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         top: 0 !important;
                         object-fit: cover !important;
                         backface-visibility: hidden !important;
-                        transform: translate3d(0,0,0) !important;
+                        /* transform: translate3d(0,0,0) !important; REMOVED TO ENABLE GSAP PARALLAX */
                     }
 
                     .floating-button {

@@ -10,7 +10,7 @@ const Privacidad: React.FC = () => {
             <SEO title="Privacidad | AgencIA" description="Política de privacidad y tratamiento de datos de AgencIA." />
 
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-                <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 900, marginBottom: '4rem', letterSpacing: '-0.02em', color: '#00FF99' }}>
+                <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 800, marginBottom: '4rem', letterSpacing: '-0.02em', color: '#00FF99' }}>
                     PRIVACIDAD
                 </h1>
 

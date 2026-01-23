@@ -77,7 +77,7 @@ const ChapterTitle: React.FC<ChapterTitleProps> = ({ number, title, subtitle }) 
 
             <h2 ref={titleRef} style={{
                 fontSize: 'clamp(2.5rem, 6vw, 6rem)',
-                fontWeight: 900,
+                fontWeight: 800,
                 textTransform: 'uppercase',
                 margin: 0,
                 letterSpacing: '-0.02em',

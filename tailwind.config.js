@@ -7,9 +7,10 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                heading: ['"Manrope"', 'sans-serif'],
+                heading: ['"Syne"', 'sans-serif'],
+                display: ['"Syne"', 'sans-serif'],
                 body: ['"Manrope"', 'sans-serif'],
-                mono: ['"JetBrains Mono"', 'monospace'],
+                mono: ['"Space Mono"', 'monospace'],
             },
             colors: {
                 cyan: {

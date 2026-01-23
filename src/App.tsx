@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar'; // Removed per universal navigation update
 import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider } from './context/LanguageProvider';
 import { ScrollProvider } from './context/ScrollProvider';

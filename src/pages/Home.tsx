@@ -298,7 +298,7 @@ const Home: React.FC = () => {
                     scrollTrigger: {
                         trigger: '.narrative-hero', // The section containing ESENCIA text
                         start: 'top top',
-                        end: '+=300%',
+                        end: '+=500%',
                         pin: true,
                         scrub: 0.5,
                         anticipatePin: 1,

@@ -858,7 +858,7 @@ const Home: React.FC = () => {
                 </section>
 
                 {/* 6. TEAM RIFT */}
-                <section id="nucleo" className="team-list" style={{ minHeight: '100vh', padding: '0 0 10vh', backgroundColor: '#FFFFFF', color: '#000', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                <section id="nucleo" className="team-list" style={{ minHeight: '100vh', padding: '15vh 0 10vh', backgroundColor: '#FFFFFF', color: '#000', display: 'flex', flexDirection: 'column', position: 'relative' }}>
                     <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', margin: '6rem 0', fontWeight: 900, textAlign: 'center', letterSpacing: '0.02em', wordSpacing: '0.2em', color: '#000' }}>EL NÚCLEO</h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         {team.map((member) => (

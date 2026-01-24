@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrambleText from './ScrambleText';
 import AsciiRipple from './AsciiRipple';
+import Prism from './Prism';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -100,6 +101,24 @@ const SoulManifesto = () => {
             height: '100vh',
             overflow: 'hidden'
         }}>
+
+
+            <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
+                <Prism
+                    animationType="hover"
+                    timeScale={0.5}
+                    height={3.5}
+                    baseWidth={5.5}
+                    scale={3.2}
+                    hueShift={0}
+                    colorFrequency={1}
+                    noise={0}
+                    glow={1}
+                    hoverStrength={2.5}
+                    inertia={0.15}
+                    bloom={1}
+                />
+            </div>
             <div
                 ref={trackRef}
                 style={{
@@ -124,6 +143,8 @@ const SoulManifesto = () => {
                             maxWidth: '100vw',
                             boxSizing: 'border-box', // Ensure padding doesn't cause overflow
                             overflowWrap: 'break-word', // Ensure long words don't overflow
+                            zIndex: 10,
+                            position: 'relative',
                         }}
                     >
                         <h2 style={{
@@ -138,6 +159,7 @@ const SoulManifesto = () => {
                             marginLeft: 'auto', // Force centering
                             marginRight: 'auto', // Force centering
                             letterSpacing: '-0.02em',
+                            textShadow: '0 4px 12px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.5)', // Strong Shadow
                         }}>
                             <ScrambleText
                                 text={item.title}
@@ -151,7 +173,8 @@ const SoulManifesto = () => {
                         <div className="manifesto-body" style={{
                             fontSize: 'clamp(1rem, 2vw, 1.4rem)', // Slightly smaller min
                             lineHeight: 1.6,
-                            color: '#BBB',
+                            color: '#e0e0e0', // Slightly brighter gray
+                            textShadow: '0 2px 4px rgba(0,0,0,0.8), 0 4px 8px rgba(0,0,0,0.5)', // Strong Shadow
                             fontFamily: 'var(--font-mono, monospace)',
                             maxWidth: '700px',
                             marginLeft: 'auto',

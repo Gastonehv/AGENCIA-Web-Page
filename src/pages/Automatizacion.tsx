@@ -419,7 +419,10 @@ const Automatizacion: React.FC = () => {
 
                 {/* Interaction HUD */}
                 <div className="interaction-hud" style={{ position: 'fixed', bottom: '1rem', width: '100%', zIndex: 20 }}>
-                    <InteractionGuide mode="both" />
+                    <InteractionGuide items={[
+                        { type: 'scroll', text: 'SCROLL' },
+                        { type: 'hold', text: 'HOLD' }
+                    ]} />
                 </div>
 
                 {/* HERO */}

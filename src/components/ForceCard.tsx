@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import gsap from 'gsap';
+import HoldToReveal from './HoldToReveal';
 
 interface ForceCardProps {
     title: string;
@@ -56,7 +57,19 @@ const ForceCard: React.FC<ForceCardProps> = ({ title, description, color, icon }
         });
     };
 
-    return (
+    const handleHoldComplete = () => {
+        // Trigger the hover effect permanently or open a modal
+        setIsHovered(true);
+        if (cardRef.current) {
+            gsap.to(cardRef.current, {
+                boxShadow: `0 0 50px ${color} 40`,
+                borderColor: color,
+                duration: 0.5
+            });
+        }
+    };
+
+    const Content = (
         <div
             ref={cardRef}
             className="force-card-container"
@@ -76,7 +89,7 @@ const ForceCard: React.FC<ForceCardProps> = ({ title, description, color, icon }
                 border: '1px solid rgba(255, 255, 255, 0.1)',
                 overflow: 'hidden',
                 transition: 'border-color 0.3s ease',
-                cursor: 'none', // We might want a custom cursor interaction later, but for now standard
+                cursor: 'none',
                 borderColor: isHovered ? color : 'rgba(255, 255, 255, 0.1)',
                 boxShadow: isHovered ? `0 0 30px ${color} 20` : 'none'
             }}
@@ -122,6 +135,13 @@ const ForceCard: React.FC<ForceCardProps> = ({ title, description, color, icon }
                 {description}
             </p>
         </div>
+    );
+
+    // Conditional Wrapper could go here, but fitting HoldToReveal into the flow:
+    return (
+        <HoldToReveal onComplete={handleHoldComplete} className="force-card-wrapper" style={{ width: '100%' }}>
+            {Content}
+        </HoldToReveal>
     );
 };
 

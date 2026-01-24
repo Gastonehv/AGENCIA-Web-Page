@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
-type InteractionType = 'scroll' | 'drag' | 'hover' | 'click';
+type InteractionType = 'scroll' | 'drag' | 'hover' | 'click' | 'hold';
 
 interface InteractionItem {
     type: InteractionType;
@@ -66,9 +66,17 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
                     gsap.to('.drag-indicator', {
                         x: 8,
                         duration: 1.5,
-                        yoyo: true,
                         repeat: -1,
                         ease: "sine.inOut"
+                    });
+                }
+                if (item.type === 'hold') {
+                    gsap.to('.hold-indicator > div', {
+                        scale: 1.5,
+                        opacity: 0,
+                        duration: 1.5,
+                        repeat: -1,
+                        ease: "power2.out"
                     });
                 }
             });
@@ -132,6 +140,20 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
                 return (
                     <div style={{ color: '#FF0055', fontSize: '1.2rem' }}>⦿</div>
                 );
+            case 'hold':
+                return (
+                    <div className="hold-indicator" style={{
+                        width: '24px', height: '24px',
+                        border: '2px solid rgba(255, 255, 255, 0.5)',
+                        borderRadius: '50%',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}>
+                        <div style={{
+                            width: '12px', height: '12px',
+                            background: '#00FF99', borderRadius: '50%'
+                        }} />
+                    </div>
+                );
             default:
                 return null;
         }
@@ -143,6 +165,7 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, classN
             case 'drag': return 'rgba(143, 0, 255, 0.8)';
             case 'hover': return 'rgba(0, 212, 255, 0.8)';
             case 'click': return 'rgba(255, 0, 85, 0.8)';
+            case 'hold': return '#00FF99';
             default: return 'rgba(255, 255, 255, 0.8)';
         }
     };

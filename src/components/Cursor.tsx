@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useLocation } from 'react-router-dom';
+import cortexImg from '../assets/images/cortex cerebro agencia.png';
 
 // Lightweight Vector2 Helper (Ported from user code)
 class Vec2 {
@@ -36,7 +37,7 @@ class Vec2 {
 
 const Cursor: React.FC = () => {
     const cursorRef = useRef<HTMLDivElement>(null);
-    const visualRef = useRef<HTMLDivElement>(null);
+    const visualRef = useRef<HTMLImageElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
     const location = useLocation();
 
@@ -150,19 +151,25 @@ const Cursor: React.FC = () => {
 
                 // Check for custom cursor type
                 const cursorType = hoverEl.getAttribute('data-cursor');
+
                 if (cursorType === 'open') {
-                    scale.target = 5.5; // Bigger Bubble (165px) for EXPLORAR
-                    text.textContent = "EXPLORAR";
-                    text.style.opacity = '1';
+                    scale.target = 2.5; // MINIMALIST GLASS CORTEX (Small & Elegant)
+                    text.textContent = ""; // SILENCE (No Text)
+                    text.style.opacity = '0';
 
                     // Visual Style for OPEN
                     el.style.mixBlendMode = 'normal';
-                    visual.style.backgroundColor = '#ffffff';
 
-                    // Maximize Text Size
-                    text.style.fontSize = '16px';
-                    text.style.letterSpacing = '4px'; // Elegant wide spacing
-                    text.style.fontWeight = '900';
+                    // PURE CORTEX with subtle glass lift
+                    visual.style.backgroundColor = 'transparent'; // No background
+                    visual.style.backdropFilter = 'none'; // No blur box
+                    visual.style.border = 'none'; // No border
+                    visual.style.boxShadow = 'none'; // No box shadow
+                    // Just the brain, slightly glowing/lifted
+                    visual.style.filter = 'drop-shadow(0 5px 15px rgba(0,0,0,0.3)) brightness(1.1)';
+
+                    // Reset Text (Unused)
+                    text.style.fontSize = '0px';
                 } else {
                     scale.target = 1;
                     text.textContent = "";
@@ -170,7 +177,11 @@ const Cursor: React.FC = () => {
 
                     // Reset Visual Style
                     el.style.mixBlendMode = 'difference';
-                    visual.style.backgroundColor = '#fff';
+                    visual.style.backgroundColor = 'transparent';
+                    visual.style.backdropFilter = 'none';
+                    visual.style.border = 'none';
+                    visual.style.boxShadow = 'none';
+                    visual.style.filter = 'brightness(0) invert(1)'; // RESTORE WHITE MASK
                 }
             } else {
                 position.target.x = x;
@@ -180,7 +191,7 @@ const Cursor: React.FC = () => {
                 text.style.opacity = '0';
 
                 el.style.mixBlendMode = 'difference';
-                visual.style.backgroundColor = '#fff';
+                visual.style.backgroundColor = 'transparent';
             }
         };
 
@@ -318,15 +329,18 @@ const Cursor: React.FC = () => {
             }}
         >
             {/* 1. VISUAL BLOB (Deforms) */}
-            <div
+            <img
                 ref={visualRef}
+                src={cortexImg}
+                alt="Cursor"
                 style={{
                     width: '100%',
                     height: '100%',
-                    borderRadius: '50%',
-                    backgroundColor: '#fff',
+                    objectFit: 'contain',
                     position: 'absolute',
-                    top: 0, left: 0
+                    top: 0, left: 0,
+                    // FORCE WHITE for mix-blend-mode: difference to work (Invert Black -> White)
+                    filter: 'brightness(0) invert(1)'
                 }}
             />
 

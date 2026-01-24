@@ -157,6 +157,8 @@ const GravityOrb: React.FC = () => {
     const handleMenuClick = (path: string) => {
         setIsOpen(false);
         navigate(path);
+        // FORCE SCROLL TO TOP (especially if already on home '/')
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // --- 3. RENDERIZADO EN PORTAL (UNIVERSAL) ---
@@ -206,7 +208,7 @@ const GravityOrb: React.FC = () => {
                     flexGrow: 1 // Ocupa el espacio disponible central
                 }}>
                     {[
-                        { idx: '00', label: 'MANIFIESTO', path: '/' },
+                        { idx: '00', label: 'INICIO', path: '/' },
                         { idx: '01', label: 'ESENCIA', path: '/esencia' },
                         { idx: '02', label: 'INFRAESTRUCTURA', path: '/infraestructura' },
                         { idx: '03', label: 'AUTOMATIZACIÓN', path: '/automatizacion' },

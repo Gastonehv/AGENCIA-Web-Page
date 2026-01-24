@@ -87,32 +87,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
     const { lenis } = useScroll(); // Need Lenis for precision scrolling
 
-    // Floating Indicator State
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const [isHovering, setIsHovering] = useState(false);
-    const indicatorRef = useRef<HTMLDivElement>(null);
 
-    // Track Mouse
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            setMousePos({ x: e.clientX, y: e.clientY });
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
-    // Animate Indicator Position (Magnetic Smoothing)
-    useEffect(() => {
-        if (indicatorRef.current && isHovering) {
-            gsap.to(indicatorRef.current, {
-                x: mousePos.x,
-                y: mousePos.y,
-                duration: 0.8,
-                ease: "power3.out",
-                overwrite: true
-            });
-        }
-    }, [mousePos, isHovering]);
 
     // 4. RESPONSIVE LAYOUT STATE
     const [cardWidth, setCardWidth] = useState('30vw'); // Start Small
@@ -161,10 +136,10 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     gsap.set(sliderRef.current, { paddingLeft: '6vw', gap: '4vw' });
                 } else if (isLaptop) {
                     gsap.set('.showcase-headline', { minWidth: '35vw', marginRight: '0' });
-                    gsap.set(sliderRef.current, { paddingLeft: '8vw', gap: '4vw' });
+                    gsap.set(sliderRef.current, { paddingLeft: '8vw', gap: '8vw' });
                 } else {
                     gsap.set('.showcase-headline', { minWidth: '40vw', marginRight: '0' });
-                    gsap.set(sliderRef.current, { paddingLeft: '10vw', gap: '5vw' });
+                    gsap.set(sliderRef.current, { paddingLeft: '10vw', gap: '12vw' }); // INCREASED GAP
                 }
             });
 
@@ -354,15 +329,23 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         textShadow: '0px 10px 30px rgba(0,0,0,0.1)'
                     }}>
                         INGENIERÍA<br />
-                        <span style={{ color: '#CCC' }}>/// CREATIVA</span>
+                        <span style={{ color: '#CCC', whiteSpace: 'nowrap' }}>/// CREATIVA</span>
                     </h2>
                     <p style={{
-                        fontSize: 'clamp(1rem, 1.5vw, 1.5rem)',
-                        maxWidth: '500px',
-                        fontFamily: 'var(--font-mono)',
-                        color: '#555'
+                        fontSize: 'clamp(0.85rem, 4vw, 2.5rem)', // SC: Reduced min to 0.85rem to fit 'infraestructura' on 320px
+                        maxWidth: '90vw', // Ensure it doesn't exceed screen
+                        fontFamily: 'var(--font-heading)',
+                        fontWeight: 600,
+                        color: '#111',
+                        lineHeight: 1.15,
+                        marginTop: '1.5rem',
+                        letterSpacing: '-0.02em',
+                        paddingBottom: '1rem',
+                        overflowWrap: 'break-word', // Safety net
+                        width: '100%'
                     }}>
-                        Construimos infraestructura que piensa, escala y domina.
+                        Construimos infraestructura<br />
+                        <span style={{ color: '#666', fontWeight: 400 }}>que piensa, escala y domina.</span>
                     </p>
                 </div>
 
@@ -397,12 +380,14 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             transform: hoveredIndex === i && !isMobile ? 'translateY(-10px) scale(1.02)' : 'none',
                             borderRadius: '24px'
                         }}
+                        data-cursor="open"
+                        data-cursor-text={`ACCESO // ${item.id}`} // Premium Dynamic Text
                         onMouseEnter={() => {
-                            setIsHovering(true);
+                            setHighlightedIndex(i); // Highlight immediately
                             setHoveredIndex(i);
                         }}
                         onMouseLeave={() => {
-                            setIsHovering(false);
+                            setHighlightedIndex(null);
                             setHoveredIndex(null);
                         }}
                     >
@@ -413,7 +398,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             style={{
                                 width: '100%',
                                 height: isMobile ? '250px' : 'auto',
-                                aspectRatio: isMobile ? 'auto' : '4/3', // USER SUGGESTION: Narrower for focus
+                                aspectRatio: isMobile ? 'auto' : '16/9', // SC: 16/9 to save vertical space for text
                                 overflow: 'hidden',
                                 borderRadius: '16px',
                                 marginBottom: '1rem',
@@ -447,11 +432,11 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     poster={item.img}
                                     className="showcase-video"
                                     style={{
-                                        width: '133.33%', // NATIVE 16:9 OVER 4:3 WINDOW (1.77 / 1.33 = 1.333)
+                                        width: '100%', // NATIVE 16:9 
                                         height: '100%',
                                         objectFit: 'cover',
                                         position: 'absolute',
-                                        left: '-16.66%', // PERFECT NATIVE CENTER ((133.33 - 100) / 2)
+                                        left: 0,
                                         top: 0,
                                         willChange: 'transform',
                                         backfaceVisibility: 'hidden',
@@ -464,13 +449,13 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     ref={el => { imagesRef.current[i] = el; }}
                                     className="showcase-image"
                                     style={{
-                                        width: '133.33%',
+                                        width: '100%',
                                         height: '100%',
                                         backgroundImage: `url(${item.img})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         position: 'absolute',
-                                        left: '-16.66%',
+                                        left: 0,
                                         top: 0,
                                         backfaceVisibility: 'hidden'
                                     }}
@@ -521,7 +506,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             color: '#444',
                             // Ensure valid flex behavior
                             whiteSpace: 'normal',
-                            overflow: 'hidden'
+                            // Removed overflow hidden
                         }}>
                             {item.desc}
                         </p>
@@ -567,19 +552,23 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         width: 85vw !important;
                         max-width: 85vw !important;
                         min-width: 85vw !important;
-                        height: 70vh !important; /* REDUCED FROM 82VH TO 70VH FOR BETTER CONTEXT */
+                        height: 80vh !important; /* SC: Increased to 80vh for max safe height */
                         margin: 0 !important;
-                        padding: 1.5rem !important;
+                        padding: 1.5rem 1.5rem 3rem 1.5rem !important; /* SC: Extra bottom padding buffer */
                         flex-shrink: 0;
                         border-right: 1px solid rgba(0,0,0,0.05);
                         overflow-y: visible !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        justify-content: flex-start !important;
                     }
 
                     .showcase-media-window {
-                        height: 40% !important; /* INCREASED FROM 30% TO 40% FOR IMPACT */
-                        min-height: 150px !important;
+                        height: 30% !important; /* SC: Reduced to 30% to prioritize text */
+                        min-height: 140px !important;
                         flex-shrink: 0;
                         overflow: hidden !important;
+                        margin-bottom: 1.5rem !important; /* Ensure gap */
                     }
 
                     .showcase-video, .showcase-image {
@@ -602,41 +591,7 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
             {/* MODALS REMOVED - Now navigating directly to pages */}
 
-            {/* FLOATING CASE INDICATOR (Desktop Only) */}
-            <div
-                ref={indicatorRef}
-                className="floating-button"
-                style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    padding: '0.8rem 1.5rem',
-                    backgroundColor: '#000',
-                    color: '#FFF',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    pointerEvents: 'none',
-                    zIndex: 9999,
-                    opacity: isHovering ? 1 : 0,
-                    scale: isHovering ? 1 : 0.8,
-                    mixBlendMode: 'normal',
-                    transition: 'opacity 0.3s ease, transform 0.3s cubic-bezier(0.19, 1, 0.22, 1)',
-                    transform: 'translate(-50%, -50%)',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.75rem',
-                    fontWeight: 900,
-                    letterSpacing: '0.2em',
-                    textAlign: 'center',
-                    boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-                    border: '1px solid rgba(255,255,255,0.1)'
-                }}
-            >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                    <span>VER PROYECTO</span>
-                    <span style={{ fontSize: '1.2rem', color: '#00FF99' }}>→</span>
-                </div>
-            </div>
+
         </div>
     );
 };

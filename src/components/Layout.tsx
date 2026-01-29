@@ -3,6 +3,7 @@ import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import QuantumDepthMeter from './QuantumDepthMeter';
+import MoneyButton from './MoneyButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,6 +46,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <div className="layout-wrapper" style={{ position: 'relative', zIndex: 1 }}>
             <QuantumDepthMeter />
+            <MoneyButton />
             {children}
         </div>
     );

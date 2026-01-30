@@ -15,6 +15,7 @@ import type { GlitchPortalHandle } from '../components/GlitchPortal';
 import SEO from '../components/SEO';
 import StructuredData from '../components/StructuredData';
 import ChapterHUD from '../components/ChapterHUD';
+import NeuralNetworkALMA from '../components/NeuralNetworkALMA';
 // --- ASSETS (From Esencia) ---
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4';
 const videoSrc = essenceHeroVideo;
@@ -31,7 +32,7 @@ const Home: React.FC = () => {
     const { hash } = useLocation();
     const [loading, setLoading] = useState(!hash); // If hash exists, loading = false
     const { lenis } = useScroll();
-    const maskRef = useRef<SVGGElement>(null); // Target the Mask Group
+    const maskRef = useRef<HTMLDivElement>(null); // Target the N door layer
     const containerRef = useRef<HTMLDivElement>(null);
     const pulseButtonRef = useRef<HTMLButtonElement>(null);
     const ctaSectionRef = useRef<HTMLElement>(null); // New Ref for Pinning safety
@@ -40,6 +41,8 @@ const Home: React.FC = () => {
     // CHAPTER HUD STATE
     const [activeChapter, setActiveChapter] = useState('ESENCIA');
     const [chapterNum, setChapterNum] = useState('1');
+    const [essencePaused, setEssencePaused] = useState(false);
+    const [showNeuralBackground, setShowNeuralBackground] = useState(false);
     // Scroll state for neural networks (previously Essence)
 
     // TEAM DATA
@@ -107,33 +110,112 @@ const Home: React.FC = () => {
 
             const ctx = gsap.context(() => {
                 // --- 1. PORTAL OPENING ---
-                const tlPortal = gsap.timeline({
+                // --- 2. UNIFIED ENTRANCE TIMELINE (Portal -> Hero) ---
+                const tlEntrance = gsap.timeline({
                     scrollTrigger: {
-                        trigger: ".portal-wrapper",
+                        trigger: ".entrance-unified-container",
                         start: "top top",
-                        end: "+=300%",
+                        end: "+=1200%", // Long enough for both portal and hero sequences
                         pin: true,
                         scrub: true,
                         anticipatePin: 1,
                         refreshPriority: 10,
                         invalidateOnRefresh: true,
-                        snap: window.innerWidth <= 768 ? undefined : {
-                            snapTo: 1,
-                            duration: { min: 0.2, max: 0.5 },
-                            delay: 0,
-                            ease: 'power1.inOut'
+                        onEnter: () => {
+                            setActiveChapter('ESENCIA');
+                            setChapterNum('1');
                         }
                     }
                 });
 
-                // Primero se abre la máscara
-                tlPortal.fromTo([maskRef.current, ".portal-text-overlay"],
-                    { scale: 1, transformOrigin: 'center center' },
-                    { scale: 80, ease: 'power2.in', duration: 1 }
-                )
-                    .to(".portal-text-overlay", { opacity: 0, duration: 1, ease: 'none' }, 0)
-                    .to(".portal-overlay", { autoAlpha: 0, duration: 0.1 }, "-=0.1")
-                    .to(".scroll-indicator", { opacity: 0, duration: 0.1, ease: 'power2.out' }, "-=0.2");
+                // MASTER DURATION: 20 units for precise sequencing
+                tlEntrance.to({}, { duration: 20 }, 0);
+
+                // --- PHASE A: PORTAL (Units 0-8) ---
+                // 1. Reveal the Iridescent through the N door
+                tlEntrance.to(".n-door-filler", {
+                    opacity: 0,
+                    duration: 3,
+                    ease: "power2.inOut"
+                }, 0)
+                    // 2. Zoom through the N letter
+                    .to(".portal-svg", {
+                        scale: 100,
+                        duration: 5,
+                        ease: "power2.in",
+                    }, 1.5)
+                    // 3. Fade out the portal UI as we pass through
+                    .to(".agencia-letters", {
+                        opacity: 0,
+                        duration: 2,
+                        ease: "power2.out"
+                    }, 2)
+                    .to(".portal-overlay", {
+                        autoAlpha: 0,
+                        duration: 1,
+                        ease: "power2.inOut"
+                    }, 5.5)
+                    .to(".scroll-indicator", { opacity: 0, duration: 0.5 }, 0);
+
+                // --- PHASE B: HERO TEXT REVEAL (Units 6-20) ---
+                // Note: Starts at 6 so it's already visible through the N zoom
+
+                // 1. "ESENC" Vanishes
+                tlEntrance.to('.word-esenc', {
+                    opacity: 0,
+                    filter: 'blur(30px)',
+                    duration: 3,
+                    ease: 'power2.inOut'
+                }, 6);
+
+                // 2. "NUESTRA" Descends and Grows
+                tlEntrance.to('.word-nuestra', {
+                    y: '100%',
+                    scale: 2.5,
+                    duration: 4,
+                    ease: 'power2.inOut'
+                }, 7);
+
+                // 3. "IA" turns Green (Radioactive)
+                tlEntrance.to('.hero-char-ia', {
+                    color: '#00FF99',
+                    textShadow: '0 0 30px rgba(0,255,153,1), 0 0 60px rgba(0,255,153,0.8)',
+                    scale: 1.1,
+                    duration: 5,
+                    ease: 'power2.out'
+                }, 7)
+                    .to(".liquid-container", {
+                        opacity: 0,
+                        duration: 5,
+                        ease: 'power2.inOut'
+                    }, 7);
+
+                // 4. "NUESTRA" disappears before final zoom
+                tlEntrance.to('.word-nuestra', {
+                    opacity: 0,
+                    filter: 'blur(20px)',
+                    duration: 2,
+                    ease: 'power2.inOut'
+                }, 15);
+
+                // 5. Final IA Zoom & Background Persistence
+                tlEntrance.to('.hero-char-ia', {
+                    scale: 85,
+                    filter: 'blur(10px)',
+                    opacity: 0,
+                    duration: 3,
+                    ease: 'expo.in'
+                }, 17)
+                    .to(".essence-fixed-wrapper", {
+                        autoAlpha: 0,
+                        duration: 1.5,
+                        ease: 'power2.in'
+                    }, 17.5)
+                    .to(".entrance-unified-container", {
+                        autoAlpha: 0,
+                        pointerEvents: 'none',
+                        duration: 0.5
+                    }, 20);
 
 
 
@@ -144,61 +226,63 @@ const Home: React.FC = () => {
                 const rifts = gsap.utils.toArray<HTMLElement>('.rift-row');
 
                 // --- NEW PINNING LOGIC (FORCE PAUSE) ---
-                // Applies to ALL screen sizes to ensure readability
                 rifts.forEach((rift, i) => {
                     ScrollTrigger.create({
                         trigger: rift,
                         start: "center center",
-                        end: "+=60%", // Holds the member in center for 60% of viewport height
+                        end: "+=60%",
                         pin: true,
-                        pinSpacing: true, // Adds physical space
-                        id: `rift-pin-${i}`,
-                        snap: window.innerWidth <= 768 ? undefined : {
-                            snapTo: 1,
-                            duration: { min: 0.1, max: 0.3 },
-                            ease: 'power1.inOut'
-                        }
+                        pinSpacing: true,
+                        id: `rift-pin-${i}`
                     });
                 });
 
-                // ALMA SECTION - MAGNETIC PIN RESTORED
+                // ALMA SECTION
                 ScrollTrigger.create({
                     trigger: ".alma-portal-container",
                     start: "center center",
-                    end: "+=150%", // Holds screen for reading
+                    end: "+=150%",
                     pin: true,
-                    pinSpacing: true,
-                    snap: window.innerWidth <= 768 ? undefined : { // DISABLE aggressive snap on mobile
-                        snapTo: 1,
-                        duration: { min: 0.2, max: 0.8 },
-                        delay: 0.1,
-                        ease: 'power2.inOut'
-                    }
+                    pinSpacing: true
                 });
 
-                // --- 4. CHAPTER HUD TRACKING (SC: Robust Implementation) ---
+                // --- 4. CHAPTER HUD TRACKING ---
                 const chapters = [
-                    { id: '#hero', name: 'ESENCIA', num: '1' },
-                    { id: '#identidad', name: 'IDENTIDAD', num: '2' },
-                    { id: '#manifesto', name: 'EL MANIFIESTO', num: '3' },
-                    { id: '#capacidades', name: 'INGENIERÍA CREATIVA', num: '4' },
-                    { id: '#nucleo', name: 'EL NÚCLEO', num: '5' },
-                    { id: '#simbiosis', name: 'SIMBIOSIS', num: '6' },
-                    { id: '#contacto', name: 'EL SALTO', num: '7' },
+                    { id: '#hero', name: 'ESENCIA', num: '1', offset: "top top" },
+                    { id: '#identidad', name: 'IDENTIDAD', num: '2', offset: "top 20%" },
+                    { id: '#manifesto', name: 'EL MANIFIESTO', num: '3', offset: "top 20%" },
+                    { id: '#capacidades', name: 'INGENIERÍA CREATIVA', num: '4', offset: "top 20%" },
+                    { id: '#nucleo', name: 'EL NÚCLEO', num: '5', offset: "top 20%" },
+                    { id: '#simbiosis', name: 'SIMBIOSIS', num: '6', offset: "top 20%" },
+                    { id: '#contacto', name: 'EL SALTO', num: '7', offset: "top 20%" },
                 ];
 
                 chapters.forEach(chapter => {
                     ScrollTrigger.create({
                         trigger: chapter.id,
-                        start: "top 50%",
-                        end: "bottom 50%",
+                        start: chapter.offset,
+                        end: "bottom 20%",
                         onEnter: () => {
                             setActiveChapter(chapter.name);
                             setChapterNum(chapter.num);
+                            if (chapter.id === '#identidad') {
+                                setShowNeuralBackground(true);
+                                setEssencePaused(true);
+                            }
                         },
                         onEnterBack: () => {
                             setActiveChapter(chapter.name);
                             setChapterNum(chapter.num);
+                            if (chapter.id === '#identidad') {
+                                setShowNeuralBackground(true);
+                                setEssencePaused(true);
+                            }
+                        },
+                        onLeaveBack: () => {
+                            if (chapter.id === '#identidad') {
+                                setShowNeuralBackground(false);
+                                setEssencePaused(false);
+                            }
                         }
                     });
                 });
@@ -292,101 +376,6 @@ const Home: React.FC = () => {
                         rift.addEventListener('click', toggleRift);
                     });
                 });
-
-                // --- 3. ESENCIA HERO TIMELINE ---
-                const tlHero = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: '.narrative-hero', // The section containing ESENCIA text
-                        start: 'top top',
-                        end: '+=500%',
-                        pin: true,
-                        scrub: 0.5,
-                        anticipatePin: 1,
-                        refreshPriority: 8
-                    }
-                });
-
-                // MASTER DURATION: Forces a 10s virtual timeline for precise % calculations
-                tlHero.to({}, { duration: 10 }, 0);
-
-                // Phase 1: "ESENC" Vanishes to clear the stage
-                tlHero.to('.word-esenc', {
-                    opacity: 0,
-                    filter: 'blur(30px)',
-                    duration: 1.5,
-                    ease: 'power2.inOut'
-                }, 0);
-
-                // Phase 2: "NUESTRA" Descends and Grows to match IA
-                tlHero.to('.word-nuestra', {
-                    y: '100%', // Moves down to line 2 (approx)
-                    scale: 2.5, // GROWS to match the big font size
-                    x: 0, // RESTORED DEFAULT CENTER
-                    duration: 2,
-                    ease: 'power2.inOut'
-                }, 0.5); // Starts while ESENC is fading
-
-                // Phase 3 (SYNCED): "IA" turns Green (Radioactive) AS Nuestra descends
-                tlHero.to('.hero-char-ia', {
-                    color: '#00FF99', // PALETTE: Verde Turquesa Fosforescente
-                    textShadow: '0 0 30px rgba(0,255,153,1), 0 0 60px rgba(0,255,153,0.8)', // OPTIMIZED: Reduced bloom radius
-                    scale: 1.1,
-
-                    duration: 3, // Match increased duration for stability
-                    ease: 'power2.out'
-                }, 0.5)
-                    // SYNC LIQUID LAYER TO FADE (V33: KEEP background-video-main VISIBLE)
-                    .to(".liquid-container", {
-                        opacity: 0,
-                        duration: 3,
-                        ease: 'power2.inOut'
-                    }, 0.5)
-                    // FADE OUT ESSENCE WRAPPER (Neural Network) 
-                    // CRITICAL: Total extinction but KEEP DOM NODE for stability
-                    .to(".essence-fixed-wrapper", {
-                        opacity: 0,
-                        autoAlpha: 0, // Better than just opacity
-                        display: 'none', // Performance boost
-                        duration: 0.8,
-                        ease: 'power1.in'
-                    }, 0.1);
-
-                // --- THE PAUSE: NUESTRA ESENCIA on Video Card ---
-                // We hold the alignment for a significant amount of scroll
-                tlHero.to({}, { duration: 6 }, 2.5); // Extended from 4 to 6
-
-                // Phase 3.5: IA Persists Green
-                tlHero.to({}, { duration: 2 });
-
-                // SIMULTANEOUSLY: Nuestra disappears BEFORE the zoom
-                tlHero.to('.word-nuestra', {
-                    opacity: 0,
-                    filter: 'blur(20px)',
-                    duration: 1.5,
-                    ease: 'power2.inOut'
-                }, 8.5); // Fading out later to stay during the pause
-
-                // Phase 3: VIDEO SCALING (Floating -> Immersive)
-                tlHero.to('.liquid-container', {
-                    scale: 1,
-                    borderRadius: '0rem',
-                    boxShadow: '0 0 0 rgba(0,0,0,0)',
-                    duration: 3,
-                    ease: 'power2.inOut'
-                }, 1);
-
-                // We keep narrative-wrapper transparent to show EtherBackground behind it
-                // tlHero.to('.narrative-wrapper', { backgroundColor: '#FFFFFF', duration: 2, ease: 'power2.inOut' }, 4);
-
-                // Phase 5: IA PORTAL (The Zoom Event)
-                // Shifted to 10.5 total duration area
-                tlHero.to('.hero-char-ia', {
-                    scale: 80,
-                    filter: 'blur(0px)',
-                    opacity: 0,
-                    duration: 1.5,
-                    ease: 'expo.in'
-                }, 10.5);
 
                 // --- 4. IDENTIDAD REVEAL (The Entropy / Nolan Effect) ---
                 const tlIdentidad = gsap.timeline({
@@ -554,148 +543,191 @@ const Home: React.FC = () => {
             {loading && <Loader onComplete={handleLoaderComplete} />}
             <GlitchPortal ref={glitchRef} />
             {/* SECTIONS */}
-            <div className="essence-fixed-wrapper" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-                <EssenceBackground />
+            <div className="essence-fixed-wrapper essence-background" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+                <EssenceBackground paused={essencePaused} />
             </div>
 
-            {/* --- PORTAL WRAPPER (Pinned Entry) --- */}
-            <div className="portal-wrapper" style={{ height: '100vh', width: '100%', position: 'relative', overflow: 'hidden', zIndex: 20 }}>
-                {/* BLACK WALL OVERLAY */}
-                <div className="portal-overlay" style={{ position: 'absolute', inset: 0, zIndex: 10, backgroundColor: 'transparent' }}>
-                    <svg width="100%" height="100%" preserveAspectRatio="none" style={{ display: 'block' }}>
-                        <defs>
-                            <mask id="logo-mask">
-                                <rect x="-10%" y="-10%" width="120%" height="120%" fill="white" />
-                                <g ref={maskRef} style={{ transformOrigin: 'center' }}>
-                                    <svg viewBox="0 0 17009 2588" width="75%" height="75%" x="12.5%" y="12.5%" preserveAspectRatio="xMidYMid meet">
-                                        <g fill="black">
-                                            {logoPaths.map((d, i) => (
-                                                d.startsWith('M') ? <path key={i} d={d} /> : <polygon key={i} points={d} />
-                                            ))}
-                                        </g>
-                                    </svg>
-                                </g>
-                            </mask>
-                        </defs>
-                        <rect x="-10%" y="-10%" width="120%" height="120%" fill="#ffffff" mask="url(#logo-mask)" />
+            {/* NEURAL NETWORK BACKGROUND (Chapter 2) */}
+            <div className="neural-background" style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 1, // Elevated to be above essence background
+                pointerEvents: 'none',
+                backgroundColor: 'transparent', // Make container transparent
+                opacity: showNeuralBackground ? 1 : 0,
+                transition: 'opacity 2s ease-in-out',
+                visibility: showNeuralBackground ? 'visible' : 'hidden'
+            }}>
+                <NeuralNetworkALMA />
+            </div>
 
-                        {/* BLACK TEXT OVERLAY (Fades out to reveal video) */}
-                        <g className="portal-text-overlay" style={{ transformOrigin: 'center' }}>
-                            <svg viewBox="0 0 17009 2588" width="75%" height="75%" x="12.5%" y="12.5%" preserveAspectRatio="xMidYMid meet">
-                                <g fill="black">
-                                    {logoPaths.map((d, i) => (
-                                        d.startsWith('M') ? <path key={i} d={d} /> : <polygon key={i} points={d} />
-                                    ))}
-                                </g>
-                            </svg>
-                        </g>
-                    </svg>
-                </div>
+            {/* --- ENTRADA UNIFICADA (Portal + Hero) --- */}
+            <div className="entrance-unified-container" style={{ height: '100vh', width: '100%', position: 'relative', overflow: 'hidden', zIndex: 30 }}>
 
-                {/* HIGH PROFILE SCROLL INDICATOR */}
-                {/* STATIC SCROLL PROMPT: ADVANCE */}
-                <div className="scroll-indicator" style={{
-                    position: 'absolute', bottom: '5vh', left: 0, width: '100%',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem',
-                    zIndex: 20, pointerEvents: 'none', opacity: 1 // Always Visible Initially
-                }}>
-                    <div style={{
-                        width: '20px', height: '32px', border: '2px solid #000', borderRadius: '12px', position: 'relative', opacity: 0.8
+                {/* --- PORTAL WRAPPER (Entry Layer) --- */}
+                <div className="portal-wrapper" style={{ position: 'absolute', inset: 0, zIndex: 20, overflow: 'hidden' }}>
+                    {/* PORTAL - SVG PRECISION N DOOR */}
+                    <div className="portal-overlay" style={{
+                        position: 'absolute',
+                        inset: 0,
+                        zIndex: 10,
+                        backgroundColor: 'transparent',
+                    }}>
+                        <svg
+                            viewBox="0 0 17100 2600"
+                            preserveAspectRatio="xMidYMid meet"
+                            style={{
+                                width: '90%',
+                                height: '90%',
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-53.59%, -50.0%)', // Centered on the N
+                                overflow: 'visible',
+                                transformOrigin: '53.59% 50.0%' // Zoom origin centered on the N
+                            }}
+                            className="portal-svg"
+                        >
+                            <defs>
+                                <mask id="portal-wall-mask">
+                                    <rect x="-10000" y="-10000" width="40000" height="40000" fill="white" />
+                                    <polygon points={logoPaths[3]} fill="black" />
+                                </mask>
+                            </defs>
+
+                            {/* 1. THE WHITE WALL (With N hole) */}
+                            <rect
+                                x="-10000" y="-10000" width="40000" height="40000"
+                                fill="#ffffff"
+                                mask="url(#portal-wall-mask)"
+                            />
+
+                            {/* 2. THE N DOOR (Fills the hole, fades to reveal behind) */}
+                            <polygon
+                                ref={maskRef as unknown as React.RefObject<SVGPolygonElement>}
+                                className="n-door-filler"
+                                points={logoPaths[3]}
+                                fill="#ffffff"
+                            />
+
+                            {/* 3. THE AGENCIA LOGO (Other letters) */}
+                            <g className="agencia-letters" fill="#000000" style={{ pointerEvents: 'none' }}>
+                                <polygon points={logoPaths[0]} />
+                                <path d={logoPaths[1]} />
+                                <polygon points={logoPaths[2]} />
+                                <polygon points={logoPaths[3]} />
+                                <path d={logoPaths[4]} />
+                                <polygon points={logoPaths[5]} />
+                                <polygon points={logoPaths[6]} />
+                            </g>
+                        </svg>
+                    </div>
+
+                    {/* HIGH PROFILE SCROLL INDICATOR */}
+                    <div className="scroll-indicator" style={{
+                        position: 'absolute', bottom: '5vh', left: 0, width: '100%',
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem',
+                        zIndex: 20, pointerEvents: 'none', opacity: 1
                     }}>
                         <div style={{
-                            width: '4px', height: '4px', backgroundColor: '#000', borderRadius: '50%', position: 'absolute', top: '6px', left: '50%', transform: 'translateX(-50%)', animation: 'scrollBounce 2s infinite'
-                        }} />
+                            width: '20px', height: '32px', border: '2px solid #000', borderRadius: '12px', position: 'relative', opacity: 0.8
+                        }}>
+                            <div style={{
+                                width: '4px', height: '4px', backgroundColor: '#000', borderRadius: '50%', position: 'absolute', top: '6px', left: '50%', transform: 'translateX(-50%)', animation: 'scrollBounce 2s infinite'
+                            }} />
+                        </div>
+                        <span style={{ color: '#000', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.4em', marginRight: '-0.2em', fontWeight: 600, textTransform: 'uppercase', opacity: 0.8 }}>
+                            Desliza para Avanzar
+                        </span>
+                        <style>{`
+                            @keyframes scrollBounce {
+                                0% { top: 6px; opacity: 1; }
+                                50% { top: 16px; opacity: 0; }
+                                100% { top: 6px; opacity: 0; }
+                            }
+                        `}</style>
                     </div>
-                    <span style={{ color: '#000', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.4em', marginRight: '-0.2em', fontWeight: 600, textTransform: 'uppercase', opacity: 0.8 }}>
-                        Desliza para Avanzar
-                    </span>
-                    <style>{`
-                        @keyframes scrollBounce {
-                            0% { top: 6px; opacity: 1; }
-                            50% { top: 16px; opacity: 0; }
-                            100% { top: 6px; opacity: 0; }
-                        }
-                    `}</style>
+                </div>
+
+                {/* --- HERO SECTION (Content Layer) --- */}
+                <div className="hero-transition-layer" style={{ position: 'absolute', inset: 0, zIndex: 10 }}>
+                    {/* BACKGROUND VIDEO (LATA AGENCIA) */}
+                    <div className="liquid-container" style={{
+                        position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
+                        backgroundColor: 'transparent',
+                        overflow: 'hidden', opacity: 1
+                    }}>
+                        <video src={videoSrc} autoPlay muted loop playsInline webkit-playsinline="true" preload="metadata" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+
+                    {/* 1. NARRATIVE HERO (ESENCIA TEXT) */}
+                    <section id="hero" className="narrative-hero" style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '0 5%', zIndex: 10 }}>
+                        <div style={{ overflow: 'visible', position: 'relative', zIndex: 10 }}>
+                            <h1 style={{
+                                fontSize: 'clamp(3rem, 12vw, 15rem)',
+                                lineHeight: 0.9,
+                                fontWeight: 900,
+                                letterSpacing: '-0.04em',
+                                margin: 0,
+                                textTransform: 'uppercase',
+                                color: '#000000',
+                                textShadow: '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.5)',
+                                mixBlendMode: 'normal',
+                                position: 'relative',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                {/* LINE 1: NUESTRA (Small) */}
+                                <span className="word-nuestra" style={{
+                                    display: 'inline-block',
+                                    fontSize: '0.4em',
+                                    letterSpacing: '0.2em',
+                                    marginBottom: '0.2em',
+                                    position: 'relative',
+                                    textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.7)',
+                                    textAlign: 'center',
+                                    marginRight: '-0.1em'
+                                }}>
+                                    NUESTRA
+                                </span>
+
+                                {/* LINE 2: ESENCIA (Giant) */}
+                                <div style={{
+                                    display: 'flex', gap: '0', whiteSpace: 'nowrap', flexWrap: 'nowrap',
+                                    width: '100%', justifyContent: 'center', alignItems: 'center',
+                                    transform: 'translateX(-0.04em)'
+                                }}>
+                                    {/* PART 2A: ESENC (Will Fade Away) */}
+                                    <span className="word-esenc" style={{ display: 'inline-flex', flexShrink: 0, letterSpacing: '-0.02em' }}>
+                                        <span className="hero-char-main">E</span>
+                                        <span className="hero-char-main">S</span>
+                                        <span className="hero-char-main">E</span>
+                                        <span className="hero-char-main">N</span>
+                                        <span className="hero-char-main">C</span>
+                                    </span>
+
+                                    {/* PART 2B: IA (The Final Survivor) */}
+                                    <span className="word-ia-wrapper" style={{ display: 'inline-flex', flexShrink: 0, letterSpacing: '-0.02em' }}>
+                                        <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow', transformOrigin: 'center' }}>I</span>
+                                        <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow', transformOrigin: 'center' }}>A</span>
+                                    </span>
+                                </div>
+                            </h1>
+                        </div>
+                    </section>
                 </div>
             </div>
 
-            {/* --- NARRATIVE WRAPPER (The "Esencia" Content) --- */}
-            {/* Starts Transparent (Showing Universe), then Background becomes White via Timeline */}
-            <div className="narrative-wrapper" style={{ position: 'relative', zIndex: 10, backgroundColor: 'transparent', marginTop: '-100vh' }}>
-
-                {/* BACKGROUND VIDEO (LATA AGENCIA) */}
-                <div className="liquid-container" style={{
-                    position: 'fixed', inset: 0, zIndex: 2, pointerEvents: 'none',
-                    backgroundColor: 'transparent',
-                    overflow: 'hidden', opacity: 1
-                }}>
-                    <video src={videoSrc} autoPlay muted loop playsInline webkit-playsinline="true" preload="metadata" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-
-                {/* 1. NARRATIVE HERO (ESENCIA TEXT) */}
-                <section id="hero" className="narrative-hero" style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '0 5%', zIndex: 10 }}>
-                    <div style={{ overflow: 'visible', position: 'relative', zIndex: 10 }}>
-                        <h1 style={{
-                            fontSize: 'clamp(3rem, 12vw, 15rem)', // Adjusted for mobile fit
-                            lineHeight: 0.9,
-                            fontWeight: 900,
-                            letterSpacing: '-0.04em',
-                            margin: 0,
-                            textTransform: 'uppercase',
-                            color: '#000000',
-                            textShadow: '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.5)', // OPTIMIZED
-                            mixBlendMode: 'normal',
-                            position: 'relative',
-                            display: 'flex',
-                            flexDirection: 'column', // VERTICAL STACK
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            {/* LINE 1: NUESTRA (Small) */}
-                            <span className="word-nuestra" style={{
-                                display: 'inline-block',
-                                fontSize: '0.4em', // 40% of the main text size
-                                letterSpacing: '0.2em',
-                                marginBottom: '0.2em',
-                                position: 'relative',
-                                textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.7)', // PERMANENT GLOW
-                                textAlign: 'center',
-                                marginRight: '-0.1em', // Original optical compensation
-                                transform: 'none'
-                            }}>
-                                NUESTRA
-                            </span>
-
-                            {/* LINE 2: ESENCIA (Giant) */}
-                            <div style={{
-                                display: 'flex', gap: '0', whiteSpace: 'nowrap', flexWrap: 'nowrap', // REMOVED GAP 0.1em to prevent splitting
-                                width: '100%', justifyContent: 'center', alignItems: 'center',
-                                transform: 'translateX(-0.04em)'
-                            }}>
-                                {/* PART 2A: ESENC (Will Fade Away) */}
-                                <span className="word-esenc" style={{ display: 'inline-flex', flexShrink: 0, letterSpacing: '-0.02em' }}>
-                                    <span className="hero-char-main">E</span>
-                                    <span className="hero-char-main">S</span>
-                                    <span className="hero-char-main">E</span>
-                                    <span className="hero-char-main">N</span>
-                                    <span className="hero-char-main">C</span>
-                                </span>
-
-                                {/* PART 2B: IA (The Final Survivor) */}
-                                <span className="word-ia-wrapper" style={{ display: 'inline-flex', flexShrink: 0, letterSpacing: '-0.02em' }}>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow', transformOrigin: 'center' }}>I</span>
-                                    <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', zIndex: 10, willChange: 'transform, color, text-shadow', transformOrigin: 'center' }}>A</span>
-                                </span>
-                            </div>
-                        </h1>
-                    </div>
-                </section>
+            {/* --- NARRATIVE WRAPPER (The Rest of the Page) --- */}
+            <div className="narrative-wrapper" style={{ position: 'relative', zIndex: 10, backgroundColor: 'transparent' }}>
 
                 {/* 3. IDENTIDAD MASTERPIECE */}
                 <section id="identidad" style={{
                     minHeight: '100vh',
                     padding: '2rem 5% 2rem 5%', // Compact Padding
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: 'transparent',
                     display: 'flex',
                     flexDirection: 'column', // Force Stack for perfect centering
                     alignItems: 'center', // Horizontally center

@@ -11,7 +11,7 @@ Code is not art; code is a vehicle for value.
 Every pixel, every transition, and every component must serve the goal of **sales, conversion, and impact**.
 
 ## PHILOSOPHY
-"A como de lugar" (Whatever it takes).
+"Ejecución Absoluta" (Absolute Execution).
 We do not make generic websites. We build immersive digital experiences that force the user to pay attention.
 - **Chaos:** Handled by Gastón.
 - **Strategy:** Handled by MoltBot.

@@ -8,7 +8,7 @@ Before writing a feature, ask: **"Does this help sell?"**
 - *Long loading screen?* -> TRASH. It kills bounce rate.
 - *Complex nav?* -> SIMPLIFY. The path to "Contact Us" must be zero-friction.
 
-### 2. "A Como De Lugar" (Whatever It Takes)
+### 2. "Ejecución Absoluta" (Absolute Execution)
 - If a library is broken, patch it.
 - If a feature is too heavy, fake it with a video or sprite sheet.
 - Results matter more than "pure" code.

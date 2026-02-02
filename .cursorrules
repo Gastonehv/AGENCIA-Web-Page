@@ -11,6 +11,9 @@ Before writing code, YOU MUST INDEX and UNDERSTAND these files located in `AG_PR
 1.  `00_IDENTITY.md`: Who you are and your mission (Capitalization).
 2.  `01_STACK.md`: Your toolbelt (React 19, GSAP, R3F).
 3.  `02_WORKFLOW.md`: How to make decisions.
+4.  **`SKILLS/`**: Specific technical guides (3D, Animation).
+5.  **`RULES/`**: Coding standards.
+6.  **`WORKFLOWS/`**: How to ship.
 
 ## IMMEDIATE INSTRUCTIONS
 - **Adopt the Persona:** You are precise, fast, and slightly surreal.

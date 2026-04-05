@@ -1,0 +1,256 @@
+﻿.agent/agencia_core_directives.md
+.agent/gsap_master_rules.md
+.agent/marketing_conversion_rules.md
+.agent/performance_manifesto.md
+.agent/skills/my_skills/skill.md
+.agent/workflows/analisis_marketing_360.md
+.agent/workflows/auditoria_calidad.md
+.gitignore
+.mcp.json
+MISSION_LOG.md
+README.md
+alma-orchestrator.cjs
+deploy.zip
+diff.txt
+diff8.txt
+diff_cached.txt
+diff_stat.txt
+docs/MANUAL_PRACTICO_AGENCIA.md
+docs/NOTEBOOK_LM_SOURCE.md
+docs/parallax_supremo.md
+email-pitch.cjs
+email-test.cjs
+eslint.config.js
+git_log_home.txt
+git_log_home_utf8.txt
+horizontal_8b7bdbe.tsx
+horizontal_manifesto_full.tsx
+horizontal_utf8.tsx
+index.html
+log.txt
+log8.txt
+manifesto_horizontal_reference.tsx
+notebooks_list.txt
+old_manifesto.tsx.tmp
+opencode.json.bak
+package-lock.json
+package.json
+postcss.config.js
+public/_redirects
+public/team/ceo.jpg
+public/vite.svg
+public/vortex_demo/index.html
+public/vortex_demo/script.js
+public/vortex_demo/style.css
+reflog8.txt
+search_notebooks.py
+src/App.tsx
+src/assets/Lata AGENCIA animada.webp
+src/assets/fonts/Boldini Bold.ttf
+src/assets/fonts/Boldini Regular.ttf
+src/assets/fonts/Boldini/Boldini Bold Gradient 1.ttf
+src/assets/fonts/Boldini/Boldini Bold Gradient 2.ttf
+src/assets/fonts/Boldini/Boldini Bold Gradient 3.ttf
+src/assets/fonts/Boldini/Boldini Bold Gradient 4.ttf
+src/assets/fonts/Boldini/Boldini Bold Gradient 5.ttf
+src/assets/fonts/Boldini/Boldini Bold Gradient 6.ttf
+src/assets/fonts/Boldini/Boldini Bold Transparent 1.ttf
+src/assets/fonts/Boldini/Boldini Bold Transparent 2.ttf
+src/assets/fonts/Boldini/Boldini Bold Transparent 3.ttf
+src/assets/fonts/Boldini/Boldini Bold Transparent 4.ttf
+src/assets/fonts/Boldini/Boldini Bold Transparent 5.ttf
+src/assets/fonts/Boldini/Boldini Bold Transparent 6.ttf
+src/assets/fonts/Boldini/Boldini Bold.ttf
+src/assets/fonts/Boldini/Boldini Gradient 1.ttf
+src/assets/fonts/Boldini/Boldini Gradient 2.ttf
+src/assets/fonts/Boldini/Boldini Gradient 3.ttf
+src/assets/fonts/Boldini/Boldini Gradient 4.ttf
+src/assets/fonts/Boldini/Boldini Gradient 5.ttf
+src/assets/fonts/Boldini/Boldini Gradient 6.ttf
+src/assets/fonts/Boldini/Boldini Regular.ttf
+src/assets/fonts/Boldini/Boldini Transparent 1.ttf
+src/assets/fonts/Boldini/Boldini Transparent 2.ttf
+src/assets/fonts/Boldini/Boldini Transparent 3.ttf
+src/assets/fonts/Boldini/Boldini Transparent 4.ttf
+src/assets/fonts/Boldini/Boldini Transparent 5.ttf
+src/assets/fonts/Boldini/Boldini Transparent 6.ttf
+src/assets/images/3d-experiences.png
+src/assets/images/ai-processor.jpg
+src/assets/images/alma_logo_final.png
+src/assets/images/antigravity_avatar.png
+src/assets/images/architecture-interface.png
+src/assets/images/architecture-matrix.jpg
+src/assets/images/architecture_digital.jpg
+src/assets/images/automation-dashboard.jpg
+src/assets/images/automation-growth.jpg
+src/assets/images/automation-nexus.png
+src/assets/images/brand-identity.png
+src/assets/images/cognitive-eco.png
+src/assets/images/cortex cerebro agencia.png
+src/assets/images/digital-arch.png
+src/assets/images/digital-architecture-blueprint.png
+src/assets/images/digital-strategy.png
+src/assets/images/digital_bonsai_hero.png
+src/assets/images/digital_bonsai_seed.png
+src/assets/images/genesis-big-bang.png
+src/assets/images/genesis-brand.png
+src/assets/images/genesis-dna-v2.jpg
+src/assets/images/genesis-dna.jpg
+src/assets/images/genesis-network.jpg
+src/assets/images/genesis-sneaker.jpg
+src/assets/images/hecho_en_mexico.png
+src/assets/images/intelligent-agents.png
+src/assets/images/motion-design.png
+src/assets/images/neuro_glass_exploded.png
+src/assets/images/neuro_glass_hero.png
+src/assets/images/process-automation.png
+src/assets/images/process-sync.png
+src/assets/images/service_brutalism.png
+src/assets/images/service_cult.png
+src/assets/images/service_narrative.png
+src/assets/images/service_strategy.png
+src/assets/images/sintesis-agencia-v2.jpg
+src/assets/images/sintesis-agencia.jpg
+src/assets/images/vortex-texture.png
+src/assets/images/web-development.png
+src/assets/logo_agencia_full.png
+"src/assets/logos/Tipograf\303\255a-AGENCIA-blanco.svg"
+"src/assets/logos/Tipograf\303\255a-AGENCIA.svg"
+src/assets/logos/agencia_typography_official.png
+src/assets/logos/agency-typography.png
+src/assets/logos/header-brain.png
+src/assets/logos/icon-white.png
+src/assets/logos/logo-white.png
+src/assets/react.svg
+src/assets/reflection.jpg
+src/assets/team/ceo.jpg
+src/assets/team/gael_oracle.png
+src/assets/textures/structure.png
+src/assets/videos/A.L.M.A. fondo corto.mp4
+src/assets/videos/A.L.M.A._fondo_smooth.mp4
+src/assets/videos/IDENTIDAD VISUAL.mp4
+src/assets/videos/Lata AGENCIA.mp4
+src/assets/videos/alma_fondo_v3_opt.mp4
+src/assets/videos/automatizacion_final_opt.mp4
+src/assets/videos/esencia_hero_ultra.mp4
+src/assets/videos/infraestructura_final_opt.mp4
+src/assets/videos/marketing_final_opt.mp4
+src/assets/videos/simbiosis_001_opt.mp4
+src/assets/videos/simbiosis_002_opt.mp4
+src/assets/videos/simbiosis_003_opt.mp4
+src/assets/videos/web_apps_final_opt.mp4
+src/assets/videos/zapatilla-agencia.mp4
+src/components/AIChatbot.tsx
+src/components/AlmaSection.tsx
+src/components/AsciiRipple.tsx
+src/components/Background3D.tsx
+src/components/CanvasSequence.tsx
+src/components/ChapterHUD.tsx
+src/components/ChapterTitle.tsx
+src/components/CinematicTitle.tsx
+src/components/Contact.tsx
+src/components/CrystalScroller.tsx
+src/components/Cursor.tsx
+src/components/EntropyReactor.tsx
+src/components/EsenciaCTA.tsx
+src/components/EssenceBackground.tsx
+src/components/FloatingWindow.tsx
+src/components/Footer.tsx
+src/components/Footer/HexGridBackground.tsx
+src/components/ForceCard.tsx
+src/components/GlitchPortal.tsx
+src/components/GravityOrb.tsx
+src/components/Hero.tsx
+src/components/HeroParallax.tsx
+src/components/HexGridBackground.tsx
+src/components/HoldToReveal.tsx
+src/components/InteractionGuide.tsx
+src/components/Layout.tsx
+src/components/Loader.tsx
+src/components/MaskedText.tsx
+src/components/Navbar.tsx
+src/components/NebulaBackground.tsx
+src/components/NeuralNetwork3D.tsx
+src/components/ParticleField.tsx
+src/components/Prism.css
+src/components/Prism.tsx
+src/components/ProjectModal.tsx
+src/components/SEO.tsx
+src/components/ScrambleText.tsx
+src/components/ScrollProgress.tsx
+src/components/ScrollToTop.tsx
+src/components/Services.tsx
+src/components/ShowcaseSlider.tsx
+src/components/SideNav.tsx
+src/components/SoulManifesto.tsx
+src/components/SoundToggle.tsx
+src/components/StructuredData.tsx
+src/components/Symbiosis.tsx
+src/components/TouchTracker.tsx
+src/components/Vortex.tsx
+src/components/WarpTunnel.tsx
+src/components/automation/AutomationScene.tsx
+src/components/automation/DataParticles.tsx
+src/components/debug/PerformanceMonitor.tsx
+src/components/hero/CinematicDrinkHero.tsx
+src/components/hero/DigitalTerrain.tsx
+src/components/hero/FloatingParticles.tsx
+src/components/hero/HeroOverlay.tsx
+src/components/hero/Scene.tsx
+src/components/hero/SparklingParticles.tsx.bak
+src/components/hero/TheCore.tsx
+src/components/home/EssenceSection.tsx
+src/components/home/IdentitySection.tsx
+src/components/home/PortalSection.tsx
+src/components/identity/DNAHelix.tsx
+src/components/identity/NeuroIdentity.tsx
+src/components/identity/OrganicCore.tsx
+src/components/infrastructure/EcosystemGraph.tsx
+src/components/infrastructure/NeuralDatacenter.tsx
+src/components/playground/HolographicPanel.tsx
+src/components/playground/SpeedParticles.tsx
+src/components/playground/ZScrollExperience.tsx
+src/context/LanguageContext.tsx
+src/context/LanguageProvider.tsx
+src/context/ScrollContext.tsx
+src/context/ScrollProvider.tsx
+src/context/SoundContext.tsx
+src/data/services.ts
+src/main.tsx
+src/pages/Arquitectura.tsx
+src/pages/Automatizacion.tsx
+src/pages/CinematicDev.tsx
+src/pages/Contacto.tsx
+src/pages/Home.tsx
+src/pages/Identidad.tsx
+src/pages/NarrativePrototype.tsx
+src/pages/NotFound.tsx
+src/pages/Playground.tsx
+src/pages/Privacidad.tsx
+src/pages/Terminos.tsx
+src/styles/global.css
+src/styles/variables.css
+src/types/three-nebula.d.ts
+src/types/threejs-toys.d.ts
+src/utils/animationUtils.ts
+src/vite-env.d.ts
+status.txt
+tailwind.config.js
+temp_global_old.css
+temp_home.tsx
+temp_home_old.tsx
+temp_home_utf8.tsx
+temp_home_v2.tsx
+temp_log.txt
+temp_manifesto.tsx
+temp_manifesto_old.tsx
+temp_manifesto_old_horizontal.tsx
+temp_manifesto_v2.tsx
+ts_build_errors.txt
+ts_build_errors_utf8.txt
+ts_errors.txt
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+vite_errors.txt

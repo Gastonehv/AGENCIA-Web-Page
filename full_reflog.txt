@@ -1,0 +1,9 @@
+﻿2c085b0 HEAD@{0}: reset: moving to 2c085b0
+42f6b81 HEAD@{1}: reset: moving to 42f6b81
+20594e0 HEAD@{2}: checkout: moving from backup-broken-state to main
+ae54add HEAD@{3}: commit: backup broken state
+20594e0 HEAD@{4}: checkout: moving from main to backup-broken-state
+20594e0 HEAD@{5}: reset: moving to 20594e0
+42f6b81 HEAD@{6}: commit: perf: optimize portal zoom with GPU acceleration and DOM cleanup
+2c085b0 HEAD@{7}: commit: feat: update landing page with new components (MoneyButton, NeuralNetworkALMA) and assets
+4b603d4 HEAD@{8}: reset: moving to origin/main

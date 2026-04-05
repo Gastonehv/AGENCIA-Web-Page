@@ -1,0 +1,5 @@
+﻿2c085b0 feat: update landing page with new components (MoneyButton, NeuralNetworkALMA) and assets
+4b603d4 feat(hero): extend esencia scroll duration for better cinematic feel
+20594e0 chore: production build release
+0526a5b feat(nav): Finalize Gravity Orb, remove Navbar, pass build
+7b12162 feat(orb): universal gravity interface, neural index menu, and mobile optimizations

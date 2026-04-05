@@ -1,0 +1,50 @@
+﻿ae54add backup broken state
+2c085b0 feat: update landing page with new components (MoneyButton, NeuralNetworkALMA) and assets
+4b603d4 feat(hero): extend esencia scroll duration for better cinematic feel
+20594e0 chore: production build release
+0526a5b feat(nav): Finalize Gravity Orb, remove Navbar, pass build
+7b12162 feat(orb): universal gravity interface, neural index menu, and mobile optimizations
+32d879f chore: production build and visual polish (HexGrid & Footer fixes)
+4344afa chore: update footer hex color and fix types
+d2d62d2 fix: responsive 404 Sentinel and cleanup (v1.6.1)
+3cb3d90 feat: implement original 404 Sentinel (v1.6.0)
+9b6685d fix: resolve build lints and generate dist (SC)
+7f2186b feat: Master Class Refinement - Loader, Hero & Manifesto (SC)
+9b2e67f release: v1.5.0 - Critical Stability Fixes and Visual Refinements
+9f34877 fix: Restauraci├│n cr├¡tica de la red neuronal (EssenceBackground) y ajuste de fondo f8fafc en body
+de2f1dd fix: Eliminaci├│n de importaci├│n fantasma HexGridBackground para corregir build
+92f5325 fix: Atomic Cleanup y zIndex dominante para erradicar solapamiento en Step 017
+2c4da65 fix: Arquitectura Zero Vac├¡o Final (Unified + Absolute Overlap + Scrub True)
+b02dea7 feat: ALMA Ultra-Lean Update - fondo corto optimized to 540p. Site performance peaks.
+a1d8a2f fix: Ultra-Lean Production - All site videos (10+ assets) compressed with FFmpeg for maximum performance. dist folder updated.
+48b9ab7 fix: High-Performance Optimization - Core videos compressed with FFmpeg. web_apps reduced from 7MB to 2MB. All assets ultra-slim for production.
+00ad474 chore: Final Assets Audit - 6 core videos (Showcase & Symbiosis) verified and optimized. Production build updated.
+18c8b70 feat: Masterpiece Consolidation - Tripartite Narrative (Web, IA, Marketing) synced. New cinem├ítics integrated. Full mobile visibility and scroll fixes applied.
+0ab81bf feat: Final Clarity - Titles simplified to explicit services (Web, Apps, IA, Branding). Card overflow fixed for 100% text visibility.
+78a3502 fix: Master Piece - Card architecture recalibrated for maximum visibility. Titles and Media Windows optimized to prevent hook clipping on mobile.
+104ab83 fix: Visual Depth - Text visibility for hooks restored. Card padding and margins optimized for long titles.
+19d63d1 feat: Narrative Upgrade - High-Conversion Authority Messaging applied. Web, Apps, and SaaS services explicitly defined with the 'Supremo' tone.
+443aa31 docs: Official technical canon for Parallax Supremo created. Logic preserved for future elite projects.
+ccfe997 feat: Asset Upgrade - New Automation video integrated. Final optimization naming applied. Production build updated.
+55f7e1f feat: Ultra Fidelity - Deep Parallax v7 (Natural Aspect Ratio) optimized. Zero zoom, 100% sharpness. Pixel-perfect geometry applied.
+2e76612 feat: Master Piece - Deep Parallax v6 (Counter-Movement) & Focal Activation applied. Architecture & Performance optimized. Ready for production.
+484cee9 Symbiosis mobile refinements and production build
+65aba7d feat: Implementa la estructura inicial y componentes principales de la landing page de AgencIA, incluyendo las p├íginas Home, Arquitectura, Automatizaci├│n, y diversos componentes interactivos como SoulManifesto, Services, CinematicTitle, Symbiosis, QuantumDepthMeter y ShowcaseSlider.
+a5adacf style(Services): adjustments to font sizes and layout
+9936672 feat(identity): Implementaci├│n Final Nolan V4 - Vuelo Reactivo, Fix Layout Fijo y Traducci├│n ES
+d73f27f feat: Optimizaci├│n m├│vil integral (Navbar, Simbiosis, Footer, Identidad)
+2f65225 feat: Refactor arquitectonico, fix visual de ADN y mejoras en Autopilot
+623c203 fix: simbiosis autopilot 21s timing and final dist update
+43567a6 feat: autopilot timing refinement & footer 100vh master closure
+900393c feat: Add NEURA-GLASS V.01 case study section
+355e1d6 fix(ShowcaseSlider): Auto height for mobile cards, add video poster for faster load perception
+785e0db fix(Symbiosis): Center cards on mobile, add video preload for faster loading
+33fa749 feat(mobile): Comprehensive mobile overhaul - videos, identity, symbiosis, showcase
+2130b25 fix(Showcase): Enable vertical scrolling on mobile, disable horizontal pinning
+2a25171 fix(Symbiosis): Mobile layout overflow and card cutoff
+d9f24dd feat: Visual overhaul of Symbiosis (Videos + UI) and Odometer update
+ee699e7 STABLE v1.5: Fix Mobile Seal, Copy Overhaul, Green Odometer
+0bcf581 chore(release): v1.4.0 - Mobile Responsiveness Refined, Footer Seal Fixed, and Symbiosis Polish
+761d1ce v1.1.5 - Arquitectura chaos particles + icon visibility boost
+037b8d8 fix: Restore chaos particles in Arquitectura and boost icon visibility
+f4e39e2 fix: Increase visibility of background grids on charts

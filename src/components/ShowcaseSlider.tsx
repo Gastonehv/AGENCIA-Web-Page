@@ -169,13 +169,11 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     scrollTrigger: {
                         trigger: containerRef.current,
                         start: "top top",
-                        end: () => `+=${scrollLength}`,
+                        end: "+=450%", // FORZAR TIEMPO DE PERMANENCIA (MÁS LARGO QUE EL EQUIPO)
                         pin: true,
-                        scrub: 0.5,
+                        scrub: 0.8,
                         invalidateOnRefresh: true,
-                        id: 'showcase-scroll',
-                        // MAGNETIC SNAPPING REMOVED
-                        // snap: { ... }
+                        id: 'showcase-scroll'
                     }
                 });
 

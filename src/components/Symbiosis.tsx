@@ -61,15 +61,17 @@ const Symbiosis: React.FC = () => {
 
         // 1. DESKTOP ANIMATIONS (> 800px)
         ctx.add("(min-width: 800px)", () => {
-            // PIN: Section stays fixed while user scrolls through it
+            // PIN DISABLED: To prevent jumping in CinematicDev manual flow
+            /*
             ScrollTrigger.create({
                 trigger: sectionRef.current,
                 start: 'top top',
-                end: '+=100%', // Stay pinned for 100vh of scroll
+                end: '+=100%',
                 pin: true,
                 pinSpacing: true,
                 id: 'symbiosis-pin'
             });
+            */
 
             // Title animation
             if (titleRef.current) {

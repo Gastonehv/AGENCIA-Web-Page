@@ -136,53 +136,20 @@ const Cursor: React.FC = () => {
                 const cx = bounds.x + bounds.width / 2;
                 const cy = bounds.y + bounds.height / 2;
 
-                const dx = x - cx;
-                const dy = y - cy;
-
-                // EXCLUSION ZONE: No magnetism in Capacities section or specifically marked elements
-                const isExcluded = hoverEl.closest('#capacidades') || hoverEl.closest('[data-no-magnetic]');
-                if (isExcluded) {
-                    position.target.x = x;
-                    position.target.y = y;
-                } else {
-                    position.target.x = cx + dx * 0.15;
-                    position.target.y = cy + dy * 0.15;
-                }
-
-                // Check for custom cursor type
-                const cursorType = hoverEl.getAttribute('data-cursor');
-
-                if (cursorType === 'open') {
-                    scale.target = 2.5; // MINIMALIST GLASS CORTEX (Small & Elegant)
-                    text.textContent = ""; // SILENCE (No Text)
-                    text.style.opacity = '0';
-
-                    // Visual Style for OPEN
-                    el.style.mixBlendMode = 'normal';
-
-                    // PURE CORTEX with subtle glass lift
-                    visual.style.backgroundColor = 'transparent'; // No background
-                    visual.style.backdropFilter = 'none'; // No blur box
-                    visual.style.border = 'none'; // No border
-                    visual.style.boxShadow = 'none'; // No box shadow
-                    // Just the brain, slightly glowing/lifted
-                    visual.style.filter = 'drop-shadow(0 5px 15px rgba(0,0,0,0.3)) brightness(1.1)';
-
-                    // Reset Text (Unused)
-                    text.style.fontSize = '0px';
-                } else {
-                    scale.target = 1;
-                    text.textContent = "";
-                    text.style.opacity = '0';
-
-                    // Reset Visual Style
-                    el.style.mixBlendMode = 'difference';
-                    visual.style.backgroundColor = 'transparent';
-                    visual.style.backdropFilter = 'none';
-                    visual.style.border = 'none';
-                    visual.style.boxShadow = 'none';
-                    visual.style.filter = 'brightness(0) invert(1)'; // RESTORE WHITE MASK
-                }
+                // GLOBAL UNIFICATION: No magnetism, no drift.
+                position.target.x = x;
+                position.target.y = y;
+                scale.target = 1; // ALWAYS SCALE 1
+                text.textContent = ""; 
+                text.style.opacity = '0';
+                
+                // UNIFIED STYLE (WHITE BRAIN, DIFFERENCE MODE)
+                el.style.mixBlendMode = 'difference';
+                visual.style.filter = 'brightness(0) invert(1)'; 
+                visual.style.backgroundColor = 'transparent';
+                visual.style.backdropFilter = 'none';
+                visual.style.border = 'none';
+                visual.style.boxShadow = 'none';
             } else {
                 position.target.x = x;
                 position.target.y = y;
@@ -192,6 +159,7 @@ const Cursor: React.FC = () => {
 
                 el.style.mixBlendMode = 'difference';
                 visual.style.backgroundColor = 'transparent';
+                visual.style.filter = 'brightness(0) invert(1)';
             }
         };
 
@@ -206,8 +174,6 @@ const Cursor: React.FC = () => {
         };
 
         const handleScroll = () => {
-            // On scroll, if we are hovering, we need to check if we should stay hovering
-            // To be safe and "silky", we reset hover if scrolling and mouse is static
             if (isHovered) {
                 updateTargetPosition(lastMouseX, lastMouseY);
             }
@@ -224,37 +190,7 @@ const Cursor: React.FC = () => {
                 const isLarge = element.offsetWidth > 200 || element.offsetHeight > 100;
 
                 if (!isLarge) {
-                    const xTo = gsap.quickTo(element, "x", { duration: 1, ease: "elastic.out(1, 0.3)" });
-                    const yTo = gsap.quickTo(element, "y", { duration: 1, ease: "elastic.out(1, 0.3)" });
-
-                    const elementMouseMove = (e: MouseEvent) => {
-                        const { clientX, clientY } = e;
-                        const { left, top, width, height } = element.getBoundingClientRect();
-                        const cx = left + width / 2;
-                        const cy = top + height / 2;
-                        const x = clientX - cx;
-                        const y = clientY - cy;
-
-                        const isExcluded = element.closest('[data-no-magnetic]');
-
-                        if (element.closest('#capacidades') || isExcluded) {
-                            xTo(0);
-                            yTo(0);
-                            return;
-                        }
-
-                        xTo(x * 0.1);
-                        yTo(y * 0.1);
-                    };
-
-                    const elementMouseLeave = () => {
-                        xTo(0);
-                        yTo(0);
-                    };
-
-                    element.addEventListener("mousemove", elementMouseMove);
-                    element.addEventListener("mouseleave", elementMouseLeave);
-                    elementListeners.push({ element, mousemove: elementMouseMove, mouseleave: elementMouseLeave, xTo, yTo });
+                    // MAGNETIC PHYSICS REMOVED FROM ELEMENTS
                 }
 
                 const cursorMouseEnter = () => {
@@ -362,6 +298,11 @@ const Cursor: React.FC = () => {
                 }}
             />
             <style>{`
+                /* GLOBAL CURSOR HIDE */
+                * {
+                    cursor: none !important;
+                }
+
                 body.loading .cursor-container {
                     display: none !important;
                     opacity: 0 !important;

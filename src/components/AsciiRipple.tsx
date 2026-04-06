@@ -49,10 +49,10 @@ const AsciiRipple: React.FC<AsciiRippleProps> = ({ text, className, style, autoT
         const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
         const cfg = {
-            dur: isTouch ? 2000 : 600,
+            dur: isTouch ? 1000 : 350, // Reduced from 2000/600 to 1000/350 (Ultra Fast)
             chars: '.,·-─~+:;=*π""┐┌┘┴┬╗╔╝╚╬╠╣╩╦║!?&#$@0123456789',
             preserveSpaces: true,
-            spread: isTouch ? 1.0 : 0.3,
+            spread: isTouch ? 1.0 : 0.45, // Adjusted for faster character flow
         };
 
         const updateCursorPos = (e: MouseEvent) => {

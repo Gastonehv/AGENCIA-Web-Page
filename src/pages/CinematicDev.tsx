@@ -206,19 +206,6 @@ const CinematicDev: React.FC = () => {
             // Pausa dramática para asimilar "NUESTRA IA"
             tlZoom.to({}, { duration: 2 }); // PAUSE AT END
 
-            // --- SECCIÓN 5: EL NÚCLEO (CONTROL DE PAUSAS POR DISTANCIA) ---
-            // La atención se logra mediante la altura de las secciones en el JSX.
-
-            // --- A.L.M.A. FOCUS PIN ---
-            ScrollTrigger.create({
-                trigger: ".alma-focus-trigger",
-                start: "top top",
-                end: "bottom bottom", // Se ajustará a la altura del trigger (150vh)
-                pin: ".alma-pinned-content",
-                pinSpacing: true,
-                scrub: 1,
-                anticipatePin: 1
-            });
 
             // 6. EL DESPLIEGUE CONTINÚA: "NUESTRA" se despide
             tlZoom.to('.text-nuestra', {
@@ -288,14 +275,7 @@ const CinematicDev: React.FC = () => {
                 }
             });
 
-            // Resurrección de Nodos: Después de apagar la red neuronal en Cap 1, renace aquí (como el usuario exige)
-            tlIdentidad.to('.essence-dev-wrapper', {
-                opacity: 1,
-                autoAlpha: 1,
-                duration: 1.5,
-                ease: 'power2.inOut'
-            }, 0); // Empieza instantáneamente en start del tlIdentidad
-
+            // Clean start for Identidad
             tlIdentidad.to('.entropy-el', { // Primera Letra aparece en un lapso exacto
                 opacity: 1,
                 filter: 'blur(0px)',
@@ -345,9 +325,11 @@ const CinematicDev: React.FC = () => {
 
             tlIdentidad.to('#identidad', {
                 opacity: 0,
-                duration: 4,
+                autoAlpha: 0,
+                visibility: 'hidden',
+                duration: 2,
                 ease: 'power2.in'
-            }, ">+1.5");
+            }, ">+0.5");
 
             // --- 3. CAPÍTULO 3: EL MANIFIESTO (PRISM RESTORATION) ---
             const manifestoItems = gsap.utils.toArray<HTMLElement>('.manifesto-item');
@@ -401,9 +383,48 @@ const CinematicDev: React.FC = () => {
                 tlCap3.to(item, {
                     opacity: 0, scale: 0.5, filter: 'blur(30px)',
                     duration: 1.5, pointerEvents: 'none', ease: "power2.inOut",
-                    onComplete: () => { gsap.set(item, { display: 'none' }); }
+                    onComplete: () => { gsap.set(item, { display: 'none', visibility: 'hidden' }); }
                 });
             });
+
+            // FINAL CLEANUP FOR MANIFESTO GHOSTING
+            tlCap3.to('#capitulo-3', {
+                autoAlpha: 0,
+                visibility: 'hidden',
+                duration: 0.5
+            });
+
+            // --- SECCIÓN 5: EL NÚCLEO (CONTROL DE PAUSAS POR DISTANCIA) ---
+            // La atención se logra mediante la altura de las secciones en el JSX.
+
+            // --- A.L.M.A. FOCUS PIN (INSTANT TRANSITION) ---
+            ScrollTrigger.create({
+                trigger: ".alma-focus-trigger",
+                start: "top top",
+                end: "+=1vh", // NEAR INSTANT
+                pin: ".alma-pinned-content",
+                pinSpacing: false,
+                scrub: 0.5,
+                anticipatePin: 1,
+                refreshPriority: 6
+            });
+
+            // --- SECCIÓN 6: SIMBIOSIS CINEMÁTICA ---
+            const tlSimbiosis = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#simbiosis",
+                    start: "top top",
+                    end: "+=300%", // Cinematic pause for Simbiosis
+                    pin: true,
+                    scrub: 1,
+                    anticipatePin: 1,
+                    refreshPriority: 5
+                }
+            });
+
+            // Simbiosis internal reveal (if needed, though Symbiosis.tsx has its own)
+            tlSimbiosis.fromTo("#simbiosis-content", { opacity: 0 }, { opacity: 1, duration: 1 });
+            tlSimbiosis.to({}, { duration: 2 }); // Pause to read
 
             // --- NUCLEO: AUTONOMOUS RIFT PHYSICS (CAP 5) ---
             const teamRows = gsap.utils.toArray<HTMLElement>('.rift-row');
@@ -510,12 +531,12 @@ const CinematicDev: React.FC = () => {
                 const markers = [
                     { id: 'hud-marker-1', name: 'ESENCIA', num: '1' },
                     { id: 'hud-marker-2', name: 'IDENTIDAD', num: '2' },
-                    { id: 'hud-marker-3', name: 'EL MANIFIESTO', num: '3' },
-                    { id: 'hud-marker-4', name: 'INGENIERÍA CREATIVA', num: '4' },
+                    { id: 'hud-marker-3', name: 'GÉNESIS', num: '3' },
+                    { id: 'hud-marker-4', name: 'EJECUCIÓN', num: '4' },
                     { id: 'hud-marker-5', name: 'EL NÚCLEO', num: '5' },
                     { id: 'hud-marker-6', name: 'SIMBIOSIS', num: '6' },
                     { id: 'hud-marker-7', name: 'EL SALTO', num: '7' },
-                    { id: 'hud-marker-8', name: 'FOOTER', num: '8' }
+                    { id: 'hud-marker-8', name: 'CONTACTO', num: '8' }
                 ];
 
                 for (let i = markers.length - 1; i >= 0; i--) {
@@ -534,6 +555,9 @@ const CinematicDev: React.FC = () => {
 
             window.addEventListener('scroll', updateHUD, { passive: true });
             updateHUD(); // Initial scan
+
+            // CRITICAL: Sort all triggers to ensure pin-spacers are calculated in narrative order
+            ScrollTrigger.sort();
             ScrollTrigger.refresh();
 
         }, containerRef.current || undefined);
@@ -559,7 +583,7 @@ const CinematicDev: React.FC = () => {
             <section className="cinematic-content" style={{
                 position: 'relative',
                 width: '100%', height: '100vh',
-                zIndex: 10,
+                zIndex: 1000,
                 overflow: 'hidden' // BLOCK SIDE MARGIN BUG
             }}>
                 <div id="hud-marker-1" style={{ position: 'absolute', top: 0, height: '1px' }} />
@@ -666,16 +690,17 @@ const CinematicDev: React.FC = () => {
                 </div>
             </section>
 
-            {/* --- SECCIÓN 2: IDENTIDAD MASTERPIECE --- */}
             <section id="identidad" style={{
-                position: 'relative',
                 minHeight: '100vh',
-                backgroundColor: '#f8fafc',
+                width: '100%',
+                backgroundColor: '#FFF',
+                position: 'relative',
+                zIndex: 900, // Narrative Shield
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                zIndex: 20,
+                overflow: 'hidden'
             }}>
                 <div id="hud-marker-2" style={{ position: 'absolute', top: 0, height: '1px' }} />
                 {/* FONDO NEURAL INTEGRADO */}
@@ -841,7 +866,7 @@ const CinematicDev: React.FC = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 overflow: 'hidden',
-                zIndex: 30,
+                zIndex: 800, // Narrative Shield
                 position: 'relative'
             }}>
                 <div id="hud-marker-3" style={{ position: 'absolute', top: 0, height: '1px' }} />
@@ -927,9 +952,10 @@ const CinematicDev: React.FC = () => {
             {/* --- SECCIÓN 4: CAPACIDADES (SHOWCASE SLIDER) --- */}
             <section id="capacidades" style={{
                 position: 'relative',
-                zIndex: 400,
+                zIndex: 100, // Shield Pattern: Top Priority
                 backgroundColor: '#FFFFFF',
-                minHeight: '100vh'
+                minHeight: '100vh',
+                overflow: 'hidden'
             }}>
                 <div id="hud-marker-4" style={{ position: 'absolute', top: 0, height: '1px' }} />
                 <ShowcaseSlider />
@@ -938,7 +964,7 @@ const CinematicDev: React.FC = () => {
             {/* --- SECCIÓN 5: EL NÚCLEO (TEAM RIFT) --- */}
             <section id="nucleo" style={{
                 position: 'relative',
-                zIndex: 500, // ESCALÓN DE Z-INDEX
+                zIndex: 600, // Narrative Shield
                 backgroundColor: '#FFFFFF',
                 width: '100%',
                 display: 'flex',
@@ -957,10 +983,10 @@ const CinematicDev: React.FC = () => {
                 </h2>
 
                 {/* TEAM LIST WITH TOTAL FUSION COMPACTNESS */}
-                <div className="team-container" style={{ display: 'flex', flexDirection: 'column', gap: '2vh' }}>
+                <div className="team-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5vh' }}>
                     {team.map((member) => (
                         <div key={member.id} className="team-member-row" style={{
-                            width: '100%', minHeight: '60vh',
+                            width: '100%', minHeight: '70vh', // Increased to avoid cropping
                             display: 'flex', alignItems: 'center', justifyContent: 'center'
                         }}>
                             <div className="rift-row"
@@ -988,8 +1014,8 @@ const CinematicDev: React.FC = () => {
 
                                 {/* BACKGROUND PHOTO */}
                                 <div className="rift-img" style={{
-                                    position: 'absolute', top: '15%', left: 0, width: '100%', height: '70%',
-                                    zIndex: 0, transition: 'none', overflow: 'hidden', opacity: 0.45
+                                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                                    zIndex: 0, transition: 'none', opacity: 0.45
                                 }}>
                                     <div style={{
                                         width: '100%', height: '100%',
@@ -1024,31 +1050,40 @@ const CinematicDev: React.FC = () => {
                     ))}
                 </div>
 
-                {/* NO PAUSE - DIRECT TO ALMA PORTAL (NATIVE FLOW) */}
-                <div id="alma-trigger" style={{
-                    minHeight: '100vh',
-                    width: '100%',
-                    backgroundColor: '#FFF',
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginTop: '-5vh' // OVERLAP SLIGHTLY TO ENSURE VISUAL FUSION
-                }}>
-                    <AlmaSection />
+                <div className="alma-focus-trigger" style={{ minHeight: '1px', position: 'relative', zIndex: 650 }}>
+                    <div className="alma-pinned-content" id="alma-trigger" style={{
+                        height: '60vh', // REDUCED HEIGHT
+                        width: '100%',
+                        backgroundColor: '#FFF',
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginTop: '-40vh' // MORE COMPACT
+                    }}>
+                        <AlmaSection />
+                    </div>
                 </div>
             </section>
 
-            {/* BRIDGE GRADIENT: WHITE (ALMA) -> BLACK (SIMBIOSIS) */}
-            <div style={{
-                width: '100%',
-                height: '15vh',
-                background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)',
+            <div id="simbiosis" style={{
                 position: 'relative',
-                zIndex: 75
-            }} />
+                zIndex: 800,
+                backgroundColor: '#000',
+                marginTop: '-110vh' // TOTAL COMPRESSION
+            }}>
+                {/* CINEMATIC BRIDGE: THE FUSION POINT (WHITE -> BLACK) - ATTACHED TO SIMBIOSIS */}
+                <div style={{
+                    width: '100%',
+                    height: '35vh',
+                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)',
+                    position: 'relative',
+                    zIndex: 801
+                }}>
+                    <div id="hud-marker-6" style={{ position: 'absolute', top: '10%', height: '1px' }} />
+                </div>
 
-            <div id="simbiosis" style={{ position: 'relative', zIndex: 80 }}>
-                <div id="hud-marker-6" style={{ position: 'absolute', top: 0, height: '1px' }} />
-                <Symbiosis />
+                <div id="simbiosis-content" style={{ width: '100%', height: '100%' }}>
+                    <Symbiosis />
+                </div>
             </div>
 
             {/* BRIDGE GRADIENT: BLACK (SIMBIOSIS) -> WHITE (CAPITULO 7) */}
@@ -1058,7 +1093,7 @@ const CinematicDev: React.FC = () => {
                 height: '15vh',
                 background: 'linear-gradient(to bottom, #000000 0%, #FFFFFF 100%)',
                 position: 'relative',
-                zIndex: 85
+                zIndex: 250
             }} />
             <GlitchPortal ref={entranceGlitchRef} />
 
@@ -1070,7 +1105,7 @@ const CinematicDev: React.FC = () => {
                     width: '100%',
                     backgroundColor: '#FFFFFF', // Pure White
                     position: 'relative',
-                    zIndex: 100,
+                    zIndex: 400, // Narrative Shield
                     overflow: 'hidden'
                 }}
             >

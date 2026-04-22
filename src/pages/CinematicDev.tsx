@@ -1095,12 +1095,12 @@ const CinematicDev: React.FC = () => {
 
                 <div className="alma-focus-trigger" style={{ minHeight: '1px', position: 'relative', zIndex: 650 }}>
                     <div className="alma-pinned-content" id="alma-trigger" style={{
-                        height: '85vh', // Slightly more compact
+                        height: '100vh', // RESTORED FOR FULL VISIBILITY
                         width: '100%',
                         backgroundColor: '#FFF',
                         display: 'flex',
                         alignItems: 'center',
-                        marginTop: '-10vh' // SUBTLE OVERLAP WITH TEAM TO MAINTAIN FLOW
+                        marginTop: '0' // REMOVED NEGATIVE MARGIN TO PREVENT GHOSTING/CROPPING
                     }}>
                         <AlmaSection />
                     </div>
@@ -1109,17 +1109,18 @@ const CinematicDev: React.FC = () => {
 
             <div id="simbiosis" style={{
                 position: 'relative',
-                zIndex: 100, 
+                zIndex: 700, // ABOVE ALMA (650) BUT NOT OVERKILL
                 backgroundColor: '#050505',
                 marginTop: '0',
-                opacity: 0, visibility: 'hidden' // HIDDEN BY DEFAULT TO PREVENT GHOSTING
+                minHeight: '100vh', 
+                opacity: 0, visibility: 'hidden' 
             }}>
                 <div id="hud-marker-6" style={{ position: 'absolute', top: 0, height: '1px' }} />
-                <div style={{ marginTop: '-55vh', position: 'relative' }}> 
+                <div style={{ marginTop: '-15vh', position: 'relative', minHeight: '100vh' }}> 
                 {/* CINEMATIC BRIDGE: THE FUSION POINT (WHITE -> BLACK) - ATTACHED TO SIMBIOSIS */}
                 <div style={{
                     width: '100%',
-                    height: '35vh',
+                    height: '15vh', // REDUCED TO ENSURE ALMA CONTENT IS FULLY VISIBLE
                     background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)',
                     position: 'relative',
                     zIndex: 101

@@ -71,7 +71,7 @@ const CinematicDev: React.FC = () => {
     const pulseButtonRef = useRef<HTMLButtonElement>(null);
 
     const [activeManifestoItem, setActiveManifestoItem] = React.useState(0);
-    const [mountEssence, setMountEssence] = React.useState(false);
+    const [mountEssence, setMountEssence] = React.useState(true);
     const [mountNeural, setMountNeural] = React.useState(true);
     const [mountPrism, setMountPrism] = React.useState(false);
 
@@ -112,6 +112,12 @@ const CinematicDev: React.FC = () => {
                     pin: true,
                     anticipatePin: 1,
                     scrub: 0.8, // MORE RESPONSIVE
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setCurrentChapter('ESENCIA');
+                            setChapterNumber('1');
+                        }
+                    },
                     onUpdate: (self) => {
                         // MOUNT LOGIC - Absolute Death to Ghosting
                         if (self.progress > 0.99) {
@@ -268,7 +274,13 @@ const CinematicDev: React.FC = () => {
                     pinSpacing: true,
                     scrub: 0.8,
                     anticipatePin: 1,
-                    onEnter: () => setMountNeural(true),
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setMountNeural(true);
+                            setCurrentChapter('IDENTIDAD');
+                            setChapterNumber('2');
+                        }
+                    },
                     onLeaveBack: () => setMountNeural(false),
                     onLeave: () => setMountNeural(false),
                     onEnterBack: () => setMountNeural(true)
@@ -349,7 +361,13 @@ const CinematicDev: React.FC = () => {
                     pin: true,
                     pinSpacing: true,
                     scrub: 0.8,
-                    onEnter: () => setMountPrism(true),
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setMountPrism(true);
+                            setCurrentChapter('GÉNESIS');
+                            setChapterNumber('3');
+                        }
+                    },
                     onLeaveBack: () => setMountPrism(false),
                     onLeave: () => setMountPrism(false),
                     onEnterBack: () => setMountPrism(true)
@@ -406,18 +424,33 @@ const CinematicDev: React.FC = () => {
                 pinSpacing: false,
                 scrub: 0.5,
                 anticipatePin: 1,
+                onToggle: (self) => {
+                    if (self.isActive) {
+                        setCurrentChapter('EL NÚCLEO');
+                        setChapterNumber('5');
+                    }
+                },
                 refreshPriority: 6
             });
 
             // --- SECCIÓN 6: SIMBIOSIS CINEMÁTICA ---
             const tlSimbiosis = gsap.timeline({
                 scrollTrigger: {
-                    trigger: "#simbiosis",
-                    start: "top top",
-                    end: "+=300%", // Cinematic pause for Simbiosis
                     pin: true,
                     scrub: 1,
                     anticipatePin: 1,
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setCurrentChapter('SIMBIOSIS');
+                            setChapterNumber('6');
+                            gsap.to('#simbiosis', { autoAlpha: 1, duration: 0.5 });
+                        } else {
+                            // Only hide if we are above it
+                            if (self.progress === 0) {
+                                gsap.to('#simbiosis', { autoAlpha: 0, duration: 0.3 });
+                            }
+                        }
+                    },
                     refreshPriority: 5
                 }
             });
@@ -524,37 +557,47 @@ const CinematicDev: React.FC = () => {
                 ctaTl.addLabel("final");
             }
 
-            // --- HUD UPDATER: GPS MARKER ENGINE (MILITARY PRECISION) ---
-            const updateHUD = () => {
-                const windowHeight = window.innerHeight;
-
-                const markers = [
-                    { id: 'hud-marker-1', name: 'ESENCIA', num: '1' },
-                    { id: 'hud-marker-2', name: 'IDENTIDAD', num: '2' },
-                    { id: 'hud-marker-3', name: 'GÉNESIS', num: '3' },
-                    { id: 'hud-marker-4', name: 'EJECUCIÓN', num: '4' },
-                    { id: 'hud-marker-5', name: 'EL NÚCLEO', num: '5' },
-                    { id: 'hud-marker-6', name: 'SIMBIOSIS', num: '6' },
-                    { id: 'hud-marker-7', name: 'EL SALTO', num: '7' },
-                    { id: 'hud-marker-8', name: 'CONTACTO', num: '8' }
-                ];
-
-                for (let i = markers.length - 1; i >= 0; i--) {
-                    const el = document.getElementById(markers[i].id);
-                    if (el) {
-                        const rect = el.getBoundingClientRect();
-                        // Si el marcador cruza el 30% superior de la pantalla
-                        if (rect.top <= windowHeight * 0.3) {
-                            setCurrentChapter(markers[i].name);
-                            setChapterNumber(markers[i].num);
-                            break;
-                        }
+            // --- HUD UPDATER: REMOVED MANUAL TRIGGERS, NOW INTEGRATED ABOVE ---
+            
+            // Dedicated trigger for EJECUCIÓN (Cap 4) since it's not pinned
+            ScrollTrigger.create({
+                trigger: "#capacidades",
+                start: "top center",
+                end: "bottom center",
+                onToggle: (self) => {
+                    if (self.isActive) {
+                        setCurrentChapter('EJECUCIÓN');
+                        setChapterNumber('4');
                     }
                 }
-            };
+            });
 
-            window.addEventListener('scroll', updateHUD, { passive: true });
-            updateHUD(); // Initial scan
+            // Dedicated trigger for EL SALTO (Cap 7)
+            ScrollTrigger.create({
+                trigger: "#capitulo-7",
+                start: "top center",
+                end: "bottom center",
+                onToggle: (self) => {
+                    if (self.isActive) {
+                        setCurrentChapter('EL SALTO');
+                        setChapterNumber('7');
+                    }
+                }
+            });
+
+            // CONTACTO (Footer)
+            ScrollTrigger.create({
+                trigger: "footer",
+                start: "top 90%",
+                onEnter: () => {
+                    setCurrentChapter('CONTACTO');
+                    setChapterNumber('8');
+                },
+                onLeaveBack: () => {
+                    setCurrentChapter('EL SALTO');
+                    setChapterNumber('7');
+                }
+            });
 
             // CRITICAL: Sort all triggers to ensure pin-spacers are calculated in narrative order
             ScrollTrigger.sort();
@@ -854,7 +897,7 @@ const CinematicDev: React.FC = () => {
                 height: '15vh',
                 background: 'linear-gradient(to bottom, #f8fafc 0%, #0A192F 100%)',
                 position: 'relative',
-                zIndex: 25
+                zIndex: 850 // BETWEEN IDENTIDAD (900) AND MANIFIESTO (800)
             }} />
 
             {/* --- SECCIÓN 3: CAPÍTULO 3 (EL MANIFIESTO CON VELO IRIDISCENTE) --- */}
@@ -952,7 +995,7 @@ const CinematicDev: React.FC = () => {
             {/* --- SECCIÓN 4: CAPACIDADES (SHOWCASE SLIDER) --- */}
             <section id="capacidades" style={{
                 position: 'relative',
-                zIndex: 100, // Shield Pattern: Top Priority
+                zIndex: 700, // Normalized Z-Index
                 backgroundColor: '#FFFFFF',
                 minHeight: '100vh',
                 overflow: 'hidden'
@@ -1052,12 +1095,12 @@ const CinematicDev: React.FC = () => {
 
                 <div className="alma-focus-trigger" style={{ minHeight: '1px', position: 'relative', zIndex: 650 }}>
                     <div className="alma-pinned-content" id="alma-trigger" style={{
-                        height: '100vh', // MATCH ALMASECTION HEIGHT
+                        height: '85vh', // Slightly more compact
                         width: '100%',
                         backgroundColor: '#FFF',
                         display: 'flex',
                         alignItems: 'center',
-                        marginTop: '0' // REMOVED NEGATIVE MARGIN TO STOP CROPPING
+                        marginTop: '-10vh' // SUBTLE OVERLAP WITH TEAM TO MAINTAIN FLOW
                     }}>
                         <AlmaSection />
                     </div>
@@ -1066,24 +1109,27 @@ const CinematicDev: React.FC = () => {
 
             <div id="simbiosis" style={{
                 position: 'relative',
-                zIndex: 800,
-                backgroundColor: '#050505', // MATCH SYMBIOSIS BACKGROUND
-                marginTop: '-30vh' // DRASTICALLY REDUCED OVERLAP
+                zIndex: 100, 
+                backgroundColor: '#050505',
+                marginTop: '0',
+                opacity: 0, visibility: 'hidden' // HIDDEN BY DEFAULT TO PREVENT GHOSTING
             }}>
+                <div id="hud-marker-6" style={{ position: 'absolute', top: 0, height: '1px' }} />
+                <div style={{ marginTop: '-55vh', position: 'relative' }}> 
                 {/* CINEMATIC BRIDGE: THE FUSION POINT (WHITE -> BLACK) - ATTACHED TO SIMBIOSIS */}
                 <div style={{
                     width: '100%',
                     height: '35vh',
-                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)', // MATCH SYMBIOSIS BACKGROUND
+                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)',
                     position: 'relative',
-                    zIndex: 801
+                    zIndex: 101
                 }}>
-                    <div id="hud-marker-6" style={{ position: 'absolute', top: '10%', height: '1px' }} />
                 </div>
 
                 <div id="simbiosis-content" style={{ width: '100%', height: '100%' }}>
                     <Symbiosis />
                 </div>
+                </div> {/* CLOSE MARGIN WRAPPER */}
             </div>
 
             {/* BRIDGE GRADIENT: BLACK (SIMBIOSIS) -> WHITE (CAPITULO 7) */}
@@ -1093,7 +1139,7 @@ const CinematicDev: React.FC = () => {
                 height: '15vh',
                 background: 'linear-gradient(to bottom, #050505 0%, #FFFFFF 100%)',
                 position: 'relative',
-                zIndex: 250
+                zIndex: 450 // BETWEEN SIMBIOSIS (500) AND SALTO (400)
             }} />
             <GlitchPortal ref={entranceGlitchRef} />
 

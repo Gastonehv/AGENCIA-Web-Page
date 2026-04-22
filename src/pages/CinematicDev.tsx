@@ -986,7 +986,7 @@ const CinematicDev: React.FC = () => {
                 <div className="team-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5vh' }}>
                     {team.map((member) => (
                         <div key={member.id} className="team-member-row" style={{
-                            width: '100%', minHeight: '70vh', // Increased to avoid cropping
+                            width: '100%', minHeight: '85vh', // INCREASED to avoid cropping
                             display: 'flex', alignItems: 'center', justifyContent: 'center'
                         }}>
                             <div className="rift-row"
@@ -1052,12 +1052,12 @@ const CinematicDev: React.FC = () => {
 
                 <div className="alma-focus-trigger" style={{ minHeight: '1px', position: 'relative', zIndex: 650 }}>
                     <div className="alma-pinned-content" id="alma-trigger" style={{
-                        height: '60vh', // REDUCED HEIGHT
+                        height: '100vh', // MATCH ALMASECTION HEIGHT
                         width: '100%',
                         backgroundColor: '#FFF',
                         display: 'flex',
                         alignItems: 'center',
-                        marginTop: '-40vh' // MORE COMPACT
+                        marginTop: '0' // REMOVED NEGATIVE MARGIN TO STOP CROPPING
                     }}>
                         <AlmaSection />
                     </div>
@@ -1067,14 +1067,14 @@ const CinematicDev: React.FC = () => {
             <div id="simbiosis" style={{
                 position: 'relative',
                 zIndex: 800,
-                backgroundColor: '#000',
-                marginTop: '-110vh' // TOTAL COMPRESSION
+                backgroundColor: '#050505', // MATCH SYMBIOSIS BACKGROUND
+                marginTop: '-30vh' // DRASTICALLY REDUCED OVERLAP
             }}>
                 {/* CINEMATIC BRIDGE: THE FUSION POINT (WHITE -> BLACK) - ATTACHED TO SIMBIOSIS */}
                 <div style={{
                     width: '100%',
                     height: '35vh',
-                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)',
+                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)', // MATCH SYMBIOSIS BACKGROUND
                     position: 'relative',
                     zIndex: 801
                 }}>
@@ -1087,11 +1087,11 @@ const CinematicDev: React.FC = () => {
             </div>
 
             {/* BRIDGE GRADIENT: BLACK (SIMBIOSIS) -> WHITE (CAPITULO 7) */}
-            <div id="entrance-trigger" style={{ height: '5vh', width: '100%', background: '#000' }} />
+            <div id="entrance-trigger" style={{ height: '5vh', width: '100%', background: '#050505' }} />
             <div style={{
                 width: '100%',
                 height: '15vh',
-                background: 'linear-gradient(to bottom, #000000 0%, #FFFFFF 100%)',
+                background: 'linear-gradient(to bottom, #050505 0%, #FFFFFF 100%)',
                 position: 'relative',
                 zIndex: 250
             }} />

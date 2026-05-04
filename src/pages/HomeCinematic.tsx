@@ -509,7 +509,7 @@ const CinematicDev: React.FC = () => {
             });
 
             // Secuencia Explícita y Simétrica para el Equipo (Totalmente atada al scroll)
-            const rows = gsap.utils.toArray<HTMLElement>('.rift-row');
+            const rows = gsap.utils.toArray<HTMLElement>('.team-member-row');
             
             // --- INTEGRANTE 1: CEO (USUARIO) ---
             const row1 = rows[0];

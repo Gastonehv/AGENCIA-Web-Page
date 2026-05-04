@@ -1214,44 +1214,41 @@ const CinematicDev: React.FC = () => {
                                     borderLeft: '1px solid rgba(0,0,0,0.05)'
                                 }} />
 
-                                {/* TEXT OVERLAY (Estable) */}
+                                {/* TEXT OVERLAY (Estable y Debajo) */}
                                 <div className="rift-text-overlay" style={{
-                                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                    padding: '0 8%', zIndex: 3, pointerEvents: 'none'
+                                    position: 'absolute', bottom: '8%', left: 0, width: '100%',
+                                    display: 'flex', flexDirection: 'column', alignItems: 'center',
+                                    gap: '0.5rem', zIndex: 3, pointerEvents: 'none', textAlign: 'center',
+                                    padding: '0 5%'
                                 }}>
-                                    {/* ROLE */}
-                                    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: '4rem' }}>
-                                        {!member.isAlma && (
-                                            <h3 style={{ 
-                                                fontSize: 'clamp(1.8rem, 3.5vw, 4rem)', 
-                                                fontWeight: 700, textAlign: 'right', margin: 0,
-                                                color: '#000'
-                                            }}>{member.role}</h3>
-                                        )}
-                                    </div>
+                                    {/* ROLE / PUESTO */}
+                                    <h3 style={{ 
+                                        fontSize: member.isAlma ? 'clamp(0.8rem, 1.5vw, 1.2rem)' : 'clamp(1.5rem, 2.5vw, 2.2rem)', 
+                                        fontWeight: 800, textAlign: 'center', margin: 0,
+                                        color: '#000', textTransform: 'uppercase',
+                                        letterSpacing: member.isAlma ? '0.4em' : '0.1em'
+                                    }}>{member.role}</h3>
 
-                                    {/* NAME / INFO */}
-                                    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start', paddingLeft: '4rem' }}>
-                                        <span style={{ 
-                                            fontSize: member.isAlma ? 'clamp(0.6rem, 1.1vw, 0.75rem)' : '1.2rem', 
-                                            fontFamily: 'var(--font-mono)', 
-                                            maxWidth: member.isAlma ? '500px' : '350px',
-                                            letterSpacing: member.isAlma ? '0.3em' : 'normal',
-                                            lineHeight: member.isAlma ? 1.8 : 1.2,
-                                            color: '#333'
-                                        }}>
-                                            {member.name}
-                                            {member.isAlma && (
-                                                <>
-                                                    <br /><br />
-                                                    <span style={{ fontSize: '0.6rem', opacity: 0.7, letterSpacing: '0.15em' }}>
-                                                        {member.extraInfo}
-                                                    </span>
-                                                </>
-                                            )}
-                                        </span>
-                                    </div>
+                                    {/* NAME / EXTRA INFO */}
+                                    <span style={{ 
+                                        fontSize: member.isAlma ? 'clamp(0.55rem, 1vw, 0.65rem)' : '1rem', 
+                                        fontFamily: 'var(--font-mono)', 
+                                        maxWidth: '800px',
+                                        letterSpacing: member.isAlma ? '0.25em' : '0.05em',
+                                        lineHeight: 1.6,
+                                        color: '#333',
+                                        textTransform: 'uppercase'
+                                    }}>
+                                        {member.name}
+                                        {member.isAlma && (
+                                            <>
+                                                <br />
+                                                <span style={{ opacity: 0.8, fontSize: '0.9em' }}>
+                                                    {member.extraInfo}
+                                                </span>
+                                            </>
+                                        )}
+                                    </span>
                                 </div>
                             </div>
                         </div>

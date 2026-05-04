@@ -521,22 +521,21 @@ const CinematicDev: React.FC = () => {
             const img1 = row1.querySelector('.rift-img');
             const id1 = row1.querySelector('.rift-id');
 
-            // Entrada CEO (Scrubbed)
+            // Entrada CEO
             tlNucleoGlobal.to(row1, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, "+=0.2")
-                          .to(l1, { x: -40, duration: 1, ease: "power2.out" }, "<")
-                          .to(r1, { x: 40, duration: 1, ease: "power2.out" }, "<")
-                          .to(img1, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" }, "<")
-                          .to(id1, { opacity: 0.15, scale: 1.2, duration: 1 }, "<");
+                          .to(l1, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
+                          .to(r1, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
+                          .to(img1, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<")
+                          .to(id1, { opacity: 0.15, scale: 1.2, duration: 1.5 }, "<");
 
             // Pausa CEO
             tlNucleoGlobal.to({}, { duration: 3 }); 
 
             // Salida CEO
             tlNucleoGlobal.to(row1, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
-                          .to(l1, { x: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(r1, { x: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(img1, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<")
-                          .to(id1, { opacity: 0, scale: 1, duration: 1 }, "<");
+                          .to(l1, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                          .to(r1, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                          .to(img1, { opacity: 0, scale: 1, duration: 1 }, "<");
 
             // --- INTEGRANTE 2: CTO (GAEL) ---
             const row2 = rows[1];
@@ -547,20 +546,19 @@ const CinematicDev: React.FC = () => {
 
             // Entrada CTO
             tlNucleoGlobal.to(row2, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
-                          .to(l2, { x: -40, duration: 1, ease: "power2.out" }, "<")
-                          .to(r2, { x: 40, duration: 1, ease: "power2.out" }, "<")
-                          .to(img2, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" }, "<")
-                          .to(id2, { opacity: 0.15, scale: 1.2, duration: 1 }, "<");
+                          .to(l2, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
+                          .to(r2, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
+                          .to(img2, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<")
+                          .to(id2, { opacity: 0.15, scale: 1.2, duration: 1.5 }, "<");
 
-            // Pausa CTO (IDÉNTICA)
+            // Pausa CTO
             tlNucleoGlobal.to({}, { duration: 3 }); 
 
             // Salida CTO
             tlNucleoGlobal.to(row2, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
-                          .to(l2, { x: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(r2, { x: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(img2, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<")
-                          .to(id2, { opacity: 0, scale: 1, duration: 1 }, "<");
+                          .to(l2, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                          .to(r2, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                          .to(img2, { opacity: 0, scale: 1, duration: 1 }, "<");
 
             // --- INTEGRANTE 3: ALMA ---
             const row3 = rows[2];
@@ -572,20 +570,19 @@ const CinematicDev: React.FC = () => {
 
                 // Entrada ALMA
                 tlNucleoGlobal.to(row3, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
-                              .to(l3, { x: -40, duration: 1, ease: "power2.out" }, "<")
-                              .to(r3, { x: 40, duration: 1, ease: "power2.out" }, "<")
-                              .to(img3, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" }, "<")
-                              .to(id3, { opacity: 0.15, scale: 1.2, duration: 1 }, "<");
+                              .to(l3, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
+                              .to(r3, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
+                              .to(img3, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<")
+                              .to(id3, { opacity: 0.1, scale: 1.2, duration: 1.5 }, "<");
 
-                // Pausa ALMA (IDÉNTICA)
+                // Pausa ALMA
                 tlNucleoGlobal.to({}, { duration: 3 }); 
 
                 // Salida ALMA
                 tlNucleoGlobal.to(row3, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
-                              .to(l3, { x: 0, duration: 1, ease: "power2.in" }, "<")
-                              .to(r3, { x: 0, duration: 1, ease: "power2.in" }, "<")
-                              .to(img3, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<")
-                              .to(id3, { opacity: 0, scale: 1, duration: 1 }, "<");
+                              .to(l3, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                              .to(r3, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                              .to(img3, { opacity: 0, scale: 1, duration: 1 }, "<");
             }
 
             // Alma Section Reveal (Transición final de Capítulo 5)
@@ -1152,7 +1149,7 @@ const CinematicDev: React.FC = () => {
                         }}>
                             <div className="rift-row"
                                 style={{
-                                    width: '100%', height: '60vh',
+                                    width: '100%', height: '70vh',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     overflow: 'hidden',
                                     borderTop: '1px solid rgba(0,0,0,0.05)', borderBottom: '1px solid rgba(0,0,0,0.05)',
@@ -1206,29 +1203,35 @@ const CinematicDev: React.FC = () => {
                                     fontSize: '10rem', fontWeight: 900, opacity: 0.05, zIndex: 1, color: '#000'
                                 }}>0{member.id}</span>
 
-                                {/* LEFT: ROLE */}
+                                {/* LEFT: ROLE HALF */}
                                 <div className="rift-left" style={{
-                                    flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-                                    paddingRight: '4rem', zIndex: 2, background: 'linear-gradient(90deg, #FFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)'
+                                    position: 'absolute', left: 0, top: 0, width: '50%', height: '100%',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+                                    paddingRight: '5%', zIndex: 2, backgroundColor: '#FFF',
+                                    borderRight: '1px solid rgba(0,0,0,0.05)'
                                 }}>
                                     <h3 style={{ 
                                         fontSize: member.isAlma ? 'clamp(1rem, 2.5vw, 1.5rem)' : 'clamp(1.8rem, 3.5vw, 4rem)', 
                                         fontWeight: 700, textAlign: 'right', margin: 0,
-                                        letterSpacing: member.isAlma ? '0.2em' : 'normal'
+                                        letterSpacing: member.isAlma ? '0.2em' : 'normal',
+                                        color: '#000'
                                     }}>{member.role}</h3>
                                 </div>
 
-                                {/* RIGHT: NAME */}
+                                {/* RIGHT: NAME HALF */}
                                 <div className="rift-right" style={{
-                                    flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
-                                    paddingLeft: '4rem', zIndex: 2, background: 'linear-gradient(-90deg, #FFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)'
+                                    position: 'absolute', right: 0, top: 0, width: '50%', height: '100%',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
+                                    paddingLeft: '5%', zIndex: 2, backgroundColor: '#FFF',
+                                    borderLeft: '1px solid rgba(0,0,0,0.05)'
                                 }}>
                                     <span style={{ 
-                                        fontSize: member.isAlma ? 'clamp(0.6rem, 1vw, 0.75rem)' : '1.2rem', 
+                                        fontSize: member.isAlma ? 'clamp(0.6rem, 1.2vw, 0.8rem)' : '1.2rem', 
                                         fontFamily: 'var(--font-mono)', 
-                                        maxWidth: member.isAlma ? '400px' : '300px',
-                                        letterSpacing: member.isAlma ? '0.4em' : 'normal',
-                                        lineHeight: member.isAlma ? 1.6 : 1.2
+                                        maxWidth: member.isAlma ? '450px' : '350px',
+                                        letterSpacing: member.isAlma ? '0.3em' : 'normal',
+                                        lineHeight: member.isAlma ? 1.6 : 1.2,
+                                        color: '#333'
                                     }}>{member.name}</span>
                                 </div>
                             </div>

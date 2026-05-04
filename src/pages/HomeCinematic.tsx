@@ -9,9 +9,9 @@ import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
 import Prism from '../components/Prism';
 import ShowcaseSlider from '../components/ShowcaseSlider';
-import ceoImg from '../assets/team/ceo.jpg';
 import gaelImg from '../assets/team/gael_oracle.png';
-import almaImg from '../assets/team/alma.png';
+import almaLogo from '../assets/images/alma_logo_final.png';
+import almaVideo from '../assets/videos/alma_fondo_v3_opt.mp4';
 import footerLogo from '../assets/logo_agencia_full.png';
 import AlmaSection from '../components/AlmaSection';
 import Symbiosis from '../components/Symbiosis';
@@ -86,7 +86,7 @@ const CinematicDev: React.FC = () => {
     const team = [
         { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
         { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
-        { id: 3, role: 'A.L.M.A.', name: 'Algoritmo Lógico de Mente Artificial', img: almaImg, scale: 1.2 },
+        { id: 3, role: 'A.L.M.A.', name: 'ALGORITMO LÓGICO DE MENTE ARTIFICIAL', isAlma: true },
     ];
 
     // --- CAMPO DE PARTICULAS MAGNETICAS (APAGADO) ---
@@ -1158,16 +1158,45 @@ const CinematicDev: React.FC = () => {
                                     backgroundColor: '#FFF', position: 'relative'
                                 }}>
 
-                                {/* BACKGROUND PHOTO */}
+                                {/* BACKGROUND PHOTO / CUSTOM ALMA CORE */}
                                 <div className="rift-img" style={{
                                     position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                                    zIndex: 0, transition: 'none', opacity: 0 // Comienza en 0 para revelarse con el scroll
+                                    zIndex: 0, transition: 'none', opacity: 0
                                 }}>
-                                    <div style={{
-                                        width: '100%', height: '100%',
-                                        backgroundImage: `url(${member.img})`,
-                                        backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
-                                    }} />
+                                    {member.isAlma ? (
+                                        <div style={{
+                                            width: '100%', height: '100%',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            backgroundColor: '#fff'
+                                        }}>
+                                            <div style={{
+                                                width: 'clamp(280px, 30vw, 450px)',
+                                                aspectRatio: '2.5 / 1',
+                                                maskImage: `url(${almaLogo})`,
+                                                WebkitMaskImage: `url(${almaLogo})`,
+                                                maskSize: 'contain', WebkitMaskSize: 'contain',
+                                                maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
+                                                maskPosition: 'center', WebkitMaskPosition: 'center',
+                                                backgroundColor: '#000'
+                                            }}>
+                                                <video
+                                                    src={almaVideo}
+                                                    autoPlay muted loop playsInline
+                                                    style={{
+                                                        width: '100%', height: '100%',
+                                                        objectFit: 'cover',
+                                                        filter: 'brightness(1.4) contrast(1.1) saturate(1.2)'
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div style={{
+                                            width: '100%', height: '100%',
+                                            backgroundImage: `url(${member.img})`,
+                                            backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
+                                        }} />
+                                    )}
                                 </div>
 
                                 {/* ID */}
@@ -1181,7 +1210,11 @@ const CinematicDev: React.FC = () => {
                                     flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
                                     paddingRight: '4rem', zIndex: 2, background: 'linear-gradient(90deg, #FFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)'
                                 }}>
-                                    <h3 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 4rem)', fontWeight: 700, textAlign: 'right', margin: 0 }}>{member.role}</h3>
+                                    <h3 style={{ 
+                                        fontSize: member.isAlma ? 'clamp(1rem, 2.5vw, 1.5rem)' : 'clamp(1.8rem, 3.5vw, 4rem)', 
+                                        fontWeight: 700, textAlign: 'right', margin: 0,
+                                        letterSpacing: member.isAlma ? '0.2em' : 'normal'
+                                    }}>{member.role}</h3>
                                 </div>
 
                                 {/* RIGHT: NAME */}
@@ -1189,7 +1222,13 @@ const CinematicDev: React.FC = () => {
                                     flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
                                     paddingLeft: '4rem', zIndex: 2, background: 'linear-gradient(-90deg, #FFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)'
                                 }}>
-                                    <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-mono)', maxWidth: '300px' }}>{member.name}</span>
+                                    <span style={{ 
+                                        fontSize: member.isAlma ? 'clamp(0.6rem, 1vw, 0.75rem)' : '1.2rem', 
+                                        fontFamily: 'var(--font-mono)', 
+                                        maxWidth: member.isAlma ? '400px' : '300px',
+                                        letterSpacing: member.isAlma ? '0.4em' : 'normal',
+                                        lineHeight: member.isAlma ? 1.6 : 1.2
+                                    }}>{member.name}</span>
                                 </div>
                             </div>
                         </div>

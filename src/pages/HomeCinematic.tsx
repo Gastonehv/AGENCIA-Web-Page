@@ -34,14 +34,8 @@ const MANIFESTO = [
         body: ["Fusionamos sensibilidad artística visceral", "con potencia de cálculo masiva.", "Donde otros ven simples 'prompts',", "nosotros vemos partituras complejas."],
     },
     {
-        title: "EL DESTINO DE LO IMPOSIBLE",
-        body: [
-            "Si buscas lo seguro, el mundo es un eco infinito de agencias.",
-            "Pero si buscas la chispa que quiebra la lógica,",
-            "la anomalía que redefine lo real,",
-            "estás en el lugar donde el caos se vuelve arte.",
-            "Bienvenido a casa."
-        ],
+        title: "LA MEDIOCRIDAD ES EL ENEMIGO",
+        body: ["Si buscas lo seguro,", "el mundo está lleno de agencias.", "Pero si buscas lo imposible,", "bienvenido a casa."],
     }
 ];
 
@@ -420,8 +414,21 @@ const CinematicDev: React.FC = () => {
                 }, "<"); // Al mismo tiempo que aparece el texto
 
                 tlCap3.fromTo(title, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
-                    .fromTo(bodyLines, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, ">")
-                    .to({}, { duration: 12 }); // EXTENDED READING PAUSE FOR EACH ITEM (SENSORY COMFORT)
+                    .fromTo(bodyLines, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, ">");
+
+                if (i === 3) {
+                    // CLIMAX ANIMATION FOR "IMPOSIBLE"
+                    tlCap3.to(bodyLines, { 
+                        color: '#00FF99', 
+                        letterSpacing: '0.2em', 
+                        fontWeight: 900,
+                        textShadow: '0 0 30px rgba(0,255,153,0.6)',
+                        duration: 3,
+                        ease: "power2.inOut"
+                    }, ">-0.5");
+                }
+
+                tlCap3.to({}, { duration: 12 }); // EXTENDED READING PAUSE FOR EACH ITEM (SENSORY COMFORT)
 
                 // ATMOSPHERIC WHITE FOG FUSION (CLIMAX PAUSE)
                 if (i === manifestoItems.length - 1) {
@@ -507,35 +514,52 @@ const CinematicDev: React.FC = () => {
                 }
             });
 
-            // Re-targeting team rifts inside the pinned Nucleo
-            const teamRows = gsap.utils.toArray<HTMLElement>('.rift-row');
-            teamRows.forEach((row, i) => {
-                const left = row.querySelector('.rift-left');
-                const right = row.querySelector('.rift-right');
-                const img = row.querySelector('.rift-img');
-                const id = row.querySelector('.rift-id');
+            // Secuencia Explícita y Simétrica para el Equipo (Totalmente atada al scroll)
+            const rows = gsap.utils.toArray<HTMLElement>('.rift-row');
+            
+            // --- INTEGRANTE 1: CEO (USUARIO) ---
+            const row1 = rows[0];
+            const l1 = row1.querySelector('.rift-left');
+            const r1 = row1.querySelector('.rift-right');
+            const img1 = row1.querySelector('.rift-img');
+            const id1 = row1.querySelector('.rift-id');
 
-                // Internal animations within the pinned Nucleo timeline
-                tlNucleoGlobal.to(row, {
-                    onStart: () => {
-                        gsap.to(left, { x: -40, duration: 0.8, ease: "power2.out" });
-                        gsap.to(right, { x: 40, duration: 0.8, ease: "power2.out" });
-                        gsap.to(img, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" });
-                        gsap.to(id, { opacity: 0.15, scale: 1.2, duration: 0.6 });
-                    }
-                }, `+=${i * 0.5}`); // Stagger the rift reveals during the pin
+            // Entrada CEO (Scrubbed)
+            tlNucleoGlobal.to(l1, { x: -40, duration: 1, ease: "power2.out" }, "+=0.5")
+                          .to(r1, { x: 40, duration: 1, ease: "power2.out" }, "<")
+                          .to(img1, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" }, "<")
+                          .to(id1, { opacity: 0.15, scale: 1.2, duration: 1 }, "<");
 
-                tlNucleoGlobal.to({}, { duration: 0.5 }); // Pause for each member
+            // Pausa CEO (Scroll muerto = el usuario debe hacer scroll para avanzar)
+            tlNucleoGlobal.to({}, { duration: 2.5 }); 
 
-                tlNucleoGlobal.to(row, {
-                    onStart: () => {
-                        gsap.to(left, { x: 0, duration: 0.8, ease: "power2.inOut" });
-                        gsap.to(right, { x: 0, duration: 0.8, ease: "power2.inOut" });
-                        gsap.to(img, { opacity: 0.45, scale: 1, duration: 1, ease: "power2.inOut" });
-                        gsap.to(id, { opacity: 0.05, scale: 1, duration: 0.6 });
-                    }
-                }, ">+0.5");
-            });
+            // Salida CEO (Scrubbed)
+            tlNucleoGlobal.to(l1, { x: 0, duration: 1, ease: "power2.in" }, ">")
+                          .to(r1, { x: 0, duration: 1, ease: "power2.in" }, "<")
+                          .to(img1, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<") // AHORA DESAPARECE COMPLETAMENTE
+                          .to(id1, { opacity: 0, scale: 1, duration: 1 }, "<");
+
+            // --- INTEGRANTE 2: CTO (GAEL) ---
+            const row2 = rows[1];
+            const l2 = row2.querySelector('.rift-left');
+            const r2 = row2.querySelector('.rift-right');
+            const img2 = row2.querySelector('.rift-img');
+            const id2 = row2.querySelector('.rift-id');
+
+            // Entrada CTO (Scrubbed)
+            tlNucleoGlobal.to(l2, { x: -40, duration: 1, ease: "power2.out" }, ">+0.5")
+                          .to(r2, { x: 40, duration: 1, ease: "power2.out" }, "<")
+                          .to(img2, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" }, "<")
+                          .to(id2, { opacity: 0.15, scale: 1.2, duration: 1 }, "<");
+
+            // Pausa CTO (Exactamente la misma distancia de scroll que el CEO)
+            tlNucleoGlobal.to({}, { duration: 2.5 }); 
+
+            // Salida CTO (Scrubbed)
+            tlNucleoGlobal.to(l2, { x: 0, duration: 1, ease: "power2.in" }, ">")
+                          .to(r2, { x: 0, duration: 1, ease: "power2.in" }, "<")
+                          .to(img2, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<") // AHORA DESAPARECE COMPLETAMENTE
+                          .to(id2, { opacity: 0, scale: 1, duration: 1 }, "<");
 
             // Alma Reveal within the same Nucleo Pin
             tlNucleoGlobal.fromTo(".alma-pinned-content", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 2 }, ">+1");
@@ -1039,11 +1063,16 @@ const CinematicDev: React.FC = () => {
                             fontFamily: 'monospace', maxWidth: '800px',
                         }}>
                             {item.body.map((line, j) => (
-                                <p key={j} className="manifesto-body-line" style={{
+                                <p key={j} className={`manifesto-body-line ${i === 3 ? 'imposible-climax' : ''}`} style={{
                                     margin: '0 0 0.8rem 0',
                                     opacity: 0,
-                                    fontWeight: 500,
-                                    textShadow: '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)'
+                                    fontWeight: i === 3 ? 900 : 500,
+                                    fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'inherit',
+                                    color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
+                                    textShadow: i === 3 
+                                        ? '0 0 20px rgba(0,255,153,0.5), 0 0 40px rgba(0,255,153,0.2)' 
+                                        : '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)',
+                                    transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)'
                                 }}>
                                     <AsciiRipple text={line} autoTrigger={true} trigger={activeManifestoItem === i} />
                                 </p>
@@ -1372,6 +1401,13 @@ const CinematicDev: React.FC = () => {
                 <style>{`
                     .cap7-logo-monolith:hover .ia-light-pulse {
                         opacity: 0.8;
+                    }
+                    .imposible-climax {
+                        animation: cinematic-pulse 4s infinite ease-in-out;
+                    }
+                    @keyframes cinematic-pulse {
+                        0%, 100% { transform: scale(1); filter: brightness(1); }
+                        50% { transform: scale(1.02); filter: brightness(1.2) drop-shadow(0 0 15px rgba(0,255,153,0.3)); }
                     }
                 `}</style>
             </section>

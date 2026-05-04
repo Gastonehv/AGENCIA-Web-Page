@@ -7,7 +7,7 @@ import { ScrollProvider } from './context/ScrollProvider';
 import { SoundProvider } from './context/SoundContext';
 
 // Pages
-import Home from './pages/Home';
+import Home from './pages/HomeCinematic';
 import Identidad from './pages/Identidad';
 import Arquitectura from './pages/Arquitectura';
 import Automatizacion from './pages/Automatizacion';

@@ -519,18 +519,20 @@ const CinematicDev: React.FC = () => {
             const id1 = row1.querySelector('.rift-id');
 
             // Entrada CEO (Scrubbed)
-            tlNucleoGlobal.to(l1, { x: -40, duration: 1, ease: "power2.out" }, "+=0.5")
+            tlNucleoGlobal.to(row1, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, "+=0.2")
+                          .to(l1, { x: -40, duration: 1, ease: "power2.out" }, "<")
                           .to(r1, { x: 40, duration: 1, ease: "power2.out" }, "<")
                           .to(img1, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" }, "<")
                           .to(id1, { opacity: 0.15, scale: 1.2, duration: 1 }, "<");
 
-            // Pausa CEO (Scroll muerto = el usuario debe hacer scroll para avanzar)
-            tlNucleoGlobal.to({}, { duration: 2.5 }); 
+            // Pausa CEO
+            tlNucleoGlobal.to({}, { duration: 3 }); 
 
-            // Salida CEO (Scrubbed)
-            tlNucleoGlobal.to(l1, { x: 0, duration: 1, ease: "power2.in" }, ">")
+            // Salida CEO
+            tlNucleoGlobal.to(row1, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
+                          .to(l1, { x: 0, duration: 1, ease: "power2.in" }, "<")
                           .to(r1, { x: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(img1, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<") // AHORA DESAPARECE COMPLETAMENTE
+                          .to(img1, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<")
                           .to(id1, { opacity: 0, scale: 1, duration: 1 }, "<");
 
             // --- INTEGRANTE 2: CTO (GAEL) ---
@@ -540,19 +542,21 @@ const CinematicDev: React.FC = () => {
             const img2 = row2.querySelector('.rift-img');
             const id2 = row2.querySelector('.rift-id');
 
-            // Entrada CTO (Scrubbed)
-            tlNucleoGlobal.to(l2, { x: -40, duration: 1, ease: "power2.out" }, ">+0.5")
+            // Entrada CTO
+            tlNucleoGlobal.to(row2, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
+                          .to(l2, { x: -40, duration: 1, ease: "power2.out" }, "<")
                           .to(r2, { x: 40, duration: 1, ease: "power2.out" }, "<")
                           .to(img2, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" }, "<")
                           .to(id2, { opacity: 0.15, scale: 1.2, duration: 1 }, "<");
 
-            // Pausa CTO (Exactamente la misma distancia de scroll que el CEO)
-            tlNucleoGlobal.to({}, { duration: 2.5 }); 
+            // Pausa CTO (IDÉNTICA)
+            tlNucleoGlobal.to({}, { duration: 3 }); 
 
-            // Salida CTO (Scrubbed)
-            tlNucleoGlobal.to(l2, { x: 0, duration: 1, ease: "power2.in" }, ">")
+            // Salida CTO
+            tlNucleoGlobal.to(row2, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
+                          .to(l2, { x: 0, duration: 1, ease: "power2.in" }, "<")
                           .to(r2, { x: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(img2, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<") // AHORA DESAPARECE COMPLETAMENTE
+                          .to(img2, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<")
                           .to(id2, { opacity: 0, scale: 1, duration: 1 }, "<");
 
             // Alma Reveal within the same Nucleo Pin
@@ -1110,11 +1114,12 @@ const CinematicDev: React.FC = () => {
                 </h2>
 
                 {/* TEAM LIST WITH TOTAL FUSION COMPACTNESS */}
-                <div className="team-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5vh' }}>
+                <div className="team-container" style={{ position: 'relative', width: '100%', height: '85vh' }}>
                     {team.map((member) => (
                         <div key={member.id} className="team-member-row" style={{
-                            width: '100%', minHeight: '85vh', // INCREASED to avoid cropping
-                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                            position: 'absolute', inset: 0,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            opacity: 0, pointerEvents: 'none' // Inicialmente invisibles y no interactuables
                         }}>
                             <div className="rift-row"
                                 onMouseEnter={(e) => {

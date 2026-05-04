@@ -1122,24 +1122,10 @@ const CinematicDev: React.FC = () => {
                             opacity: 0, pointerEvents: 'none' // Inicialmente invisibles y no interactuables
                         }}>
                             <div className="rift-row"
-                                onMouseEnter={(e) => {
-                                    const row = e.currentTarget;
-                                    gsap.to(row.querySelector('.rift-left'), { x: -30, duration: 0.6, ease: "power2.out" });
-                                    gsap.to(row.querySelector('.rift-right'), { x: 30, duration: 0.6, ease: "power2.out" });
-                                    gsap.to(row.querySelector('.rift-img'), { opacity: 0.95, scale: 1.1, duration: 0.8, ease: "power2.out" });
-                                    gsap.to(row.querySelector('.rift-id'), { opacity: 0.1, duration: 0.4 });
-                                }}
-                                onMouseLeave={(e) => {
-                                    const row = e.currentTarget;
-                                    gsap.to(row.querySelector('.rift-left'), { x: 0, duration: 0.6, ease: "power2.inOut" });
-                                    gsap.to(row.querySelector('.rift-right'), { x: 0, duration: 0.6, ease: "power2.inOut" });
-                                    gsap.to(row.querySelector('.rift-img'), { opacity: 0.45, scale: 1, duration: 0.8, ease: "power2.inOut" });
-                                    gsap.to(row.querySelector('.rift-id'), { opacity: 0.05, duration: 0.4 });
-                                }}
                                 style={{
                                     width: '100%', height: '60vh',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    overflow: 'hidden', cursor: 'pointer',
+                                    overflow: 'hidden',
                                     borderTop: '1px solid rgba(0,0,0,0.05)', borderBottom: '1px solid rgba(0,0,0,0.05)',
                                     backgroundColor: '#FFF', position: 'relative'
                                 }}>
@@ -1147,7 +1133,7 @@ const CinematicDev: React.FC = () => {
                                 {/* BACKGROUND PHOTO */}
                                 <div className="rift-img" style={{
                                     position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                                    zIndex: 0, transition: 'none', opacity: 0.45
+                                    zIndex: 0, transition: 'none', opacity: 0 // Comienza en 0 para revelarse con el scroll
                                 }}>
                                     <div style={{
                                         width: '100%', height: '100%',

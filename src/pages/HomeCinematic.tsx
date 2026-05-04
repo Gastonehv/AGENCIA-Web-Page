@@ -9,6 +9,7 @@ import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
 import Prism from '../components/Prism';
 import ShowcaseSlider from '../components/ShowcaseSlider';
+import ceoImg from '../assets/team/ceo.jpg';
 import gaelImg from '../assets/team/gael_oracle.png';
 import almaLogo from '../assets/images/alma_logo_final.png';
 import almaVideo from '../assets/videos/alma_fondo_v3_opt.mp4';

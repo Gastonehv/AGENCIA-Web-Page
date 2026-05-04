@@ -87,7 +87,13 @@ const CinematicDev: React.FC = () => {
     const team = [
         { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
         { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
-        { id: 3, role: 'A.L.M.A.', name: 'ALGORITMO LÓGICO DE MENTE ARTIFICIAL', isAlma: true },
+        { 
+            id: 3, 
+            role: 'A.L.M.A.', 
+            name: 'ALGORITMO LÓGICO DE MENTE ARTIFICIAL', 
+            extraInfo: 'A.L.M.A. ES UNA PROPIEDAD INTELECTUAL DE AGENCIA. SISTEMAS DE ORQUESTACIÓN PROPIETARIA. ALL RIGHTS RESERVED.',
+            isAlma: true 
+        },
     ];
 
     // --- CAMPO DE PARTICULAS MAGNETICAS (APAGADO) ---
@@ -525,8 +531,7 @@ const CinematicDev: React.FC = () => {
             tlNucleoGlobal.to(row1, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, "+=0.2")
                           .to(l1, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
                           .to(r1, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
-                          .to(img1, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<")
-                          .to(id1, { opacity: 0.15, scale: 1.2, duration: 1.5 }, "<");
+                          .to(img1, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
 
             // Pausa CEO
             tlNucleoGlobal.to({}, { duration: 3 }); 
@@ -548,8 +553,7 @@ const CinematicDev: React.FC = () => {
             tlNucleoGlobal.to(row2, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
                           .to(l2, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
                           .to(r2, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
-                          .to(img2, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<")
-                          .to(id2, { opacity: 0.15, scale: 1.2, duration: 1.5 }, "<");
+                          .to(img2, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
 
             // Pausa CTO
             tlNucleoGlobal.to({}, { duration: 3 }); 
@@ -572,8 +576,7 @@ const CinematicDev: React.FC = () => {
                 tlNucleoGlobal.to(row3, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
                               .to(l3, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
                               .to(r3, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
-                              .to(img3, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<")
-                              .to(id3, { opacity: 0.1, scale: 1.2, duration: 1.5 }, "<");
+                              .to(img3, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
 
                 // Pausa ALMA
                 tlNucleoGlobal.to({}, { duration: 3 }); 
@@ -1197,11 +1200,7 @@ const CinematicDev: React.FC = () => {
                                     )}
                                 </div>
 
-                                {/* ID */}
-                                <span className="rift-id" style={{
-                                    position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
-                                    fontSize: '10rem', fontWeight: 900, opacity: 0.05, zIndex: 1, color: '#000'
-                                }}>0{member.id}</span>
+                                {/* ID REMOVED AS REQUESTED */}
 
                                 {/* LEFT: ROLE HALF */}
                                 <div className="rift-left" style={{
@@ -1228,11 +1227,21 @@ const CinematicDev: React.FC = () => {
                                     <span style={{ 
                                         fontSize: member.isAlma ? 'clamp(0.6rem, 1.2vw, 0.8rem)' : '1.2rem', 
                                         fontFamily: 'var(--font-mono)', 
-                                        maxWidth: member.isAlma ? '450px' : '350px',
+                                        maxWidth: member.isAlma ? '500px' : '350px',
                                         letterSpacing: member.isAlma ? '0.3em' : 'normal',
-                                        lineHeight: member.isAlma ? 1.6 : 1.2,
+                                        lineHeight: member.isAlma ? 1.8 : 1.2,
                                         color: '#333'
-                                    }}>{member.name}</span>
+                                    }}>
+                                        {member.name}
+                                        {member.isAlma && (
+                                            <>
+                                                <br /><br />
+                                                <span style={{ fontSize: '0.6rem', opacity: 0.7, letterSpacing: '0.15em' }}>
+                                                    {member.extraInfo}
+                                                </span>
+                                            </>
+                                        )}
+                                    </span>
                                 </div>
                             </div>
                         </div>

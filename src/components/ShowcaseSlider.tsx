@@ -160,8 +160,6 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                 const maxScroll = -(totalScrollWidth - viewportWidth);
 
                 // Adjust scroll length for mobile feel if needed
-                const isMobile = window.innerWidth <= 768;
-
                 scrollTimeline = gsap.timeline({
                     scrollTrigger: {
                         trigger: containerRef.current,

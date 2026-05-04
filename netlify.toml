@@ -1,15 +1,18 @@
 [build]
-  command = "CI=false npm run build"
+  command = "npx vite build"
   publish = "dist"
 
-[context.production.environment]
+[build.environment]
   NPM_FLAGS = "--legacy-peer-deps"
+  NPM_CONFIG_LEGACY_PEER_DEPS = "true"
+  NODE_VERSION = "22"
+  CI = "false"
+
+[context.production.environment]
   NODE_VERSION = "22"
 
 [context.deploy-preview.environment]
-  NPM_FLAGS = "--legacy-peer-deps"
   NODE_VERSION = "22"
 
 [context.branch-deploy.environment]
-  NPM_FLAGS = "--legacy-peer-deps"
   NODE_VERSION = "22"

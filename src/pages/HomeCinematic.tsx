@@ -505,6 +505,7 @@ const CinematicDev: React.FC = () => {
                             setChapterNumber('5');
                         }
                     }
+                }
             });
 
             // Secuencia Explícita y Simétrica para el Equipo (Totalmente atada al scroll)

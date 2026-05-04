@@ -1200,48 +1200,58 @@ const CinematicDev: React.FC = () => {
                                     )}
                                 </div>
 
-                                {/* ID REMOVED AS REQUESTED */}
-
-                                {/* LEFT: ROLE HALF */}
+                                {/* LEFT: ROLE HALF (Móvil) */}
                                 <div className="rift-left" style={{
                                     position: 'absolute', left: 0, top: 0, width: '50%', height: '100%',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-                                    paddingRight: '5%', zIndex: 2, backgroundColor: '#FFF',
+                                    zIndex: 2, backgroundColor: '#FFF',
                                     borderRight: '1px solid rgba(0,0,0,0.05)'
-                                }}>
-                                    <h3 style={{ 
-                                        fontSize: member.isAlma ? 'clamp(1rem, 2.5vw, 1.5rem)' : 'clamp(1.8rem, 3.5vw, 4rem)', 
-                                        fontWeight: 700, textAlign: 'right', margin: 0,
-                                        letterSpacing: member.isAlma ? '0.2em' : 'normal',
-                                        color: '#000'
-                                    }}>{member.role}</h3>
-                                </div>
+                                }} />
 
-                                {/* RIGHT: NAME HALF */}
+                                {/* RIGHT: NAME HALF (Móvil) */}
                                 <div className="rift-right" style={{
                                     position: 'absolute', right: 0, top: 0, width: '50%', height: '100%',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
-                                    paddingLeft: '5%', zIndex: 2, backgroundColor: '#FFF',
+                                    zIndex: 2, backgroundColor: '#FFF',
                                     borderLeft: '1px solid rgba(0,0,0,0.05)'
+                                }} />
+
+                                {/* TEXT OVERLAY (Estable) */}
+                                <div className="rift-text-overlay" style={{
+                                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                    padding: '0 8%', zIndex: 3, pointerEvents: 'none'
                                 }}>
-                                    <span style={{ 
-                                        fontSize: member.isAlma ? 'clamp(0.6rem, 1.2vw, 0.8rem)' : '1.2rem', 
-                                        fontFamily: 'var(--font-mono)', 
-                                        maxWidth: member.isAlma ? '500px' : '350px',
-                                        letterSpacing: member.isAlma ? '0.3em' : 'normal',
-                                        lineHeight: member.isAlma ? 1.8 : 1.2,
-                                        color: '#333'
-                                    }}>
-                                        {member.name}
-                                        {member.isAlma && (
-                                            <>
-                                                <br /><br />
-                                                <span style={{ fontSize: '0.6rem', opacity: 0.7, letterSpacing: '0.15em' }}>
-                                                    {member.extraInfo}
-                                                </span>
-                                            </>
+                                    {/* ROLE */}
+                                    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: '4rem' }}>
+                                        {!member.isAlma && (
+                                            <h3 style={{ 
+                                                fontSize: 'clamp(1.8rem, 3.5vw, 4rem)', 
+                                                fontWeight: 700, textAlign: 'right', margin: 0,
+                                                color: '#000'
+                                            }}>{member.role}</h3>
                                         )}
-                                    </span>
+                                    </div>
+
+                                    {/* NAME / INFO */}
+                                    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start', paddingLeft: '4rem' }}>
+                                        <span style={{ 
+                                            fontSize: member.isAlma ? 'clamp(0.6rem, 1.1vw, 0.75rem)' : '1.2rem', 
+                                            fontFamily: 'var(--font-mono)', 
+                                            maxWidth: member.isAlma ? '500px' : '350px',
+                                            letterSpacing: member.isAlma ? '0.3em' : 'normal',
+                                            lineHeight: member.isAlma ? 1.8 : 1.2,
+                                            color: '#333'
+                                        }}>
+                                            {member.name}
+                                            {member.isAlma && (
+                                                <>
+                                                    <br /><br />
+                                                    <span style={{ fontSize: '0.6rem', opacity: 0.7, letterSpacing: '0.15em' }}>
+                                                        {member.extraInfo}
+                                                    </span>
+                                                </>
+                                            )}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -11,6 +11,7 @@ import Prism from '../components/Prism';
 import ShowcaseSlider from '../components/ShowcaseSlider';
 import ceoImg from '../assets/team/ceo.jpg';
 import gaelImg from '../assets/team/gael_oracle.png';
+import almaImg from '../assets/team/alma.png';
 import footerLogo from '../assets/logo_agencia_full.png';
 import AlmaSection from '../components/AlmaSection';
 import Symbiosis from '../components/Symbiosis';
@@ -85,6 +86,7 @@ const CinematicDev: React.FC = () => {
     const team = [
         { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
         { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
+        { id: 3, role: 'A.L.M.A.', name: 'Algoritmo Lógico de Mente Artificial', img: almaImg, scale: 1.2 },
     ];
 
     // --- CAMPO DE PARTICULAS MAGNETICAS (APAGADO) ---
@@ -559,8 +561,34 @@ const CinematicDev: React.FC = () => {
                           .to(img2, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<")
                           .to(id2, { opacity: 0, scale: 1, duration: 1 }, "<");
 
-            // Alma Reveal within the same Nucleo Pin
-            tlNucleoGlobal.fromTo(".alma-pinned-content", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 2 }, ">+1");
+            // --- INTEGRANTE 3: ALMA ---
+            const row3 = rows[2];
+            if (row3) {
+                const l3 = row3.querySelector('.rift-left');
+                const r3 = row3.querySelector('.rift-right');
+                const img3 = row3.querySelector('.rift-img');
+                const id3 = row3.querySelector('.rift-id');
+
+                // Entrada ALMA
+                tlNucleoGlobal.to(row3, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
+                              .to(l3, { x: -40, duration: 1, ease: "power2.out" }, "<")
+                              .to(r3, { x: 40, duration: 1, ease: "power2.out" }, "<")
+                              .to(img3, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" }, "<")
+                              .to(id3, { opacity: 0.15, scale: 1.2, duration: 1 }, "<");
+
+                // Pausa ALMA (IDÉNTICA)
+                tlNucleoGlobal.to({}, { duration: 3 }); 
+
+                // Salida ALMA
+                tlNucleoGlobal.to(row3, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
+                              .to(l3, { x: 0, duration: 1, ease: "power2.in" }, "<")
+                              .to(r3, { x: 0, duration: 1, ease: "power2.in" }, "<")
+                              .to(img3, { opacity: 0.0, scale: 1, duration: 1, ease: "power2.in" }, "<")
+                              .to(id3, { opacity: 0, scale: 1, duration: 1 }, "<");
+            }
+
+            // Alma Section Reveal (Transición final de Capítulo 5)
+            tlNucleoGlobal.fromTo(".alma-pinned-content", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.5 }, ">+0.5");
             tlNucleoGlobal.to({}, { duration: 3 }); // Alma Reading Pause
 
             // --- CAPÍTULO 6: SIMBIOSIS CINEMÁTICA ---

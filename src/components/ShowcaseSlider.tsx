@@ -161,9 +161,6 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
 
                 // Adjust scroll length for mobile feel if needed
                 const isMobile = window.innerWidth <= 768;
-                const scrollLength = isMobile
-                    ? totalScrollWidth + viewportWidth * 2.0 // Slightly more budget for mobile touch control
-                    : totalScrollWidth + viewportWidth * 2.5;
 
                 scrollTimeline = gsap.timeline({
                     scrollTrigger: {

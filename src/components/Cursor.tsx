@@ -133,8 +133,6 @@ const Cursor: React.FC = () => {
         const updateTargetPosition = (x: number, y: number) => {
             if (isHovered && hoverEl) {
                 const bounds = hoverEl.getBoundingClientRect();
-                const cx = bounds.x + bounds.width / 2;
-                const cy = bounds.y + bounds.height / 2;
 
                 // GLOBAL UNIFICATION: No magnetism, no drift.
                 position.target.x = x;

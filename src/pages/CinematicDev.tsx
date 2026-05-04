@@ -452,7 +452,7 @@ const CinematicDev: React.FC = () => {
             });
 
             // --- CAPÍTULO 4: EJECUCIÓN (PINNED SHOWCASE) ---
-            const tlCap4 = gsap.timeline({
+            gsap.timeline({
                 scrollTrigger: {
                     trigger: "#capacidades",
                     start: "top top",

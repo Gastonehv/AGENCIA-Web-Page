@@ -517,9 +517,9 @@ const CinematicDev: React.FC = () => {
                         gsap.to(img, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" });
                         gsap.to(id, { opacity: 0.15, scale: 1.2, duration: 0.6 });
                     }
-                }, `+=${i * 1}`); // Stagger the rift reveals during the pin
+                }, `+=${i * 0.5}`); // Stagger the rift reveals during the pin
 
-                tlNucleoGlobal.to({}, { duration: 1 }); // Pause for each member
+                tlNucleoGlobal.to({}, { duration: 0.5 }); // Pause for each member
 
                 tlNucleoGlobal.to(row, {
                     onStart: () => {
@@ -528,7 +528,7 @@ const CinematicDev: React.FC = () => {
                         gsap.to(img, { opacity: 0.45, scale: 1, duration: 1, ease: "power2.inOut" });
                         gsap.to(id, { opacity: 0.05, scale: 1, duration: 0.6 });
                     }
-                }, ">+1");
+                }, ">+0.5");
             });
 
             // Alma Reveal within the same Nucleo Pin

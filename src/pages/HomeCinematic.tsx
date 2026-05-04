@@ -34,8 +34,14 @@ const MANIFESTO = [
         body: ["Fusionamos sensibilidad artística visceral", "con potencia de cálculo masiva.", "Donde otros ven simples 'prompts',", "nosotros vemos partituras complejas."],
     },
     {
-        title: "LA MEDIOCRIDAD ES EL ENEMIGO",
-        body: ["Si buscas lo seguro,", "el mundo está lleno de agencias.", "Pero si buscas lo imposible,", "bienvenido a casa."],
+        title: "EL DESTINO DE LO IMPOSIBLE",
+        body: [
+            "Si buscas lo seguro, el mundo es un eco infinito de agencias.",
+            "Pero si buscas la chispa que quiebra la lógica,",
+            "la anomalía que redefine lo real,",
+            "estás en el lugar donde el caos se vuelve arte.",
+            "Bienvenido a casa."
+        ],
     }
 ];
 

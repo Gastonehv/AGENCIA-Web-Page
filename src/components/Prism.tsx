@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Renderer, Triangle, Program, Mesh } from 'ogl';
+import gsap from 'gsap';
 import './Prism.css';
 
-const Prism = ({
+const Prism = forwardRef(({
     height = 3.5,
     baseWidth = 5.5,
     animationType = 'rotate',
@@ -17,10 +18,14 @@ const Prism = ({
     inertia = 0.1,
     bloom = 1,
     suspendWhenOffscreen = false,
-    timeScale = 0.5
-}) => {
+    timeScale = 0.5,
+    shape = 0
+}: any, ref: any) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const programRef = useRef<any>(null);
+    const transitionRef = useRef<any>(null);
 
+    // Initial Setup Effect
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -78,6 +83,11 @@ const Prism = ({
             uniform float uMinAxis;
             uniform float uPxScale;
             uniform float uTimeScale;
+            
+            uniform int   uShapeA;
+            uniform int   uShapeB;
+            uniform float uTransition;
+            uniform float uEnergy;
 
             vec4 tanh4(vec4 x){
                 vec4 e2x = exp(2.0*x);
@@ -98,6 +108,27 @@ const Prism = ({
                 float oct = sdOctaAnisoInv(p);
                 float halfSpace = -p.y;
                 return max(oct, halfSpace);
+            }
+
+            float sdSphere(vec3 p, float r) {
+                return length(p) - r;
+            }
+
+            float sdBox(vec3 p, vec3 b) {
+                vec3 q = abs(p) - b;
+                return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+            }
+
+            float sdTorus(vec3 p, vec2 t) {
+                vec2 q = vec2(length(p.xz)-t.x,p.y);
+                return length(q)-t.y;
+            }
+
+            float getShapeD(vec3 p, int shapeId) {
+                if (shapeId == 1) return sdSphere(p, uHeight * 0.4);
+                if (shapeId == 2) return sdBox(p, vec3(uBaseHalf * 0.8, uHeight * 0.4, uBaseHalf * 0.8));
+                if (shapeId == 3) return sdTorus(p, vec2(uBaseHalf * 0.6, uHeight * 0.2));
+                return sdPyramidUpInv(p);
             }
 
             mat3 hueRotation(float a){
@@ -121,26 +152,45 @@ const Prism = ({
                     float t = iTime * uTimeScale;
                     wob = mat2(cos(t), cos(t + 33.0), cos(t + 11.0), cos(t));
                 }
-                const int STEPS = 100;
+                const int STEPS = 64;
                 for (int i = 0; i < STEPS; i++) {
                     p = vec3(f, z);
                     p.xz = p.xz * wob;
                     p = uRot * p;
                     vec3 q = p;
                     q.y += centerShift;
-                    d = 0.05 + 0.3 * abs(sdPyramidUpInv(q)); // REFINADO PARA DEFINICIÓN
+                    
+                    // --- SPECTACULAR MORPHOLOGICAL CHANGE ---
+                    vec3 qTwist = q;
+                    // Torsión dinámica más lenta y fluida
+                    float twist = uEnergy * 1.8 * sin(q.y * 2.5 + iTime * 1.2);
+                    float cT = cos(twist);
+                    float sT = sin(twist);
+                    qTwist.xz = qTwist.xz * mat2(cT, -sT, sT, cT);
+                    
+                    float dA = getShapeD(qTwist, uShapeA);
+                    float dB = getShapeD(qTwist, uShapeB);
+                    
+                    // Plasma orgánico más denso y lento (estilo lava)
+                    float morphDisplacement = sin(qTwist.x * 12.0 + iTime * 1.5) * sin(qTwist.y * 12.0 - iTime * 1.2) * sin(qTwist.z * 12.0) * uEnergy * 0.15;
+                    
+                    float dFinal = mix(dA, dB, uTransition) + morphDisplacement;
+                    // ----------------------------------------
+                    
+                    d = 0.05 + 0.3 * abs(dFinal); 
                     z -= d;
-                    // LUZ MÁS DURA Y DEFINIDA
                     o += (sin((p.y + z) * cf + vec4(0.0, 1.0, 2.0, 3.0)) + 1.0) * (0.01 / d);
+                    if (d < 0.001) break; // EARLY EXIT FOR PERFORMANCE
                 }
-                // MENOS BLOOM, MÁS CONTRASTE GEOMÉTRICO
-                o = o * (uGlow * uBloom) / 8.0;
-                o = pow(o, vec4(1.2)); // SHARPEN CONTRAST
+                
+                float energyGlow = 1.0 + uEnergy * 2.0;
+                o = o * (uGlow * uBloom * energyGlow) / 8.0;
+                o = pow(o, vec4(1.2)); 
                 o = clamp(o, 0.0, 1.0);
 
                 vec3 col = o.rgb;
                 float n = rand(gl_FragCoord.xy + vec2(iTime));
-                col += (n - 0.5) * (uNoise * 0.2); // RUIDO SUTIL
+                col += (n - 0.5) * (uNoise * 0.2); 
                 col = clamp(col, 0.0, 1.0);
                 float L = dot(col, vec3(0.2126, 0.7152, 0.0722));
                 col = clamp(mix(vec3(L), col, uSaturation * 0.8), 0.0, 1.0);
@@ -175,9 +225,15 @@ const Prism = ({
                 uInvHeight: { value: 1 / H },
                 uMinAxis: { value: Math.min(BASE_HALF, H) },
                 uPxScale: { value: 1 / ((gl.drawingBufferHeight || 1) * 0.1 * SCALE) },
-                uTimeScale: { value: TS }
+                uTimeScale: { value: TS },
+                uShapeA: { value: shape },
+                uShapeB: { value: shape },
+                uTransition: { value: 0 },
+                uEnergy: { value: 0 }
             }
         });
+        
+        programRef.current = program;
         const mesh = new Mesh(gl, { geometry, program });
 
         const resize = () => {
@@ -233,9 +289,8 @@ const Prism = ({
         const render = (t: number) => {
             const time = (t - t0) * 0.001;
             program.uniforms.iTime.value = time;
-            const tScaled = time * TS;
+            const tScaled = time * (program.uniforms.uTimeScale.value || TS);
 
-            // COMBINED ATMOSPHERIC FUSION
             const driftYaw = tScaled * wY;
             const driftPitch = Math.sin(tScaled * wX + phX) * 0.5;
             const driftRoll = Math.cos(tScaled * wZ + phZ) * 0.4;
@@ -261,7 +316,47 @@ const Prism = ({
         };
     }, [height, baseWidth, animationType, glow, noise, offset.x, offset.y, scale, transparent, hueShift, colorFrequency, timeScale, hoverStrength, inertia, bloom, suspendWhenOffscreen]);
 
+    useImperativeHandle(ref, () => ({
+        setMorph: (shapeA: number, shapeB: number, transition: number, energy: number) => {
+            if (programRef.current) {
+                programRef.current.uniforms.uShapeA.value = shapeA;
+                programRef.current.uniforms.uShapeB.value = shapeB;
+                programRef.current.uniforms.uTransition.value = transition;
+                programRef.current.uniforms.uEnergy.value = energy;
+                programRef.current.uniforms.uTimeScale.value = timeScale * (1.0 + energy * 2.0);
+            }
+        }
+    }));
+
+    // Morph Transition Effect (Optimized Performance)
+    useEffect(() => {
+        if (!programRef.current) return;
+        
+        const prog = programRef.current;
+        const prevShape = prog.uniforms.uShapeB.value;
+        if (prevShape === shape) return;
+
+        prog.uniforms.uShapeA.value = prevShape;
+        prog.uniforms.uShapeB.value = shape;
+        prog.uniforms.uTransition.value = 0;
+
+        if (transitionRef.current) transitionRef.current.kill();
+        
+        const tl = gsap.timeline();
+        transitionRef.current = tl;
+
+        // FAST & FLUID SEQUENCE
+        tl.to(prog.uniforms.uEnergy, { value: 1, duration: 0.3, ease: "power2.out" });
+        tl.to(prog.uniforms.uTimeScale, { value: timeScale * 3.0, duration: 0.4, ease: "power2.inOut" }, 0);
+        
+        tl.to(prog.uniforms.uTransition, { value: 1, duration: 0.6, ease: "power2.inOut" }, 0.1);
+
+        tl.to(prog.uniforms.uEnergy, { value: 0, duration: 0.6, ease: "power2.inOut" }, 0.4);
+        tl.to(prog.uniforms.uTimeScale, { value: timeScale, duration: 0.6, ease: "power2.inOut" }, 0.5);
+
+    }, [shape, timeScale]);
+
     return <div className="prism-container" ref={containerRef} />;
-};
+});
 
 export default Prism;

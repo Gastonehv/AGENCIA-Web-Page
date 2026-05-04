@@ -169,8 +169,8 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     scrollTrigger: {
                         trigger: containerRef.current,
                         start: "top top",
-                        end: "+=450%", // FORZAR TIEMPO DE PERMANENCIA (MÁS LARGO QUE EL EQUIPO)
-                        pin: true,
+                        end: "+=600%", // SINCRONIZADO CON CINEMATIC-DEV
+                        pin: false, // MANEJADO POR CINEMATIC-DEV
                         scrub: 0.8,
                         invalidateOnRefresh: true,
                         id: 'showcase-scroll'

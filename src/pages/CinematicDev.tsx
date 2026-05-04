@@ -66,6 +66,9 @@ const CinematicDev: React.FC = () => {
     // Referencia para la ventana contenedora
     const windowRef = useRef<HTMLDivElement>(null);
 
+    // Referencia al Prisma para controlarlo vía ScrollTrigger
+    const prismRef = useRef<any>(null);
+
     // REFS FOR CHAPTER 7 (HOME REACTION RECREATION)
     const ctaSectionRef = useRef<HTMLDivElement>(null);
     const pulseButtonRef = useRef<HTMLButtonElement>(null);
@@ -112,6 +115,7 @@ const CinematicDev: React.FC = () => {
                     pin: true,
                     anticipatePin: 1,
                     scrub: 0.8, // MORE RESPONSIVE
+                    refreshPriority: 10, // TOP PRIORITY
                     onToggle: (self) => {
                         if (self.isActive) {
                             setCurrentChapter('ESENCIA');
@@ -210,7 +214,7 @@ const CinematicDev: React.FC = () => {
             }, "<");
 
             // Pausa dramática para asimilar "NUESTRA IA"
-            tlZoom.to({}, { duration: 2 }); // PAUSE AT END
+            tlZoom.to({}, { duration: 4 }); // INCREASED PAUSE FOR IMPACT
 
 
             // 6. EL DESPLIEGUE CONTINÚA: "NUESTRA" se despide
@@ -267,13 +271,14 @@ const CinematicDev: React.FC = () => {
 
             const tlIdentidad = gsap.timeline({
                 scrollTrigger: {
-                    trigger: '#identidad',
-                    start: 'top top',
-                    end: '+=800%',
+                    trigger: "#identidad",
+                    start: "top top",
+                    end: "+=800%", // Cinematic zoom for chapter 2
                     pin: true,
                     pinSpacing: true,
                     scrub: 0.8,
                     anticipatePin: 1,
+                    refreshPriority: 9,
                     onToggle: (self) => {
                         if (self.isActive) {
                             setMountNeural(true);
@@ -335,6 +340,8 @@ const CinematicDev: React.FC = () => {
                 ease: 'power2.out'
             }, ">-1.5");
 
+            tlIdentidad.to({}, { duration: 4 }); // PAUSA DE LECTURA: "SOMOS LA IA QUE ESTÁS BUSCANDO"
+
             tlIdentidad.to('#identidad', {
                 opacity: 0,
                 autoAlpha: 0,
@@ -348,19 +355,21 @@ const CinematicDev: React.FC = () => {
 
             // Stack items absolutely via GSAP set
             gsap.set(manifestoItems, {
-                display: 'none', // HIDDEN BY DEFAULT TO AVOID FLASH
+                autoAlpha: 0, // HIDDEN BY DEFAULT (opacity 0 + visibility hidden)
                 position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh',
-                opacity: 0, scale: 1.5, filter: 'blur(20px)', pointerEvents: 'none'
+                scale: 1.5, filter: 'blur(20px)', pointerEvents: 'none',
+                display: 'flex' // Keep flex layout active, just hide visibility
             });
 
             const tlCap3 = gsap.timeline({
                 scrollTrigger: {
-                    trigger: '#capitulo-3',
-                    start: 'top top',
-                    end: '+=1000%',
+                    trigger: "#capitulo-3",
+                    start: "top top",
+                    end: "+=1000%",
                     pin: true,
                     pinSpacing: true,
                     scrub: 0.8,
+                    refreshPriority: 8,
                     onToggle: (self) => {
                         if (self.isActive) {
                             setMountPrism(true);
@@ -378,15 +387,35 @@ const CinematicDev: React.FC = () => {
                 const title = item.querySelector('h2');
                 const bodyLines = item.querySelectorAll('.manifesto-body-line');
 
+                // Morphing scrubbeado al tiempo de la aparición del texto
+                const morphProxy = { transition: 0 };
+                const shapeA = i === 0 ? 3 : (i - 1) % 4; // De la forma anterior
+                const shapeB = i % 4; // A la forma actual
+
                 tlCap3.to(item, {
-                    display: 'flex', // UNHIDE
-                    opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.5,
+                    autoAlpha: 1, // Fades in and sets visibility visible
+                    scale: 1, filter: 'blur(0px)', duration: 1.5,
                     pointerEvents: 'all', ease: "power2.inOut",
                     onStart: () => setActiveManifestoItem(i),
-                })
-                    .fromTo(title, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
+                    onReverseComplete: () => setActiveManifestoItem(Math.max(0, i - 1)), // Arreglar backwards
+                });
+
+                tlCap3.to(morphProxy, {
+                    transition: 1,
+                    duration: 6.0, // Se extiende profundamente en la pausa de lectura para que sea muy sutil
+                    ease: "power2.out", // Termina de resolverse de manera extremadamente suave
+                    onUpdate: () => {
+                        if (prismRef.current) {
+                            // Calcula la energía basada en la parábola de la transición
+                            const energy = Math.sin(morphProxy.transition * Math.PI);
+                            prismRef.current.setMorph(shapeA, shapeB, morphProxy.transition, energy);
+                        }
+                    }
+                }, "<"); // Al mismo tiempo que aparece el texto
+
+                tlCap3.fromTo(title, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
                     .fromTo(bodyLines, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, ">")
-                    .to(item, { duration: 6 }); // Pausa de lectura para todos
+                    .to({}, { duration: 12 }); // EXTENDED READING PAUSE FOR EACH ITEM (SENSORY COMFORT)
 
                 // ATMOSPHERIC WHITE FOG FUSION (CLIMAX PAUSE)
                 if (i === manifestoItems.length - 1) {
@@ -399,9 +428,9 @@ const CinematicDev: React.FC = () => {
                 }
 
                 tlCap3.to(item, {
-                    opacity: 0, scale: 0.5, filter: 'blur(30px)',
-                    duration: 1.5, pointerEvents: 'none', ease: "power2.inOut",
-                    onComplete: () => { gsap.set(item, { display: 'none', visibility: 'hidden' }); }
+                    autoAlpha: 0, // Fades out and sets visibility hidden
+                    scale: 0.5, filter: 'blur(30px)',
+                    duration: 1.5, pointerEvents: 'none', ease: "power2.inOut"
                 });
             });
 
@@ -420,83 +449,119 @@ const CinematicDev: React.FC = () => {
                 trigger: ".alma-focus-trigger",
                 start: "top top",
                 end: "+=1vh", // NEAR INSTANT
-                pin: ".alma-pinned-content",
-                pinSpacing: false,
-                scrub: 0.5,
-                anticipatePin: 1,
-                onToggle: (self) => {
-                    if (self.isActive) {
-                        setCurrentChapter('EL NÚCLEO');
-                        setChapterNumber('5');
-                    }
-                },
-                refreshPriority: 6
             });
 
-            // --- SECCIÓN 6: SIMBIOSIS CINEMÁTICA ---
-            const tlSimbiosis = gsap.timeline({
+            // --- CAPÍTULO 4: EJECUCIÓN (PINNED SHOWCASE) ---
+            const tlCap4 = gsap.timeline({
                 scrollTrigger: {
+                    trigger: "#capacidades",
+                    start: "top top",
+                    end: "+=600%",
                     pin: true,
-                    scrub: 1,
-                    anticipatePin: 1,
+                    pinSpacing: true,
+                    scrub: 0.8,
+                    refreshPriority: 7,
                     onToggle: (self) => {
                         if (self.isActive) {
-                            setCurrentChapter('SIMBIOSIS');
-                            setChapterNumber('6');
-                            gsap.to('#simbiosis', { autoAlpha: 1, duration: 0.5 });
-                        } else {
-                            // Only hide if we are above it
-                            if (self.progress === 0) {
-                                gsap.to('#simbiosis', { autoAlpha: 0, duration: 0.3 });
-                            }
+                            setCurrentChapter('EJECUCIÓN');
+                            setChapterNumber('4');
                         }
                     },
-                    refreshPriority: 5
+                    snap: {
+                        snapTo: [0, 1],
+                        duration: { min: 0.4, max: 1.0 },
+                        delay: 0.1,
+                        ease: "power2.out"
+                    }
                 }
             });
 
-            // Simbiosis internal reveal (if needed, though Symbiosis.tsx has its own)
-            tlSimbiosis.fromTo("#simbiosis-content", { opacity: 0 }, { opacity: 1, duration: 1 });
-            tlSimbiosis.to({}, { duration: 2 }); // Pause to read
+            // --- CAPÍTULO 5: EL NÚCLEO (PINNED TEAM & ALMA) ---
+            const tlNucleoGlobal = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#nucleo",
+                    start: "top top",
+                    end: "+=500%", // Extended space for team and Alma
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: 0.8,
+                    refreshPriority: 6,
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setCurrentChapter('EL NÚCLEO');
+                            setChapterNumber('5');
+                        }
+                    },
+                    snap: {
+                        snapTo: [0, 1],
+                        duration: { min: 0.4, max: 1.0 },
+                        delay: 0.1,
+                        ease: "power2.out"
+                    }
+                }
+            });
 
-            // --- NUCLEO: AUTONOMOUS RIFT PHYSICS (CAP 5) ---
+            // Re-targeting team rifts inside the pinned Nucleo
             const teamRows = gsap.utils.toArray<HTMLElement>('.rift-row');
-            teamRows.forEach((row) => {
+            teamRows.forEach((row, i) => {
                 const left = row.querySelector('.rift-left');
                 const right = row.querySelector('.rift-right');
                 const img = row.querySelector('.rift-img');
                 const id = row.querySelector('.rift-id');
 
-                ScrollTrigger.create({
-                    trigger: row,
-                    start: "top 65%",
-                    end: "bottom 35%",
-                    onEnter: () => {
+                // Internal animations within the pinned Nucleo timeline
+                tlNucleoGlobal.to(row, {
+                    onStart: () => {
                         gsap.to(left, { x: -40, duration: 0.8, ease: "power2.out" });
                         gsap.to(right, { x: 40, duration: 0.8, ease: "power2.out" });
                         gsap.to(img, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" });
                         gsap.to(id, { opacity: 0.15, scale: 1.2, duration: 0.6 });
-                    },
-                    onLeave: () => {
-                        gsap.to(left, { x: 0, duration: 0.8, ease: "power2.inOut" });
-                        gsap.to(right, { x: 0, duration: 0.8, ease: "power2.inOut" });
-                        gsap.to(img, { opacity: 0.45, scale: 1, duration: 1, ease: "power2.inOut" });
-                        gsap.to(id, { opacity: 0.05, scale: 1, duration: 0.6 });
-                    },
-                    onEnterBack: () => {
-                        gsap.to(left, { x: -40, duration: 0.8, ease: "power2.out" });
-                        gsap.to(right, { x: 40, duration: 0.8, ease: "power2.out" });
-                        gsap.to(img, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" });
-                        gsap.to(id, { opacity: 0.15, scale: 1.2, duration: 0.6 });
-                    },
-                    onLeaveBack: () => {
+                    }
+                }, `+=${i * 1}`); // Stagger the rift reveals during the pin
+
+                tlNucleoGlobal.to({}, { duration: 1 }); // Pause for each member
+
+                tlNucleoGlobal.to(row, {
+                    onStart: () => {
                         gsap.to(left, { x: 0, duration: 0.8, ease: "power2.inOut" });
                         gsap.to(right, { x: 0, duration: 0.8, ease: "power2.inOut" });
                         gsap.to(img, { opacity: 0.45, scale: 1, duration: 1, ease: "power2.inOut" });
                         gsap.to(id, { opacity: 0.05, scale: 1, duration: 0.6 });
                     }
-                });
+                }, ">+1");
             });
+
+            // Alma Reveal within the same Nucleo Pin
+            tlNucleoGlobal.fromTo(".alma-pinned-content", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 2 }, ">+1");
+            tlNucleoGlobal.to({}, { duration: 3 }); // Alma Reading Pause
+
+            // --- CAPÍTULO 6: SIMBIOSIS CINEMÁTICA ---
+            const tlSimbiosis = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#simbiosis",
+                    start: "top top",
+                    end: "+=400%",
+                    pin: true,
+                    scrub: 1,
+                    anticipatePin: 1,
+                    refreshPriority: 5,
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setCurrentChapter('SIMBIOSIS');
+                            setChapterNumber('6');
+                        }
+                    },
+                    snap: {
+                        snapTo: [0, 1],
+                        duration: { min: 0.4, max: 1.0 },
+                        delay: 0.1,
+                        ease: "power2.out"
+                    }
+                }
+            });
+
+            // Simbiosis content is always visible
+            tlSimbiosis.to({}, { duration: 5 }); // EXTENDED PAUSE TO READ CARDS (INGENIERIA, ESCALABILIDAD, DOMINIO)
 
             // --- ENTRANCE GLITCH TRIGGER (CAP 6 -> 7) ---
             ScrollTrigger.create({
@@ -558,25 +623,14 @@ const CinematicDev: React.FC = () => {
             }
 
             // --- HUD UPDATER: REMOVED MANUAL TRIGGERS, NOW INTEGRATED ABOVE ---
-            
-            // Dedicated trigger for EJECUCIÓN (Cap 4) since it's not pinned
-            ScrollTrigger.create({
-                trigger: "#capacidades",
-                start: "top center",
-                end: "bottom center",
-                onToggle: (self) => {
-                    if (self.isActive) {
-                        setCurrentChapter('EJECUCIÓN');
-                        setChapterNumber('4');
-                    }
-                }
-            });
+            // Triggers for 4, 5, 6 are now handled in their pinned timelines above.
 
             // Dedicated trigger for EL SALTO (Cap 7)
             ScrollTrigger.create({
                 trigger: "#capitulo-7",
                 start: "top center",
                 end: "bottom center",
+                refreshPriority: 4,
                 onToggle: (self) => {
                     if (self.isActive) {
                         setCurrentChapter('EL SALTO');
@@ -710,7 +764,7 @@ const CinematicDev: React.FC = () => {
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     width: '100%', height: '100%'
                 }}>
-                    <svg ref={maskGroupRef} viewBox="0 0 17009 2588" width="80%" height="auto" style={{ overflow: 'visible' }}>
+                    <svg ref={maskGroupRef} viewBox="0 0 17009 2588" width="80%" style={{ height: 'auto', overflow: 'visible' }}>
                         <defs>
                             <mask id="n-portal-mask">
                                 <rect x="-50000" y="-50000" width="100000" height="100000" fill="white" />
@@ -928,8 +982,9 @@ const CinematicDev: React.FC = () => {
                         width: '100%', height: '100%'
                     }}>
                         <Prism
+                            ref={prismRef}
                             animationType="drift" timeScale={0.3} height={3.0} baseWidth={6.0}
-                            scale={4.5} hueShift={0} colorFrequency={1} noise={0} glow={1.2}
+                            scale={2.2} hueShift={0} colorFrequency={1} noise={0} glow={1.2}
                             hoverStrength={3.5} inertia={0.12} bloom={0.8}
                         />
                     </div>
@@ -1095,42 +1150,35 @@ const CinematicDev: React.FC = () => {
 
                 <div className="alma-focus-trigger" style={{ minHeight: '1px', position: 'relative', zIndex: 650 }}>
                     <div className="alma-pinned-content" id="alma-trigger" style={{
-                        height: '100vh', // RESTORED FOR FULL VISIBILITY
+                        height: '100vh',
                         width: '100%',
                         backgroundColor: '#FFF',
                         display: 'flex',
                         alignItems: 'center',
-                        marginTop: '0' // REMOVED NEGATIVE MARGIN TO PREVENT GHOSTING/CROPPING
                     }}>
                         <AlmaSection />
                     </div>
                 </div>
+
             </section>
+
+            {/* BRIDGE GRADIENT: WHITE (ALMA) -> BLACK (SIMBIOSIS) */}
+            <div style={{
+                width: '100%', height: '15vh',
+                background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)',
+                position: 'relative', zIndex: 1
+            }} />
 
             <div id="simbiosis" style={{
                 position: 'relative',
-                zIndex: 700, // ABOVE ALMA (650) BUT NOT OVERKILL
+                zIndex: 700,
                 backgroundColor: '#050505',
-                marginTop: '0',
-                minHeight: '100vh', 
-                opacity: 0, visibility: 'hidden' 
+                minHeight: '100vh'
             }}>
-                <div id="hud-marker-6" style={{ position: 'absolute', top: 0, height: '1px' }} />
-                <div style={{ marginTop: '-15vh', position: 'relative', minHeight: '100vh' }}> 
-                {/* CINEMATIC BRIDGE: THE FUSION POINT (WHITE -> BLACK) - ATTACHED TO SIMBIOSIS */}
-                <div style={{
-                    width: '100%',
-                    height: '15vh', // REDUCED TO ENSURE ALMA CONTENT IS FULLY VISIBLE
-                    background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)',
-                    position: 'relative',
-                    zIndex: 101
-                }}>
-                </div>
-
-                <div id="simbiosis-content" style={{ width: '100%', height: '100%' }}>
+                <div id="simbiosis-content" style={{ width: '100%', height: '100%', position: 'relative' }}>
+                    <div id="hud-marker-6" style={{ position: 'absolute', top: 0, height: '1px' }} />
                     <Symbiosis />
                 </div>
-                </div> {/* CLOSE MARGIN WRAPPER */}
             </div>
 
             {/* BRIDGE GRADIENT: BLACK (SIMBIOSIS) -> WHITE (CAPITULO 7) */}

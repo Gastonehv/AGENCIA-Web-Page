@@ -1,59 +1,53 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Loader from '../components/Loader';
-import { useScroll } from '../context/ScrollContext';
+import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
 import EssenceBackground from '../components/EssenceBackground';
-import SoulManifesto from '../components/SoulManifesto';
-import ShowcaseSlider from '../components/ShowcaseSlider';
-import Symbiosis from '../components/Symbiosis';
-import Footer from '../components/Footer';
-import AlmaSection from '../components/AlmaSection';
-import GlitchPortal from '../components/GlitchPortal';
-import type { GlitchPortalHandle } from '../components/GlitchPortal';
-import SEO from '../components/SEO';
-import StructuredData from '../components/StructuredData';
-import ChapterHUD from '../components/ChapterHUD';
-// --- RECURSOS (Desde Esencia) ---
-import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4';
-const videoSrc = essenceHeroVideo;
 import officialTypography from '../assets/logos/agencia_typography_official.png';
+import NeuralNetworkALMA from '../components/NeuralNetworkALMA';
+import ScrambleText from '../components/ScrambleText';
+import AsciiRipple from '../components/AsciiRipple';
+import Prism from '../components/Prism';
+import ShowcaseSlider from '../components/ShowcaseSlider';
 import ceoImg from '../assets/team/ceo.jpg';
 import gaelImg from '../assets/team/gael_oracle.png';
 import footerLogo from '../assets/logo_agencia_full.png';
-
+import AlmaSection from '../components/AlmaSection';
+import Symbiosis from '../components/Symbiosis';
+import GlitchPortal from '../components/GlitchPortal';
+import Footer from '../components/Footer';
+import ChapterHUD from '../components/ChapterHUD';
+import Loader from '../components/Loader';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const MANIFESTO = [
+    {
+        title: "EN LA ERA DEL RUIDO INFINITO",
+        body: ["La tecnología ha democratizado la creación,", "pero ha mercantilizado el alma,", "En este frenesí de velocidad,", "hemos olvidado por qué creamos."],
+    },
+    {
+        title: "EL ALGORITMO NO TIENE PULSO",
+        body: ["La IA es el pincel más poderoso,", "pero sigue siendo solo eso: un pincel.", "Buscamos 'el error hermoso',", "esa chispa que la lógica pura jamás descubriría."],
+    },
+    {
+        title: "ARQUITECTOS DE LA NUEVA REALIDAD",
+        body: ["Fusionamos sensibilidad artística visceral", "con potencia de cálculo masiva.", "Donde otros ven simples 'prompts',", "nosotros vemos partituras complejas."],
+    },
+    {
+        title: "LA MEDIOCRIDAD ES EL ENEMIGO",
+        body: ["Si buscas lo seguro,", "el mundo está lleno de agencias.", "Pero si buscas lo imposible,", "bienvenido a casa."],
+    }
+];
+
 const Home: React.FC = () => {
-    // SALTAR LOADER SI SE REGRESA (Hash detectado)
-    const { hash } = useLocation();
-    const [loading, setLoading] = useState(!hash); // Si hay hash, loading = false
-    const { lenis } = useScroll();
-    // ESTADO DEL HUD DE CAPÍTULOS
-    const [activeChapter, setActiveChapter] = useState('ESENCIA');
-    const [chapterNum, setChapterNum] = useState('1');
-    const maskGroupRef = useRef<SVGSVGElement>(null); // Ref actualizada de CinematicDev
-    const bgRef = useRef<HTMLDivElement>(null); // Ref fondo CinematicDev
-    const redLayerRef = useRef<HTMLDivElement>(null); // Ref roja CinematicDev
-    const windowRef = useRef<HTMLDivElement>(null); // Ref ventana CinematicDev
+    const [isLoading, setIsLoading] = React.useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
-    const pulseButtonRef = useRef<HTMLButtonElement>(null);
-    const ctaSectionRef = useRef<HTMLElement>(null); // Nueva referencia para seguridad del Pin
-    const glitchRef = useRef<GlitchPortalHandle>(null);
+    const entranceGlitchRef = useRef<any>(null);
+    const [currentChapter, setCurrentChapter] = React.useState('ESENCIA');
+    const [chapterNumber, setChapterNumber] = React.useState('1');
 
-    // Estado de scroll para redes neuronales (anteriormente Esencia)
-
-    // DATOS DEL EQUIPO
-    const team = [
-        { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
-        { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
-        { id: 3, role: 'LEAD DEVELOPER', name: 'Tejedor de Código', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1000&auto=format&fit=crop', scale: 1.35 },
-        { id: 4, role: 'UX/UI DIRECTOR', name: 'Escultor de Interfaces', img: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=1000&auto=format&fit=crop', scale: 1.35 },
-    ];
-
-    // RUTAS DEL LOGOTIPO (Para la máscara del portal de la N)
+    // RUTAS DEL LOGOTIPO (Vectores "AGENCIA")
     const logoPaths = [
         "449.17,2442.5 90.53,2442.5 1043.39,157.04 1992.73,2442.5 1637.6,2442.5 1043.39,1025.52", // A
         "M3825.9 519.19c-206.28,0 -382.09,76.19 -527.41,228.55 -145.34,152.36 -218,335.2 -218,548.51 0,215.66 72.66,400.84 218,555.54 145.33,154.71 321.13,232.07 527.41,232.07 119.54,0 234.99,-30.47 346.33,-91.43 111.35,-60.95 203.35,-145.33 276.01,-253.15l80.88 -116.04 -397.32 -348.09 235.58 -270.75 559.06 488.74c-77.35,285.97 -216.24,515.7 -416.65,689.15 -200.42,173.46 -428.37,260.2 -683.87,260.2 -304.74,0 -564.92,-111.93 -780.58,-335.79 -215.66,-223.86 -323.48,-494.01 -323.48,-810.46 0,-314.11 107.82,-582.5 323.48,-805.18 215.66,-222.69 475.84,-334.03 780.58,-334.03 215.65,0 416.07,59.78 601.25,179.32l-242.61 274.26c-107.82,-60.95 -227.38,-91.43 -358.64,-91.43z", // G
@@ -64,423 +58,647 @@ const Home: React.FC = () => {
         "15375.63,2442.5 15016.99,2442.5 15969.85,157.04 16919.2,2442.5 16564.07,2442.5 15969.85,1025.52" // A
     ];
 
-    const handleLoaderComplete = React.useCallback(() => {
-        setLoading(false);
+    // Referencia para el fondo
+    const bgRef = useRef<HTMLDivElement>(null);
+    // Referencia para la capa roja intermedia
+    const redLayerRef = useRef<HTMLDivElement>(null);
+    // Referencia para la capa de éter líquido (Deprecado)
+    // const etherLayerRef = useRef<HTMLDivElement>(null);
+
+    // Referencia para la ventana contenedora
+    const windowRef = useRef<HTMLDivElement>(null);
+
+    // Referencia al Prisma para controlarlo vía ScrollTrigger
+    const prismRef = useRef<any>(null);
+
+    // REFS FOR CHAPTER 7 (HOME REACTION RECREATION)
+    const ctaSectionRef = useRef<HTMLDivElement>(null);
+    const pulseButtonRef = useRef<HTMLButtonElement>(null);
+
+    const [activeManifestoItem, setActiveManifestoItem] = React.useState(0);
+    const [mountEssence, setMountEssence] = React.useState(true);
+    const [mountNeural, setMountNeural] = React.useState(true);
+    const [mountPrism, setMountPrism] = React.useState(false);
+
+    // Referencia para el grupo SVG que vamos a escalar
+    const maskGroupRef = useRef<SVGSVGElement>(null);
+
+    // CHAPTER-SPECIFIC REFS (For Chapter 5 Rifts)
+    const team = [
+        { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
+        { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
+    ];
+
+    // --- CAMPO DE PARTICULAS MAGNETICAS (APAGADO) ---
+
+    React.useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Animación de Fondo (Ciclo de Color) - MANTENIDA
+            gsap.to(bgRef.current, {
+                backgroundColor: '#89CFF0',
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
+                keyframes: [
+                    { backgroundColor: '#A7C7E7', duration: 2 },
+                    { backgroundColor: '#B0E0E6', duration: 2 },
+                    { backgroundColor: '#89CFF0', duration: 2 },
+                    { backgroundColor: '#ADD8E6', duration: 2 }
+                ]
+            });
+
+            // --- 1. ANIMACIÓN DE ZOOM DEL PORTAL ---
+            const tlZoom = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.cinematic-content',
+                    start: 'top top',
+                    end: '+=750%', // 2X FASTER (FROM 1500%)
+                    pin: true,
+                    anticipatePin: 1,
+                    scrub: 0.8, // MORE RESPONSIVE
+                    refreshPriority: 10, // TOP PRIORITY
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setCurrentChapter('ESENCIA');
+                            setChapterNumber('1');
+                        }
+                    },
+                    onUpdate: (self) => {
+                        // MOUNT LOGIC - Absolute Death to Ghosting
+                        if (self.progress > 0.99) {
+                            setMountEssence(false);
+                            gsap.set('.cinematic-content', { opacity: 0, visibility: 'hidden', pointerEvents: 'none' });
+                        } else {
+                            setMountEssence(true);
+                            gsap.set('.cinematic-content', { opacity: 1, visibility: 'visible', pointerEvents: 'auto' });
+                        }
+
+                        if (self.progress === 0) {
+                            gsap.set('.iridescent-layer', { opacity: 1 });
+                            gsap.set('.cinematic-content', { opacity: 1, visibility: 'visible' });
+                        }
+                    }
+                }
+            });
+
+            tlZoom.to(maskGroupRef.current, {
+                scale: 150, // Crecimiento masivo para "atravesar"
+                // Coordenadas calculadas del centro de la N (9164, 1299) sobre el viewBox (17009, 2588)
+                // X: 9164/17009 = 53.8%
+                // Y: 1299/2588 = 50.1%
+                transformOrigin: "53.8% 50.1%",
+                ease: "power2.inOut",
+                duration: 1
+            });
+
+            // 2. Desvanecimiento de la Capa Roja
+            tlZoom.to(redLayerRef.current, {
+                autoAlpha: 0, // Se desvanece hasta ser invisible
+                ease: "power1.out",
+                duration: 0.6 // Un poco más rápido para revelar la ventana antes
+            }, "<"); // "<" = Inicia al mismo tiempo que el inicio del zoom
+
+            // 3. Aparición/Acercamiento de la Ventana
+            tlZoom.fromTo(windowRef.current,
+                { scale: 0.4 },
+                { scale: 0.8, duration: 1, ease: "power2.inOut" },
+                "<"
+            );
+
+            // 4. Secuencia de TEXTO (NUESTRA -> ESENCIA)
+            // Aparecen con estilo cinemático (Blur + Fade + Scale)
+            tlZoom.to('.text-nuestra', {
+                autoAlpha: 1, y: 0,
+                duration: 0.8, ease: "power2.out"
+            }, "-=0.4");
+
+            tlZoom.to('.text-esencia', {
+                autoAlpha: 1, scale: 1, filter: 'blur(0px)',
+                duration: 1, ease: "power2.out"
+            }, ">-0.6");
+
+            // 5. TRANSFORMACIÓN: "NUESTRA ESENCIA" -> "NUESTRA IA"
+            // "ESENC" se desvanece lentamente
+            tlZoom.to('.word-esenc', {
+                width: 0, // CRÍTICO: Libera el espacio físico para que "IA" se centre al 100%
+                opacity: 0,
+                filter: 'blur(20px)',
+                duration: 1.5,
+                ease: "power2.inOut"
+            }, ">+0.5"); // Pequeña pausa para leer "ESENCIA" completo antes de borrarlo
+
+            // "IA" se vuelve Verde Radiactivo con efecto de TUBOS DE NEÓN
+            tlZoom.to('.hero-char-ia', {
+                color: '#00FF99', // Color base
+                textShadow: 'none', // Limpio, sin halo difuminado excesivo
+                WebkitTextStroke: '0px',
+                scale: 1.15, // Poco más de peso
+                duration: 1.5,
+                ease: "power2.out"
+            }, "<"); // Al mismo tiempo que ESENC desaparece
+
+            // Desaparecer la red neuronal / capa de esencia de fondo (Como en original)
+            tlZoom.to(".essence-dev-wrapper", {
+                opacity: 0,
+                autoAlpha: 0,
+                duration: 1,
+                ease: 'power1.in'
+            }, "<");
+
+            // ALINEACIÓN PERFECTAMENTE MILIMÉTRICA: "NUESTRA" se acopla con "IA"
+            tlZoom.to('.text-nuestra', {
+                y: '0%', // Baja para alinear al centro de IA
+                x: '0%', // Desplazamiento fino horizontal ajustado
+                scale: 1.05, // Ligeramente crecido para presencia
+                duration: 1.5,
+                ease: "power2.inOut"
+            }, "<");
+
+            // Pausa dramática para asimilar "NUESTRA IA"
+            tlZoom.to({}, { duration: 4 }); // INCREASED PAUSE FOR IMPACT
+
+
+            // 6. EL DESPLIEGUE CONTINÚA: "NUESTRA" se despide
+            tlZoom.to('.text-nuestra', {
+                opacity: 0,
+                filter: 'blur(20px)',
+                duration: 1.2,
+                ease: "power2.inOut"
+            });
+
+            // 7. EL PORTAL FINAL: "IA" SE CONVIERTE EN LA PUERTA AL SIGUIENTE NIVEL
+            // IA Crece masivamente
+            tlZoom.to('.hero-char-ia', {
+                scale: 300,
+                filter: 'blur(0px)',
+                opacity: 0,
+                duration: 2.5,
+                ease: "expo.in",
+                immediateRender: false
+            }, ">");
+
+            // SIMULTÁNEO: La capa iridiscente/líquida de fondo desaparece exactamente AQUÍ
+            tlZoom.to('.iridescent-layer', {
+                opacity: 0,
+                duration: 1.5,
+                ease: "power2.inOut",
+                immediateRender: false
+            }, "<");
+
+            // SIMULTÁNEO: La ventana de video se desvanece y desaparece para revelar el fondo blanco
+            tlZoom.to(windowRef.current, {
+                autoAlpha: 0,
+                scale: 0.9,
+                filter: 'blur(20px)',
+                duration: 1.5,
+                ease: "power2.in",
+                immediateRender: false
+            }, "<0.2");
+
+            // SIMULTÁNEO: El fondo y sus destellos iridiscentes pasan a Blanco Sólido impoluto
+            tlZoom.to('.iridescent-layer', {
+                opacity: 0,
+                duration: 1.5,
+                ease: "power2.inOut",
+                immediateRender: false
+            }, "<");
+
+            // Opacidad final para limpieza profunda y colapso para empalmar con Identidad
+            tlZoom.to('.cinematic-content', {
+                autoAlpha: 0,
+                duration: 0.5,
+                ease: "power2.in",
+            });
+
+            const tlIdentidad = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#identidad",
+                    start: "top top",
+                    end: "+=800%", // Cinematic zoom for chapter 2
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: 0.8,
+                    anticipatePin: 1,
+                    refreshPriority: 9,
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setMountNeural(true);
+                            setCurrentChapter('IDENTIDAD');
+                            setChapterNumber('2');
+                        }
+                    },
+                    onLeaveBack: () => setMountNeural(false),
+                    onLeave: () => setMountNeural(false),
+                    onEnterBack: () => setMountNeural(true)
+                }
+            });
+
+            // Clean start for Identidad
+            tlIdentidad.to('.entropy-el', { // Primera Letra aparece en un lapso exacto
+                opacity: 1,
+                filter: 'blur(0px)',
+                transform: 'scale(1)',
+                duration: 3,
+                stagger: 1.2,
+                ease: 'power2.out'
+            }, 0.2);
+
+            tlIdentidad.to('.entropy-catchphrase', {
+                opacity: 1,
+                filter: 'blur(0px)',
+                transform: 'scale(1)',
+                color: '#888888', // CORRECCIÓN: Gris en lugar de Blanco (Invisible)
+                duration: 3,
+                ease: 'expo.out'
+            }, ">-0.5");
+
+            tlIdentidad.to('.entropy-catchphrase', {
+                color: '#00FF99',
+                textShadow: '0 0 40px rgba(0,255,153,0.6), 0 0 80px rgba(0,255,153,0.4)',
+                duration: 2,
+                ease: 'power4.out'
+            }, ">");
+
+            tlIdentidad.to('.entropy-finish', {
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 3,
+                ease: 'power2.out'
+            }, ">-1");
+
+            tlIdentidad.to('.entropy-line', {
+                scaleY: 1,
+                duration: 3,
+                ease: 'power2.inOut'
+            }, ">-1.5");
+
+            tlIdentidad.to('.entropy-body', {
+                opacity: 1,
+                transform: 'translateY(0)',
+                filter: 'blur(0px)',
+                duration: 3,
+                stagger: 1,
+                ease: 'power2.out'
+            }, ">-1.5");
+
+            tlIdentidad.to({}, { duration: 4 }); // PAUSA DE LECTURA: "SOMOS LA IA QUE ESTÁS BUSCANDO"
+
+            tlIdentidad.to('#identidad', {
+                opacity: 0,
+                autoAlpha: 0,
+                visibility: 'hidden',
+                duration: 2,
+                ease: 'power2.in'
+            }, ">+0.5");
+
+            // --- 3. CAPÍTULO 3: EL MANIFIESTO (PRISM RESTORATION) ---
+            const manifestoItems = gsap.utils.toArray<HTMLElement>('.manifesto-item');
+
+            // Stack items absolutely via GSAP set
+            gsap.set(manifestoItems, {
+                autoAlpha: 0, // HIDDEN BY DEFAULT (opacity 0 + visibility hidden)
+                position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh',
+                scale: 1.5, filter: 'blur(20px)', pointerEvents: 'none',
+                display: 'flex' // Keep flex layout active, just hide visibility
+            });
+
+            const tlCap3 = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#capitulo-3",
+                    start: "top top",
+                    end: "+=1000%",
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: 0.8,
+                    refreshPriority: 8,
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setMountPrism(true);
+                            setCurrentChapter('GÉNESIS');
+                            setChapterNumber('3');
+                        }
+                    },
+                    onLeaveBack: () => setMountPrism(false),
+                    onLeave: () => setMountPrism(false),
+                    onEnterBack: () => setMountPrism(true)
+                }
+            });
+
+            manifestoItems.forEach((item, i) => {
+                const title = item.querySelector('h2');
+                const bodyLines = item.querySelectorAll('.manifesto-body-line');
+
+                // Morphing scrubbeado al tiempo de la aparición del texto
+                const morphProxy = { transition: 0 };
+                const shapeA = i === 0 ? 3 : (i - 1) % 4; // De la forma anterior
+                const shapeB = i % 4; // A la forma actual
+
+                tlCap3.to(item, {
+                    autoAlpha: 1, // Fades in and sets visibility visible
+                    scale: 1, filter: 'blur(0px)', duration: 1.5,
+                    pointerEvents: 'all', ease: "power2.inOut",
+                    onStart: () => setActiveManifestoItem(i),
+                    onReverseComplete: () => setActiveManifestoItem(Math.max(0, i - 1)), // Arreglar backwards
+                });
+
+                tlCap3.to(morphProxy, {
+                    transition: 1,
+                    duration: 6.0, // Se extiende profundamente en la pausa de lectura para que sea muy sutil
+                    ease: "power2.out", // Termina de resolverse de manera extremadamente suave
+                    onUpdate: () => {
+                        if (prismRef.current) {
+                            // Calcula la energía basada en la parábola de la transición
+                            const energy = Math.sin(morphProxy.transition * Math.PI);
+                            prismRef.current.setMorph(shapeA, shapeB, morphProxy.transition, energy);
+                        }
+                    }
+                }, "<"); // Al mismo tiempo que aparece el texto
+
+                tlCap3.fromTo(title, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
+                    .fromTo(bodyLines, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, ">")
+                    .to({}, { duration: 12 }); // EXTENDED READING PAUSE FOR EACH ITEM (SENSORY COMFORT)
+
+                // ATMOSPHERIC WHITE FOG FUSION (CLIMAX PAUSE)
+                if (i === manifestoItems.length - 1) {
+                    tlCap3.to(item, { duration: 4 }); // EXTRA TIME PARA EL ÚLTIMO ITEM
+                    tlCap3.to('.manifesto-white-fog', {
+                        opacity: 1,
+                        duration: 3.5, // SLOW & SENSORIAL
+                        ease: "power2.inOut"
+                    }, ">"); // NOTA: Empieza DESPUÉS de la pausa (">")
+                }
+
+                tlCap3.to(item, {
+                    autoAlpha: 0, // Fades out and sets visibility hidden
+                    scale: 0.5, filter: 'blur(30px)',
+                    duration: 1.5, pointerEvents: 'none', ease: "power2.inOut"
+                });
+            });
+
+            // FINAL CLEANUP FOR MANIFESTO GHOSTING
+            tlCap3.to('#capitulo-3', {
+                autoAlpha: 0,
+                visibility: 'hidden',
+                duration: 0.5
+            });
+
+            // --- SECCIÓN 5: EL NÚCLEO (CONTROL DE PAUSAS POR DISTANCIA) ---
+            // La atención se logra mediante la altura de las secciones en el JSX.
+
+            // --- A.L.M.A. FOCUS PIN (INSTANT TRANSITION) ---
+            ScrollTrigger.create({
+                trigger: ".alma-focus-trigger",
+                start: "top top",
+                end: "+=1vh", // NEAR INSTANT
+            });
+
+            // --- CAPÍTULO 4: EJECUCIÓN (PINNED SHOWCASE) ---
+            const tlCap4 = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#capacidades",
+                    start: "top top",
+                    end: "+=600%",
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: 0.8,
+                    refreshPriority: 7,
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setCurrentChapter('EJECUCIÓN');
+                            setChapterNumber('4');
+                        }
+                    },
+                    snap: {
+                        snapTo: [0, 1],
+                        duration: { min: 0.4, max: 1.0 },
+                        delay: 0.1,
+                        ease: "power2.out"
+                    }
+                }
+            });
+
+            // --- CAPÍTULO 5: EL NÚCLEO (PINNED TEAM & ALMA) ---
+            const tlNucleoGlobal = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#nucleo",
+                    start: "top top",
+                    end: "+=500%", // Extended space for team and Alma
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: 0.8,
+                    refreshPriority: 6,
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setCurrentChapter('EL NÚCLEO');
+                            setChapterNumber('5');
+                        }
+                    },
+                    snap: {
+                        snapTo: [0, 1],
+                        duration: { min: 0.4, max: 1.0 },
+                        delay: 0.1,
+                        ease: "power2.out"
+                    }
+                }
+            });
+
+            // Re-targeting team rifts inside the pinned Nucleo
+            const teamRows = gsap.utils.toArray<HTMLElement>('.rift-row');
+            teamRows.forEach((row, i) => {
+                const left = row.querySelector('.rift-left');
+                const right = row.querySelector('.rift-right');
+                const img = row.querySelector('.rift-img');
+                const id = row.querySelector('.rift-id');
+
+                // Internal animations within the pinned Nucleo timeline
+                tlNucleoGlobal.to(row, {
+                    onStart: () => {
+                        gsap.to(left, { x: -40, duration: 0.8, ease: "power2.out" });
+                        gsap.to(right, { x: 40, duration: 0.8, ease: "power2.out" });
+                        gsap.to(img, { opacity: 0.95, scale: 1.15, duration: 1, ease: "power2.out" });
+                        gsap.to(id, { opacity: 0.15, scale: 1.2, duration: 0.6 });
+                    }
+                }, `+=${i * 1}`); // Stagger the rift reveals during the pin
+
+                tlNucleoGlobal.to({}, { duration: 1 }); // Pause for each member
+
+                tlNucleoGlobal.to(row, {
+                    onStart: () => {
+                        gsap.to(left, { x: 0, duration: 0.8, ease: "power2.inOut" });
+                        gsap.to(right, { x: 0, duration: 0.8, ease: "power2.inOut" });
+                        gsap.to(img, { opacity: 0.45, scale: 1, duration: 1, ease: "power2.inOut" });
+                        gsap.to(id, { opacity: 0.05, scale: 1, duration: 0.6 });
+                    }
+                }, ">+1");
+            });
+
+            // Alma Reveal within the same Nucleo Pin
+            tlNucleoGlobal.fromTo(".alma-pinned-content", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 2 }, ">+1");
+            tlNucleoGlobal.to({}, { duration: 3 }); // Alma Reading Pause
+
+            // --- CAPÍTULO 6: SIMBIOSIS CINEMÁTICA ---
+            const tlSimbiosis = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#simbiosis",
+                    start: "top top",
+                    end: "+=400%",
+                    pin: true,
+                    scrub: 1,
+                    anticipatePin: 1,
+                    refreshPriority: 5,
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setCurrentChapter('SIMBIOSIS');
+                            setChapterNumber('6');
+                        }
+                    },
+                    snap: {
+                        snapTo: [0, 1],
+                        duration: { min: 0.4, max: 1.0 },
+                        delay: 0.1,
+                        ease: "power2.out"
+                    }
+                }
+            });
+
+            // Simbiosis content is always visible
+            tlSimbiosis.to({}, { duration: 5 }); // EXTENDED PAUSE TO READ CARDS (INGENIERIA, ESCALABILIDAD, DOMINIO)
+
+            // --- ENTRANCE GLITCH TRIGGER (CAP 6 -> 7) ---
+            ScrollTrigger.create({
+                trigger: "#entrance-trigger",
+                start: "top 80%",
+                onEnter: () => {
+                    if (entranceGlitchRef.current) {
+                        (entranceGlitchRef.current as any).triggerGlitch?.();
+                    }
+                }
+            });
+
+            // --- 7. CAPITULO 7: EL SALTO (EXACT RECREATION OF ORIGINAL NARRATIVE) ---
+            if (ctaSectionRef.current) {
+                const ctaTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: ctaSectionRef.current,
+                        start: 'top top',
+                        end: '+=500%',
+                        pin: true,
+                        pinSpacing: true,
+                        scrub: 1,
+                        anticipatePin: 1,
+                        snap: {
+                            snapTo: (value) => {
+                                return value < 0.2 ? 0 : 1;
+                            },
+                            duration: { min: 0.5, max: 1.2 },
+                            delay: 0.02,
+                            ease: 'expo.out'
+                        }
+                    }
+                });
+
+                ctaTl.addLabel("somos");
+                ctaTl.to({}, { duration: 1 }); // Wait time
+                ctaTl.to('.cta-somos-text', {
+                    opacity: 0,
+                    y: -80,
+                    duration: 0.6,
+                    ease: 'power3.in'
+                });
+
+                ctaTl.to('.cta-brain-container', {
+                    y: '-35vh',
+                    scale: 0.5,
+                    duration: 1,
+                    ease: 'power4.inOut'
+                }, "<");
+
+                ctaTl.to('.cta-invitation-container', {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: 'power3.out'
+                }, ">-0.4");
+
+                ctaTl.addLabel("final");
+            }
+
+            // --- HUD UPDATER: REMOVED MANUAL TRIGGERS, NOW INTEGRATED ABOVE ---
+            // Triggers for 4, 5, 6 are now handled in their pinned timelines above.
+
+            // Dedicated trigger for EL SALTO (Cap 7)
+            ScrollTrigger.create({
+                trigger: "#capitulo-7",
+                start: "top center",
+                end: "bottom center",
+                refreshPriority: 4,
+                onToggle: (self) => {
+                    if (self.isActive) {
+                        setCurrentChapter('EL SALTO');
+                        setChapterNumber('7');
+                    }
+                }
+            });
+
+            // CONTACTO (Footer)
+            ScrollTrigger.create({
+                trigger: "footer",
+                start: "top 90%",
+                onEnter: () => {
+                    setCurrentChapter('CONTACTO');
+                    setChapterNumber('8');
+                },
+                onLeaveBack: () => {
+                    setCurrentChapter('EL SALTO');
+                    setChapterNumber('7');
+                }
+            });
+
+            // CRITICAL: Sort all triggers to ensure pin-spacers are calculated in narrative order
+            ScrollTrigger.sort();
+            ScrollTrigger.refresh();
+
+        }, containerRef.current || undefined);
+
+        return () => ctx.revert();
     }, []);
 
-    // LÓGICA DE ANIMACIÓN
-    useEffect(() => {
-        // Forzar el bloqueo de scroll durante el Loader
-        if (loading) {
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
-            document.body.classList.add('loading'); // AÑADIR CLASE
-            if (lenis) lenis.stop();
-        } else {
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
-            document.body.classList.remove('loading'); // QUITAR CLASE
-
-            // LÓGICA DE NAVEGACIÓN POR HASH
-            if (hash && lenis) {
-                lenis.start();
-                // Refresco forzado para asegurar que el layout sea correcto antes de scrollear
-                ScrollTrigger.refresh();
-
-                // Use a single robust scroll call with onComplete
-                // Delay slightly to ensure browser paint
-                gsap.delayedCall(0.1, () => {
-                    lenis.scrollTo(hash, {
-                        offset: 0,
-                        duration: 1.5,
-                        force: true,
-                        onComplete: () => ScrollTrigger.refresh()
-                    });
-                });
-            } else if (lenis) {
-                // Carga normal (Sin Hash) -> Iniciar y Resetear
-                lenis.start();
-                lenis.scrollTo(0, { immediate: true });
-            }
-        }
-
-        if (!loading && maskGroupRef.current) {
-            // Reset nativo solo si no se apunta a un hash
-            if (!hash) window.scrollTo(0, 0);
-
-            const ctx = gsap.context(() => {
-                // Animación Cycler de Fondo Celeste (Desde CinematicDev)
-                gsap.to(bgRef.current, {
-                    backgroundColor: '#89CFF0',
-                    duration: 2,
-                    repeat: -1,
-                    yoyo: true,
-                    ease: "sine.inOut",
-                    keyframes: [
-                        { backgroundColor: '#A7C7E7', duration: 2 },
-                        { backgroundColor: '#B0E0E6', duration: 2 },
-                        { backgroundColor: '#89CFF0', duration: 2 },
-                        { backgroundColor: '#ADD8E6', duration: 2 }
-                    ]
-                });
-
-                // --- 1. ANIMACIÓN DE ZOOM DEL PORTAL (SCROLL) ---
-                const tlZoom = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: '.cinematic-content', // Solo el cap 1
-                        start: 'top top',
-                        end: '+=600%', // Duración moderada para el Hero Cinematic
-                        scrub: 1,
-                        pin: true,
-                        anticipatePin: 1
-                    }
-                });
-
-                // 1. Zoom Infinito de la Máscara
-                tlZoom.to(maskGroupRef.current, {
-                    scale: 150, // Crecimiento masivo para "atravesar"
-                    transformOrigin: "53.8% 50.1%",
-                    ease: "power2.inOut",
-                    duration: 1
-                });
-
-                // 2. Desvanecimiento de la Capa Roja
-                tlZoom.to(redLayerRef.current, {
-                    autoAlpha: 0,
-                    ease: "power1.out",
-                    duration: 0.6
-                }, "<");
-
-                // 3. Aparición/Acercamiento de la Ventana
-                tlZoom.fromTo(windowRef.current,
-                    { scale: 0.4 },
-                    { scale: 0.8, duration: 1, ease: "power2.inOut" },
-                    "<"
-                );
-
-                // 4. Secuencia de TEXTO (NUESTRA -> ESENCIA)
-                tlZoom.to('.text-nuestra', {
-                    autoAlpha: 1, y: 0,
-                    duration: 0.8, ease: "power2.out"
-                }, "-=0.4");
-
-                tlZoom.to('.text-esencia', {
-                    autoAlpha: 1, scale: 1, filter: 'blur(0px)',
-                    duration: 1, ease: "power2.out"
-                }, ">-0.6");
-
-                // 5. TRANSFORMACIÓN: "NUESTRA ESENCIA" -> "NUESTRA IA"
-                // "ESENC" se desvanece lentamente
-                tlZoom.to('.word-esenc', {
-                    width: 0,
-                    opacity: 0,
-                    filter: 'blur(20px)',
-                    duration: 1.5,
-                    ease: "power2.inOut"
-                }, ">+0.5"); // Pequeña pausa para leer "ESENCIA" completo antes de borrarlo
-
-                tlZoom.to('.hero-char-ia', {
-                    color: '#00FF99',
-                    textShadow: 'none',
-                    WebkitTextStroke: '0px',
-                    scale: 1.15,
-                    duration: 1.5,
-                    ease: "power2.out"
-                }, "<");
-
-                // Desaparecer la red neuronal / capa de esencia de fondo (Como en original)
-                tlZoom.to(".essence-fixed-wrapper", {
-                    opacity: 0,
-                    autoAlpha: 0,
-                    duration: 1,
-                    ease: 'power1.in'
-                }, "<");
-
-                // ALINEACIÓN "NUESTRA" con "IA"
-                tlZoom.to('.text-nuestra', {
-                    y: '0%',
-                    x: '0%',
-                    scale: 1.05,
-                    duration: 1.5,
-                    ease: "power2.inOut"
-                }, "<");
-
-                tlZoom.to({}, { duration: 1.5 }); // Pausa asimilación
-
-                // 6. ADIÓS A "NUESTRA"
-                tlZoom.to('.text-nuestra', {
-                    opacity: 0,
-                    filter: 'blur(20px)',
-                    duration: 1.2,
-                    ease: "power2.inOut"
-                });
-
-                // 7. EL PORTAL FINAL: "IA" SE CONVIERTE EN LA PUERTA AL SIGUIENTE NIVEL
-                // IA Crece masivamente
-                tlZoom.to('.hero-char-ia', {
-                    scale: 120, // Zoom infinito estilo Nolan
-                    filter: 'blur(0px)',
-                    opacity: 0, // Se desvanece al cruzar
-                    duration: 2,
-                    autoAlpha: 0,
-                    display: 'none', // FORZAR DESAPARICIÓN DEL DOM para evitar bug GPU
-                    ease: "expo.in"
-                }, ">"); // En vez de "8.5" absoluto que generaba huecos en blanco
-
-                // SIMULTÁNEO: La ventana de video se desvanece y desaparece para revelar el fondo blanco
-                tlZoom.to(windowRef.current, {
-                    autoAlpha: 0,
-                    scale: 0.9, // Ligera contracción mientras desaparece
-                    filter: 'blur(20px)',
-                    duration: 1.5,
-                    ease: "power2.in"
-                }, "<0.2"); // Empieza un poco después de que inicie el zoom de IA
-
-                // SIMULTÁNEO: Capa iridiscente pasa a Blanco
-                tlZoom.to('.iridescent-layer', {
-                    opacity: 0,
-                    duration: 1.5,
-                    ease: "power2.inOut"
-                }, "<");
-
-                // Opacidad final para limpieza profunda y colapso para empalmar con Identidad
-                tlZoom.to('.cinematic-content', {
-                    autoAlpha: 0,
-                    duration: 0.1,
-                    ease: "none"
-                }, "<"); // Desaparece al mismo tiempo que muere la IA y demás capas
-                // --- Lógica del Resto de GSAP (Manteniendo Rifts y Simbiosis) ---
-
-                // --- CHAPTER HUD TRACKING ---
-                const chapters = [
-                    { id: '#hero', name: 'ESENCIA', num: '1' },
-                    { id: '#identidad', name: 'IDENTIDAD', num: '2' },
-                    { id: '#manifesto', name: 'EL MANIFIESTO', num: '3' },
-                    { id: '#capacidades', name: 'INGENIERÍA CREATIVA', num: '4' },
-                    { id: '#nucleo', name: 'EL NÚCLEO', num: '5' },
-                    { id: '#simbiosis', name: 'SIMBIOSIS', num: '6' },
-                    { id: '#contacto', name: 'EL SALTO', num: '7' },
-                ];
-
-                chapters.forEach(chapter => {
-                    ScrollTrigger.create({
-                        trigger: chapter.id,
-                        start: "top 50%",
-                        end: "bottom 50%",
-                        onEnter: () => {
-                            setActiveChapter(chapter.name);
-                            setChapterNum(chapter.num);
-                        },
-                        onEnterBack: () => {
-                            setActiveChapter(chapter.name);
-                            setChapterNum(chapter.num);
-                        }
-                    });
-                });
-                const tlIdentidad = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: '#identidad',
-                        start: 'top top', // Empalme Inmediato y perfecto (Top con Top, gracias al Margin -100vh)
-                        end: '+=600%', // Igualado a CinematicDev
-                        pin: true,
-                        scrub: 0.5,
-                        anticipatePin: 1
-                    }
-                });
-
-                // Resurrección de Nodos: Después de apagar la red neuronal en Cap 1, renace aquí (como el usuario exige)
-                tlIdentidad.to('.essence-fixed-wrapper', {
-                    opacity: 1,
-                    autoAlpha: 1,
-                    duration: 1.5,
-                    ease: 'power2.inOut'
-                }, 0); // Empieza instantáneamente en start del tlIdentidad
-
-                tlIdentidad.to('.entropy-el', {
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    transform: 'scale(1)',
-                    duration: 3,
-                    stagger: 1.2,
-                    ease: 'power2.out'
-                }, 0.2);
-
-                tlIdentidad.to('.entropy-catchphrase', {
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    transform: 'scale(1)',
-                    color: '#888888', // CORRECCIÓN: Gris en lugar de Blanco (Invisible)
-                    duration: 3,
-                    ease: 'expo.out'
-                }, ">-0.5");
-
-                tlIdentidad.to('.entropy-catchphrase', {
-                    color: '#00FF99',
-                    textShadow: '0 0 40px rgba(0,255,153,0.6), 0 0 80px rgba(0,255,153,0.4)',
-                    duration: 2,
-                    ease: 'power4.out'
-                }, ">");
-
-                tlIdentidad.to('.entropy-finish', {
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    duration: 3,
-                    ease: 'power2.out'
-                }, ">-1");
-
-                tlIdentidad.to('.entropy-line', {
-                    scaleY: 1,
-                    duration: 3,
-                    ease: 'power2.inOut'
-                }, ">-1.5");
-
-                tlIdentidad.to('.entropy-body', {
-                    opacity: 1,
-                    transform: 'translateY(0)',
-                    filter: 'blur(0px)',
-                    duration: 3,
-                    stagger: 1,
-                    ease: 'power2.out'
-                }, ">-1.5");
-
-                tlIdentidad.to('#identidad', {
-                    opacity: 0,
-                    duration: 4,
-                    ease: 'power2.in'
-                }, ">+1.5");
-
-                ScrollTrigger.create({
-                    trigger: '#contacto',
-                    start: 'top bottom',
-                    onEnter: () => {
-                        glitchRef.current?.trigger(0.8);
-                    },
-                    onLeaveBack: () => {
-                        glitchRef.current?.trigger(0.35);
-                    }
-                });
-
-                if (ctaSectionRef.current) {
-                    const ctaTl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: ctaSectionRef.current,
-                            start: 'top top',
-                            end: '+=500%',
-                            pin: true,
-                            pinSpacing: true,
-                            scrub: 1,
-                            anticipatePin: 1,
-                            snap: {
-                                snapTo: (value) => {
-                                    return value < 0.2 ? 0 : 1;
-                                },
-                                duration: { min: 0.5, max: 1.2 },
-                                delay: 0.02,
-                                ease: 'expo.out'
-                            }
-                        }
-                    });
-
-                    ctaTl.addLabel("somos");
-                    ctaTl.to({}, { duration: 1 });
-                    ctaTl.to('.cta-somos-text', {
-                        opacity: 0,
-                        y: -80,
-                        duration: 0.6,
-                        ease: 'power3.in'
-                    });
-
-                    ctaTl.to('.cta-brain-container', {
-                        y: '-35vh',
-                        scale: 0.5,
-                        duration: 1,
-                        ease: 'power4.inOut'
-                    }, "<");
-
-                    ctaTl.to('.cta-invitation-container', {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        ease: 'power3.out'
-                    }, ">-0.4");
-
-                    ctaTl.addLabel("final");
-                }
-
-                if (pulseButtonRef.current) {
-                    const btn = pulseButtonRef.current;
-                    gsap.from(btn, {
-                        scrollTrigger: {
-                            trigger: btn,
-                            start: "top 95%"
-                        },
-                        y: 40,
-                        opacity: 0,
-                        duration: 1.2,
-                        ease: "power4.out"
-                    });
-                }
-
-            }, containerRef.current || undefined);
-
-            return () => { ctx.revert(); };
-        }
-    }, [loading, lenis, hash]);
-
-    // canRenderSlider eliminado para evitar problemas de layout
-
     return (
-        <main ref={containerRef} style={{ backgroundColor: 'transparent' }}>
-            <div ref={bgRef} style={{
-                position: 'fixed',
-                inset: 0,
-                zIndex: -3,
-                backgroundColor: '#ADD8E6' // Azul claro inicial
-            }} />
-            <SEO
-                title="Agencia de Ingeniería Digital & Automatización"
-                description="Especialistas en Arquitectura Digital, Sistemas de Automatización 360 e Identidad Visual de Alta Fidelidad. Operamos a un nivel de eficiencia imposible para humanos."
-            />
-            <StructuredData data={{
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "AgencIA",
-                "url": "https://www.agenciamx.app",
-                "logo": "https://www.agenciamx.app/logo.png",
-                "description": "Agencia líder en Transformación Digital e Inteligencia Artificial.",
-                "sameAs": [
-                    "https://www.linkedin.com/company/agencia",
-                    "https://instagram.com/agencia"
-                ]
-            }} />
-            {loading && <Loader onComplete={handleLoaderComplete} />}
-            <GlitchPortal ref={glitchRef} />
-            {/* --- GLOBAL BACKGROUND LAYERS --- */}
+        <>
+            {isLoading && (
+                <Loader onComplete={() => {
+                    setIsLoading(false);
+                    ScrollTrigger.refresh();
+                }} />
+            )}
+        <div ref={containerRef} style={{
+            width: '100%',
+            backgroundColor: '#fff',
+            cursor: 'none !important' // FORZAR CURSOR PERSONALIZADO SIEMPRE
+        }}>
 
-            {/* 1. CAPA BASE VOLUMÉTRICA ("El Vacío Inconmensurable Blanco") */}
+            {/* CAPA BASE IRIDISCENTE (Solo visible en Hero) */}
             <div className="iridescent-layer" style={{
-                position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none',
+                position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
                 background: 'radial-gradient(ellipse at 30% 20%, #ffffff 0%, #f4f6f9 50%, #e2e6eb 100%)',
                 opacity: 1,
-                visibility: 'visible'
-            }}>
-                <div className="absolute inset-0 opacity-[0.04] mix-blend-multiply" 
-                     style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }}>
-                </div>
-            </div>
+            }}></div>
 
-            {/* 2. CAPA DE RED NEURONAL (Capítulo 02+) */}
-            <div className="essence-fixed-wrapper" style={{ position: 'fixed', inset: 0, zIndex: -2, pointerEvents: 'none', opacity: 1 }}>
-                <EssenceBackground paused={false} />
-            </div>
-
-            {/* WRAPPER RELATIVO (Capítulo 1: NUESTRA IA Cinematic) */}
-            <div className="cinematic-content" style={{
-                position: 'relative', // Bloque HTML Normal
+            {/* SECCIÓN 1: HERO PORTAL */}
+            <section className="cinematic-content" style={{
+                position: 'relative',
                 width: '100%', height: '100vh',
-                overflow: 'hidden',
-                zIndex: 10
+                zIndex: 1000,
+                overflow: 'hidden' // BLOCK SIDE MARGIN BUG
             }}>
+                <div id="hud-marker-1" style={{ position: 'absolute', top: 0, height: '1px' }} />
+                {/* FONDO ESENCIA INTEGRADO */}
+                {mountEssence && (
+                    <div style={{ position: 'absolute', inset: 0, zIndex: -1 }}>
+                        <EssenceBackground paused={false} />
+                    </div>
+                )}
 
                 {/* CAPA 1: VENTANA FLOTANTE (TEXTO SOBRE BLANCO) */}
                 <div ref={windowRef} style={{
@@ -498,11 +716,11 @@ const Home: React.FC = () => {
                     overflow: 'visible' // CAMBIADO a visible para que "IA" explote fuera de la caja
                 }}>
                     {/* Contenedor estricto para redondear el video SIN cortar el texto */}
-                    <div className="video-layer" style={{ position: 'absolute', inset: 0, borderRadius: '20px', overflow: 'hidden' }}>
+                    <div style={{ position: 'absolute', inset: 0, borderRadius: '20px', overflow: 'hidden' }}>
                         {/* VIDEO DE FONDO: Esencia Hero Ultra */}
                         <video
-                            src={videoSrc}
-                            autoPlay muted loop playsInline webkit-playsinline="true" preload="metadata"
+                            src={essenceHeroVideo}
+                            autoPlay muted loop playsInline
                             style={{
                                 width: '100%', height: '100%',
                                 objectFit: 'cover', opacity: 0.8
@@ -535,9 +753,8 @@ const Home: React.FC = () => {
                                 display: 'flex', gap: '0', whiteSpace: 'nowrap',
                                 opacity: 0, transform: 'scale(0.9)', filter: 'blur(10px)'
                             }}>
-                                {/* PART 2A: ESENC (Will Fade Away) */}
                                 <span className="word-esenc" style={{ display: 'inline-block', overflow: 'hidden' }}>ESENC</span>
-                                <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative' }}>IA</span>
+                                <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', transformOrigin: '70% 50%' }}>IA</span>
                             </div>
                         </h1>
                     </div>
@@ -546,36 +763,27 @@ const Home: React.FC = () => {
                 {/* CAPA 2: CAPA NEGRA INTERMEDIA (Transición) */}
                 <div ref={redLayerRef} style={{
                     position: 'absolute', inset: 0, zIndex: 2,
-                    backgroundColor: '#000000', // NEGRO por solicitud
+                    backgroundColor: '#000000', // Modificado a NEGRO por solicitud
                     mixBlendMode: 'normal'
                 }} />
 
                 {/* CAPA 3: PARED BLANCA CON RECORTE EN LA "N" */}
-                {/* Nota: Pared Blanca vs Fondo Azul vs Ventana Blanca. 
-                    El fondo crea el contraste entre la Pared y la Ventana. */}
                 <div style={{
                     position: 'absolute', inset: 0, zIndex: 3,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     width: '100%', height: '100%'
                 }}>
-                    <svg ref={maskGroupRef} viewBox="0 0 17009 2588" width="80%" height="auto" style={{ overflow: 'visible' }}>
+                    <svg ref={maskGroupRef} viewBox="0 0 17009 2588" width="80%" style={{ height: 'auto', overflow: 'visible' }}>
                         <defs>
                             <mask id="n-portal-mask">
-                                {/* 1. Lienzo Blanco (Visible - Pared) */}
                                 <rect x="-50000" y="-50000" width="100000" height="100000" fill="white" />
-
-                                {/* 2. La "N" es Negra (El Agujero - Invisible) */}
                                 {logoPaths[3].startsWith('M') ?
                                     <path d={logoPaths[3]} fill="black" /> :
                                     <polygon points={logoPaths[3]} fill="black" />
                                 }
                             </mask>
                         </defs>
-
-                        {/* A. La Pared Blanca Infinita (con el hueco de la N) */}
                         <rect x="-50000" y="-50000" width="100000" height="100000" fill="white" mask="url(#n-portal-mask)" />
-
-                        {/* B. El resto de letras en NEGRO SÓLIDO */}
                         <g fill="black">
                             {logoPaths.map((d, i) => {
                                 if (i === 3) return null;
@@ -586,39 +794,40 @@ const Home: React.FC = () => {
                         </g>
                     </svg>
                 </div>
+            </section>
 
-            </div> {/* Cierre de cinematic-content (Fase 1: Hero) */}
-
-            {/* --- NARRATIVE WRAPPER ELIMINADO POR SUSTITUCIÓN CINEMÁTICA --- */}
-
-            {/* 3. IDENTIDAD MASTERPIECE */}
             <section id="identidad" style={{
-                marginTop: '-100vh', // MAGIA PURA: Compensa el tamaño del pin-spacer anterior logrando un hand-off al 100% de la pantalla
                 minHeight: '100vh',
-                padding: '2rem 5% 2rem 5%', // Compact Padding
-                backgroundColor: 'transparent',
-                display: 'flex',
-                flexDirection: 'column', // Force Stack for perfect centering
-                alignItems: 'center', // Horizontally center
-                justifyContent: 'center', // Vertically center in 100vh
-                gap: '4vh', // Dynamic spacing
+                width: '100%',
+                backgroundColor: '#FFF',
                 position: 'relative',
-                zIndex: 40,
-                perspective: '1000px',
-                transformStyle: 'preserve-3d',
+                zIndex: 900, // Narrative Shield
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden'
             }}>
-                {/* COLUMN 2: CONTENT (Main Text) */}
+                <div id="hud-marker-2" style={{ position: 'absolute', top: 0, height: '1px' }} />
+                {/* FONDO NEURAL INTEGRADO */}
+                {mountNeural && (
+                    <div className="neural-container" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                        <NeuralNetworkALMA />
+                    </div>
+                )}
+
                 <div className="identidad-headline-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', perspective: '1000px', width: '100%', maxWidth: '800px' }}>
 
                     {/* BLOCK 1: NO SOMOS UNA AGENCIA... */}
                     <div className="entropy-block-1" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <h2 className="entropy-el" style={{
-                            fontSize: 'clamp(1.5rem, 3.5vw, 3rem)', // Reduced Size
+                            fontSize: 'clamp(1.5rem, 3.5vw, 3rem)',
                             fontWeight: 800,
                             margin: 0,
                             lineHeight: 1.1,
                             color: '#000',
-                            opacity: 0,
+                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)', // Sombra física para el texto
+                            opacity: 0, // GSAP manejará esto
                             filter: 'blur(20px)',
                             transform: 'scale(0.8)',
                             willChange: 'opacity, filter, transform'
@@ -626,11 +835,12 @@ const Home: React.FC = () => {
                             NO SOMOS UNA
                         </h2>
                         <h2 className="entropy-el" style={{
-                            fontSize: 'clamp(1.5rem, 3.5vw, 3rem)', // Reduced Size
+                            fontSize: 'clamp(1.5rem, 3.5vw, 3rem)',
                             fontWeight: 800,
                             margin: 0,
                             lineHeight: 1.1,
-                            color: '#222', // SC: Increased contrast for visibility
+                            color: '#000', // Modificado a NEGRO por el screenshot
+                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)', // Sombra física para el texto
                             opacity: 0,
                             filter: 'blur(30px)',
                             transform: 'scale(0.7)',
@@ -649,7 +859,7 @@ const Home: React.FC = () => {
                             lineHeight: 1,
                             color: '#333',
                             opacity: 0,
-                            filter: 'blur(40px)',
+                            filter: 'blur(40px)', // Original era 40px
                             transform: 'scale(1.2)',
                             willChange: 'opacity, filter, transform, color, text-shadow'
                         }}>
@@ -679,7 +889,6 @@ const Home: React.FC = () => {
                     flexDirection: 'column',
                     gap: '0.8rem',
                     position: 'relative',
-                    // borderLeft removed
                 }}>
                     {/* ANIMATED VERTICAL LINE */}
                     <div className="entropy-line" style={{
@@ -743,155 +952,277 @@ const Home: React.FC = () => {
                         Creatividad humana. Velocidad de máquina.
                     </p>
                 </div>
-
             </section>
 
+            {/* BRIDGE GRADIENT: WHITE (IDENTIDAD) -> BLUE (MANIFIESTO) */}
+            <div style={{
+                width: '100%',
+                height: '15vh',
+                background: 'linear-gradient(to bottom, #f8fafc 0%, #0A192F 100%)',
+                position: 'relative',
+                zIndex: 850 // BETWEEN IDENTIDAD (900) AND MANIFIESTO (800)
+            }} />
 
-            {/* 4. SOUL MANIFESTO */}
-            <section id="manifesto" className="soul-narrative-section" style={{ position: 'relative', zIndex: 40, backgroundColor: 'transparent', color: '#FFF' }}>
-                <SoulManifesto />
+            {/* --- SECCIÓN 3: CAPÍTULO 3 (EL MANIFIESTO CON VELO IRIDISCENTE) --- */}
+            <section id="capitulo-3" style={{
+                height: '100vh',
+                width: '100%',
+                backgroundColor: '#000000',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+                zIndex: 800, // Narrative Shield
+                position: 'relative'
+            }}>
+                <div id="hud-marker-3" style={{ position: 'absolute', top: 0, height: '1px' }} />
+                {/* ATMOSPHERIC WHITE FOG OVERLAY (FOR SEAMLESS TRANSITION) */}
+                <div className="manifesto-white-fog" style={{
+                    position: 'absolute', inset: 0,
+                    backgroundColor: '#FFFFFF',
+                    opacity: 0,
+                    zIndex: 10,
+                    pointerEvents: 'none'
+                }} />
+                {/* EL PRISMA (EL REGRESO DEL REY): GEOMETRÍA ÉLITE AGENCIA */}
+                {mountPrism && (
+                    <div className="prism-background-container" style={{
+                        position: 'absolute', inset: 0, zIndex: -1,
+                        width: '100%', height: '100%'
+                    }}>
+                        <Prism
+                            ref={prismRef}
+                            animationType="drift" timeScale={0.3} height={3.0} baseWidth={6.0}
+                            scale={2.2} hueShift={0} colorFrequency={1} noise={0} glow={1.2}
+                            hoverStrength={3.5} inertia={0.12} bloom={0.8}
+                        />
+                    </div>
+                )}
+
+                {/* CINEMATIC GRAIN OVERLAY - LUSION GRADE TEXTURE */}
+                <div style={{
+                    position: 'absolute', inset: 0,
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                    opacity: 0.08, pointerEvents: 'none', mixBlendMode: 'overlay', zIndex: 1
+                }} />
+
+                <style>{`
+                    @keyframes liquid-shift {
+                        0% { transform: scale(1) rotate(0deg) translate(0, 0); filter: blur(100px) hue-rotate(0deg); }
+                        50% { transform: scale(1.3) rotate(5deg) translate(5%, 5%); filter: blur(120px) hue-rotate(15deg); }
+                        100% { transform: scale(1.1) rotate(-5deg) translate(-5%, -5%); filter: blur(90px) hue-rotate(-15deg); }
+                        }
+                `}</style>
+
+                {/* MANIFESTO ITEMS */}
+                {MANIFESTO.map((item, i) => (
+                    <div
+                        key={item.title}
+                        className={`manifesto-item manifesto-item-${i}`}
+                        style={{
+                            display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                            alignItems: 'center', textAlign: 'center', padding: 'clamp(2rem, 5vw, 4rem)',
+                            width: '100%', boxSizing: 'border-box', zIndex: 10,
+                        }}
+                    >
+                        <h2 style={{
+                            fontSize: 'clamp(1.5rem, 5vw, 6rem)', lineHeight: 1.1, textTransform: 'uppercase',
+                            marginBottom: '2rem', color: '#FFF', fontWeight: 900,
+                            letterSpacing: '-0.02em', textShadow: '0 4px 20px rgba(0,0,0,0.8)',
+                        }}>
+                            <ScrambleText
+                                text={item.title} speed={1.2} iridescent={true}
+                                finalColor="#FFFFFF" trigger={activeManifestoItem === i}
+                            />
+                        </h2>
+
+                        <div style={{
+                            fontSize: 'clamp(1rem, 1.8vw, 1.3rem)', lineHeight: 1.6,
+                            color: 'rgba(255,255,255,0.85)', textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+                            fontFamily: 'monospace', maxWidth: '800px',
+                        }}>
+                            {item.body.map((line, j) => (
+                                <p key={j} className="manifesto-body-line" style={{
+                                    margin: '0 0 0.8rem 0',
+                                    opacity: 0,
+                                    fontWeight: 500,
+                                    textShadow: '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)'
+                                }}>
+                                    <AsciiRipple text={line} autoTrigger={true} trigger={activeManifestoItem === i} />
+                                </p>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </section>
 
-
-            {/* 5. SHOWCASE SLIDER */}
-            <section id="capacidades" className="identity-section" style={{ position: 'relative', zIndex: 50, marginTop: '0', backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
-                <ShowcaseSlider initialHash={hash} />
+            {/* --- SECCIÓN 4: CAPACIDADES (SHOWCASE SLIDER) --- */}
+            <section id="capacidades" style={{
+                position: 'relative',
+                zIndex: 700, // Normalized Z-Index
+                backgroundColor: '#FFFFFF',
+                minHeight: '100vh',
+                overflow: 'hidden'
+            }}>
+                <div id="hud-marker-4" style={{ position: 'absolute', top: 0, height: '1px' }} />
+                <ShowcaseSlider />
             </section>
 
-            {/* 6. TEAM RIFT */}
-            <section id="nucleo" className="team-list" style={{ minHeight: '100vh', padding: '15vh 0 10vh', backgroundColor: '#FFFFFF', color: '#000', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                <h2 style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', margin: '6rem 0', fontWeight: 900, textAlign: 'center', letterSpacing: '0.02em', wordSpacing: '0.2em', color: '#000' }}>EL NÚCLEO</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            {/* --- SECCIÓN 5: EL NÚCLEO (TEAM RIFT) --- */}
+            <section id="nucleo" style={{
+                position: 'relative',
+                zIndex: 600, // Narrative Shield
+                backgroundColor: '#FFFFFF',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
+                <div id="hud-marker-5" style={{ position: 'absolute', top: 0, height: '1px' }} />
+                <h2 style={{
+                    fontSize: 'clamp(2.5rem, 5vw, 5rem)',
+                    padding: '5vh 0 2rem',
+                    fontWeight: 900,
+                    textAlign: 'center',
+                    color: '#000',
+                    margin: 0
+                }}>
+                    EL NÚCLEO
+                </h2>
+
+                {/* TEAM LIST WITH TOTAL FUSION COMPACTNESS */}
+                <div className="team-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5vh' }}>
                     {team.map((member) => (
-                        <div key={member.id} className="rift-row" style={{ position: 'relative', width: '100%', height: '60vh', minHeight: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
-                            <div className="rift-img" style={{ position: 'absolute', top: '15%', left: 0, width: '100%', height: '70%', zIndex: 0, transition: 'none', overflow: 'hidden', opacity: 0.3, filter: 'grayscale(100%)' }}>
-                                <div style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    backgroundImage: `url(${member.img})`,
-                                    backgroundSize: 'contain', // Revert to contain to prevent "enormous" cutups
-                                    backgroundRepeat: 'no-repeat',
-                                    backgroundPosition: 'center', // Focus on faces generally
-                                    transform: 'scale(1)', // No zoom
-                                }} />
-                            </div>
-                            <span className="rift-id" style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: '10rem', fontWeight: 900, opacity: 0.05, zIndex: 1, pointerEvents: 'none', color: '#000' }}>0{member.id}</span>
-                            <div className="rift-left" style={{ flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingRight: '4rem', zIndex: 2, background: 'linear-gradient(90deg, #FFFFFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)', transform: 'translateX(0)', willChange: 'transform' }}>
-                                <h3 style={{ fontSize: 'clamp(2rem, 3.5vw, 4rem)', fontWeight: 700, textAlign: 'right', margin: 0, color: '#000', whiteSpace: 'pre-line' }}>{member.role}</h3>
-                            </div>
-                            <div className="rift-right" style={{ flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '4rem', zIndex: 2, background: 'linear-gradient(-90deg, #FFFFFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)', transform: 'translateX(0)', willChange: 'transform' }}>
-                                <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-mono)', color: '#000', maxWidth: '300px', whiteSpace: 'pre-line' }}>{member.name}</span>
+                        <div key={member.id} className="team-member-row" style={{
+                            width: '100%', minHeight: '85vh', // INCREASED to avoid cropping
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <div className="rift-row"
+                                onMouseEnter={(e) => {
+                                    const row = e.currentTarget;
+                                    gsap.to(row.querySelector('.rift-left'), { x: -30, duration: 0.6, ease: "power2.out" });
+                                    gsap.to(row.querySelector('.rift-right'), { x: 30, duration: 0.6, ease: "power2.out" });
+                                    gsap.to(row.querySelector('.rift-img'), { opacity: 0.95, scale: 1.1, duration: 0.8, ease: "power2.out" });
+                                    gsap.to(row.querySelector('.rift-id'), { opacity: 0.1, duration: 0.4 });
+                                }}
+                                onMouseLeave={(e) => {
+                                    const row = e.currentTarget;
+                                    gsap.to(row.querySelector('.rift-left'), { x: 0, duration: 0.6, ease: "power2.inOut" });
+                                    gsap.to(row.querySelector('.rift-right'), { x: 0, duration: 0.6, ease: "power2.inOut" });
+                                    gsap.to(row.querySelector('.rift-img'), { opacity: 0.45, scale: 1, duration: 0.8, ease: "power2.inOut" });
+                                    gsap.to(row.querySelector('.rift-id'), { opacity: 0.05, duration: 0.4 });
+                                }}
+                                style={{
+                                    width: '100%', height: '60vh',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    overflow: 'hidden', cursor: 'pointer',
+                                    borderTop: '1px solid rgba(0,0,0,0.05)', borderBottom: '1px solid rgba(0,0,0,0.05)',
+                                    backgroundColor: '#FFF', position: 'relative'
+                                }}>
+
+                                {/* BACKGROUND PHOTO */}
+                                <div className="rift-img" style={{
+                                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                                    zIndex: 0, transition: 'none', opacity: 0.45
+                                }}>
+                                    <div style={{
+                                        width: '100%', height: '100%',
+                                        backgroundImage: `url(${member.img})`,
+                                        backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
+                                    }} />
+                                </div>
+
+                                {/* ID */}
+                                <span className="rift-id" style={{
+                                    position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
+                                    fontSize: '10rem', fontWeight: 900, opacity: 0.05, zIndex: 1, color: '#000'
+                                }}>0{member.id}</span>
+
+                                {/* LEFT: ROLE */}
+                                <div className="rift-left" style={{
+                                    flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+                                    paddingRight: '4rem', zIndex: 2, background: 'linear-gradient(90deg, #FFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)'
+                                }}>
+                                    <h3 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 4rem)', fontWeight: 700, textAlign: 'right', margin: 0 }}>{member.role}</h3>
+                                </div>
+
+                                {/* RIGHT: NAME */}
+                                <div className="rift-right" style={{
+                                    flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
+                                    paddingLeft: '4rem', zIndex: 2, background: 'linear-gradient(-90deg, #FFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)'
+                                }}>
+                                    <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-mono)', maxWidth: '300px' }}>{member.name}</span>
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* A.L.M.A. PORTAL (Integrated into Nucleo End) */}
-                <div className="alma-portal-container" style={{ marginTop: '5vh' }}>
-                    <AlmaSection />
+                <div className="alma-focus-trigger" style={{ minHeight: '1px', position: 'relative', zIndex: 650 }}>
+                    <div className="alma-pinned-content" id="alma-trigger" style={{
+                        height: '100vh',
+                        width: '100%',
+                        backgroundColor: '#FFF',
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}>
+                        <AlmaSection />
+                    </div>
                 </div>
+
             </section>
 
-            {/* 7. SIMBIOSIS */}
-            {/* GRADIENT BRIDGE: WHITE -> BLACK (Smooth Descent) */}
-            <div style={{ height: '20vh', background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)', width: '100%', position: 'relative', zIndex: 15 }} />
+            {/* BRIDGE GRADIENT: WHITE (ALMA) -> BLACK (SIMBIOSIS) */}
+            <div style={{
+                width: '100%', height: '15vh',
+                background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)',
+                position: 'relative', zIndex: 1
+            }} />
 
-            <div id="simbiosis" style={{ position: 'relative' }}>
-                <Symbiosis />
+            <div id="simbiosis" style={{
+                position: 'relative',
+                zIndex: 700,
+                backgroundColor: '#050505',
+                minHeight: '100vh'
+            }}>
+                <div id="simbiosis-content" style={{ width: '100%', height: '100%', position: 'relative' }}>
+                    <div id="hud-marker-6" style={{ position: 'absolute', top: 0, height: '1px' }} />
+                    <Symbiosis />
+                </div>
             </div>
 
-            {/* INJECTED STYLES FOR MOBILE MASTERPIECE */}
-            <style>{`
-                    @media (max-width: 768px) {
-                        #identidad {
-                            flex-direction: column !important;
-                            align-items: flex-start !important;
-                            /* CENTERED LAYOUT with safe padding */
-                            justify-content: center !important;
-                            padding: 2rem 5% 2rem 5% !important; 
-                            gap: 0.5rem !important;
-                            min-height: 100vh !important; /* Ensure full height for centering */
-                        }
-                        .identidad-marker {
-                            display: none !important;
-                        }
-                        .identidad-headline-1 {
-                            font-size: clamp(1.5rem, 8vw, 2.5rem) !important; /* SMALLER BASE for iPhone 5 */
-                            line-height: 1.1 !important;
-                        }
-                        .identidad-headline-2 {
-                            font-size: clamp(1.8rem, 10vw, 3rem) !important; /* SMALLER BASE */
-                            margin-top: 0.2rem !important;
-                            line-height: 1 !important;
-                        }
-                        .identidad-body-container {
-                            margin-top: 0.8rem !important;
-                            padding-left: 0.8rem !important; /* Less indentation */
-                            gap: 0.5rem !important;
-                        }
-                        .identidad-body-line {
-                            font-size: clamp(0.75rem, 3.5vw, 1rem) !important; /* iPhone 5 safe */
-                            line-height: 1.3 !important;
-                        }
-                        /* FORCE LOGO COMPACTNESS */
-                        #identidad img {
-                            max-height: 10vh !important; /* Even smaller for iPhone 5 safety */
-                            margin-top: 0.5rem !important;
-                            align-self: flex-start !important; /* Ensure left align */
-                        }
-                    }
+            {/* BRIDGE GRADIENT: BLACK (SIMBIOSIS) -> WHITE (CAPITULO 7) */}
+            <div id="entrance-trigger" style={{ height: '5vh', width: '100%', background: '#050505' }} />
+            <div style={{
+                width: '100%',
+                height: '15vh',
+                background: 'linear-gradient(to bottom, #050505 0%, #FFFFFF 100%)',
+                position: 'relative',
+                zIndex: 450 // BETWEEN SIMBIOSIS (500) AND SALTO (400)
+            }} />
+            <GlitchPortal ref={entranceGlitchRef} />
 
-                    /* IPHONE 5/SE & ULTRA SMALL SPECIFIC OVERRIDES */
-                    @media (max-width: 380px), (max-height: 700px) {
-                        #identidad {
-                            justify-content: flex-start !important; /* Let it flow from top */
-                            padding-top: 10vh !important; /* REDUCED to bring connection closer to prev section */
-                            padding-bottom: 25vh !important; /* MASSIVE BOTTOM PADDING TO PREVENT CUTOFF */
-                            gap: 0.2rem !important;
-                        }
-                        .identidad-headline-1 {
-                            font-size: 1.3rem !important; /* EVEN SMALLER */
-                        }
-                        .identidad-headline-2 {
-                            font-size: 1.5rem !important; /* EVEN SMALLER */
-                            margin-top: 0.1rem !important;
-                        }
-                        .identidad-body-container {
-                             margin-top: 0.5rem !important;
-                             padding-left: 0.5rem !important;
-                        }
-                        .identidad-body-line {
-                            font-size: 0.7rem !important;
-                            line-height: 1.25 !important;
-                        }
-                        #identidad img {
-                            max-height: 70px !important; /* Fixed pixel max height for safety */
-                            margin-top: 0.2rem !important;
-                        }
-                        /* Ensure nothing is hidden */
-                        #identidad {
-                            overflow-y: visible !important;
-                            height: auto !important;
-                            min-height: 100svh !important;
-                        }
-                    }
-                `}</style>
-
-            {/* 8. CTA SECTION - PINNED ANIMATION RESTORED */}
             <section
                 ref={ctaSectionRef} // Attached Ref
-                id="contacto"
-                className="cta-section"
+                id="capitulo-7"
                 style={{
-                    height: '100vh', // Viewport height (GSAP adds scroll space)
+                    height: '100vh',
                     width: '100%',
+                    backgroundColor: '#FFFFFF', // Pure White
                     position: 'relative',
-                    backgroundColor: '#FFFFFF',
-                    overflow: 'hidden', // Clean edges
-                    zIndex: 50 // Ensure it sits on top of previous gradients
+                    zIndex: 400, // Narrative Shield
+                    overflow: 'hidden'
                 }}
             >
-                {/* PINNED CONTENT CONTAINER */}
+                <div id="hud-marker-7" style={{ position: 'absolute', top: 0, height: '1px' }} />
+
+                {/* MINIMALIST GRID (Technical Whisper) */}
+                <div style={{
+                    position: 'absolute', inset: 0,
+                    backgroundImage: 'radial-gradient(rgba(0,0,0,0.05) 1px, transparent 1px)',
+                    backgroundSize: '40px 40px', pointerEvents: 'none', zIndex: 1
+                }} />
+
+                {/* THE PINNED CONTENT CONTAINER (Exact replica of Home.tsx structure) */}
                 <div
                     className="cta-pinned-content"
                     style={{
@@ -899,37 +1230,41 @@ const Home: React.FC = () => {
                         width: '100%',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'center', // Back to center
+                        justifyContent: 'center',
                         alignItems: 'center',
                         position: 'relative',
-                        paddingTop: '0'
+                        paddingTop: '0',
+                        zIndex: 10
                     }}
                 >
 
-                    {/* SOMOS text */}
+                    {/* Layer 1: SOMOS TEXT (Surgical Centering) */}
                     <h2
                         className="cta-somos-text"
                         style={{
-                            fontSize: 'clamp(3rem, 8vw, 6rem)',
+                            fontSize: 'clamp(1rem, 4vw, 1.4rem)',
                             textAlign: 'center',
                             fontWeight: 900,
-                            margin: '0 0 2vh 0',
-                            letterSpacing: '-0.05em',
+                            margin: '0 0 15vh 0',
+                            letterSpacing: '1em',
+                            paddingLeft: '1em', // CENTERING COMPENSATOR
+                            width: '100%',
                             color: '#000',
                             position: 'relative',
-                            zIndex: 2
+                            zIndex: 2,
+                            opacity: 1
                         }}
                     >
                         SOMOS
                     </h2>
 
-                    {/* BRAIN + AGENCIA LOGO */}
+                    {/* Layer 2: BRAIN + LOGO CONTAINER */}
                     <div
                         className="cta-brain-container"
                         style={{
-                            width: 'clamp(400px, 80vw, 1200px)', // Keep width MAX
-                            maxHeight: '65vh', // SAFE HEIGHT to ensure Pin works (75vh was too risky)
-                            marginBottom: '1rem',
+                            width: 'clamp(350px, 70vw, 1000px)', // Slightly more contained
+                            maxHeight: '55vh',
+                            marginBottom: '10vh',
                             position: 'relative',
                             zIndex: 1,
                             transformOrigin: 'center center',
@@ -938,10 +1273,38 @@ const Home: React.FC = () => {
                             alignItems: 'center'
                         }}
                     >
-                        <img src={footerLogo} alt="AgencIA Logo" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+                        {/* THE LOGO WITH MAGNETIC REACTION (MANTENIDA) */}
+                        <div
+                            className="cap7-logo-monolith"
+                            onMouseMove={(e) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                                gsap.to(e.currentTarget, {
+                                    rotationY: x * 15, rotationX: -y * 15, scale: 1.05,
+                                    filter: `drop-shadow(${x * -40}px ${y * -40}px 30px rgba(0,0,0,0.1))`,
+                                    duration: 0.5
+                                });
+                            }}
+                            onMouseLeave={(e) => {
+                                gsap.to(e.currentTarget, {
+                                    rotationY: 0, rotationX: 0, scale: 1,
+                                    filter: 'drop-shadow(0 0 0px rgba(0,0,0,0))',
+                                    duration: 1
+                                });
+                            }}
+                            style={{ position: 'relative', width: '100%', perspective: '1500px', transformStyle: 'preserve-3d' }}
+                        >
+                            <img src={footerLogo} alt="AgencIA Logo" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', filter: 'brightness(0)' }} />
+                            <div className="ia-light-pulse" style={{
+                                position: 'absolute', right: '5%', top: '22%', width: '28%', height: '55%',
+                                border: '1px solid rgba(0,0,0,0.1)', background: 'linear-gradient(90deg, transparent, rgba(0,0,0,0.05), transparent)',
+                                opacity: 0, transition: 'opacity 0.3s ease', pointerEvents: 'none'
+                            }} />
+                        </div>
                     </div>
 
-                    {/* CTA CONTENT - Hidden initially */}
+                    {/* Layer 3: THE CALL TO ACTION (Hidden Initially) */}
                     <div
                         className="cta-invitation-container"
                         style={{
@@ -949,77 +1312,83 @@ const Home: React.FC = () => {
                             flexDirection: 'column',
                             alignItems: 'center',
                             position: 'absolute',
-                            top: '55%', // Positioned relative to viewport height
+                            top: '55%',
                             left: '50%',
-                            transform: 'translateX(-50%) translateY(50px)', // Centered horizontally
+                            transform: 'translateX(-50%) translateY(50px)',
                             width: '100%',
                             opacity: 0,
                             zIndex: 5
                         }}
                     >
-                        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', textAlign: 'center', fontWeight: 900, marginBottom: '2rem', letterSpacing: '-0.05em', color: '#333' }}>
+                        <h2 style={{
+                            fontSize: 'clamp(1.5rem, 4vw, 3rem)', textAlign: 'center', fontWeight: 900,
+                            marginBottom: '2rem', letterSpacing: '-0.02em', color: '#000'
+                        }}>
                             ¿TIENES UNA IDEA?
                         </h2>
 
-                        <Link to="/contacto">
+                        <a
+                            href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssM2lUv8W368QO4u3P7Z9h8r6o2l1"
+                            target="_blank" rel="noopener noreferrer"
+                            style={{ textDecoration: 'none' }}
+                        >
                             <button
                                 ref={pulseButtonRef}
                                 style={{
-                                    padding: 'clamp(0.8rem, 2vh, 1.2rem) clamp(1.5rem, 8vw, 4rem)',
-                                    background: '#000',
-                                    color: '#FFF',
-                                    border: '1px solid #000',
+                                    padding: '1.2rem 4.5rem',
+                                    background: 'transparent',
+                                    color: '#000',
+                                    border: '2px solid #000', // SURGICAL OUTLINE
                                     borderRadius: '0px',
                                     fontWeight: '900',
-                                    fontSize: 'clamp(0.85rem, 4vw, 1.1rem)',
+                                    fontSize: '1.1rem',
                                     cursor: 'pointer',
                                     position: 'relative',
-                                    transition: 'all 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
-                                    letterSpacing: 'clamp(0.1em, 2vw, 0.25em)',
+                                    transition: 'all 0.4s cubic-bezier(0.19, 1, 0.22, 1)',
+                                    letterSpacing: '0.25em',
                                     textTransform: 'uppercase',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: 'clamp(0.5rem, 3vw, 1.5rem)',
-                                    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-                                    width: 'auto',
-                                    maxWidth: '92vw'
+                                    gap: '1.5rem',
+                                    boxShadow: '0 0px 0px rgba(0,0,0,0)'
                                 }}
                                 onMouseEnter={e => {
-                                    e.currentTarget.style.backgroundColor = '#FFF';
-                                    e.currentTarget.style.color = '#000';
-                                    e.currentTarget.style.padding = 'clamp(0.8rem, 2vh, 1.2rem) clamp(2rem, 9vw, 4.5rem)';
-                                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,255,153,0.15)';
+                                    e.currentTarget.style.backgroundColor = '#000';
+                                    e.currentTarget.style.color = '#00FF99';
+                                    e.currentTarget.style.boxShadow = '0 10px 40px rgba(0,255,153,0.3)';
+                                    e.currentTarget.style.transform = 'scale(1.05)';
                                 }}
                                 onMouseLeave={e => {
-                                    e.currentTarget.style.backgroundColor = '#000';
-                                    e.currentTarget.style.color = '#FFF';
-                                    e.currentTarget.style.padding = 'clamp(0.8rem, 2vh, 1.2rem) clamp(1.5rem, 8vw, 4rem)';
-                                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                    e.currentTarget.style.color = '#000';
+                                    e.currentTarget.style.boxShadow = '0 0px 0px rgba(0,0,0,0)';
+                                    e.currentTarget.style.transform = 'scale(1)';
                                 }}
                             >
                                 <span style={{ position: 'relative', zIndex: 1 }}>Tómate un café virtual</span>
-                                <span style={{ fontSize: '1.4rem', transition: 'transform 0.3s ease' }} className="cta-arrow">→</span>
+                                <span style={{ fontSize: '1.8rem' }}>→</span>
                             </button>
-                        </Link>
+                        </a>
                     </div>
                 </div>
+
+                <style>{`
+                    .cap7-logo-monolith:hover .ia-light-pulse {
+                        opacity: 0.8;
+                    }
+                `}</style>
             </section>
-
-            {/* --- PHYSICAL GRADIENT BRIDGE: WHITE -> BLACK (To Footer) --- */}
-            <div style={{
-                width: '100%',
-                height: '150px',
-                background: 'linear-gradient(to bottom, #FFFFFF 0%, #000000 100%)',
-                position: 'relative',
-                zIndex: 20
-            }} />
-
-            {/* 7. FOOTER */}
+            {/* FINAL FOOTER - PURE ORIGINAL */}
+            <div id="hud-marker-8" style={{ width: '100%', height: '1px' }} />
             <Footer />
 
-            {/* HUD DE CAPÍTULOS (WOW!) */}
-            <ChapterHUD currentChapter={activeChapter} chapterNumber={chapterNum} />
-        </main>
+            {/* CINEMATIC HUD (ODOMETER + CHAPTERS) */}
+            <ChapterHUD 
+                currentChapter={currentChapter} 
+                chapterNumber={chapterNumber}
+            />
+        </div>
+        </>
     );
 };
 

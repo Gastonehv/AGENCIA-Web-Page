@@ -581,11 +581,13 @@ const CinematicDev: React.FC = () => {
                 // Pausa ALMA
                 tlNucleoGlobal.to({}, { duration: 3 }); 
 
-                // Salida ALMA
-                tlNucleoGlobal.to(row3, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
-                              .to(l3, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                              .to(r3, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                              .to(img3, { opacity: 0, scale: 1, duration: 1 }, "<");
+                // Salida ALMA y Fusión con Simbiosis
+                tlNucleoGlobal.to(row3, { opacity: 0, pointerEvents: 'none', duration: 1 }, ">")
+                              .to(l3, { xPercent: 0, duration: 1.2, ease: "power2.in" }, "<")
+                              .to(r3, { xPercent: 0, duration: 1.2, ease: "power2.in" }, "<")
+                              .to(img3, { opacity: 0, scale: 1.1, duration: 1.2 }, "<")
+                              .to("#nucleo", { backgroundColor: "#050505", duration: 1.2 }, "<") // Transición a Negro
+                              .to(".nucleo-header", { opacity: 0, y: -20, duration: 0.8 }, "<"); // Desvanecer encabezado
             }
 
             // Transición inmediata a la siguiente fase
@@ -1275,10 +1277,10 @@ const CinematicDev: React.FC = () => {
 
             </section>
 
-            {/* BRIDGE GRADIENT: WHITE (ALMA) -> BLACK (SIMBIOSIS) */}
+            {/* BRIDGE GRADIENT: FUSIÓN TOTAL (Negro a Negro) */}
             <div style={{
-                width: '100%', height: '15vh',
-                background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)',
+                width: '100%', height: '10vh',
+                background: '#050505', // Ya no es degradado de blanco, es unión sólida
                 position: 'relative', zIndex: 1
             }} />
 

@@ -141,6 +141,23 @@ const CinematicDev: React.FC = () => {
         },
     ];
 
+    // --- FUNCIONES DE UTILIDAD PARA STAGGER CINEMATOGRÁFICO ---
+    const splitTextToWords = (text: string, wordClass: string) => {
+        return text.split(' ').map((word, i) => (
+            <span key={i} style={{ display: 'inline-block', overflow: 'hidden', paddingRight: '0.25em' }}>
+                <span className={wordClass} style={{ 
+                    display: 'inline-block', 
+                    transform: 'translateY(120%) rotate(5deg)', 
+                    opacity: 0, 
+                    filter: 'blur(10px)',
+                    willChange: 'transform, opacity, filter'
+                }}>
+                    {word}
+                </span>
+            </span>
+        ));
+    };
+
     // --- CAMPO DE PARTICULAS MAGNETICAS (APAGADO) ---
 
     React.useEffect(() => {
@@ -346,14 +363,22 @@ const CinematicDev: React.FC = () => {
                 }
             });
 
-            // Clean start for Identidad
-            tlIdentidad.to('.entropy-el', { // Primera Letra aparece en un lapso exacto
+            // Parallax profundo para la red neuronal (Se mueve a diferente velocidad)
+            tlIdentidad.to('.neural-container', {
+                yPercent: 30, // Se desplaza hacia abajo mientras scrolleas
+                ease: 'none',
+                duration: tlIdentidad.duration()
+            }, 0);
+
+            // Clean start for Identidad (Stagger palabra por palabra)
+            tlIdentidad.to('.entropy-word', { 
                 opacity: 1,
+                y: '0%',
+                rotate: 0,
                 filter: 'blur(0px)',
-                transform: 'scale(1)',
-                duration: 3,
-                stagger: 1.2,
-                ease: 'power2.out'
+                duration: 1.5,
+                stagger: 0.15, // Cascada fluida
+                ease: 'power4.out'
             }, 0.2);
 
             tlIdentidad.to('.entropy-catchphrase', {
@@ -914,33 +939,25 @@ const CinematicDev: React.FC = () => {
 
                     {/* BLOCK 1: NO SOMOS UNA AGENCIA... */}
                     <div className="entropy-block-1" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <h2 className="entropy-el" style={{
+                        <h2 style={{
                             fontSize: 'clamp(1.5rem, 3.5vw, 3rem)',
                             fontWeight: 800,
                             margin: 0,
                             lineHeight: 1.1,
                             color: '#000',
-                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)', // Sombra física para el texto
-                            opacity: 0, // GSAP manejará esto
-                            filter: 'blur(20px)',
-                            transform: 'scale(0.8)',
-                            willChange: 'opacity, filter, transform'
+                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)'
                         }}>
-                            NO SOMOS UNA
+                            {splitTextToWords("NO SOMOS UNA", "entropy-word")}
                         </h2>
-                        <h2 className="entropy-el" style={{
+                        <h2 style={{
                             fontSize: 'clamp(1.5rem, 3.5vw, 3rem)',
                             fontWeight: 800,
                             margin: 0,
                             lineHeight: 1.1,
-                            color: '#000', // Modificado a NEGRO por el screenshot
-                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)', // Sombra física para el texto
-                            opacity: 0,
-                            filter: 'blur(30px)',
-                            transform: 'scale(0.7)',
-                            willChange: 'opacity, filter, transform'
+                            color: '#000',
+                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)'
                         }}>
-                            AGENCIA CON IA.
+                            {splitTextToWords("AGENCIA CON IA.", "entropy-word")}
                         </h2>
                     </div>
 

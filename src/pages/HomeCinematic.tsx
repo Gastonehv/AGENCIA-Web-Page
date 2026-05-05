@@ -588,9 +588,8 @@ const CinematicDev: React.FC = () => {
                               .to(img3, { opacity: 0, scale: 1, duration: 1 }, "<");
             }
 
-            // Alma Section Reveal (Transición final de Capítulo 5)
-            tlNucleoGlobal.fromTo(".alma-pinned-content", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.5 }, ">+0.5");
-            tlNucleoGlobal.to({}, { duration: 3 }); // Alma Reading Pause
+            // Transición directa a la siguiente fase o cierre del capítulo
+            tlNucleoGlobal.to({}, { duration: 2 }); // Alma Reading Pause
 
             // --- CAPÍTULO 6: SIMBIOSIS CINEMÁTICA ---
             const tlSimbiosis = gsap.timeline({
@@ -858,6 +857,7 @@ const CinematicDev: React.FC = () => {
             }}>
                 <div id="hud-marker-2" style={{ position: 'absolute', top: 0, height: '1px' }} />
                 {/* FONDO NEURAL INTEGRADO */}
+                {/* Alma Section removida por redundancia (ya integrada en el Rift) */}
                 {mountNeural && (
                     <div className="neural-container" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                         <NeuralNetworkALMA />
@@ -1271,17 +1271,7 @@ const CinematicDev: React.FC = () => {
                     ))}
                 </div>
 
-                <div className="alma-focus-trigger" style={{ minHeight: '1px', position: 'relative', zIndex: 650 }}>
-                    <div className="alma-pinned-content" id="alma-trigger" style={{
-                        height: '100vh',
-                        width: '100%',
-                        backgroundColor: '#FFF',
-                        display: 'flex',
-                        alignItems: 'center',
-                    }}>
-                        <AlmaSection />
-                    </div>
-                </div>
+                {/* Alma Section removida por redundancia (integrada en el Núcleo) */}
 
             </section>
 

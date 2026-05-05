@@ -1223,24 +1223,26 @@ const CinematicDev: React.FC = () => {
                                 }}>
                                     {/* ROLE / PUESTO */}
                                     <h3 style={{ 
-                                        fontSize: member.isAlma ? 'clamp(0.8rem, 1.5vw, 1.2rem)' : 'clamp(1.5rem, 2.5vw, 2.2rem)', 
-                                        fontWeight: 800, textAlign: 'center', margin: 0,
+                                        fontSize: member.isAlma ? 'clamp(1rem, 2vw, 1.3rem)' : 'clamp(1.8rem, 3vw, 2.5rem)', 
+                                        fontWeight: 900, textAlign: 'center', margin: 0,
                                         color: '#000', textTransform: 'uppercase',
-                                        letterSpacing: member.isAlma ? '0.4em' : '0.1em',
-                                        textShadow: '0 0 4px #FFF, 0 0 4px #FFF' // Contorno sutil y limpio
+                                        letterSpacing: member.isAlma ? '0.4em' : '0.15em',
+                                        WebkitTextStroke: '1.5px #FFF', // Trazo blanco nítido
+                                        paintOrder: 'stroke fill'
                                     }}>{member.role}</h3>
 
                                     {/* NAME / EXTRA INFO */}
                                     <span style={{ 
-                                        fontSize: member.isAlma ? 'clamp(0.55rem, 1vw, 0.65rem)' : '1rem', 
+                                        fontSize: member.isAlma ? 'clamp(0.6rem, 1vw, 0.7rem)' : '1.1rem', 
                                         fontFamily: 'var(--font-mono)', 
-                                        maxWidth: '85%',
+                                        maxWidth: '90%',
                                         letterSpacing: member.isAlma ? '0.25em' : '0.05em',
                                         lineHeight: 1.6,
                                         color: '#000',
                                         textTransform: 'uppercase',
-                                        fontWeight: 500,
-                                        textShadow: '0 0 3px #FFF, 0 0 3px #FFF' // Contorno mínimo para legibilidad
+                                        fontWeight: 700,
+                                        WebkitTextStroke: '0.8px #FFF', // Trazo más fino para el subtítulo
+                                        paintOrder: 'stroke fill'
                                     }}>
                                         {member.name}
                                         {member.isAlma && (

@@ -1152,10 +1152,9 @@ const CinematicDev: React.FC = () => {
                         }}>
                             <div className="rift-row"
                                 style={{
-                                    width: '100%', height: '70vh',
+                                    width: '100%', height: '80vh', // Más inmersivo
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     overflow: 'hidden',
-                                    borderTop: '1px solid rgba(0,0,0,0.05)', borderBottom: '1px solid rgba(0,0,0,0.05)',
                                     backgroundColor: '#FFF', position: 'relative'
                                 }}>
 
@@ -1200,57 +1199,63 @@ const CinematicDev: React.FC = () => {
                                     )}
                                 </div>
 
+                                {/* GRADIENT OVERLAY (For Text Readability) */}
+                                <div style={{
+                                    position: 'absolute', bottom: 0, left: 0, width: '100%', height: '40%',
+                                    background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)',
+                                    zIndex: 2, pointerEvents: 'none'
+                                }} />
+
                                 {/* LEFT: ROLE HALF (Móvil) */}
                                 <div className="rift-left" style={{
-                                    position: 'absolute', left: 0, top: 0, width: '50%', height: '100%',
-                                    zIndex: 2, backgroundColor: '#FFF',
-                                    borderRight: '1px solid rgba(0,0,0,0.05)'
+                                    position: 'absolute', left: 0, top: 0, width: '50.1%', height: '100%',
+                                    zIndex: 4, backgroundColor: '#FFF'
                                 }} />
 
                                 {/* RIGHT: NAME HALF (Móvil) */}
                                 <div className="rift-right" style={{
-                                    position: 'absolute', right: 0, top: 0, width: '50%', height: '100%',
-                                    zIndex: 2, backgroundColor: '#FFF',
-                                    borderLeft: '1px solid rgba(0,0,0,0.05)'
+                                    position: 'absolute', right: 0, top: 0, width: '50.1%', height: '100%',
+                                    zIndex: 4, backgroundColor: '#FFF'
                                 }} />
 
-                                {/* TEXT OVERLAY (Centrado Absoluto en Viewport) */}
+                                {/* TEXT OVERLAY (Diseño Senior Editorial) */}
                                 <div className="rift-text-overlay" style={{
-                                    position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)',
-                                    width: '100vw', // Forzar ancho total de pantalla para centrado real
-                                    display: 'flex', flexDirection: 'column', alignItems: 'center',
-                                    gap: '0.5rem', zIndex: 3, pointerEvents: 'none', textAlign: 'center'
+                                    position: 'absolute', bottom: '12%', left: '50%', transform: 'translateX(-50%)',
+                                    width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center',
+                                    zIndex: 5, pointerEvents: 'none', textAlign: 'center'
                                 }}>
                                     {/* ROLE / PUESTO */}
                                     <h3 style={{ 
-                                        fontSize: member.isAlma ? 'clamp(1rem, 2vw, 1.3rem)' : 'clamp(1.5rem, 3vw, 2.2rem)', 
-                                        fontWeight: 900, textAlign: 'center', margin: 0,
-                                        color: '#000', textTransform: 'uppercase',
-                                        letterSpacing: member.isAlma ? '0.4em' : '0.15em',
-                                        WebkitTextStroke: '1px #FFF', // Trazo refinado
-                                        paintOrder: 'stroke fill'
+                                        fontSize: member.isAlma ? '1rem' : 'clamp(1.4rem, 2.5vw, 2.2rem)', 
+                                        fontWeight: 300, textAlign: 'center', margin: 0,
+                                        color: '#FFF', textTransform: 'uppercase',
+                                        letterSpacing: '0.6em', 
+                                        opacity: 0.9
                                     }}>{member.role}</h3>
+
+                                    {/* DIVIDER */}
+                                    <div style={{
+                                        width: '40px', height: '1px', backgroundColor: 'rgba(255,255,255,0.3)',
+                                        margin: '1.2rem 0'
+                                    }} />
 
                                     {/* NAME / EXTRA INFO */}
                                     <span style={{ 
-                                        fontSize: member.isAlma ? 'clamp(0.6rem, 1vw, 0.7rem)' : '1rem', 
+                                        fontSize: member.isAlma ? '0.7rem' : '1rem', 
                                         fontFamily: 'var(--font-mono)', 
-                                        maxWidth: '600px', // Limitar para que no se pierda al abrir
-                                        letterSpacing: member.isAlma ? '0.25em' : '0.05em',
-                                        lineHeight: 1.6,
-                                        color: '#000',
+                                        maxWidth: '700px',
+                                        letterSpacing: '0.3em',
+                                        lineHeight: 1.8,
+                                        color: '#FFF',
                                         textTransform: 'uppercase',
-                                        fontWeight: 700,
-                                        WebkitTextStroke: '0.5px #FFF', // Trazo ultra-fino para el subtítulo
-                                        paintOrder: 'stroke fill',
-                                        display: 'block',
-                                        margin: '0 auto'
+                                        fontWeight: 400,
+                                        opacity: 0.8
                                     }}>
                                         {member.name}
                                         {member.isAlma && (
                                             <>
-                                                <br />
-                                                <span style={{ opacity: 0.8, fontSize: '0.9em' }}>
+                                                <br /><br />
+                                                <span style={{ fontSize: '0.6rem', opacity: 0.6, letterSpacing: '0.2em' }}>
                                                     {member.extraInfo}
                                                 </span>
                                             </>

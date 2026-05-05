@@ -1224,20 +1224,24 @@ const CinematicDev: React.FC = () => {
                                     width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center',
                                     zIndex: 5, pointerEvents: 'none', textAlign: 'center'
                                 }}>
-                                    {/* ROLE / PUESTO */}
-                                    <h3 style={{ 
-                                        fontSize: member.isAlma ? '1rem' : 'clamp(1.4rem, 2.5vw, 2.2rem)', 
-                                        fontWeight: 300, textAlign: 'center', margin: 0,
-                                        color: '#FFF', textTransform: 'uppercase',
-                                        letterSpacing: '0.6em', 
-                                        opacity: 0.9
-                                    }}>{member.role}</h3>
+                                    {/* ROLE / PUESTO (Oculto para ALMA) */}
+                                    {!member.isAlma && (
+                                        <>
+                                            <h3 style={{ 
+                                                fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)', 
+                                                fontWeight: 300, textAlign: 'center', margin: 0,
+                                                color: '#FFF', textTransform: 'uppercase',
+                                                letterSpacing: '0.6em', 
+                                                opacity: 0.9
+                                            }}>{member.role}</h3>
 
-                                    {/* DIVIDER */}
-                                    <div style={{
-                                        width: '40px', height: '1px', backgroundColor: 'rgba(255,255,255,0.3)',
-                                        margin: '1.2rem 0'
-                                    }} />
+                                            {/* DIVIDER */}
+                                            <div style={{
+                                                width: '40px', height: '1px', backgroundColor: 'rgba(255,255,255,0.3)',
+                                                margin: '1.2rem 0'
+                                            }} />
+                                        </>
+                                    )}
 
                                     {/* NAME / EXTRA INFO */}
                                     <span style={{ 

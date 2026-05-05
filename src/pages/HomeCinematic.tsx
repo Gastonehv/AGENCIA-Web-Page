@@ -1199,10 +1199,10 @@ const CinematicDev: React.FC = () => {
                                     )}
                                 </div>
 
-                                {/* GRADIENT OVERLAY (For Text Readability) */}
+                                {/* GRADIENT OVERLAY (For Text Readability - Darkened) */}
                                 <div style={{
-                                    position: 'absolute', bottom: 0, left: 0, width: '100%', height: '40%',
-                                    background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)',
+                                    position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%',
+                                    background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)',
                                     zIndex: 2, pointerEvents: 'none'
                                 }} />
 

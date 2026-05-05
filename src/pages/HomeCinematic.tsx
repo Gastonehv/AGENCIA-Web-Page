@@ -1214,35 +1214,37 @@ const CinematicDev: React.FC = () => {
                                     borderLeft: '1px solid rgba(0,0,0,0.05)'
                                 }} />
 
-                                {/* TEXT OVERLAY (Estable y Debajo) */}
+                                {/* TEXT OVERLAY (Centrado Absoluto en Viewport) */}
                                 <div className="rift-text-overlay" style={{
-                                    position: 'absolute', bottom: '8%', left: 0, width: '100%',
+                                    position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)',
+                                    width: '100vw', // Forzar ancho total de pantalla para centrado real
                                     display: 'flex', flexDirection: 'column', alignItems: 'center',
-                                    gap: '0.5rem', zIndex: 3, pointerEvents: 'none', textAlign: 'center',
-                                    padding: '0 5%'
+                                    gap: '0.5rem', zIndex: 3, pointerEvents: 'none', textAlign: 'center'
                                 }}>
                                     {/* ROLE / PUESTO */}
                                     <h3 style={{ 
-                                        fontSize: member.isAlma ? 'clamp(1rem, 2vw, 1.3rem)' : 'clamp(1.8rem, 3vw, 2.5rem)', 
+                                        fontSize: member.isAlma ? 'clamp(1rem, 2vw, 1.3rem)' : 'clamp(1.5rem, 3vw, 2.2rem)', 
                                         fontWeight: 900, textAlign: 'center', margin: 0,
                                         color: '#000', textTransform: 'uppercase',
                                         letterSpacing: member.isAlma ? '0.4em' : '0.15em',
-                                        WebkitTextStroke: '1.5px #FFF', // Trazo blanco nítido
+                                        WebkitTextStroke: '1px #FFF', // Trazo refinado
                                         paintOrder: 'stroke fill'
                                     }}>{member.role}</h3>
 
                                     {/* NAME / EXTRA INFO */}
                                     <span style={{ 
-                                        fontSize: member.isAlma ? 'clamp(0.6rem, 1vw, 0.7rem)' : '1.1rem', 
+                                        fontSize: member.isAlma ? 'clamp(0.6rem, 1vw, 0.7rem)' : '1rem', 
                                         fontFamily: 'var(--font-mono)', 
-                                        maxWidth: '90%',
+                                        maxWidth: '600px', // Limitar para que no se pierda al abrir
                                         letterSpacing: member.isAlma ? '0.25em' : '0.05em',
                                         lineHeight: 1.6,
                                         color: '#000',
                                         textTransform: 'uppercase',
                                         fontWeight: 700,
-                                        WebkitTextStroke: '0.8px #FFF', // Trazo más fino para el subtítulo
-                                        paintOrder: 'stroke fill'
+                                        WebkitTextStroke: '0.5px #FFF', // Trazo ultra-fino para el subtítulo
+                                        paintOrder: 'stroke fill',
+                                        display: 'block',
+                                        margin: '0 auto'
                                     }}>
                                         {member.name}
                                         {member.isAlma && (

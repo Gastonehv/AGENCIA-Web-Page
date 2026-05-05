@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
@@ -123,6 +123,39 @@ const CinematicDev: React.FC = () => {
 
         window.addEventListener('mousemove', handleMouseMove);
         return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
+
+    // --- KINETIC TYPOGRAPHY ENGINE (SCROLL VELOCITY REACTIVITY) ---
+    useEffect(() => {
+        // Seleccionamos los contenedores de texto que queremos que "reaccionen" al scroll
+        const targets = [
+            '.text-container', 
+            '.identidad-headline-container', 
+            '.manifesto-item', 
+            '.team-member-row',
+            '.simbiosis-header'
+        ];
+
+        let proxy = { skew: 0 };
+        let skewSetter = gsap.quickSetter(targets, "skewY", "deg"); // Optimizado para alto rendimiento
+        let clamp = gsap.utils.clamp(-15, 15); // Limitar la deformación para que no sea excesiva
+
+        ScrollTrigger.create({
+            onUpdate: (self) => {
+                let skew = clamp(self.getVelocity() / -500); // Intensidad del skew basado en velocidad
+                // Solo animamos si hay un cambio significativo para ahorrar CPU
+                if (Math.abs(skew) > Math.abs(proxy.skew)) {
+                    proxy.skew = skew;
+                    gsap.to(proxy, {
+                        skew: 0,
+                        duration: 0.8,
+                        ease: "power3",
+                        overwrite: true,
+                        onUpdate: () => skewSetter(proxy.skew)
+                    });
+                }
+            }
+        });
     }, []);
 
     // Referencia para el grupo SVG que vamos a escalar
@@ -421,19 +454,6 @@ const CinematicDev: React.FC = () => {
                 duration: 2,
                 ease: 'power2.in'
             }, ">+0.5");
-
-            // --- PARALLAX EXTREMO (INDEPENDIENTE) PARA LA RED NEURONAL ---
-            gsap.to('.neural-container', {
-                scrollTrigger: {
-                    trigger: "#identidad",
-                    start: "top top",
-                    end: "+=800%", // Debe coincidir con el end de tlIdentidad
-                    scrub: true,
-                },
-                yPercent: 80, // Movimiento masivo (80% de su propia altura)
-                scale: 1.5, // Ampliamos para que al moverse no se vean los bordes blancos del fondo
-                ease: 'none'
-            });
 
             // --- 3. CAPÍTULO 3: EL MANIFIESTO (PRISM RESTORATION) ---
             const manifestoItems = gsap.utils.toArray<HTMLElement>('.manifesto-item');

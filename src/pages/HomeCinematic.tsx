@@ -581,17 +581,13 @@ const CinematicDev: React.FC = () => {
                 // Pausa ALMA
                 tlNucleoGlobal.to({}, { duration: 3 }); 
 
-                // Salida ALMA y Fusión con Simbiosis
-                tlNucleoGlobal.to(row3, { opacity: 0, pointerEvents: 'none', duration: 1 }, ">")
-                              .to(l3, { xPercent: 0, duration: 1.2, ease: "power2.in" }, "<")
-                              .to(r3, { xPercent: 0, duration: 1.2, ease: "power2.in" }, "<")
-                              .to(img3, { opacity: 0, scale: 1.1, duration: 1.2 }, "<")
-                              .to("#nucleo", { backgroundColor: "#050505", duration: 1.2 }, "<") // Transición a Negro
-                              .to(".nucleo-header", { opacity: 0, y: -20, duration: 0.8 }, "<"); // Desvanecer encabezado
+                // ALMA PERMANECE: No hay salida, se fusiona con el scroll hacia Simbiosis
+                tlNucleoGlobal.to("#nucleo", { backgroundColor: "#050505", duration: 1 }, "<")
+                              .to(".nucleo-header", { opacity: 0, y: -20, duration: 0.8 }, "<");
             }
 
-            // Transición inmediata a la siguiente fase
-            tlNucleoGlobal.to({}, { duration: 0.2 }); // Pausa mínima para fluidez inmediata
+            // Pausa mínima antes de liberar el pin para permitir lectura
+            tlNucleoGlobal.to({}, { duration: 1 });
 
             // --- CAPÍTULO 6: SIMBIOSIS CINEMÁTICA ---
             const tlSimbiosis = gsap.timeline({

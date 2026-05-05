@@ -138,11 +138,11 @@ const CinematicDev: React.FC = () => {
 
         let proxy = { skew: 0 };
         let skewSetter = gsap.quickSetter(targets, "skewY", "deg"); // Optimizado para alto rendimiento
-        let clamp = gsap.utils.clamp(-15, 15); // Limitar la deformación para que no sea excesiva
+        let clamp = gsap.utils.clamp(-25, 25); // Rango ampliado para mayor impacto visual
 
         ScrollTrigger.create({
             onUpdate: (self) => {
-                let skew = clamp(self.getVelocity() / -500); // Intensidad del skew basado en velocidad
+                let skew = clamp(self.getVelocity() / -100); // Intensidad aumentada (divisor de 100 en vez de 500)
                 // Solo animamos si hay un cambio significativo para ahorrar CPU
                 if (Math.abs(skew) > Math.abs(proxy.skew)) {
                     proxy.skew = skew;

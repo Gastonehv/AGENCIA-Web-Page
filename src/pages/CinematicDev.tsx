@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
@@ -81,10 +81,41 @@ const CinematicDev: React.FC = () => {
     // Referencia para el grupo SVG que vamos a escalar
     const maskGroupRef = useRef<SVGSVGElement>(null);
 
+    // --- KINETIC TYPOGRAPHY ENGINE (SCROLL VELOCITY REACTIVITY) ---
+    useEffect(() => {
+        const targets = ['.text-container', '.identidad-headline-container', '.manifesto-item', '.team-member-row', '.simbiosis-header'];
+        let proxy = { skew: 0 };
+        let skewSetter = gsap.quickSetter(targets, "skewY", "deg");
+        let clamp = gsap.utils.clamp(-25, 25);
+
+        ScrollTrigger.create({
+            onUpdate: (self) => {
+                let skew = clamp(self.getVelocity() / -100);
+                if (Math.abs(skew) > Math.abs(proxy.skew)) {
+                    proxy.skew = skew;
+                    gsap.to(proxy, {
+                        skew: 0,
+                        duration: 0.8,
+                        ease: "power3",
+                        overwrite: true,
+                        onUpdate: () => skewSetter(proxy.skew)
+                    });
+                }
+            }
+        });
+    }, []);
+
     // CHAPTER-SPECIFIC REFS (For Chapter 5 Rifts)
     const team = [
         { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
         { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
+        {
+            id: 3,
+            role: 'A.L.M.A.',
+            name: 'ALGORITMO LÓGICO DE MENTE ARTIFICIAL',
+            extraInfo: 'A.L.M.A. ES UNA PROPIEDAD INTELECTUAL DE AGENCIA. SISTEMAS DE ORQUESTACIÓN PROPIETARIA. ALL RIGHTS RESERVED.',
+            isAlma: true
+        },
     ];
 
     // --- CAMPO DE PARTICULAS MAGNETICAS (APAGADO) ---
@@ -1148,26 +1179,8 @@ const CinematicDev: React.FC = () => {
                     ))}
                 </div>
 
-                <div className="alma-focus-trigger" style={{ minHeight: '1px', position: 'relative', zIndex: 650 }}>
-                    <div className="alma-pinned-content" id="alma-trigger" style={{
-                        height: '100vh',
-                        width: '100%',
-                        backgroundColor: '#FFF',
-                        display: 'flex',
-                        alignItems: 'center',
-                    }}>
-                        <AlmaSection />
-                    </div>
-                </div>
+                {/* Alma Section removida por redundancia (integrada en el Núcleo) */}
 
-            </section>
-
-            {/* BRIDGE GRADIENT: WHITE (ALMA) -> BLACK (SIMBIOSIS) */}
-            <div style={{
-                width: '100%', height: '15vh',
-                background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)',
-                position: 'relative', zIndex: 1
-            }} />
 
             <div id="simbiosis" style={{
                 position: 'relative',

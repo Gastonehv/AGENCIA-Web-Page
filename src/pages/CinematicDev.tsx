@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
@@ -81,41 +81,10 @@ const CinematicDev: React.FC = () => {
     // Referencia para el grupo SVG que vamos a escalar
     const maskGroupRef = useRef<SVGSVGElement>(null);
 
-    // --- KINETIC TYPOGRAPHY ENGINE (SCROLL VELOCITY REACTIVITY) ---
-    useEffect(() => {
-        const targets = ['.text-container', '.identidad-headline-container', '.manifesto-item', '.team-member-row', '.simbiosis-header'];
-        let proxy = { skew: 0 };
-        let skewSetter = gsap.quickSetter(targets, "skewY", "deg");
-        let clamp = gsap.utils.clamp(-25, 25);
-
-        ScrollTrigger.create({
-            onUpdate: (self) => {
-                let skew = clamp(self.getVelocity() / -100);
-                if (Math.abs(skew) > Math.abs(proxy.skew)) {
-                    proxy.skew = skew;
-                    gsap.to(proxy, {
-                        skew: 0,
-                        duration: 0.8,
-                        ease: "power3",
-                        overwrite: true,
-                        onUpdate: () => skewSetter(proxy.skew)
-                    });
-                }
-            }
-        });
-    }, []);
-
     // CHAPTER-SPECIFIC REFS (For Chapter 5 Rifts)
     const team = [
         { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
         { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
-        {
-            id: 3,
-            role: 'A.L.M.A.',
-            name: 'ALGORITMO LÓGICO DE MENTE ARTIFICIAL',
-            extraInfo: 'A.L.M.A. ES UNA PROPIEDAD INTELECTUAL DE AGENCIA. SISTEMAS DE ORQUESTACIÓN PROPIETARIA. ALL RIGHTS RESERVED.',
-            isAlma: true
-        },
     ];
 
     // --- CAMPO DE PARTICULAS MAGNETICAS (APAGADO) ---
@@ -1141,45 +1110,16 @@ const CinematicDev: React.FC = () => {
                                     backgroundColor: '#FFF', position: 'relative'
                                 }}>
 
-                                {/* BACKGROUND PHOTO / CUSTOM ALMA CORE */}
+                                {/* BACKGROUND PHOTO */}
                                 <div className="rift-img" style={{
                                     position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                                    zIndex: 0, transition: 'none', opacity: 0
+                                    zIndex: 0, transition: 'none', opacity: 0.45
                                 }}>
-                                    {member.isAlma ? (
-                                        <div style={{
-                                            width: '100%', height: '100%',
-                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                            backgroundColor: '#fff'
-                                        }}>
-                                            <div style={{
-                                                width: 'clamp(280px, 30vw, 450px)',
-                                                aspectRatio: '2.5 / 1',
-                                                maskImage: `url(${almaLogo})`,
-                                                WebkitMaskImage: `url(${almaLogo})`,
-                                                maskSize: 'contain', WebkitMaskSize: 'contain',
-                                                maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
-                                                maskPosition: 'center', WebkitMaskPosition: 'center',
-                                                backgroundColor: '#000'
-                                            }}>
-                                                <video
-                                                    src={almaVideo}
-                                                    autoPlay muted loop playsInline
-                                                    style={{
-                                                        width: '100%', height: '100%',
-                                                        objectFit: 'cover',
-                                                        filter: 'brightness(1.4) contrast(1.1) saturate(1.2)'
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div style={{
-                                            width: '100%', height: '100%',
-                                            backgroundImage: `url(${member.img})`,
-                                            backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
-                                        }} />
-                                    )}
+                                    <div style={{
+                                        width: '100%', height: '100%',
+                                        backgroundImage: `url(${member.img})`,
+                                        backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
+                                    }} />
                                 </div>
 
                                 {/* ID */}
@@ -1196,37 +1136,38 @@ const CinematicDev: React.FC = () => {
                                     <h3 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 4rem)', fontWeight: 700, textAlign: 'right', margin: 0 }}>{member.role}</h3>
                                 </div>
 
-                                {/* RIGHT: NAME / EXTRA INFO */}
+                                {/* RIGHT: NAME */}
                                 <div className="rift-right" style={{
                                     flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
                                     paddingLeft: '4rem', zIndex: 2, background: 'linear-gradient(-90deg, #FFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)'
                                 }}>
-                                    <span style={{ 
-                                        fontSize: member.isAlma ? '0.7rem' : '1.2rem', 
-                                        fontFamily: 'var(--font-mono)', 
-                                        maxWidth: '300px',
-                                        letterSpacing: '0.2em'
-                                    }}>
-                                        {member.name}
-                                        {member.isAlma && (
-                                            <>
-                                                <br /><br />
-                                                <span style={{ fontSize: '0.6rem', opacity: 0.6 }}>
-                                                    {member.extraInfo}
-                                                </span>
-                                            </>
-                                        )}
-                                    </span>
+                                    <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-mono)', maxWidth: '300px' }}>{member.name}</span>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Alma Section removida por redundancia (integrada en el Núcleo) */}
+                <div className="alma-focus-trigger" style={{ minHeight: '1px', position: 'relative', zIndex: 650 }}>
+                    <div className="alma-pinned-content" id="alma-trigger" style={{
+                        height: '100vh',
+                        width: '100%',
+                        backgroundColor: '#FFF',
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}>
+                        <AlmaSection />
+                    </div>
+                </div>
+
             </section>
 
-
+            {/* BRIDGE GRADIENT: WHITE (ALMA) -> BLACK (SIMBIOSIS) */}
+            <div style={{
+                width: '100%', height: '15vh',
+                background: 'linear-gradient(to bottom, #FFFFFF 0%, #050505 100%)',
+                position: 'relative', zIndex: 1
+            }} />
 
             <div id="simbiosis" style={{
                 position: 'relative',

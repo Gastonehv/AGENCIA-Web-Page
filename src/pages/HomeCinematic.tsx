@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
@@ -125,39 +125,6 @@ const CinematicDev: React.FC = () => {
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, []);
 
-    // --- KINETIC TYPOGRAPHY ENGINE (SCROLL VELOCITY REACTIVITY) ---
-    useEffect(() => {
-        // Seleccionamos los contenedores de texto que queremos que "reaccionen" al scroll
-        const targets = [
-            '.text-container', 
-            '.identidad-headline-container', 
-            '.manifesto-item', 
-            '.team-member-row',
-            '.simbiosis-header'
-        ];
-
-        let proxy = { skew: 0 };
-        let skewSetter = gsap.quickSetter(targets, "skewY", "deg"); // Optimizado para alto rendimiento
-        let clamp = gsap.utils.clamp(-25, 25); // Rango ampliado para mayor impacto visual
-
-        ScrollTrigger.create({
-            onUpdate: (self) => {
-                let skew = clamp(self.getVelocity() / -100); // Intensidad aumentada (divisor de 100 en vez de 500)
-                // Solo animamos si hay un cambio significativo para ahorrar CPU
-                if (Math.abs(skew) > Math.abs(proxy.skew)) {
-                    proxy.skew = skew;
-                    gsap.to(proxy, {
-                        skew: 0,
-                        duration: 0.8,
-                        ease: "power3",
-                        overwrite: true,
-                        onUpdate: () => skewSetter(proxy.skew)
-                    });
-                }
-            }
-        });
-    }, []);
-
     // Referencia para el grupo SVG que vamos a escalar
     const maskGroupRef = useRef<SVGSVGElement>(null);
 
@@ -173,23 +140,6 @@ const CinematicDev: React.FC = () => {
             isAlma: true
         },
     ];
-
-    // --- FUNCIONES DE UTILIDAD PARA STAGGER CINEMATOGRÁFICO ---
-    const splitTextToWords = (text: string, wordClass: string) => {
-        return text.split(' ').map((word, i) => (
-            <span key={i} style={{ display: 'inline-block', overflow: 'hidden', paddingRight: '0.25em' }}>
-                <span className={wordClass} style={{ 
-                    display: 'inline-block', 
-                    transform: 'translateY(120%) rotate(5deg)', 
-                    opacity: 0, 
-                    filter: 'blur(10px)',
-                    willChange: 'transform, opacity, filter'
-                }}>
-                    {word}
-                </span>
-            </span>
-        ));
-    };
 
     // --- CAMPO DE PARTICULAS MAGNETICAS (APAGADO) ---
 
@@ -396,15 +346,14 @@ const CinematicDev: React.FC = () => {
                 }
             });
 
-            // Clean start for Identidad (Stagger palabra por palabra)
-            tlIdentidad.to('.entropy-word', { 
+            // Clean start for Identidad
+            tlIdentidad.to('.entropy-el', { // Primera Letra aparece en un lapso exacto
                 opacity: 1,
-                y: '0%',
-                rotate: 0,
                 filter: 'blur(0px)',
-                duration: 1.5,
-                stagger: 0.15, // Cascada fluida
-                ease: 'power4.out'
+                transform: 'scale(1)',
+                duration: 3,
+                stagger: 1.2,
+                ease: 'power2.out'
             }, 0.2);
 
             tlIdentidad.to('.entropy-catchphrase', {
@@ -897,7 +846,7 @@ const CinematicDev: React.FC = () => {
                                 display: 'flex', gap: '0', whiteSpace: 'nowrap',
                                 opacity: 0, transform: 'scale(0.9)', filter: 'blur(10px)'
                             }}>
-                                <span className="word-esenc" style={{ display: 'inline-block', overflow: 'hidden' }}>ESENC</span>
+                                <span className="word-esenc" style={{ display: 'inline-block' }}>ESENC</span>
                                 <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', transformOrigin: '70% 50%' }}>IA</span>
                             </div>
                         </h1>
@@ -965,25 +914,33 @@ const CinematicDev: React.FC = () => {
 
                     {/* BLOCK 1: NO SOMOS UNA AGENCIA... */}
                     <div className="entropy-block-1" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <h2 style={{
+                        <h2 className="entropy-el" style={{
                             fontSize: 'clamp(1.5rem, 3.5vw, 3rem)',
                             fontWeight: 800,
                             margin: 0,
                             lineHeight: 1.1,
                             color: '#000',
-                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)'
+                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)', // Sombra física para el texto
+                            opacity: 0, // GSAP manejará esto
+                            filter: 'blur(20px)',
+                            transform: 'scale(0.8)',
+                            willChange: 'opacity, filter, transform'
                         }}>
-                            {splitTextToWords("NO SOMOS UNA", "entropy-word")}
+                            NO SOMOS UNA
                         </h2>
-                        <h2 style={{
+                        <h2 className="entropy-el" style={{
                             fontSize: 'clamp(1.5rem, 3.5vw, 3rem)',
                             fontWeight: 800,
                             margin: 0,
                             lineHeight: 1.1,
-                            color: '#000',
-                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)'
+                            color: '#000', // Modificado a NEGRO por el screenshot
+                            textShadow: '-5px 10px 20px rgba(0,0,0,0.15)', // Sombra física para el texto
+                            opacity: 0,
+                            filter: 'blur(30px)',
+                            transform: 'scale(0.7)',
+                            willChange: 'opacity, filter, transform'
                         }}>
-                            {splitTextToWords("AGENCIA CON IA.", "entropy-word")}
+                            AGENCIA CON IA.
                         </h2>
                     </div>
 

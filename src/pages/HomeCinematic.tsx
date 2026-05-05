@@ -87,12 +87,12 @@ const CinematicDev: React.FC = () => {
     const team = [
         { id: 1, role: 'CEO / VISIONARY', name: 'Arquitecto de Ecosistemas Digitales', img: ceoImg, scale: 1.35 },
         { id: 2, role: 'CTO /\nAI LEAD', name: 'Oráculo\nde Datos', img: gaelImg, scale: 1.6 },
-        { 
-            id: 3, 
-            role: 'A.L.M.A.', 
-            name: 'ALGORITMO LÓGICO DE MENTE ARTIFICIAL', 
+        {
+            id: 3,
+            role: 'A.L.M.A.',
+            name: 'ALGORITMO LÓGICO DE MENTE ARTIFICIAL',
             extraInfo: 'A.L.M.A. ES UNA PROPIEDAD INTELECTUAL DE AGENCIA. SISTEMAS DE ORQUESTACIÓN PROPIETARIA. ALL RIGHTS RESERVED.',
-            isAlma: true 
+            isAlma: true
         },
     ];
 
@@ -427,9 +427,9 @@ const CinematicDev: React.FC = () => {
 
                 if (i === 3) {
                     // CLIMAX ANIMATION FOR "IMPOSIBLE"
-                    tlCap3.to(bodyLines, { 
-                        color: '#00FF99', 
-                        letterSpacing: '0.2em', 
+                    tlCap3.to(bodyLines, {
+                        color: '#00FF99',
+                        letterSpacing: '0.2em',
                         fontWeight: 900,
                         textShadow: '0 0 30px rgba(0,255,153,0.6)',
                         duration: 3,
@@ -519,7 +519,7 @@ const CinematicDev: React.FC = () => {
 
             // Secuencia Explícita y Simétrica para el Equipo (Totalmente atada al scroll)
             const rows = gsap.utils.toArray<HTMLElement>('.team-member-row');
-            
+
             // --- INTEGRANTE 1: CEO (USUARIO) ---
             const row1 = rows[0];
             const l1 = row1.querySelector('.rift-left');
@@ -529,18 +529,18 @@ const CinematicDev: React.FC = () => {
 
             // Entrada CEO
             tlNucleoGlobal.to(row1, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, "+=0.2")
-                          .to(l1, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
-                          .to(r1, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
-                          .to(img1, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
+                .to(l1, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
+                .to(r1, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
+                .to(img1, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
 
             // Pausa CEO
-            tlNucleoGlobal.to({}, { duration: 3 }); 
+            tlNucleoGlobal.to({}, { duration: 3 });
 
             // Salida CEO
             tlNucleoGlobal.to(row1, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
-                          .to(l1, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(r1, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(img1, { opacity: 0, scale: 1, duration: 1 }, "<");
+                .to(l1, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                .to(r1, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                .to(img1, { opacity: 0, scale: 1, duration: 1 }, "<");
 
             // --- INTEGRANTE 2: CTO (GAEL) ---
             const row2 = rows[1];
@@ -551,18 +551,18 @@ const CinematicDev: React.FC = () => {
 
             // Entrada CTO
             tlNucleoGlobal.to(row2, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
-                          .to(l2, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
-                          .to(r2, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
-                          .to(img2, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
+                .to(l2, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
+                .to(r2, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
+                .to(img2, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
 
             // Pausa CTO
-            tlNucleoGlobal.to({}, { duration: 3 }); 
+            tlNucleoGlobal.to({}, { duration: 3 });
 
             // Salida CTO
             tlNucleoGlobal.to(row2, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
-                          .to(l2, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(r2, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                          .to(img2, { opacity: 0, scale: 1, duration: 1 }, "<");
+                .to(l2, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                .to(r2, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
+                .to(img2, { opacity: 0, scale: 1, duration: 1 }, "<");
 
             // --- INTEGRANTE 3: ALMA ---
             const row3 = rows[2];
@@ -574,16 +574,16 @@ const CinematicDev: React.FC = () => {
 
                 // Entrada ALMA
                 tlNucleoGlobal.to(row3, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
-                              .to(l3, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
-                              .to(r3, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
-                              .to(img3, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
+                    .to(l3, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
+                    .to(r3, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
+                    .to(img3, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
 
                 // Pausa ALMA
-                tlNucleoGlobal.to({}, { duration: 3 }); 
+                tlNucleoGlobal.to({}, { duration: 3 });
 
-                // ALMA PERMANECE: Fusión híbrida (Blanco arriba, Negro abajo)
+                // ALMA PERMANECE: Fusión de Precisión (Eliminar grises)
                 tlNucleoGlobal.to("#nucleo", { 
-                    background: "linear-gradient(to bottom, #FFFFFF 0%, #FFFFFF 40%, #050505 100%)", 
+                    background: "linear-gradient(to bottom, #FFFFFF 0%, #FFFFFF 55%, #050505 90%)", 
                     duration: 1.2,
                     ease: "power2.inOut"
                 }, "<");
@@ -1097,8 +1097,8 @@ const CinematicDev: React.FC = () => {
                                     fontWeight: i === 3 ? 900 : 500,
                                     fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'inherit',
                                     color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
-                                    textShadow: i === 3 
-                                        ? '0 0 20px rgba(0,255,153,0.5), 0 0 40px rgba(0,255,153,0.2)' 
+                                    textShadow: i === 3
+                                        ? '0 0 20px rgba(0,255,153,0.5), 0 0 40px rgba(0,255,153,0.2)'
                                         : '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)',
                                     transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)'
                                 }}>
@@ -1200,10 +1200,10 @@ const CinematicDev: React.FC = () => {
                                     )}
                                 </div>
 
-                                {/* GRADIENT OVERLAY (For Text Readability - Darkened) */}
+                                {/* GRADIENT OVERLAY (Fusión Ultra-Limpia) */}
                                 <div style={{
                                     position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%',
-                                    background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)',
+                                    background: 'linear-gradient(to top, #050505 0%, rgba(5,5,5,0.6) 25%, transparent 100%)',
                                     zIndex: 2, pointerEvents: 'none'
                                 }} />
 
@@ -1228,11 +1228,11 @@ const CinematicDev: React.FC = () => {
                                     {/* ROLE / PUESTO (Oculto para ALMA) */}
                                     {!member.isAlma && (
                                         <>
-                                            <h3 style={{ 
-                                                fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)', 
+                                            <h3 style={{
+                                                fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
                                                 fontWeight: 300, textAlign: 'center', margin: 0,
                                                 color: '#FFF', textTransform: 'uppercase',
-                                                letterSpacing: '0.6em', 
+                                                letterSpacing: '0.6em',
                                                 opacity: 0.9
                                             }}>{member.role}</h3>
 
@@ -1245,9 +1245,9 @@ const CinematicDev: React.FC = () => {
                                     )}
 
                                     {/* NAME / EXTRA INFO */}
-                                    <span style={{ 
-                                        fontSize: member.isAlma ? '0.7rem' : '1rem', 
-                                        fontFamily: 'var(--font-mono)', 
+                                    <span style={{
+                                        fontSize: member.isAlma ? '0.7rem' : '1rem',
+                                        fontFamily: 'var(--font-mono)',
                                         maxWidth: '700px',
                                         letterSpacing: '0.3em',
                                         lineHeight: 1.8,

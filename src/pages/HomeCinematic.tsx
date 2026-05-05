@@ -588,8 +588,8 @@ const CinematicDev: React.FC = () => {
                               .to(img3, { opacity: 0, scale: 1, duration: 1 }, "<");
             }
 
-            // Transición directa a la siguiente fase o cierre del capítulo
-            tlNucleoGlobal.to({}, { duration: 2 }); // Alma Reading Pause
+            // Transición inmediata a la siguiente fase
+            tlNucleoGlobal.to({}, { duration: 0.2 }); // Pausa mínima para fluidez inmediata
 
             // --- CAPÍTULO 6: SIMBIOSIS CINEMÁTICA ---
             const tlSimbiosis = gsap.timeline({

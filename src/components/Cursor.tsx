@@ -269,8 +269,8 @@ const Cursor: React.FC = () => {
             elementListeners.forEach(({ element, mousemove, mouseleave, xTo, yTo }) => {
                 element.removeEventListener("mousemove", mousemove);
                 element.removeEventListener("mouseleave", mouseleave);
-                xTo(0);
-                yTo(0);
+                if (xTo) xTo(0);
+                if (yTo) yTo(0);
             });
         };
     }, [location]);

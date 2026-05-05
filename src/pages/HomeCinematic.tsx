@@ -329,8 +329,9 @@ const CinematicDev: React.FC = () => {
                 scrollTrigger: {
                     trigger: "#identidad",
                     start: "top top",
-                    end: "+=300%",
+                    end: "+=500%", // Restaurado para evitar solapamientos prematuros
                     pin: true,
+                    pinSpacing: true,
                     scrub: 1,
                     onToggle: (self) => {
                         if (self.isActive) {
@@ -1061,20 +1062,13 @@ const CinematicDev: React.FC = () => {
                 </div>
             </section>
 
-            {/* BRIDGE GRADIENT: WHITE (IDENTIDAD) -> BLUE (MANIFIESTO) */}
-            <div style={{
-                width: '100%',
-                height: '15vh',
-                background: 'linear-gradient(to bottom, #f8fafc 0%, #0A192F 100%)',
-                position: 'relative',
-                zIndex: 850 // BETWEEN IDENTIDAD (900) AND MANIFIESTO (800)
-            }} />
+            {/* BRIDGE GRADIENT ELIMINADO PARA EVITAR BLOQUEO VISUAL */}
 
             {/* --- SECCIÓN 3: CAPÍTULO 3 (EL MANIFIESTO CON VELO IRIDISCENTE) --- */}
             <section id="capitulo-3" style={{
                 height: '100vh',
                 width: '100%',
-                backgroundColor: '#000000',
+                background: 'linear-gradient(to bottom, #0A192F 0%, #000000 20%)', // Degradado integrado
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',

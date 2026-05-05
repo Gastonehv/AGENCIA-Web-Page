@@ -1141,16 +1141,45 @@ const CinematicDev: React.FC = () => {
                                     backgroundColor: '#FFF', position: 'relative'
                                 }}>
 
-                                {/* BACKGROUND PHOTO */}
+                                {/* BACKGROUND PHOTO / CUSTOM ALMA CORE */}
                                 <div className="rift-img" style={{
                                     position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                                    zIndex: 0, transition: 'none', opacity: 0.45
+                                    zIndex: 0, transition: 'none', opacity: 0
                                 }}>
-                                    <div style={{
-                                        width: '100%', height: '100%',
-                                        backgroundImage: `url(${member.img})`,
-                                        backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
-                                    }} />
+                                    {member.isAlma ? (
+                                        <div style={{
+                                            width: '100%', height: '100%',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            backgroundColor: '#fff'
+                                        }}>
+                                            <div style={{
+                                                width: 'clamp(280px, 30vw, 450px)',
+                                                aspectRatio: '2.5 / 1',
+                                                maskImage: `url(${almaLogo})`,
+                                                WebkitMaskImage: `url(${almaLogo})`,
+                                                maskSize: 'contain', WebkitMaskSize: 'contain',
+                                                maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
+                                                maskPosition: 'center', WebkitMaskPosition: 'center',
+                                                backgroundColor: '#000'
+                                            }}>
+                                                <video
+                                                    src={almaVideo}
+                                                    autoPlay muted loop playsInline
+                                                    style={{
+                                                        width: '100%', height: '100%',
+                                                        objectFit: 'cover',
+                                                        filter: 'brightness(1.4) contrast(1.1) saturate(1.2)'
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div style={{
+                                            width: '100%', height: '100%',
+                                            backgroundImage: `url(${member.img})`,
+                                            backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
+                                        }} />
+                                    )}
                                 </div>
 
                                 {/* ID */}
@@ -1167,12 +1196,27 @@ const CinematicDev: React.FC = () => {
                                     <h3 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 4rem)', fontWeight: 700, textAlign: 'right', margin: 0 }}>{member.role}</h3>
                                 </div>
 
-                                {/* RIGHT: NAME */}
+                                {/* RIGHT: NAME / EXTRA INFO */}
                                 <div className="rift-right" style={{
                                     flex: 1, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
                                     paddingLeft: '4rem', zIndex: 2, background: 'linear-gradient(-90deg, #FFF 40%, rgba(255,255,255,0.8) 90%, transparent 100%)'
                                 }}>
-                                    <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-mono)', maxWidth: '300px' }}>{member.name}</span>
+                                    <span style={{ 
+                                        fontSize: member.isAlma ? '0.7rem' : '1.2rem', 
+                                        fontFamily: 'var(--font-mono)', 
+                                        maxWidth: '300px',
+                                        letterSpacing: '0.2em'
+                                    }}>
+                                        {member.name}
+                                        {member.isAlma && (
+                                            <>
+                                                <br /><br />
+                                                <span style={{ fontSize: '0.6rem', opacity: 0.6 }}>
+                                                    {member.extraInfo}
+                                                </span>
+                                            </>
+                                        )}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -1180,6 +1224,8 @@ const CinematicDev: React.FC = () => {
                 </div>
 
                 {/* Alma Section removida por redundancia (integrada en el Núcleo) */}
+            </section>
+
 
 
             <div id="simbiosis" style={{

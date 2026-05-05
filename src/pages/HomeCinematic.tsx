@@ -9,6 +9,7 @@ import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
 import Prism from '../components/Prism';
 import ShowcaseSlider from '../components/ShowcaseSlider';
+import SplitText from '../components/SplitText';
 import ceoImg from '../assets/team/ceo.jpg';
 import gaelImg from '../assets/team/gael_oracle.png';
 import almaLogo from '../assets/images/alma_logo_final.png';
@@ -323,27 +324,19 @@ const CinematicDev: React.FC = () => {
                 ease: "power2.in",
             });
 
-            const tlIdentidad = gsap.timeline({
+            // --- CAPÍTULO 2: IDENTIDAD (TRANSICIÓN DE ENTROPÍA) ---
+            const tlCap2 = gsap.timeline({
                 scrollTrigger: {
                     trigger: "#identidad",
                     start: "top top",
-                    end: "+=800%", // Cinematic zoom for chapter 2
+                    end: "+=300%",
                     pin: true,
-                    pinSpacing: true,
-                    scrub: 0.8,
-                    anticipatePin: 1,
-                    refreshPriority: 9,
+                    scrub: 1,
                     onToggle: (self) => {
                         if (self.isActive) {
-                            setMountNeural(true);
                             setCurrentChapter('IDENTIDAD');
                             setChapterNumber('2');
                         }
-                    },
-                    onLeaveBack: () => setMountNeural(false),
-                    onLeave: () => setMountNeural(false),
-                    onEnterBack: () => setMountNeural(true)
-                }
             });
 
             // Clean start for Identidad
@@ -438,13 +431,14 @@ const CinematicDev: React.FC = () => {
             });
 
             manifestoItems.forEach((item, i) => {
-                const title = item.querySelector('h2');
-                const bodyLines = item.querySelectorAll('.manifesto-body-line');
+                const container = item;
 
                 // Morphing scrubbeado al tiempo de la aparición del texto
                 const morphProxy = { transition: 0 };
                 const shapeA = i === 0 ? 3 : (i - 1) % 4; // De la forma anterior
                 const shapeB = i % 4; // A la forma actual
+
+                tlCap3.addLabel("reveal", ">");
 
                 tlCap3.to(item, {
                     autoAlpha: 1, // Fades in and sets visibility visible
@@ -452,7 +446,39 @@ const CinematicDev: React.FC = () => {
                     pointerEvents: 'all', ease: "power2.inOut",
                     onStart: () => setActiveManifestoItem(i),
                     onReverseComplete: () => setActiveManifestoItem(Math.max(0, i - 1)), // Arreglar backwards
-                });
+                }, "reveal");
+
+                // --- TITLES REVEAL (STAGGERED) ---
+                const titleChars = container.querySelectorAll('.title-char');
+                tlCap3.fromTo(titleChars, 
+                    { opacity: 0, y: 30, filter: 'blur(10px)', scale: 0.8 },
+                    { 
+                        opacity: 1, y: 0, filter: 'blur(0px)', scale: 1,
+                        duration: 1.2, stagger: 0.02, ease: 'power4.out' 
+                    }, 
+                    "reveal"
+                );
+
+                // --- BODY LINES REVEAL (STAGGERED) ---
+                const bodyChars = container.querySelectorAll('.body-char');
+                tlCap3.fromTo(bodyChars, 
+                    { opacity: 0, x: -10, filter: 'blur(5px)' },
+                    { 
+                        opacity: 1, x: 0, filter: 'blur(0px)',
+                        duration: 0.8, stagger: 0.005, ease: 'power2.out' 
+                    }, 
+                    "reveal+=0.3"
+                );
+
+                // --- ASYNC PARALLAX: PRISM DRIFT ---
+                // El prisma se mueve ligeramente desfasado del scroll
+                if (prismRef.current) {
+                    tlCap3.to('.prism-background-container', {
+                        y: '-10vh',
+                        duration: 2,
+                        ease: 'none'
+                    }, "reveal");
+                }
 
                 tlCap3.to(morphProxy, {
                     transition: 1,
@@ -465,22 +491,7 @@ const CinematicDev: React.FC = () => {
                             prismRef.current.setMorph(shapeA, shapeB, morphProxy.transition, energy);
                         }
                     }
-                }, "<"); // Al mismo tiempo que aparece el texto
-
-                tlCap3.fromTo(title, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
-                    .fromTo(bodyLines, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, ">");
-
-                if (i === 3) {
-                    // CLIMAX ANIMATION FOR "IMPOSIBLE"
-                    tlCap3.to(bodyLines, {
-                        color: '#00FF99',
-                        letterSpacing: '0.2em',
-                        fontWeight: 900,
-                        textShadow: '0 0 30px rgba(0,255,153,0.6)',
-                        duration: 3,
-                        ease: "power2.inOut"
-                    }, ">-0.5");
-                }
+                }, "reveal"); // Al mismo tiempo que aparece el texto
 
                 tlCap3.to({}, { duration: 12 }); // EXTENDED READING PAUSE FOR EACH ITEM (SENSORY COMFORT)
 
@@ -1119,35 +1130,35 @@ const CinematicDev: React.FC = () => {
                             width: '100%', boxSizing: 'border-box', zIndex: 10,
                         }}
                     >
-                        <h2 style={{
-                            fontSize: 'clamp(1.5rem, 5vw, 6rem)', lineHeight: 1.1, textTransform: 'uppercase',
-                            marginBottom: '2rem', color: '#FFF', fontWeight: 900,
-                            letterSpacing: '-0.02em', textShadow: '0 4px 20px rgba(0,0,0,0.8)',
+                        {/* TITLE WITH SPLIT EFFECT */}
+                        <h2 className="manifesto-title" style={{
+                            fontSize: 'clamp(2.5rem, 6vw, 8rem)',
+                            fontWeight: 900,
+                            margin: 0,
+                            lineHeight: 1,
+                            color: '#FFF',
+                            textTransform: 'uppercase',
+                            letterSpacing: '-0.02em',
+                            position: 'relative',
+                            zIndex: 2,
+                            filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.5))'
                         }}>
-                            <ScrambleText
-                                text={item.title} speed={1.2} iridescent={true}
-                                finalColor="#FFFFFF" trigger={activeManifestoItem === i}
-                            />
+                            <SplitText text={item.title} charClassName="title-char" />
                         </h2>
 
-                        <div style={{
-                            fontSize: 'clamp(1rem, 1.8vw, 1.3rem)', lineHeight: 1.6,
-                            color: 'rgba(255,255,255,0.85)', textShadow: '0 2px 10px rgba(0,0,0,0.5)',
-                            fontFamily: 'monospace', maxWidth: '800px',
-                        }}>
-                            {item.body.map((line, j) => (
-                                <p key={j} className={`manifesto-body-line ${i === 3 ? 'imposible-climax' : ''}`} style={{
-                                    margin: '0 0 0.8rem 0',
-                                    opacity: 0,
-                                    fontWeight: i === 3 ? 900 : 500,
+                        <div className="manifesto-body" style={{ marginTop: '2rem', zIndex: 2 }}>
+                            {item.body.map((line, lineIdx) => (
+                                <p key={lineIdx} className="manifesto-body-line" style={{
                                     fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'inherit',
                                     color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
+                                    margin: '0.5rem 0',
+                                    fontWeight: i === 3 ? 900 : 500,
                                     textShadow: i === 3
                                         ? '0 0 20px rgba(0,255,153,0.5), 0 0 40px rgba(0,255,153,0.2)'
                                         : '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)',
                                     transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)'
                                 }}>
-                                    <AsciiRipple text={line} autoTrigger={true} trigger={activeManifestoItem === i} />
+                                    <SplitText text={line} charClassName="body-char" />
                                 </p>
                             ))}
                         </div>

@@ -216,9 +216,21 @@ const Cursor: React.FC = () => {
                         text.textContent = cursorText;
                         text.style.opacity = '1';
                         scale.target = 3; // Crecer para alojar el texto
+                        
+                        // MICRO-INTERACTION: Glitch Flicker
+                        gsap.fromTo(text, 
+                            { x: -2, opacity: 0.5 }, 
+                            { x: 0, opacity: 1, duration: 0.1, repeat: 3, yoyo: true }
+                        );
                     } else {
                         scale.target = 1.5; // Hover normal
                     }
+                    
+                    // Visual Glitch
+                    gsap.fromTo(visual, 
+                        { filter: 'brightness(2) invert(1) blur(2px)' }, 
+                        { filter: 'brightness(0) invert(1) blur(0px)', duration: 0.2 }
+                    );
                 };
                 
                 const cursorMouseLeave = () => {

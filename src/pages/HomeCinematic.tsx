@@ -597,7 +597,7 @@ const CinematicDev: React.FC = () => {
                 scrollTrigger: {
                     trigger: "#simbiosis",
                     start: "top top",
-                    end: "+=400%",
+                    end: "+=200%",
                     pin: true,
                     scrub: 1,
                     anticipatePin: 1,
@@ -618,7 +618,7 @@ const CinematicDev: React.FC = () => {
             });
 
             // Simbiosis content is always visible
-            tlSimbiosis.to({}, { duration: 5 }); // EXTENDED PAUSE TO READ CARDS (INGENIERIA, ESCALABILIDAD, DOMINIO)
+            tlSimbiosis.to({}, { duration: 2.5 }); // Pausa de lectura optimizada (reducida a la mitad)
 
             // --- ENTRANCE GLITCH TRIGGER (CAP 6 -> 7) ---
             ScrollTrigger.create({

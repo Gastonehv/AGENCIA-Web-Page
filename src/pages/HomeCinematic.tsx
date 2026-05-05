@@ -86,7 +86,7 @@ const CinematicDev: React.FC = () => {
     const [mountPrism, setMountPrism] = React.useState(false);
 
     // --- MOUSE PARALLAX ENGINE (LUSION STYLE) ---
-    useEffect(() => {
+    React.useEffect(() => {
         // Mobile Check
         const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         if (isTouch) return;

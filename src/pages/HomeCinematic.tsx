@@ -1224,23 +1224,23 @@ const CinematicDev: React.FC = () => {
                                     {/* ROLE / PUESTO */}
                                     <h3 style={{ 
                                         fontSize: member.isAlma ? 'clamp(0.8rem, 1.5vw, 1.2rem)' : 'clamp(1.5rem, 2.5vw, 2.2rem)', 
-                                        fontWeight: 900, textAlign: 'center', margin: 0,
+                                        fontWeight: 800, textAlign: 'center', margin: 0,
                                         color: '#000', textTransform: 'uppercase',
                                         letterSpacing: member.isAlma ? '0.4em' : '0.1em',
-                                        textShadow: '0 0 10px rgba(255,255,255,0.8), -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF'
+                                        textShadow: '0 0 4px #FFF, 0 0 4px #FFF' // Contorno sutil y limpio
                                     }}>{member.role}</h3>
 
                                     {/* NAME / EXTRA INFO */}
                                     <span style={{ 
-                                        fontSize: member.isAlma ? 'clamp(0.55rem, 1vw, 0.65rem)' : '1.1rem', 
+                                        fontSize: member.isAlma ? 'clamp(0.55rem, 1vw, 0.65rem)' : '1rem', 
                                         fontFamily: 'var(--font-mono)', 
-                                        maxWidth: '800px',
-                                        letterSpacing: member.isAlma ? '0.25em' : '0.1em',
+                                        maxWidth: '85%',
+                                        letterSpacing: member.isAlma ? '0.25em' : '0.05em',
                                         lineHeight: 1.6,
                                         color: '#000',
                                         textTransform: 'uppercase',
-                                        fontWeight: 600,
-                                        textShadow: '0 0 8px rgba(255,255,255,0.8), -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF'
+                                        fontWeight: 500,
+                                        textShadow: '0 0 3px #FFF, 0 0 3px #FFF' // Contorno mínimo para legibilidad
                                     }}>
                                         {member.name}
                                         {member.isAlma && (

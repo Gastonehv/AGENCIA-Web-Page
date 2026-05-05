@@ -582,8 +582,7 @@ const CinematicDev: React.FC = () => {
                 tlNucleoGlobal.to({}, { duration: 3 }); 
 
                 // ALMA PERMANECE: No hay salida, se fusiona con el scroll hacia Simbiosis
-                tlNucleoGlobal.to("#nucleo", { backgroundColor: "#050505", duration: 1 }, "<")
-                              .to(".nucleo-header h2", { color: "#FFF", duration: 0.8 }, "<"); // Cambiar a blanco en lugar de desvanecer
+                // Se mantiene el fondo blanco y el título negro por petición del usuario
             }
 
             // Pausa mínima antes de liberar el pin para permitir lectura

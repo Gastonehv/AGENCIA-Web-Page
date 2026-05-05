@@ -5,6 +5,12 @@ import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider } from './context/LanguageProvider';
 import { ScrollProvider } from './context/ScrollProvider';
 import { SoundProvider } from './context/SoundContext';
+import { useEffect } from 'react';
+import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Pages
 import Home from './pages/HomeCinematic';
@@ -22,6 +28,38 @@ import CinematicDev from './pages/CinematicDev'; // Development Environment
 import SoundToggle from './components/SoundToggle';
 
 function App() {
+  // Inicialización de Smooth Scroll (Lenis) sincronizado con GSAP
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Curva suave
+      direction: 'vertical', // vertical, horizontal
+      gestureDirection: 'vertical', // vertical, horizontal, both
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+
+    // Sincronizar Lenis con ScrollTrigger de GSAP
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // Integrar el ciclo de animación de Lenis con el Ticker principal de GSAP
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    // Desactivar el suavizado de lag de GSAP para evitar conflictos con Lenis
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      // Limpiar al desmontar
+      lenis.destroy();
+      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+    };
+  }, []);
+
   return (
     <LanguageProvider>
       <SoundProvider>

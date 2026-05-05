@@ -176,23 +176,51 @@ const Cursor: React.FC = () => {
         };
 
         const addListeners = () => {
-            const targets = document.querySelectorAll('a, button, input, textarea, .hover-target, .rift-row, [data-cursor]');
+            const targets = document.querySelectorAll('a, button, input, textarea, .hover-target, .rift-row, [data-cursor], .magnetic');
 
             targets.forEach((target) => {
                 const element = target as HTMLElement;
                 if (boundElements.has(element)) return;
                 boundElements.add(element);
 
-                const isLarge = element.offsetWidth > 200 || element.offsetHeight > 100;
-
-                if (!isLarge) {
-                    // MAGNETIC PHYSICS REMOVED FROM ELEMENTS
+                // Identificar si el elemento debe tener físicas magnéticas
+                const isMagnetic = element.classList.contains('magnetic') || element.tagName === 'BUTTON' || element.tagName === 'A';
+                
+                // Preparar GSAP quickTo para mover el elemento magnéticamente
+                let xTo: gsap.QuickToFunc;
+                let yTo: gsap.QuickToFunc;
+                
+                if (isMagnetic) {
+                    xTo = gsap.quickTo(element, "x", { duration: 0.6, ease: "elastic.out(1, 0.3)" });
+                    yTo = gsap.quickTo(element, "y", { duration: 0.6, ease: "elastic.out(1, 0.3)" });
                 }
+
+                const mousemove = (e: MouseEvent) => {
+                    if (isMagnetic && xTo && yTo) {
+                        const rect = element.getBoundingClientRect();
+                        const relX = (e.clientX - rect.left) - rect.width / 2;
+                        const relY = (e.clientY - rect.top) - rect.height / 2;
+                        // Mover el elemento hacia el ratón (Fuerza magnética del 30%)
+                        xTo(relX * 0.3);
+                        yTo(relY * 0.3);
+                    }
+                };
 
                 const cursorMouseEnter = () => {
                     isHovered = true;
                     hoverEl = element;
+                    
+                    // Soporte para texto dinámico en el cursor
+                    const cursorText = element.getAttribute('data-cursor-text');
+                    if (cursorText && text) {
+                        text.textContent = cursorText;
+                        text.style.opacity = '1';
+                        scale.target = 3; // Crecer para alojar el texto
+                    } else {
+                        scale.target = 1.5; // Hover normal
+                    }
                 };
+                
                 const cursorMouseLeave = () => {
                     isHovered = false;
                     hoverEl = null;
@@ -202,12 +230,23 @@ const Cursor: React.FC = () => {
                         text.style.opacity = '0';
                     }
                     if (el) el.style.mixBlendMode = 'difference';
-                    if (visual) visual.style.backgroundColor = '#fff';
+                    if (visual) visual.style.backgroundColor = 'transparent';
                     scale.target = 1;
+
+                    // Soltar el elemento magnético (Reset)
+                    if (isMagnetic && xTo && yTo) {
+                        xTo(0);
+                        yTo(0);
+                    }
                 };
 
                 element.addEventListener('mouseenter', cursorMouseEnter);
                 element.addEventListener('mouseleave', cursorMouseLeave);
+                if (isMagnetic) {
+                    element.addEventListener('mousemove', mousemove);
+                }
+
+                elementListeners.push({ element, mousemove, mouseleave: cursorMouseLeave, xTo: xTo!, yTo: yTo! });
             });
         };
 

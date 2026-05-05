@@ -44,6 +44,11 @@ const MANIFESTO = [
 const CinematicDev: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const entranceGlitchRef = useRef<any>(null);
+    
+    // Parallax Refs for Hero
+    const heroWindowRef = useRef<HTMLDivElement>(null);
+    const heroTextRef = useRef<HTMLDivElement>(null);
+
     const [currentChapter, setCurrentChapter] = React.useState('ESENCIA');
     const [chapterNumber, setChapterNumber] = React.useState('1');
 
@@ -65,8 +70,8 @@ const CinematicDev: React.FC = () => {
     // Referencia para la capa de éter líquido (Deprecado)
     // const etherLayerRef = useRef<HTMLDivElement>(null);
 
-    // Referencia para la ventana contenedora
-    const windowRef = useRef<HTMLDivElement>(null);
+    // Referencia para la ventana contenedora (Re-asignada al heroWindowRef)
+    const windowRef = heroWindowRef;
 
     // Referencia al Prisma para controlarlo vía ScrollTrigger
     const prismRef = useRef<any>(null);
@@ -79,6 +84,46 @@ const CinematicDev: React.FC = () => {
     const [mountEssence, setMountEssence] = React.useState(true);
     const [mountNeural, setMountNeural] = React.useState(true);
     const [mountPrism, setMountPrism] = React.useState(false);
+
+    // --- MOUSE PARALLAX ENGINE (LUSION STYLE) ---
+    useEffect(() => {
+        // Mobile Check
+        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (isTouch) return;
+
+        const win = heroWindowRef.current;
+        const txt = heroTextRef.current;
+        
+        if (!win || !txt) return;
+
+        // Utilizamos quickTo para un rendimiento superior sin repaints bloqueantes
+        const winXTo = gsap.quickTo(win, "x", { duration: 0.8, ease: "power3" });
+        const winYTo = gsap.quickTo(win, "y", { duration: 0.8, ease: "power3" });
+        
+        // El texto se mueve más rápido/lento para crear el desfase 3D (Multilayer Parallax)
+        const txtXTo = gsap.quickTo(txt, "x", { duration: 1.2, ease: "power3.out" });
+        const txtYTo = gsap.quickTo(txt, "y", { duration: 1.2, ease: "power3.out" });
+
+        const handleMouseMove = (e: MouseEvent) => {
+            // Normalizar coordenadas (0 a 1)
+            const nx = (e.clientX / window.innerWidth) - 0.5;
+            const ny = (e.clientY / window.innerHeight) - 0.5;
+
+            // Rango de movimiento (Pixeles)
+            const rangeWin = 30; // La ventana se mueve sutilmente
+            const rangeTxt = -50; // El texto se mueve en dirección opuesta
+
+            // El transform translate original es -50%, -50%, por lo que quickTo afectará las propiedades x/y relativas a su estado actual
+            winXTo(nx * rangeWin);
+            winYTo(ny * rangeWin);
+            
+            txtXTo(nx * rangeTxt);
+            txtYTo(ny * rangeTxt);
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
 
     // Referencia para el grupo SVG que vamos a escalar
     const maskGroupRef = useRef<SVGSVGElement>(null);
@@ -582,8 +627,8 @@ const CinematicDev: React.FC = () => {
                 tlNucleoGlobal.to({}, { duration: 3 });
 
                 // ALMA PERMANECE: Fusión de Precisión (Eliminar grises)
-                tlNucleoGlobal.to("#nucleo", { 
-                    background: "linear-gradient(to bottom, #FFFFFF 0%, #FFFFFF 55%, #050505 90%)", 
+                tlNucleoGlobal.to("#nucleo", {
+                    background: "linear-gradient(to bottom, #FFFFFF 0%, #FFFFFF 55%, #050505 90%)",
                     duration: 1.2,
                     ease: "power2.inOut"
                 }, "<");
@@ -777,7 +822,7 @@ const CinematicDev: React.FC = () => {
                     </div>
 
                     {/* 1.2 CAPA DE TEXTO (Encima del Video, sin restricciones de overflow) */}
-                    <div className="text-container" style={{ textAlign: 'center', zIndex: 10, position: 'relative' }}>
+                    <div ref={heroTextRef} className="text-container" style={{ textAlign: 'center', zIndex: 10, position: 'relative' }}>
                         <h1 style={{
                             fontSize: 'clamp(2rem, 8vw, 10rem)',
                             lineHeight: 0.9, fontWeight: 900, letterSpacing: '-0.04em', margin: 0,

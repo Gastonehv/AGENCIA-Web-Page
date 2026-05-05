@@ -165,24 +165,24 @@ const CinematicDev: React.FC = () => {
                 scrollTrigger: {
                     trigger: '.cinematic-content',
                     start: 'top top',
-                    end: '+=750%', // 2X FASTER (FROM 1500%)
+                    end: '+=750%', 
                     pin: true,
                     anticipatePin: 1,
-                    scrub: 0.8, // MORE RESPONSIVE
-                    refreshPriority: 10, // TOP PRIORITY
+                    scrub: 1,
+                    refreshPriority: 15,
+                    fastScrollEnd: true,
                     onToggle: (self) => {
                         if (self.isActive) {
                             setCurrentChapter('ESENCIA');
                             setChapterNumber('1');
+                            setMountEssence(true);
                         }
-                    },
-                    onUpdate: (self) => {
+                        
                         // MOUNT LOGIC - Absolute Death to Ghosting
                         if (self.progress > 0.99) {
                             setMountEssence(false);
                             gsap.set('.cinematic-content', { opacity: 0, visibility: 'hidden', pointerEvents: 'none' });
                         } else {
-                            setMountEssence(true);
                             gsap.set('.cinematic-content', { opacity: 1, visibility: 'visible', pointerEvents: 'auto' });
                         }
 
@@ -330,9 +330,10 @@ const CinematicDev: React.FC = () => {
                     end: "+=800%", // Cinematic zoom for chapter 2
                     pin: true,
                     pinSpacing: true,
-                    scrub: 0.8,
+                    scrub: 1,
                     anticipatePin: 1,
-                    refreshPriority: 9,
+                    refreshPriority: 14,
+                    fastScrollEnd: true,
                     onToggle: (self) => {
                         if (self.isActive) {
                             setMountNeural(true);
@@ -422,8 +423,9 @@ const CinematicDev: React.FC = () => {
                     end: "+=1000%",
                     pin: true,
                     pinSpacing: true,
-                    scrub: 0.8,
-                    refreshPriority: 8,
+                    scrub: 1,
+                    refreshPriority: 13,
+                    fastScrollEnd: true,
                     onToggle: (self) => {
                         if (self.isActive) {
                             setMountPrism(true);
@@ -511,13 +513,6 @@ const CinematicDev: React.FC = () => {
             // --- SECCIÓN 5: EL NÚCLEO (CONTROL DE PAUSAS POR DISTANCIA) ---
             // La atención se logra mediante la altura de las secciones en el JSX.
 
-            // --- A.L.M.A. FOCUS PIN (INSTANT TRANSITION) ---
-            ScrollTrigger.create({
-                trigger: ".alma-focus-trigger",
-                start: "top top",
-                end: "+=1vh", // NEAR INSTANT
-            });
-
             // --- CAPÍTULO 4: EJECUCIÓN (PINNED SHOWCASE) ---
             gsap.timeline({
                 scrollTrigger: {
@@ -526,8 +521,9 @@ const CinematicDev: React.FC = () => {
                     end: "+=600%",
                     pin: true,
                     pinSpacing: true,
-                    scrub: 0.8,
-                    refreshPriority: 7,
+                    scrub: 1,
+                    refreshPriority: 12,
+                    fastScrollEnd: true,
                     onToggle: (self) => {
                         if (self.isActive) {
                             setCurrentChapter('EJECUCIÓN');
@@ -551,13 +547,17 @@ const CinematicDev: React.FC = () => {
                     end: "+=500%", // Extended space for team and Alma
                     pin: true,
                     pinSpacing: true,
-                    scrub: 0.8,
-                    refreshPriority: 6,
-                    onToggle: (self) => {
-                        if (self.isActive) {
-                            setCurrentChapter('EL NÚCLEO');
-                            setChapterNumber('5');
-                        }
+                    scrub: 1,
+                    refreshPriority: 11,
+                    fastScrollEnd: true,
+                    anticipatePin: 1,
+                    onEnter: () => {
+                        setCurrentChapter('EL NÚCLEO');
+                        setChapterNumber('5');
+                    },
+                    onEnterBack: () => {
+                        setCurrentChapter('EL NÚCLEO');
+                        setChapterNumber('5');
                     }
                 }
             });
@@ -644,20 +644,18 @@ const CinematicDev: React.FC = () => {
                     start: "top top",
                     end: "+=200%",
                     pin: true,
+                    pinSpacing: true,
                     scrub: 1,
                     anticipatePin: 1,
-                    refreshPriority: 5,
-                    onToggle: (self) => {
-                        if (self.isActive) {
-                            setCurrentChapter('SIMBIOSIS');
-                            setChapterNumber('6');
-                        }
+                    refreshPriority: 10,
+                    fastScrollEnd: true,
+                    onEnter: () => {
+                        setCurrentChapter('SIMBIOSIS');
+                        setChapterNumber('6');
                     },
-                    snap: {
-                        snapTo: [0, 1],
-                        duration: { min: 0.4, max: 1.0 },
-                        delay: 0.1,
-                        ease: "power2.out"
+                    onEnterBack: () => {
+                        setCurrentChapter('SIMBIOSIS');
+                        setChapterNumber('6');
                     }
                 }
             });
@@ -687,6 +685,8 @@ const CinematicDev: React.FC = () => {
                         pinSpacing: true,
                         scrub: 1,
                         anticipatePin: 1,
+                        refreshPriority: 9,
+                        fastScrollEnd: true,
                         snap: {
                             snapTo: (value) => {
                                 return value < 0.2 ? 0 : 1;

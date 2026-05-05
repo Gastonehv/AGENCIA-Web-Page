@@ -325,7 +325,7 @@ const CinematicDev: React.FC = () => {
             });
 
             // --- CAPÍTULO 2: IDENTIDAD (TRANSICIÓN DE ENTROPÍA) ---
-            const tlCap2 = gsap.timeline({
+            const tlIdentidad = gsap.timeline({
                 scrollTrigger: {
                     trigger: "#identidad",
                     start: "top top",
@@ -337,6 +337,8 @@ const CinematicDev: React.FC = () => {
                             setCurrentChapter('IDENTIDAD');
                             setChapterNumber('2');
                         }
+                    }
+                }
             });
 
             // Clean start for Identidad

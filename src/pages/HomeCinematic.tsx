@@ -581,8 +581,12 @@ const CinematicDev: React.FC = () => {
                 // Pausa ALMA
                 tlNucleoGlobal.to({}, { duration: 3 }); 
 
-                // ALMA PERMANECE: No hay salida, se fusiona con el scroll hacia Simbiosis
-                // Se mantiene el fondo blanco y el título negro por petición del usuario
+                // ALMA PERMANECE: Fusión híbrida (Blanco arriba, Negro abajo)
+                tlNucleoGlobal.to("#nucleo", { 
+                    background: "linear-gradient(to bottom, #FFFFFF 0%, #FFFFFF 40%, #050505 100%)", 
+                    duration: 1.2,
+                    ease: "power2.inOut"
+                }, "<");
             }
 
             // Pausa mínima antes de liberar el pin para permitir lectura
@@ -1272,12 +1276,7 @@ const CinematicDev: React.FC = () => {
 
             </section>
 
-            {/* BRIDGE GRADIENT: FUSIÓN TOTAL (Negro a Negro) */}
-            <div style={{
-                width: '100%', height: '10vh',
-                background: '#050505', // Ya no es degradado de blanco, es unión sólida
-                position: 'relative', zIndex: 1
-            }} />
+            {/* Puente eliminado para unión directa */}
 
             <div id="simbiosis" style={{
                 position: 'relative',

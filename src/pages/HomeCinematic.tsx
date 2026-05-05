@@ -363,13 +363,6 @@ const CinematicDev: React.FC = () => {
                 }
             });
 
-            // Parallax profundo para la red neuronal (Se mueve a diferente velocidad)
-            tlIdentidad.to('.neural-container', {
-                yPercent: 30, // Se desplaza hacia abajo mientras scrolleas
-                ease: 'none',
-                duration: tlIdentidad.duration()
-            }, 0);
-
             // Clean start for Identidad (Stagger palabra por palabra)
             tlIdentidad.to('.entropy-word', { 
                 opacity: 1,
@@ -428,6 +421,19 @@ const CinematicDev: React.FC = () => {
                 duration: 2,
                 ease: 'power2.in'
             }, ">+0.5");
+
+            // --- PARALLAX EXTREMO (INDEPENDIENTE) PARA LA RED NEURONAL ---
+            gsap.to('.neural-container', {
+                scrollTrigger: {
+                    trigger: "#identidad",
+                    start: "top top",
+                    end: "+=800%", // Debe coincidir con el end de tlIdentidad
+                    scrub: true,
+                },
+                yPercent: 80, // Movimiento masivo (80% de su propia altura)
+                scale: 1.5, // Ampliamos para que al moverse no se vean los bordes blancos del fondo
+                ease: 'none'
+            });
 
             // --- 3. CAPÍTULO 3: EL MANIFIESTO (PRISM RESTORATION) ---
             const manifestoItems = gsap.utils.toArray<HTMLElement>('.manifesto-item');

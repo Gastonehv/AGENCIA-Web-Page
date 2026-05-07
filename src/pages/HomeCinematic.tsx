@@ -14,7 +14,7 @@ import gaelImg from '../assets/team/gael_oracle.png';
 import almaLogo from '../assets/images/alma_logo_final.png';
 import almaVideo from '../assets/videos/alma_fondo_v3_opt.mp4';
 import footerLogo from '../assets/logo_agencia_full.png';
-import AlmaSection from '../components/AlmaSection';
+// import AlmaSection from '../components/AlmaSection'; // Unused in this version
 import Symbiosis from '../components/Symbiosis';
 import GlitchPortal from '../components/GlitchPortal';
 import Footer from '../components/Footer';
@@ -570,7 +570,7 @@ const CinematicDev: React.FC = () => {
             const l1 = row1.querySelector('.rift-left');
             const r1 = row1.querySelector('.rift-right');
             const img1 = row1.querySelector('.rift-img');
-            const id1 = row1.querySelector('.rift-id');
+            // const id1 = row1.querySelector('.rift-id');
 
             // Entrada CEO
             tlNucleoGlobal.to(row1, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, "+=0.2")
@@ -592,7 +592,7 @@ const CinematicDev: React.FC = () => {
             const l2 = row2.querySelector('.rift-left');
             const r2 = row2.querySelector('.rift-right');
             const img2 = row2.querySelector('.rift-img');
-            const id2 = row2.querySelector('.rift-id');
+            // const id2 = row2.querySelector('.rift-id');
 
             // Entrada CTO
             tlNucleoGlobal.to(row2, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
@@ -615,7 +615,7 @@ const CinematicDev: React.FC = () => {
                 const l3 = row3.querySelector('.rift-left');
                 const r3 = row3.querySelector('.rift-right');
                 const img3 = row3.querySelector('.rift-img');
-                const id3 = row3.querySelector('.rift-id');
+                // const id3 = row3.querySelector('.rift-id');
 
                 // Entrada ALMA
                 tlNucleoGlobal.to(row3, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")

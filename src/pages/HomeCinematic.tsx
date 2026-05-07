@@ -6,7 +6,6 @@ import EssenceBackground from '../components/EssenceBackground';
 import officialTypography from '../assets/logos/agencia_typography_official.png';
 import NeuralNetworkALMA from '../components/NeuralNetworkALMA';
 import ScrambleText from '../components/ScrambleText';
-import AsciiRipple from '../components/AsciiRipple';
 import Prism from '../components/Prism';
 import ShowcaseSlider from '../components/ShowcaseSlider';
 import ceoImg from '../assets/team/ceo.jpg';

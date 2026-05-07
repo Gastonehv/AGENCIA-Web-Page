@@ -19,6 +19,7 @@ import Symbiosis from '../components/Symbiosis';
 import GlitchPortal from '../components/GlitchPortal';
 import Footer from '../components/Footer';
 import ChapterHUD from '../components/ChapterHUD';
+import Loader from '../components/Loader';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,6 +43,7 @@ const MANIFESTO = [
 ];
 
 const CinematicDev: React.FC = () => {
+    const [isLoading, setIsLoading] = React.useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
     const entranceGlitchRef = useRef<any>(null);
     
@@ -833,7 +835,9 @@ const CinematicDev: React.FC = () => {
     }, []);
 
     return (
-        <div ref={containerRef} style={{
+        <>
+            {isLoading && <Loader onComplete={() => setIsLoading(false)} />}
+            <div ref={containerRef} style={{
             width: '100%',
             backgroundColor: '#fff',
             cursor: 'none !important' // FORZAR CURSOR PERSONALIZADO SIEMPRE
@@ -1606,6 +1610,7 @@ const CinematicDev: React.FC = () => {
             {/* CINEMATIC HUD (ODOMETER + CHAPTERS) */}
             <ChapterHUD currentChapter={currentChapter} chapterNumber={chapterNumber} />
         </div>
+        </>
     );
 };
 

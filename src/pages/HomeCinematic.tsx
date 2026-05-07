@@ -437,8 +437,8 @@ const CinematicDev: React.FC = () => {
             }, ">-0.5");
 
             tlIdentidad.to('.entropy-catchphrase', {
-                color: '#00FF99',
-                textShadow: '0 0 40px rgba(0,255,153,0.6), 0 0 80px rgba(0,255,153,0.4)',
+                color: '#FFFFFF',
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 50px rgba(0,240,255,0.4)',
                 duration: 2,
                 ease: 'power4.out'
             }, ">");
@@ -539,16 +539,16 @@ const CinematicDev: React.FC = () => {
                     }
                 }, "<"); // Al mismo tiempo que aparece el texto
 
-                tlCap3.fromTo(title, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
-                    .fromTo(bodyLines, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, ">");
+                tlCap3.fromTo(title, { opacity: 0, y: 30, filter: 'blur(10px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8 }, "-=0.5")
+                    .fromTo(bodyLines, { opacity: 0, y: 15, filter: 'blur(10px)', scale: 0.95 }, { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1, duration: 0.6, stagger: 0.15 }, ">");
 
                 if (i === 3) {
                     // CLIMAX ANIMATION FOR "IMPOSIBLE"
                     tlCap3.to(bodyLines, {
-                        color: '#00FF99',
-                        letterSpacing: '0.2em',
+                        color: '#FFFFFF',
+                        letterSpacing: '0.15em',
                         fontWeight: 900,
-                        textShadow: '0 0 30px rgba(0,255,153,0.6)',
+                        textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,240,255,0.6)',
                         duration: 3,
                         ease: "power2.inOut"
                     }, ">-0.5");
@@ -1063,8 +1063,8 @@ const CinematicDev: React.FC = () => {
                         top: 0,
                         bottom: 0,
                         width: '3px',
-                        backgroundColor: '#00FF99', // Neon Acccent
-                        boxShadow: '0 0 10px rgba(0,255,153,0.5)',
+                        backgroundColor: '#FFFFFF', // Premium Silver/White
+                        boxShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(0,240,255,0.5)',
                         transformOrigin: 'top',
                         transform: 'scaleY(0)', // Start hidden
                     }} />
@@ -1082,7 +1082,7 @@ const CinematicDev: React.FC = () => {
                         filter: 'blur(10px)'
                     }}>
                         No hacemos "diseño bonito". Construimos interfaces que<br />
-                        <strong style={{ color: '#00FF99' }}>imponen autoridad</strong> y capturan mercado.
+                        <strong style={{ color: '#000', textDecoration: 'underline', textDecorationColor: '#00F0FF' }}>imponen autoridad</strong> y capturan mercado.
                     </p>
 
                     {/* Line 2 - NIVEL 2 */}
@@ -1213,13 +1213,15 @@ const CinematicDev: React.FC = () => {
                                     opacity: 0,
                                     fontWeight: i === 3 ? 900 : 500,
                                     fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'inherit',
-                                    color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
+                                    color: i === 3 && line.includes('imposible') ? '#FFFFFF' : 'inherit',
                                     textShadow: i === 3
-                                        ? '0 0 20px rgba(0,255,153,0.5), 0 0 40px rgba(0,255,153,0.2)'
-                                        : '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)',
-                                    transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)'
+                                        ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,240,255,0.4)'
+                                        : '0 4px 12px rgba(0,0,0,0.5)',
+                                    transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)',
+                                    filter: 'blur(10px)',
+                                    transform: 'translateY(20px) scale(0.95)'
                                 }}>
-                                    <AsciiRipple text={line} autoTrigger={true} trigger={activeManifestoItem === i} />
+                                    {line}
                                 </p>
                             ))}
                         </div>

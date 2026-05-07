@@ -128,7 +128,7 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
                     onUpdate: () => {
                         if (counterRef.current) {
                             counterRef.current.innerText = "100";
-                            counterRef.current.style.color = "#00FF99";
+                            counterRef.current.style.color = "#00F0FF";
                         }
                     }
                 }, "explosion")

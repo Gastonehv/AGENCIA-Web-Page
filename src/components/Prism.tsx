@@ -281,8 +281,17 @@ const Prism = forwardRef(({
             pointer.inside = true;
         };
         
+        const onOrientation = (e: DeviceOrientationEvent) => {
+            const nx = (e.gamma || 0) / 45; 
+            const ny = ((e.beta || 60) - 60) / 45;
+            pointer.x = Math.max(-1, Math.min(1, nx));
+            pointer.y = Math.max(-1, Math.min(1, ny));
+            pointer.inside = true;
+        };
+        
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseleave', () => pointer.inside = false);
+        window.addEventListener('deviceorientation', onOrientation);
 
         let raf = 0;
         const t0 = performance.now();
@@ -312,6 +321,7 @@ const Prism = forwardRef(({
             cancelAnimationFrame(raf);
             ro.disconnect();
             window.removeEventListener('mousemove', onMove);
+            window.removeEventListener('deviceorientation', onOrientation);
             if (gl.canvas.parentElement === container) container.removeChild(gl.canvas);
         };
     }, [height, baseWidth, animationType, glow, noise, offset.x, offset.y, scale, transparent, hueShift, colorFrequency, timeScale, hoverStrength, inertia, bloom, suspendWhenOffscreen]);

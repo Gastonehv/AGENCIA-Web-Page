@@ -79,18 +79,49 @@ const CinematicDev: React.FC = () => {
     // REFS FOR CHAPTER 7 (HOME REACTION RECREATION)
     const ctaSectionRef = useRef<HTMLDivElement>(null);
     const pulseButtonRef = useRef<HTMLButtonElement>(null);
+    const monolithRef = useRef<HTMLDivElement>(null);
 
     const [activeManifestoItem, setActiveManifestoItem] = React.useState(0);
     const [mountEssence, setMountEssence] = React.useState(true);
     const [mountNeural, setMountNeural] = React.useState(true);
     const [mountPrism, setMountPrism] = React.useState(false);
 
-    // --- MOUSE PARALLAX ENGINE (LUSION STYLE) ---
-    React.useEffect(() => {
-        // Mobile Check
-        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        if (isTouch) return;
+    const [orientationPermitted, setOrientationPermitted] = React.useState(false);
+    const orientationRef = useRef({ x: 0, y: 0 });
 
+    // --- SENSOR PERMISSION PROTOCOL (iOS/Android) ---
+    const requestOrientationPermission = async () => {
+        if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+            try {
+                const permissionState = await (DeviceOrientationEvent as any).requestPermission();
+                if (permissionState === 'granted') {
+                    setOrientationPermitted(true);
+                }
+            } catch (error) {
+                console.error("DeviceOrientation permission error:", error);
+            }
+        } else {
+            // Android or non-iOS browsers
+            setOrientationPermitted(true);
+        }
+    };
+
+    React.useEffect(() => {
+        const handleFirstInteraction = () => {
+            requestOrientationPermission();
+            window.removeEventListener('click', handleFirstInteraction);
+            window.removeEventListener('touchstart', handleFirstInteraction);
+        };
+        window.addEventListener('click', handleFirstInteraction);
+        window.addEventListener('touchstart', handleFirstInteraction);
+        return () => {
+            window.removeEventListener('click', handleFirstInteraction);
+            window.removeEventListener('touchstart', handleFirstInteraction);
+        };
+    }, []);
+
+    // --- PARALLAX ENGINE (MOUSE + SENSORS) ---
+    React.useEffect(() => {
         const win = heroWindowRef.current;
         const txt = heroTextRef.current;
         
@@ -104,26 +135,63 @@ const CinematicDev: React.FC = () => {
         const txtXTo = gsap.quickTo(txt, "x", { duration: 1.2, ease: "power3.out" });
         const txtYTo = gsap.quickTo(txt, "y", { duration: 1.2, ease: "power3.out" });
 
+        const rangeWin = 30; // La ventana se mueve sutilmente
+        const rangeTxt = -50; // El texto se mueve en dirección opuesta
+
         const handleMouseMove = (e: MouseEvent) => {
-            // Normalizar coordenadas (0 a 1)
+            // Normalizar coordenadas (-0.5 a 0.5)
             const nx = (e.clientX / window.innerWidth) - 0.5;
             const ny = (e.clientY / window.innerHeight) - 0.5;
+            
+            orientationRef.current = { x: nx, y: ny };
 
-            // Rango de movimiento (Pixeles)
-            const rangeWin = 30; // La ventana se mueve sutilmente
-            const rangeTxt = -50; // El texto se mueve en dirección opuesta
-
-            // El transform translate original es -50%, -50%, por lo que quickTo afectará las propiedades x/y relativas a su estado actual
             winXTo(nx * rangeWin);
             winYTo(ny * rangeWin);
-            
             txtXTo(nx * rangeTxt);
             txtYTo(ny * rangeTxt);
         };
 
+        const handleOrientation = (e: DeviceOrientationEvent) => {
+            // Gamma (inclinación izquierda/derecha) y Beta (inclinación adelante/atrás)
+            // Normalizamos a un rango de aprox -0.5 a 0.5 usando 30 grados como límite
+            const nx = (e.gamma || 0) / 60; 
+            // Restamos 60 grados de Beta porque es el ángulo natural al sostener un móvil
+            const ny = ((e.beta || 60) - 60) / 60;
+
+            // Clamp para evitar movimientos extremos
+            const cnx = Math.max(-0.5, Math.min(0.5, nx));
+            const cny = Math.max(-0.5, Math.min(0.5, ny));
+
+            orientationRef.current = { x: cnx, y: cny };
+
+            winXTo(cnx * rangeWin);
+            winYTo(cny * rangeWin);
+            txtXTo(cnx * rangeTxt);
+            txtYTo(cny * rangeTxt);
+
+            // Monolith Rotation (Mobile)
+            if (monolithRef.current) {
+                gsap.to(monolithRef.current, {
+                    rotationY: cnx * 30, 
+                    rotationX: -cny * 30,
+                    filter: `drop-shadow(${cnx * -40}px ${cny * -40}px 30px rgba(0,0,0,0.1))`,
+                    duration: 0.5,
+                    overwrite: 'auto'
+                });
+            }
+        };
+
         window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
+        
+        if (orientationPermitted) {
+            window.addEventListener('deviceorientation', handleOrientation);
+        }
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('deviceorientation', handleOrientation);
+        };
+    }, [orientationPermitted]);
 
     // Referencia para el grupo SVG que vamos a escalar
     const maskGroupRef = useRef<SVGSVGElement>(null);
@@ -1420,6 +1488,7 @@ const CinematicDev: React.FC = () => {
                     >
                         {/* THE LOGO WITH MAGNETIC REACTION (MANTENIDA) */}
                         <div
+                            ref={monolithRef}
                             className="cap7-logo-monolith"
                             onMouseMove={(e) => {
                                 const rect = e.currentTarget.getBoundingClientRect();

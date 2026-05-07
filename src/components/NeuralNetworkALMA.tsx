@@ -176,9 +176,24 @@ const NeuralNetworkALMA: React.FC = () => {
             mouseRef.current.y = null;
         };
 
+        const handleOrientation = (e: DeviceOrientationEvent) => {
+            if (!canvas) return;
+            // Gamma: inclinación lateral, Beta: inclinación frontal
+            const nx = (e.gamma || 0) / 45; 
+            const ny = ((e.beta || 60) - 60) / 45;
+
+            const cnx = Math.max(-1, Math.min(1, nx));
+            const cny = Math.max(-1, Math.min(1, ny));
+
+            // Mapeamos el centro de la pantalla + el desplazamiento del sensor
+            mouseRef.current.x = (canvas.width / 2) + (cnx * canvas.width / 2);
+            mouseRef.current.y = (canvas.height / 2) + (cny * canvas.height / 2);
+        };
+
         window.addEventListener('resize', resize);
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseleave', handleMouseLeave);
+        window.addEventListener('deviceorientation', handleOrientation);
 
         resize();
         animate();
@@ -187,6 +202,7 @@ const NeuralNetworkALMA: React.FC = () => {
             window.removeEventListener('resize', resize);
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseleave', handleMouseLeave);
+            window.removeEventListener('deviceorientation', handleOrientation);
             cancelAnimationFrame(animationFrameId);
         };
     }, []);

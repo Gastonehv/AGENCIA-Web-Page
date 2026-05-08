@@ -618,12 +618,6 @@ const CinematicDev: React.FC = () => {
                             setCurrentChapter('EJECUCIÓN');
                             setChapterNumber('4');
                         }
-                    },
-                    snap: {
-                        snapTo: [0, 1],
-                        duration: { min: 0.4, max: 1.0 },
-                        delay: 0.1,
-                        ease: "power2.out"
                     }
                 }
             });

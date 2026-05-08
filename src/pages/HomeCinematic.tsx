@@ -437,8 +437,8 @@ const CinematicDev: React.FC = () => {
             }, ">-0.5");
 
             tlIdentidad.to('.entropy-catchphrase', {
-                color: '#FFFFFF',
-                textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.6), 0 0 80px rgba(0,255,255,0.4)',
+                color: '#00FF99',
+                textShadow: '0 0 40px rgba(0,255,153,0.6), 0 0 80px rgba(0,255,153,0.4)',
                 duration: 2,
                 ease: 'power4.out'
             }, ">");
@@ -539,19 +539,47 @@ const CinematicDev: React.FC = () => {
                     }
                 }, "<"); // Al mismo tiempo que aparece el texto
 
-                tlCap3.fromTo(title, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
-                    .fromTo(bodyLines, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, ">");
+                // NEW: BLUR-TO-FOCUS ENTRANCE (More Cinematic)
+                tlCap3.fromTo(title, 
+                    { opacity: 0, y: 40, filter: 'blur(25px)', scale: 1.1 }, 
+                    { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1, duration: 1.5, ease: "power4.out" }, 
+                    "-=0.5"
+                )
+                    .fromTo(bodyLines, 
+                        { opacity: 0, y: 20, filter: 'blur(15px)' }, 
+                        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, stagger: 0.25, ease: "power3.out" }, 
+                        ">-0.8"
+                    );
 
                 if (i === 3) {
-                    // CLIMAX ANIMATION FOR "IMPOSIBLE"
+                    // --- CLIMAX ANIMATION: CHROMATIC SINGULARITY ---
+                    // Instead of green, we use a violent RGB Split + White Glow
                     tlCap3.to(bodyLines, {
                         color: '#FFFFFF',
-                        letterSpacing: '0.2em',
+                        letterSpacing: '0.25em',
                         fontWeight: 900,
-                        textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.4)',
-                        duration: 3,
-                        ease: "power2.inOut"
+                        textShadow: '2px 0 rgba(255,0,0,0.9), -2px 0 rgba(0,255,255,0.9), 0 0 15px rgba(255,255,255,0.5)',
+                        duration: 2,
+                        ease: "expo.inOut"
                     }, ">-0.5");
+
+                    // High-Frequency Chromatic Flicker
+                    tlCap3.to(bodyLines, {
+                        textShadow: '8px 0 rgba(255,0,150,1), -8px 0 rgba(0,255,255,1), 0 0 50px rgba(255,255,255,0.9)',
+                        opacity: 0.8,
+                        duration: 0.03,
+                        repeat: 12,
+                        yoyo: true,
+                        ease: "none"
+                    }, ">");
+
+                    // Background Flash
+                    tlCap3.to('#capitulo-3', {
+                        backgroundColor: '#000',
+                        duration: 0.1,
+                        repeat: 3,
+                        yoyo: true
+                    }, "<");
                 }
 
                 tlCap3.to({}, { duration: 12 }); // EXTENDED READING PAUSE FOR EACH ITEM (SENSORY COMFORT)
@@ -1213,9 +1241,9 @@ const CinematicDev: React.FC = () => {
                                     opacity: 0,
                                     fontWeight: i === 3 ? 900 : 500,
                                     fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'inherit',
-                                    color: i === 3 && line.includes('imposible') ? '#FFFFFF' : 'inherit',
+                                    color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
                                     textShadow: i === 3
-                                        ? '0 0 25px rgba(255,255,255,0.9), 2px 0 5px rgba(255,0,255,0.5), -2px 0 5px rgba(0,255,255,0.5)'
+                                        ? '0 0 20px rgba(0,255,153,0.5), 0 0 40px rgba(0,255,153,0.2)'
                                         : '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)',
                                     transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)'
                                 }}>
@@ -1595,16 +1623,11 @@ const CinematicDev: React.FC = () => {
                         opacity: 0.8;
                     }
                     .imposible-climax {
-                        animation: cinematic-shiver 3s infinite ease-in-out, chromatic-glitch 0.2s infinite;
+                        animation: cinematic-pulse 4s infinite ease-in-out;
                     }
-                    @keyframes cinematic-shiver {
-                        0%, 100% { transform: scale(1) skew(0deg); filter: brightness(1) contrast(1); }
-                        50% { transform: scale(1.05) skew(1deg); filter: brightness(1.4) contrast(1.2); }
-                    }
-                    @keyframes chromatic-glitch {
-                        0% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
-                        50% { text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff; }
-                        100% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
+                    @keyframes cinematic-pulse {
+                        0%, 100% { transform: scale(1); filter: brightness(1); }
+                        50% { transform: scale(1.02); filter: brightness(1.2) drop-shadow(0 0 15px rgba(0,255,153,0.3)); }
                     }
                 `}</style>
             </section>

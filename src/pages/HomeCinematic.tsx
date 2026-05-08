@@ -6,6 +6,7 @@ import EssenceBackground from '../components/EssenceBackground';
 import officialTypography from '../assets/logos/agencia_typography_official.png';
 import NeuralNetworkALMA from '../components/NeuralNetworkALMA';
 import ScrambleText from '../components/ScrambleText';
+import AsciiRipple from '../components/AsciiRipple';
 import Prism from '../components/Prism';
 import ShowcaseSlider from '../components/ShowcaseSlider';
 import ceoImg from '../assets/team/ceo.jpg';
@@ -436,10 +437,10 @@ const CinematicDev: React.FC = () => {
             }, ">-0.5");
 
             tlIdentidad.to('.entropy-catchphrase', {
-                color: '#00FF99', // Return to Green
-                textShadow: '0 0 15px rgba(0,255,153,0.8), 0 0 30px rgba(0,255,153,0.4), 0 0 60px rgba(0,240,255,0.2)',
-                duration: 2.5,
-                ease: 'expo.out'
+                color: '#FFFFFF',
+                textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.6), 0 0 80px rgba(0,255,255,0.4)',
+                duration: 2,
+                ease: 'power4.out'
             }, ">");
 
             tlIdentidad.to('.entropy-finish', {
@@ -538,16 +539,16 @@ const CinematicDev: React.FC = () => {
                     }
                 }, "<"); // Al mismo tiempo que aparece el texto
 
-                tlCap3.fromTo(title, { opacity: 0, y: 30, filter: 'blur(10px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8 }, "-=0.5")
-                    .fromTo(bodyLines, { opacity: 0, y: 15, filter: 'blur(10px)', scale: 0.95 }, { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1, duration: 0.6, stagger: 0.15 }, ">");
+                tlCap3.fromTo(title, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
+                    .fromTo(bodyLines, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, ">");
 
                 if (i === 3) {
                     // CLIMAX ANIMATION FOR "IMPOSIBLE"
                     tlCap3.to(bodyLines, {
                         color: '#FFFFFF',
-                        letterSpacing: '0.15em',
+                        letterSpacing: '0.2em',
                         fontWeight: 900,
-                        textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,240,255,0.6)',
+                        textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.4)',
                         duration: 3,
                         ease: "power2.inOut"
                     }, ">-0.5");
@@ -1062,8 +1063,8 @@ const CinematicDev: React.FC = () => {
                         top: 0,
                         bottom: 0,
                         width: '3px',
-                        backgroundColor: '#FFFFFF', // Premium Silver/White
-                        boxShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(0,240,255,0.5)',
+                        backgroundColor: '#00FF99', // Neon Acccent
+                        boxShadow: '0 0 10px rgba(0,255,153,0.5)',
                         transformOrigin: 'top',
                         transform: 'scaleY(0)', // Start hidden
                     }} />
@@ -1081,7 +1082,7 @@ const CinematicDev: React.FC = () => {
                         filter: 'blur(10px)'
                     }}>
                         No hacemos "diseño bonito". Construimos interfaces que<br />
-                        <strong className="liquid-emerald-text" style={{ color: '#00FF99', fontWeight: 900 }}>imponen autoridad</strong> y capturan mercado.
+                        <strong style={{ color: '#00FF99' }}>imponen autoridad</strong> y capturan mercado.
                     </p>
 
                     {/* Line 2 - NIVEL 2 */}
@@ -1214,13 +1215,11 @@ const CinematicDev: React.FC = () => {
                                     fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'inherit',
                                     color: i === 3 && line.includes('imposible') ? '#FFFFFF' : 'inherit',
                                     textShadow: i === 3
-                                        ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,240,255,0.4)'
-                                        : '0 4px 12px rgba(0,0,0,0.5)',
-                                    transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)',
-                                    filter: 'blur(10px)',
-                                    transform: 'translateY(20px) scale(0.95)'
+                                        ? '0 0 25px rgba(255,255,255,0.9), 2px 0 5px rgba(255,0,255,0.5), -2px 0 5px rgba(0,255,255,0.5)'
+                                        : '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)',
+                                    transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)'
                                 }}>
-                                    {line}
+                                    <AsciiRipple text={line} autoTrigger={true} trigger={activeManifestoItem === i} />
                                 </p>
                             ))}
                         </div>
@@ -1596,20 +1595,16 @@ const CinematicDev: React.FC = () => {
                         opacity: 0.8;
                     }
                     .imposible-climax {
-                        animation: cinematic-pulse 4s infinite ease-in-out, shimmer 3s infinite linear;
+                        animation: cinematic-shiver 3s infinite ease-in-out, chromatic-glitch 0.2s infinite;
                     }
-                    .liquid-emerald-text {
-                        text-shadow: 0 0 10px rgba(0,255,153,0.5);
-                        position: relative;
+                    @keyframes cinematic-shiver {
+                        0%, 100% { transform: scale(1) skew(0deg); filter: brightness(1) contrast(1); }
+                        50% { transform: scale(1.05) skew(1deg); filter: brightness(1.4) contrast(1.2); }
                     }
-                    @keyframes shimmer {
-                        0% { filter: hue-rotate(0deg) brightness(1); }
-                        50% { filter: hue-rotate(20deg) brightness(1.3); }
-                        100% { filter: hue-rotate(0deg) brightness(1); }
-                    }
-                    @keyframes cinematic-pulse {
-                        0%, 100% { transform: scale(1); filter: brightness(1); }
-                        50% { transform: scale(1.02); filter: brightness(1.2) drop-shadow(0 0 15px rgba(0,255,153,0.3)); }
+                    @keyframes chromatic-glitch {
+                        0% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
+                        50% { text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff; }
+                        100% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
                     }
                 `}</style>
             </section>

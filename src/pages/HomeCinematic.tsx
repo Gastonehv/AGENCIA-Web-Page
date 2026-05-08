@@ -436,10 +436,10 @@ const CinematicDev: React.FC = () => {
             }, ">-0.5");
 
             tlIdentidad.to('.entropy-catchphrase', {
-                color: '#FFFFFF',
-                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 50px rgba(0,240,255,0.4)',
-                duration: 2,
-                ease: 'power4.out'
+                color: '#00FF99', // Return to Green
+                textShadow: '0 0 15px rgba(0,255,153,0.8), 0 0 30px rgba(0,255,153,0.4), 0 0 60px rgba(0,240,255,0.2)',
+                duration: 2.5,
+                ease: 'expo.out'
             }, ">");
 
             tlIdentidad.to('.entropy-finish', {
@@ -544,10 +544,10 @@ const CinematicDev: React.FC = () => {
                 if (i === 3) {
                     // CLIMAX ANIMATION FOR "IMPOSIBLE"
                     tlCap3.to(bodyLines, {
-                        color: '#FFFFFF',
-                        letterSpacing: '0.15em',
+                        color: '#00FF99',
+                        letterSpacing: '0.12em',
                         fontWeight: 900,
-                        textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,240,255,0.6)',
+                        textShadow: '0 0 20px rgba(0,255,153,0.8), 0 0 40px rgba(0,255,153,0.4)',
                         duration: 3,
                         ease: "power2.inOut"
                     }, ">-0.5");
@@ -1081,7 +1081,7 @@ const CinematicDev: React.FC = () => {
                         filter: 'blur(10px)'
                     }}>
                         No hacemos "diseño bonito". Construimos interfaces que<br />
-                        <strong style={{ color: '#000', textDecoration: 'underline', textDecorationColor: '#00F0FF' }}>imponen autoridad</strong> y capturan mercado.
+                        <strong className="liquid-emerald-text" style={{ color: '#00FF99', fontWeight: 900 }}>imponen autoridad</strong> y capturan mercado.
                     </p>
 
                     {/* Line 2 - NIVEL 2 */}
@@ -1212,9 +1212,9 @@ const CinematicDev: React.FC = () => {
                                     opacity: 0,
                                     fontWeight: i === 3 ? 900 : 500,
                                     fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'inherit',
-                                    color: i === 3 && line.includes('imposible') ? '#FFFFFF' : 'inherit',
+                                    color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
                                     textShadow: i === 3
-                                        ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,240,255,0.4)'
+                                        ? '0 0 20px rgba(0,255,153,0.8), 0 0 40px rgba(0,255,153,0.4)'
                                         : '0 4px 12px rgba(0,0,0,0.5)',
                                     transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)',
                                     filter: 'blur(10px)',
@@ -1596,7 +1596,16 @@ const CinematicDev: React.FC = () => {
                         opacity: 0.8;
                     }
                     .imposible-climax {
-                        animation: cinematic-pulse 4s infinite ease-in-out;
+                        animation: cinematic-pulse 4s infinite ease-in-out, shimmer 3s infinite linear;
+                    }
+                    .liquid-emerald-text {
+                        text-shadow: 0 0 10px rgba(0,255,153,0.5);
+                        position: relative;
+                    }
+                    @keyframes shimmer {
+                        0% { filter: hue-rotate(0deg) brightness(1); }
+                        50% { filter: hue-rotate(20deg) brightness(1.3); }
+                        100% { filter: hue-rotate(0deg) brightness(1); }
                     }
                     @keyframes cinematic-pulse {
                         0%, 100% { transform: scale(1); filter: brightness(1); }

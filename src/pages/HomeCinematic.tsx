@@ -544,10 +544,10 @@ const CinematicDev: React.FC = () => {
                 if (i === 3) {
                     // CLIMAX ANIMATION FOR "IMPOSIBLE"
                     tlCap3.to(bodyLines, {
-                        color: '#00FF99',
-                        letterSpacing: '0.12em',
+                        color: '#FFFFFF',
+                        letterSpacing: '0.15em',
                         fontWeight: 900,
-                        textShadow: '0 0 20px rgba(0,255,153,0.8), 0 0 40px rgba(0,255,153,0.4)',
+                        textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,240,255,0.6)',
                         duration: 3,
                         ease: "power2.inOut"
                     }, ">-0.5");
@@ -1212,9 +1212,9 @@ const CinematicDev: React.FC = () => {
                                     opacity: 0,
                                     fontWeight: i === 3 ? 900 : 500,
                                     fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'inherit',
-                                    color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
+                                    color: i === 3 && line.includes('imposible') ? '#FFFFFF' : 'inherit',
                                     textShadow: i === 3
-                                        ? '0 0 20px rgba(0,255,153,0.8), 0 0 40px rgba(0,255,153,0.4)'
+                                        ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,240,255,0.4)'
                                         : '0 4px 12px rgba(0,0,0,0.5)',
                                     transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)',
                                     filter: 'blur(10px)',

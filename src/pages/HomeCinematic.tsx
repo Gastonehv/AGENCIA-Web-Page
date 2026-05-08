@@ -539,47 +539,38 @@ const CinematicDev: React.FC = () => {
                     }
                 }, "<"); // Al mismo tiempo que aparece el texto
 
-                // NEW: BLUR-TO-FOCUS ENTRANCE (More Cinematic)
+                // SUGERENCIA 1: PURE AUTHORITY (Minimalismo Radical)
                 tlCap3.fromTo(title, 
-                    { opacity: 0, y: 40, filter: 'blur(25px)', scale: 1.1 }, 
-                    { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1, duration: 1.5, ease: "power4.out" }, 
+                    { opacity: 0, y: 30, filter: 'blur(12px)' }, 
+                    { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.2, ease: "power4.out" }, 
                     "-=0.5"
                 )
                     .fromTo(bodyLines, 
-                        { opacity: 0, y: 20, filter: 'blur(15px)' }, 
-                        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, stagger: 0.25, ease: "power3.out" }, 
-                        ">-0.8"
+                        { opacity: 0, y: 15, filter: 'blur(8px)' }, 
+                        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8, stagger: 0.2, ease: "power3.out" }, 
+                        ">-0.6"
                     );
 
                 if (i === 3) {
-                    // --- CLIMAX ANIMATION: CHROMATIC SINGULARITY ---
-                    // Instead of green, we use a violent RGB Split + White Glow
+                    // --- CLIMAX ANIMATION: PURE AUTHORITY ---
+                    // Texto Blanco Puro con Aura de Energía Sutil
                     tlCap3.to(bodyLines, {
                         color: '#FFFFFF',
-                        letterSpacing: '0.25em',
+                        letterSpacing: '0.12em',
                         fontWeight: 900,
-                        textShadow: '2px 0 rgba(255,0,0,0.9), -2px 0 rgba(0,255,255,0.9), 0 0 15px rgba(255,255,255,0.5)',
-                        duration: 2,
-                        ease: "expo.inOut"
+                        textShadow: '0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(0,255,255,0.1)',
+                        duration: 2.5,
+                        ease: "power4.inOut"
                     }, ">-0.5");
 
-                    // High-Frequency Chromatic Flicker
+                    // Pulso de Energía Constante y Elegante
                     tlCap3.to(bodyLines, {
-                        textShadow: '8px 0 rgba(255,0,150,1), -8px 0 rgba(0,255,255,1), 0 0 50px rgba(255,255,255,0.9)',
-                        opacity: 0.8,
-                        duration: 0.03,
-                        repeat: 12,
-                        yoyo: true,
-                        ease: "none"
-                    }, ">");
-
-                    // Background Flash
-                    tlCap3.to('#capitulo-3', {
-                        backgroundColor: '#000',
-                        duration: 0.1,
+                        textShadow: '0 0 35px rgba(255,255,255,0.7), 0 0 70px rgba(0,255,255,0.2)',
+                        duration: 1.5,
                         repeat: 3,
-                        yoyo: true
-                    }, "<");
+                        yoyo: true,
+                        ease: "sine.inOut"
+                    }, ">");
                 }
 
                 tlCap3.to({}, { duration: 12 }); // EXTENDED READING PAUSE FOR EACH ITEM (SENSORY COMFORT)

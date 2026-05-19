@@ -1,872 +1,774 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import InteractionGuide from '../components/InteractionGuide';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
-import StructuredData from '../components/StructuredData';
-import NeuralDatacenter from '../components/infrastructure/NeuralDatacenter';
+import { Terminal, ArrowRight, Activity, Cpu, ShieldCheck, Zap, RefreshCw, Send } from 'lucide-react';
+import { useSound } from '../context/SoundContext';
 
-gsap.registerPlugin(ScrollTrigger);
+// --- STAGE DATA FOR B2B PREMIUM SOFTWARE ANATOMY ---
+const STAGES_INFO = [
+    {
+        id: '01',
+        name: 'SÍNTESIS GENERATIVA',
+        tag: 'INFERENCIA DE LAYOUTS IA',
+        title: 'EL FIN DEL WIREFRAME MANUAL',
+        desc: 'En la era autónoma, dibujar retículas a mano es obsoleto. Nuestro enjambre ALMA Core ingiere los requerimientos de tu negocio y sintetiza instantáneamente arquitecturas de información dinámicas, optimizadas por IA para maximizar la retención y conversión desde el minuto cero.',
+        metrics: ['AI SYNTHESIS: < 500MS', 'AUTONOMOUS UX: ACTIVE', 'CONVERSION PATH: OPTIMIZED'],
+        color: '#00FF99',
+        align: 'left'
+    },
+    {
+        id: '02',
+        name: 'LÓGICA & CÓDIGO',
+        tag: 'INGENIERÍA PURA',
+        title: 'EL MÚSCULO DE PROGRAMACIÓN',
+        desc: 'Inyectamos vida a la estructura mediante código de altísimo rendimiento. Escribimos algoritmos eficientes, tipado estricto y lógica modular (React, Node, TypeScript) que aseguran un funcionamiento ultrarrápido y mantenibilidad a largo plazo.',
+        metrics: ['CODE: CLEAN & STRICT', 'PERFORMANCE: SUB-MILLISECOND', 'ARCHITECTURE: MODULAR'],
+        color: '#00F3FF',
+        align: 'right'
+    },
+    {
+        id: '03',
+        name: 'DATOS & SEGURIDAD',
+        tag: 'INFRAESTRUCTURA ZERO-TRUST',
+        title: 'EL SISTEMA NERVIOSO CENTRAL',
+        desc: 'Integramos flujos de datos en tiempo real, microservicios en el borde y protocolos de encriptación bancaria. Tu plataforma resiste picos masivos de tráfico mientras resguarda celosamente la información de tu empresa y tus clientes.',
+        metrics: ['UPTIME: 99.999%', 'ENCRYPTION: AES-256', 'DATA: REAL-TIME'],
+        color: '#0066FF',
+        align: 'left'
+    },
+    {
+        id: '04',
+        name: 'UI PREMIUM',
+        tag: 'DISEÑO CAUTIVADOR',
+        title: 'LA PIEL Y EL ACABADO VISUAL',
+        desc: 'Sobre la ingeniería perfecta, aplicamos una capa visual deslumbrante. Glassmorfismo, sombras precisas, tipografías corporativas y micro-interacciones a 120 FPS que enamoran al usuario y multiplican las tasas de conversión.',
+        metrics: ['FPS: 120 FIXED', 'AESTHETICS: PREMIUM B2B', 'CONVERSION: MAXIMIZED'],
+        color: '#8F00FF',
+        align: 'right'
+    },
+    {
+        id: '05',
+        name: 'PRODUCTO FINAL',
+        tag: 'SUPREMACÍA FULL-STACK',
+        title: 'LA CONVERGENCIA PERFECTA',
+        desc: 'La unión impecable de estructura, código, datos y diseño. Al finalizar el viaje, el sistema colapsa en un producto vivo. Explora e interactúa con el centro de control corporativo que hemos ensamblado frente a tus ojos.',
+        metrics: ['DELIVERY: FLAWLESS', 'IMPACT: MARKET-LEADING', 'ROI: EXPONENTIAL'],
+        color: '#FF00AA',
+        align: 'center'
+    }
+];
 
-// Mobile and Touch detection hook
-const useTouchDevice = () => {
-    const [isTouch, setIsTouch] = useState(() => {
-        if (typeof window !== 'undefined') {
-            return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
-        }
-        return false;
-    });
+// --- GENERACIÓN DETERMINISTA DE PARTÍCULAS (FUERA DEL RENDER PARA REACT 19 PURITY) ---
+const INITIAL_PARTICLES = [...Array(25)].map((_, i) => ({
+    id: i,
+    left: `${Math.abs(Math.sin(i * 123.45)) * 100}%`,
+    top: `${Math.abs(Math.cos(i * 678.90)) * 100}%`,
+    duration: 6 + Math.abs(Math.sin(i * 345.67)) * 10,
+    color: i % 2 === 0 ? '#00FF99' : '#00F3FF'
+}));
 
-    useEffect(() => {
-        const checkTouch = () => {
-            const hasTouch = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
-            setIsTouch(hasTouch);
-        };
-        checkTouch();
-        window.addEventListener('touchstart', checkTouch, { once: true });
-        return () => window.removeEventListener('touchstart', checkTouch);
-    }, []);
+const DUMMY_LOGS = [
+    "[ALMA Core]: Swarm orchestration initialized at 4096 nodes.",
+    "[Security]: Quantum zero-trust mesh verified (AES-GCM-256).",
+    "[Telemetry]: Edge latency stabilized at 3.2ms.",
+    "[Memory]: GC swept 1.2GB successfully.",
+    "[Network]: BGP anycast route optimized for NA-East."
+];
 
-    return isTouch;
-};
-
-// Global scroll state for 3D scene
-const scrollState = {
-    target: 0,
-    current: 0
-};
-
-// Scene wrapper that reads scroll and passes to NeuralDatacenter
-const SceneContent = () => {
-    const [scrollProgress, setScrollProgress] = useState(0);
-
-    useFrame(() => {
-        const maxScroll = document.body.scrollHeight - window.innerHeight;
-        const rawProgress = window.scrollY / (maxScroll || 1);
-        scrollState.current += (rawProgress - scrollState.current) * 0.05;
-        setScrollProgress(scrollState.current);
-    });
-
-    return <NeuralDatacenter scrollProgress={scrollProgress} />;
-};
-
-// Animated stat counter for boot sequence
-const AnimatedStat = ({ label, value, suffix = '', delay = 0 }: {
-    label: string;
-    value: string;
-    suffix?: string;
-    delay?: number;
-}) => {
-    const [displayValue, setDisplayValue] = useState('---');
-    const [isActive, setIsActive] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsActive(true);
-            // Simulate "booting" numbers
-            let count = 0;
-            const interval = setInterval(() => {
-                count++;
-                if (count < 5) {
-                    setDisplayValue(Math.random().toString().slice(2, 5));
-                } else {
-                    setDisplayValue(value);
-                    clearInterval(interval);
-                }
-            }, 80);
-            return () => clearInterval(interval);
-        }, delay);
-        return () => clearTimeout(timer);
-    }, [value, delay]);
-
-    return (
-        <div style={{
-            textAlign: 'center',
-            opacity: isActive ? 1 : 0.3,
-            transition: 'opacity 0.5s ease'
-        }}>
-            <div style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(1.5rem, 4vw, 3rem)',
-                fontWeight: 900,
-                color: '#00FF99',
-                textShadow: '0 0 20px rgba(0, 255, 153, 0.5)'
-            }}>
-                {displayValue}{suffix}
-            </div>
-            <div style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.7rem',
-                color: 'rgba(255,255,255,0.5)',
-                letterSpacing: '0.15em',
-                marginTop: '0.5rem'
-            }}>
-                {label}
-            </div>
-        </div>
-    );
-};
-
-// Boot sequence terminal lines
-const BootSequence = ({ isVisible }: { isVisible: boolean }) => {
-    const [lines, setLines] = useState<string[]>([]);
-    const bootLines = [
-        '> INITIALIZING NEURAL CORE...',
-        '> LOADING ARCHITECTURE MODULES...',
-        '> CONNECTING NODE CLUSTER...',
-        '> SYNC: 100% COMPLETE',
-        '> SYSTEM ONLINE ////',
-    ];
-
-    useEffect(() => {
-        if (!isVisible) return;
-        let index = 0;
-        const interval = setInterval(() => {
-            if (index < bootLines.length) {
-                setLines(prev => [...prev, bootLines[index]]);
-                index++;
-            } else {
-                clearInterval(interval);
-            }
-        }, 300);
-        return () => clearInterval(interval);
-    }, [isVisible]);
-
-    return (
-        <div style={{
-            position: 'absolute',
-            bottom: '15vh',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.75rem',
-            color: '#00FF99',
-            textAlign: 'left',
-            opacity: 0.7,
-            maxWidth: '400px',
-            width: '90%'
-        }}>
-            {lines.map((line, i) => (
-                <div key={i} style={{
-                    marginBottom: '0.3rem',
-                    animation: 'fadeSlideIn 0.3s ease forwards',
-                    opacity: i === lines.length - 1 ? 1 : 0.5
-                }}>
-                    {line}
-                </div>
-            ))}
-        </div>
-    );
-};
-
-// --- Main Component ---
 const Arquitectura: React.FC = () => {
-    const [isMobile, setIsMobile] = useState(false);
-    const isTouch = useTouchDevice();
-    const containerRef = useRef<HTMLDivElement>(null);
-    const actionBtnRef = useRef<HTMLAnchorElement>(null);
+    const navigate = useNavigate();
+    const { playClick, playWhoosh } = useSound();
+    
+    // Scroll orchestration state
+    const [activeStage, setActiveStage] = useState(0);
+    const [isFullyConverged, setIsFullyConverged] = useState(false);
+    
+    // Live Dashboard Interactive State
+    const [activeTab, setActiveTab] = useState<'FINANCIAL' | 'AGENTS' | 'SECURITY'>('FINANCIAL');
+    const [chartMultiplier, setChartMultiplier] = useState(1);
+    const [agentNodesCount, setAgentNodesCount] = useState(4096);
+    const [dashboardLogs, setDashboardLogs] = useState<string[]>([DUMMY_LOGS[0]]);
+    const [terminalInput, setTerminalInput] = useState('');
 
+    const containerRef = useRef<HTMLDivElement>(null);
+    const fixedViewportRef = useRef<HTMLDivElement>(null);
+    const progressRef = useRef(0);
+    const animFrameRef = useRef<number>(0);
+    
+    // Refs for 3D elements
+    const sceneRef = useRef<HTMLDivElement>(null);
+    const layer1Ref = useRef<HTMLDivElement>(null); // Wireframe
+    const layer2Ref = useRef<HTMLDivElement>(null); // Code
+    const layer3Ref = useRef<HTMLDivElement>(null); // Data
+    const layer4Ref = useRef<HTMLDivElement>(null); // Premium UI / Live Dashboard
+
+    // Simulate real-time logs arriving in background
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.matchMedia('(max-width: 768px)').matches);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
+        const interval = setInterval(() => {
+            if (isFullyConverged) {
+                setDashboardLogs(prev => {
+                    const nextLog = DUMMY_LOGS[Math.floor((prev.length * 7) % DUMMY_LOGS.length)];
+                    return [nextLog, ...prev.slice(0, 5)];
+                });
+            }
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [isFullyConverged]);
+
+    // 3D Scroll Orchestration Loop
+    useEffect(() => {
+        const updateAnimation = () => {
+            if (!containerRef.current || !sceneRef.current) return;
+            
+            const scrollY = window.scrollY;
+            const viewportHeight = window.innerHeight;
+            const totalScrollHeight = containerRef.current.scrollHeight - viewportHeight;
+            const rawProgress = Math.max(0, Math.min(1, scrollY / (totalScrollHeight || 1)));
+            
+            // Smooth interpolation (lerp)
+            progressRef.current += (rawProgress - progressRef.current) * 0.1;
+            const p = progressRef.current;
+
+            // Calculate active stage for UI
+            const newStage = Math.min(4, Math.floor(rawProgress * 5.0));
+            if (newStage !== activeStage) {
+                setActiveStage(newStage);
+                if (Math.abs(newStage - activeStage) === 1) playWhoosh();
+            }
+
+            // Convergence check (Phase 5 is reached when progress > 0.85)
+            const converged = rawProgress > 0.85;
+            if (converged !== isFullyConverged) {
+                setIsFullyConverged(converged);
+            }
+
+            // --- 3D SCENE ORCHESTRATION ---
+            // Base isometric rotation: rotates from isometric to flat frontal (0deg) as p approaches 1.0
+            const rotX = 35 - (p * 35); // 35deg -> 0deg
+            const rotZ = -25 + (p * 25); // -25deg -> 0deg
+            
+            // Global scale: Zooms in to full screen view as it converges
+            const scale = 0.8 + (p * 0.25);
+
+            sceneRef.current.style.transform = `scale(${scale}) rotateX(${rotX}deg) rotateZ(${rotZ}deg)`;
+
+            // --- LAYER DEPTH COMPRESSION ---
+            // Gap between layers shrinks as p approaches 1.0 (Convergence)
+            const maxGap = 350;
+            const currentGap = maxGap * (1 - Math.pow(p, 3)); // Stays separated until the end, then snaps tight
+
+            // Enable pointer events on master viewport when converged
+            if (fixedViewportRef.current) {
+                fixedViewportRef.current.style.pointerEvents = converged ? 'auto' : 'none';
+            }
+
+            // Layer positioning & pointer isolation
+            if (layer1Ref.current) {
+                layer1Ref.current.style.transform = `translateZ(0px)`;
+                layer1Ref.current.style.opacity = '1';
+                layer1Ref.current.style.pointerEvents = 'none';
+            }
+            if (layer2Ref.current) {
+                layer2Ref.current.style.transform = `translateZ(${currentGap}px)`;
+                layer2Ref.current.style.opacity = p > 0.1 ? Math.min(1, (p - 0.1) * 4).toString() : '0';
+                layer2Ref.current.style.pointerEvents = 'none';
+            }
+            if (layer3Ref.current) {
+                layer3Ref.current.style.transform = `translateZ(${currentGap * 2}px)`;
+                layer3Ref.current.style.opacity = p > 0.3 ? Math.min(1, (p - 0.3) * 4).toString() : '0';
+                layer3Ref.current.style.pointerEvents = 'none';
+            }
+            if (layer4Ref.current) {
+                layer4Ref.current.style.transform = `translateZ(${currentGap * 3}px)`;
+                layer4Ref.current.style.opacity = p > 0.5 ? Math.min(1, (p - 0.5) * 4).toString() : '0';
+                layer4Ref.current.style.pointerEvents = converged ? 'auto' : 'none';
+            }
+
+            animFrameRef.current = requestAnimationFrame(updateAnimation);
+        };
+
+        animFrameRef.current = requestAnimationFrame(updateAnimation);
 
         return () => {
-            window.removeEventListener('resize', checkMobile);
+            if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
         };
-    }, []);
+    }, [activeStage, isFullyConverged, playWhoosh]);
 
-    // Scroll Reset on Mount
-    React.useLayoutEffect(() => {
-        if ('scrollRestoration' in window.history) {
-            window.history.scrollRestoration = 'manual';
-        }
-        window.scrollTo(0, 0);
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
+    const handleStepClick = (index: number) => {
+        playClick();
+        const targetScrollY = index * window.innerHeight;
+        window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+    };
 
-        const timer = setTimeout(() => {
-            window.scrollTo(0, 0);
-        }, 50);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            // Animate Architecture Sections with enhanced effects
-            const sections = document.querySelectorAll('.arch-section');
-            sections.forEach((section) => {
-                const title = section.querySelector('.arch-title');
-                const text = section.querySelector('.arch-text');
-                const decoration = section.querySelector('.blueprint-decoration');
-                const terminal = section.querySelector('.terminal-prompt');
-
-                const tl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: section,
-                        start: 'center center',
-                        end: '+=2500',
-                        pin: true,
-                        pinSpacing: false,
-                        scrub: 1.5,
-                        toggleActions: 'play reverse play reverse'
-                    }
-                });
-
-                // Terminal prompt glitch in
-                if (terminal) {
-                    tl.fromTo(terminal,
-                        { opacity: 0, x: -20, filter: 'blur(5px)' },
-                        { opacity: 0.8, x: 0, filter: 'blur(0px)', duration: 0.3, ease: 'power2.out' }
-                    );
-                }
-
-                tl.fromTo(decoration,
-                    { opacity: 0, scale: 0.5 },
-                    { opacity: 0.8, scale: 1, duration: 0.5, ease: 'back.out(1.7)' },
-                    terminal ? '-=0.2' : 0
-                );
-
-                tl.fromTo(title,
-                    { yPercent: 110, rotateX: -20, opacity: 0, transformOrigin: 'top center' },
-                    { yPercent: 0, rotateX: 0, opacity: 1, duration: 1.5, ease: 'power4.out' },
-                    '-=0.3'
-                );
-
-                tl.fromTo(text,
-                    { opacity: 0, y: 50, filter: 'blur(10px)' },
-                    { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.2, ease: 'power3.out' },
-                    '-=1'
-                );
-
-                // Glitch exit effect
-                tl.to([title, text, decoration, terminal],
-                    { y: -100, opacity: 0, filter: 'blur(20px)', duration: 1, stagger: 0.1, ease: 'power2.in' },
-                    '+=2'
-                );
-            });
-
-            // Final Section Animation with dramatic reveal
-            const tlFinal = gsap.timeline({
-                scrollTrigger: {
-                    trigger: '.final-copy-section',
-                    start: 'center center',
-                    end: '+=1500',
-                    pin: true,
-                    scrub: 1,
-                    toggleActions: 'play reverse play reverse'
-                }
-            });
-
-            tlFinal.fromTo('.final-line-1', { opacity: 0, y: 50, filter: 'blur(10px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, ease: 'power2.out' })
-                .fromTo('.final-line-2', { opacity: 0, scale: 0.9, filter: 'blur(15px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.5, ease: 'expo.out' }, '-=0.5')
-                .fromTo('.final-line-3', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, '-=0.8')
-                .to({}, { duration: 3 })
-                .add('switch')
-                .fromTo('.next-protocol-btn',
-                    { autoAlpha: 0, y: 30 },
-                    { autoAlpha: 1, y: 0, duration: 1.2, ease: 'power3.out', pointerEvents: 'auto' },
-                    'switch'
-                )
-                .to('.interaction-hud', { autoAlpha: 0, duration: 0.2 }, 'switch');
-
-        }, containerRef);
-
-        return () => ctx.revert();
-    }, []);
-
-    // Magnetic button effect
-    useEffect(() => {
-        const el = actionBtnRef.current;
-        if (!el) return;
-
-        const handleMouseMove = (e: MouseEvent) => {
-            const rect = el.getBoundingClientRect();
-            const x = e.clientX - (rect.left + rect.width / 2);
-            const y = e.clientY - (rect.top + rect.height / 2);
-            const distance = Math.sqrt(x * x + y * y);
-
-            if (distance < 200) {
-                gsap.to(el, { x: x * 0.3, y: y * 0.3, duration: 0.4, ease: "power2.out" });
-            } else {
-                gsap.to(el, { x: 0, y: 0, duration: 0.4, ease: "power2.out" });
-            }
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
+    const handleTerminalSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!terminalInput.trim()) return;
+        playClick();
+        setDashboardLogs(prev => [`[USER_EXEC]: ${terminalInput}`, ...prev]);
+        setTerminalInput('');
+    };
 
     return (
-        <div ref={containerRef} style={{ position: 'relative', width: '100%' }}>
-            <SEO
-                title="Infraestructura Digital"
-                description="Arquitectura de software y ecosistemas digitales soberanos. Aplicaciones escalables, SaaS y plataformas web de alta complejidad."
+        <div 
+            ref={containerRef}
+            style={{
+                backgroundColor: '#030308',
+                color: '#ffffff',
+                minHeight: '500vh',
+                width: '100%',
+                position: 'relative',
+                overflowX: 'hidden'
+            }}
+        >
+            <SEO 
+                title="Génesis de Software Premium | AgencIA" 
+                description="Presencia la construcción orgánica de una aplicación de antología. Desde el wireframe hasta un centro de control operativo totalmente funcional en vivo." 
             />
-            <StructuredData data={{
-                "@context": "https://schema.org",
-                "@type": "Service",
-                "name": "Infraestructura Digital",
-                "provider": { "@type": "Organization", "name": "AgencIA" },
-                "description": "Desarrollo de ecosistemas digitales optimizados para velocidad y escalabilidad extrema."
-            }} />
 
-            {/* Global Styles */}
+            {/* FIXED 3D VIEWPORT */}
+            <div ref={fixedViewportRef} style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                zIndex: 0,
+                overflow: 'hidden',
+                pointerEvents: 'none',
+                perspective: '1600px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'radial-gradient(circle at center, rgba(12, 18, 36, 1) 0%, rgba(3, 3, 8, 1) 100%)'
+            }}>
+                
+                {/* AMBIENT PARTICLES (CSS) */}
+                <div className="particles-container" style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.35 }}>
+                    {INITIAL_PARTICLES.map((p) => (
+                        <div key={p.id} className="particle" style={{
+                            position: 'absolute',
+                            left: p.left,
+                            top: p.top,
+                            width: '4px',
+                            height: '4px',
+                            backgroundColor: p.color,
+                            borderRadius: '50%',
+                            boxShadow: `0 0 12px ${p.color}`,
+                            animation: `float ${p.duration}s infinite ease-in-out alternate`
+                        }} />
+                    ))}
+                </div>
+
+                {/* MASTER 3D SCENE CONTAINER */}
+                <div 
+                    ref={sceneRef}
+                    style={{
+                        position: 'relative',
+                        width: 'min(92vw, 900px)',
+                        minHeight: '480px',
+                        maxHeight: '85vh',
+                        aspectRatio: '16/10',
+                        transformStyle: 'preserve-3d',
+                        transition: 'transform 0.1s linear',
+                        willChange: 'transform',
+                        pointerEvents: isFullyConverged ? 'auto' : 'none'
+                    }}
+                >
+                    {/* LAYER 1: SINTESIS MATRIX (Z: 0) */}
+                    <div ref={layer1Ref} className="scene-layer" style={{
+                        position: 'absolute', width: '100%', height: '100%',
+                        border: '1px solid rgba(0, 255, 153, 0.4)',
+                        backgroundColor: 'rgba(0, 15, 8, 0.25)',
+                        boxShadow: '0 0 50px rgba(0, 255, 153, 0.15), inset 0 0 30px rgba(0, 255, 153, 0.2)',
+                        backgroundImage: 'linear-gradient(rgba(0, 255, 153, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 153, 0.15) 1px, transparent 1px)',
+                        backgroundSize: '30px 30px',
+                        padding: 'clamp(15px, 3vw, 30px)',
+                        boxSizing: 'border-box',
+                        display: 'flex', flexDirection: 'column', gap: '15px'
+                    }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#00FF99', fontFamily: 'var(--font-mono)', fontSize: 'clamp(9px, 1.2vw, 12px)' }}>
+                            <span>[ ALMA_AUTONOMOUS_SYNTHESIS ]</span>
+                            <span className="hide-on-mobile">[ NEURAL_INFERENCE: ACTIVE ]</span>
+                        </div>
+                        <div style={{ flex: 1, border: '1px dashed rgba(0, 255, 153, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(0, 255, 153, 0.6)', fontFamily: 'var(--font-mono)', fontSize: 'clamp(10px, 1.5vw, 14px)', letterSpacing: '0.1em', textAlign: 'center', padding: '10px' }}>
+                            [ GENERATING REAL-TIME CONVERSION PATH ]
+                        </div>
+                        <div style={{ display: 'flex', gap: '15px', height: '25%' }}>
+                            <div style={{ flex: 1, border: '1px dashed rgba(0, 255, 153, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(0, 255, 153, 0.6)', fontFamily: 'var(--font-mono)', fontSize: 'clamp(8px, 1vw, 10px)' }}>[ CLUSTER_01 ]</div>
+                            <div style={{ flex: 3, border: '1px dashed rgba(0, 255, 153, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(0, 255, 153, 0.6)', fontFamily: 'var(--font-mono)', fontSize: 'clamp(8px, 1vw, 10px)' }}>[ SYNTHETIC_VIEWPORT_RENDERER ]</div>
+                        </div>
+                    </div>
+
+                    {/* LAYER 2: CODE ENGINE (Z: +GAP) */}
+                    <div ref={layer2Ref} className="scene-layer" style={{
+                        position: 'absolute', width: '100%', height: '100%',
+                        border: '1px solid rgba(0, 243, 255, 0.5)',
+                        backgroundColor: 'rgba(5, 10, 22, 0.88)',
+                        backdropFilter: 'blur(8px)',
+                        padding: 'clamp(15px, 3vw, 30px)',
+                        boxSizing: 'border-box',
+                        fontFamily: 'var(--font-mono)', fontSize: 'clamp(10px, 1.2vw, 13px)', lineHeight: '1.6',
+                        color: '#E2E8F0',
+                        overflowX: 'auto',
+                        boxShadow: '0 0 50px rgba(0, 243, 255, 0.15)'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(0,243,255,0.3)', paddingBottom: '10px', marginBottom: '15px' }}>
+                            <span style={{ color: '#00F3FF', fontWeight: 'bold' }}>IDE // ALMACore_Controller.tsx</span>
+                            <span className="hide-on-mobile" style={{ color: '#8F00FF', fontSize: '10px' }}>TypeScript 5.8 // Strict</span>
+                        </div>
+                        <span style={{ color: '#FF00AA' }}>import</span> {'{ ALMASwarm, ZeroTrustMesh, PremiumUI }'} <span style={{ color: '#FF00AA' }}>from</span> <span style={{ color: '#00FF99' }}>'@agencia/architect'</span>;<br/><br/>
+                        <span style={{ color: '#FF00AA' }}>const</span> <span style={{ color: '#00F3FF' }}>orchestrator</span> = <span style={{ color: '#FF00AA' }}>new</span> ALMASwarm({'{'}<br/>
+                        &nbsp;&nbsp;clusterNodes: <span style={{ color: '#8F00FF' }}>{agentNodesCount}</span>,<br/>
+                        &nbsp;&nbsp;autoScale: <span style={{ color: '#8F00FF' }}>true</span>,<br/>
+                        &nbsp;&nbsp;encryption: <span style={{ color: '#00FF99' }}>'AES-GCM-256'</span><br/>
+                        {'}'});<br/><br/>
+                        <span style={{ color: '#FF00AA' }}>export</span> <span style={{ color: '#FF00AA' }}>default</span> <span style={{ color: '#FF00AA' }}>function</span> <span style={{ color: '#00F3FF' }}>EnterpriseDashboard</span>() {'{'}<br/>
+                        &nbsp;&nbsp;<span style={{ color: '#FF00AA' }}>return</span> (<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span style={{ color: '#00F3FF' }}>ZeroTrustMesh</span> provider={'{orchestrator}'}&gt;<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span style={{ color: '#00F3FF' }}>PremiumUI</span> fps={'{120}'} glowColor=<span style={{ color: '#00FF99' }}>"#00FF99"</span> /&gt;<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span style={{ color: '#00F3FF' }}>ZeroTrustMesh</span>&gt;<br/>
+                        &nbsp;&nbsp;);<br/>
+                        {'}'}
+                    </div>
+
+                    {/* LAYER 3: DATA FLOW & TELEMETRY (Z: +GAP*2) */}
+                    <div ref={layer3Ref} className="scene-layer" style={{
+                        position: 'absolute', width: '100%', height: '100%',
+                        border: '1px solid rgba(0, 102, 255, 0.6)',
+                        backgroundColor: 'rgba(2, 6, 18, 0.8)',
+                        backdropFilter: 'blur(12px)',
+                        padding: 'clamp(15px, 3vw, 30px)',
+                        boxSizing: 'border-box',
+                        display: 'flex', flexDirection: 'column', gap: '15px'
+                    }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#0066FF', fontFamily: 'var(--font-mono)', fontSize: 'clamp(9px, 1.2vw, 12px)' }}>
+                            <span>[ LIVE_TELEMETRY_PIPELINE ]</span>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#00FF99' }}>
+                                <span style={{ width: '8px', height: '8px', backgroundColor: '#00FF99', borderRadius: '50%', boxShadow: '0 0 10px #00FF99' }} />
+                                EDGE: ONLINE
+                            </span>
+                        </div>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', flex: 1 }}>
+                            <div style={{ flex: '1 1 120px', backgroundColor: 'rgba(0,102,255,0.1)', border: '1px solid rgba(0,102,255,0.3)', borderRadius: '8px', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                <span style={{ color: '#A0AEC0', fontSize: '9px', fontFamily: 'var(--font-mono)' }}>THROUGHPUT</span>
+                                <span style={{ color: '#00F3FF', fontSize: 'clamp(16px, 2vw, 24px)', fontWeight: 'bold', fontFamily: 'var(--font-mono)' }}>12.4 GB/s</span>
+                            </div>
+                            <div style={{ flex: '1 1 120px', backgroundColor: 'rgba(143,0,255,0.1)', border: '1px solid rgba(143,0,255,0.3)', borderRadius: '8px', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                <span style={{ color: '#A0AEC0', fontSize: '9px', fontFamily: 'var(--font-mono)' }}>EDGE LATENCY</span>
+                                <span style={{ color: '#FF00AA', fontSize: 'clamp(16px, 2vw, 24px)', fontWeight: 'bold', fontFamily: 'var(--font-mono)' }}>1.8 ms</span>
+                            </div>
+                            <div style={{ flex: '1 1 120px', backgroundColor: 'rgba(0,255,153,0.1)', border: '1px solid rgba(0,255,153,0.3)', borderRadius: '8px', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                <span style={{ color: '#A0AEC0', fontSize: '9px', fontFamily: 'var(--font-mono)' }}>ZERO-TRUST</span>
+                                <span style={{ color: '#00FF99', fontSize: 'clamp(16px, 2vw, 24px)', fontWeight: 'bold', fontFamily: 'var(--font-mono)' }}>SECURE</span>
+                            </div>
+                        </div>
+                        <div style={{ border: '1px solid #0066FF', borderRadius: '8px', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#0066FF', fontFamily: 'var(--font-mono)', fontSize: 'clamp(9px, 1.2vw, 12px)', background: 'rgba(0,102,255,0.05)' }}>
+                            <span>ENCRYPTION: AES-GCM-256</span>
+                            <ShieldCheck size={18} color="#00FF99" />
+                        </div>
+                    </div>
+
+                    {/* LAYER 4: PREMIUM UI // LIVE INTERACTIVE COMMAND DASHBOARD (Z: +GAP*3) */}
+                    <div ref={layer4Ref} className="scene-layer" style={{
+                        position: 'absolute', width: '100%', height: '100%',
+                        border: '1px solid rgba(0, 255, 153, 0.6)',
+                        backgroundColor: 'rgba(10, 16, 28, 0.85)',
+                        backdropFilter: 'blur(24px)',
+                        borderRadius: '24px',
+                        padding: 'clamp(15px, 3vw, 30px)',
+                        boxSizing: 'border-box',
+                        boxShadow: isFullyConverged ? '0 40px 100px rgba(0,255,153,0.3), inset 0 0 40px rgba(0,255,153,0.2)' : '0 30px 70px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.1)',
+                        display: 'flex', flexDirection: 'column', gap: '15px',
+                        transition: 'all 0.5s ease',
+                        overflowY: 'auto'
+                    }}>
+                        {/* Dashboard Top Header */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '12px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: isFullyConverged ? '#00FF99' : '#00F3FF', boxShadow: isFullyConverged ? '0 0 20px #00FF99' : 'none', animation: 'pulse 2s infinite' }} />
+                                <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1rem, 2vw, 1.2rem)', fontWeight: 900, letterSpacing: '0.05em', color: '#fff' }}>
+                                    AGENCIA // EXECUTIVE SUITE
+                                </span>
+                            </div>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(0.65rem, 1vw, 0.75rem)', padding: '4px 10px', borderRadius: '50px', backgroundColor: isFullyConverged ? 'rgba(0,255,153,0.15)' : 'rgba(255,255,255,0.1)', border: `1px solid ${isFullyConverged ? '#00FF99' : 'rgba(255,255,255,0.2)'}`, color: isFullyConverged ? '#00FF99' : '#fff' }}>
+                                    {isFullyConverged ? '● SISTEMA VIVO' : 'ENSAMBLANDO...'}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Interactive Navigation Tabs */}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                            <button
+                                onClick={() => { playClick(); setActiveTab('FINANCIAL'); }}
+                                style={{
+                                    flex: '1 1 140px', padding: '10px', borderRadius: '10px',
+                                    backgroundColor: activeTab === 'FINANCIAL' ? '#00FF99' : 'rgba(255,255,255,0.05)',
+                                    color: activeTab === 'FINANCIAL' ? '#000' : '#fff',
+                                    border: `1px solid ${activeTab === 'FINANCIAL' ? '#00FF99' : 'rgba(255,255,255,0.1)'}`,
+                                    fontFamily: 'var(--font-mono)', fontWeight: 800, fontSize: 'clamp(0.75rem, 1vw, 0.85rem)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    boxShadow: activeTab === 'FINANCIAL' ? '0 0 25px rgba(0,255,153,0.5)' : 'none'
+                                }}
+                            >
+                                <Activity size={16} /> METRICAS & CONVERSIÓN
+                            </button>
+                            <button
+                                onClick={() => { playClick(); setActiveTab('AGENTS'); }}
+                                style={{
+                                    flex: '1 1 140px', padding: '10px', borderRadius: '10px',
+                                    backgroundColor: activeTab === 'AGENTS' ? '#00F3FF' : 'rgba(255,255,255,0.05)',
+                                    color: activeTab === 'AGENTS' ? '#000' : '#fff',
+                                    border: `1px solid ${activeTab === 'AGENTS' ? '#00F3FF' : 'rgba(255,255,255,0.1)'}`,
+                                    fontFamily: 'var(--font-mono)', fontWeight: 800, fontSize: 'clamp(0.75rem, 1vw, 0.85rem)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    boxShadow: activeTab === 'AGENTS' ? '0 0 25px rgba(0,243,255,0.5)' : 'none'
+                                }}
+                            >
+                                <Cpu size={16} /> ENJAMBRE ALMA
+                            </button>
+                            <button
+                                onClick={() => { playClick(); setActiveTab('SECURITY'); }}
+                                style={{
+                                    flex: '1 1 140px', padding: '10px', borderRadius: '10px',
+                                    backgroundColor: activeTab === 'SECURITY' ? '#FF00AA' : 'rgba(255,255,255,0.05)',
+                                    color: activeTab === 'SECURITY' ? '#000' : '#fff',
+                                    border: `1px solid ${activeTab === 'SECURITY' ? '#FF00AA' : 'rgba(255,255,255,0.1)'}`,
+                                    fontFamily: 'var(--font-mono)', fontWeight: 800, fontSize: 'clamp(0.75rem, 1vw, 0.85rem)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    boxShadow: activeTab === 'SECURITY' ? '0 0 25px rgba(255,0,170,0.5)' : 'none'
+                                }}
+                            >
+                                <ShieldCheck size={16} /> AUDITORÍA ZERO-TRUST
+                            </button>
+                        </div>
+
+                        {/* Interactive Tab Content Viewport */}
+                        <div style={{ flex: 1, minHeight: '200px', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: 'clamp(15px, 2vw, 25px)', display: 'flex', flexDirection: 'column', gap: '15px', overflow: 'hidden' }}>
+                            {activeTab === 'FINANCIAL' && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', height: '100%' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                                        <span style={{ color: '#E2E8F0', fontFamily: 'var(--font-heading)', fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)', fontWeight: 'bold' }}>Conversión B2B Proyectada</span>
+                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                            <button onClick={() => { playClick(); setChartMultiplier(1); }} style={{ background: chartMultiplier === 1 ? '#00FF99' : 'transparent', color: chartMultiplier === 1 ? '#000' : '#fff', border: '1px solid #00FF99', padding: '4px 10px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', cursor: 'pointer' }}>1X</button>
+                                            <button onClick={() => { playClick(); setChartMultiplier(5); }} style={{ background: chartMultiplier === 5 ? '#00F3FF' : 'transparent', color: chartMultiplier === 5 ? '#000' : '#fff', border: '1px solid #00F3FF', padding: '4px 10px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', cursor: 'pointer' }}>5X</button>
+                                            <button onClick={() => { playClick(); setChartMultiplier(10); }} style={{ background: chartMultiplier === 10 ? '#FF00AA' : 'transparent', color: chartMultiplier === 10 ? '#000' : '#fff', border: '1px solid #FF00AA', padding: '4px 10px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', cursor: 'pointer' }}>10X</button>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 'clamp(10px, 2vw, 25px)', flex: 1, borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '15px' }}>
+                                        {[40, 65, 85, 110, 145, 195].map((val, idx) => {
+                                            const heightPercent = Math.min(100, (val * chartMultiplier) / 2.2);
+                                            return (
+                                                <div key={idx} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', height: '100%' }}>
+                                                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'flex-end', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', padding: '3px' }}>
+                                                        <div style={{
+                                                            width: '100%',
+                                                            height: `${heightPercent}%`,
+                                                            background: chartMultiplier === 10 ? 'linear-gradient(180deg, #FF00AA, #8F00FF)' : chartMultiplier === 5 ? 'linear-gradient(180deg, #00F3FF, #0066FF)' : 'linear-gradient(180deg, #00FF99, #00F3FF)',
+                                                            borderRadius: '4px',
+                                                            transition: 'height 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                                                            boxShadow: `0 0 15px ${chartMultiplier === 10 ? '#FF00AA' : '#00FF99'}`
+                                                        }} />
+                                                    </div>
+                                                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#A0AEC0' }}>Q{idx + 1}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeTab === 'AGENTS' && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', height: '100%', overflowY: 'auto' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                                        <span style={{ color: '#E2E8F0', fontFamily: 'var(--font-heading)', fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)', fontWeight: 'bold' }}>Topología del Enjambre IA</span>
+                                        <button onClick={() => { playWhoosh(); setAgentNodesCount(prev => prev === 4096 ? 16384 : 4096); }} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(0,243,255,0.15)', color: '#00F3FF', border: '1px solid #00F3FF', padding: '4px 12px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', cursor: 'pointer' }}>
+                                            <RefreshCw size={12} /> Rebalancear Nodos
+                                        </button>
+                                    </div>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px', flex: 1 }}>
+                                        {['Ingestión Web', 'Inferencia Lógica', 'Auto-Sanación', 'Despliegue Continuo'].map((nodeName, nidx) => (
+                                            <div key={nidx} style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(0,243,255,0.3)', borderRadius: '10px', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                                    <Zap size={14} color="#00F3FF" />
+                                                    <span style={{ color: '#00FF99', fontFamily: 'var(--font-mono)', fontSize: '0.65rem' }}>[ACTIVO]</span>
+                                                </div>
+                                                <span style={{ color: '#fff', fontFamily: 'var(--font-heading)', fontWeight: 'bold', fontSize: '0.85rem' }}>{nodeName}</span>
+                                                <span style={{ color: '#A0AEC0', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', marginTop: '4px' }}>{agentNodesCount / 4} Nodos</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeTab === 'SECURITY' && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', height: '100%', fontFamily: 'var(--font-mono)' }}>
+                                    <span style={{ color: '#E2E8F0', fontFamily: 'var(--font-heading)', fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)', fontWeight: 'bold' }}>Terminal de Auditoría en Tiempo Real</span>
+                                    <div style={{ flex: 1, minHeight: '100px', backgroundColor: '#020408', borderRadius: '8px', border: '1px solid rgba(255,0,170,0.3)', padding: '12px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.75rem' }}>
+                                        {dashboardLogs.map((log, lidx) => (
+                                            <span key={lidx} style={{ color: log.startsWith('[USER_') ? '#00FF99' : '#00F3FF' }}>
+                                                <span style={{ color: '#A0AEC0' }}>[{new Date().toLocaleTimeString()}]</span> {log}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <form onSubmit={handleTerminalSubmit} style={{ display: 'flex', gap: '8px' }}>
+                                        <input
+                                            type="text"
+                                            value={terminalInput}
+                                            onChange={(e) => setTerminalInput(e.target.value)}
+                                            placeholder="Ingresa comando (/audit, /scale)..."
+                                            style={{ flex: 1, padding: '10px 14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '6px', color: '#fff', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', outline: 'none' }}
+                                        />
+                                        <button type="submit" style={{ padding: '0 16px', backgroundColor: '#FF00AA', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-mono)', fontWeight: 'bold', fontSize: '0.8rem' }}>
+                                            <Send size={14} /> Ejecutar
+                                        </button>
+                                    </form>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* B2B Call to Action at Bottom of Dashboard */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px', marginTop: 'auto', paddingTop: '15px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <span style={{ color: '#fff', fontFamily: 'var(--font-heading)', fontWeight: 900, fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)' }}>¿Listo para construir tu plataforma corporativa?</span>
+                                <span style={{ color: '#A0AEC0', fontFamily: 'var(--font-body)', fontSize: 'clamp(0.75rem, 1vw, 0.85rem)' }}>Despliegue inmediato con arquitectura garantizada.</span>
+                            </div>
+                            <button
+                                onClick={() => { playClick(); navigate('/contacto'); }}
+                                style={{
+                                    padding: '12px 24px',
+                                    backgroundColor: '#00FF99',
+                                    color: '#000',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    fontFamily: 'var(--font-heading)',
+                                    fontSize: 'clamp(0.85rem, 1.2vw, 1rem)',
+                                    fontWeight: 900,
+                                    letterSpacing: '0.1em',
+                                    textTransform: 'uppercase',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '10px',
+                                    boxShadow: '0 0 25px #00FF99',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 0 40px #00FF99'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 0 25px #00FF99'; }}
+                            >
+                                PROYECTO DE ANTOLOGÍA <ArrowRight size={18} />
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* PERSISTENT B2B CYBER HUD HEADER */}
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                padding: 'clamp(1rem, 2vw, 2rem) 4vw',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '10px',
+                zIndex: 30,
+                pointerEvents: 'none',
+                fontFamily: 'var(--font-mono)'
+            }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <div style={{ width: '12px', height: '12px', backgroundColor: STAGES_INFO[activeStage].color, borderRadius: '50%', boxShadow: `0 0 15px ${STAGES_INFO[activeStage].color}`, animation: 'pulse 2s infinite' }} />
+                    <span style={{ fontSize: 'clamp(0.65rem, 1.2vw, 0.85rem)', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.8)', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+                        AGENCIA_DEV // ARCHITECTURE_V9_FLUID
+                    </span>
+                </div>
+                <div style={{ fontSize: 'clamp(0.65rem, 1.2vw, 0.8rem)', letterSpacing: '0.15em', color: STAGES_INFO[activeStage].color, borderBottom: `1px solid ${STAGES_INFO[activeStage].color}`, paddingBottom: '4px', textShadow: `0 0 10px ${STAGES_INFO[activeStage].color}` }}>
+                    [ ORGANIC_BUILD_SEQUENCE ]
+                </div>
+            </div>
+
+            {/* PERSISTENT SIDE STEP NAVIGATION */}
+            <div style={{
+                position: 'fixed',
+                right: '3vw',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1.5rem',
+                zIndex: 30,
+                pointerEvents: 'auto',
+                alignItems: 'flex-end',
+                fontFamily: 'var(--font-mono)'
+            }}>
+                {STAGES_INFO.map((st, i) => (
+                    <div
+                        key={st.id}
+                        onClick={() => handleStepClick(i)}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem',
+                            cursor: 'pointer',
+                            opacity: activeStage === i ? 1 : 0.4,
+                            transition: 'all 0.3s ease',
+                            padding: '0.5rem'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
+                        onMouseLeave={(e) => { if (activeStage !== i) e.currentTarget.style.opacity = '0.4'; }}
+                    >
+                        <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', color: activeStage === i ? st.color : '#fff', display: activeStage === i ? 'block' : 'none', textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>
+                            {st.name}
+                        </span>
+                        <div style={{
+                            width: activeStage === i ? '28px' : '10px',
+                            height: '10px',
+                            backgroundColor: activeStage === i ? st.color : '#fff',
+                            borderRadius: '5px',
+                            boxShadow: activeStage === i ? `0 0 20px ${st.color}` : 'none',
+                            transition: 'all 0.3s ease'
+                        }} />
+                    </div>
+                ))}
+            </div>
+
+            {/* SCROLLABLE HTML SECTIONS (100vh each) FOR CARDS NARRATIVE */}
+            <div style={{ position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+                {STAGES_INFO.map((stage, i) => {
+                    const isActive = activeStage === i && !isFullyConverged;
+                    return (
+                        <section
+                            key={stage.id}
+                            style={{
+                                height: '100vh',
+                                width: '100vw',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: stage.align === 'left' ? 'flex-start' : stage.align === 'right' ? 'flex-end' : 'center',
+                                paddingLeft: stage.align === 'left' ? '5vw' : '0',
+                                paddingRight: stage.align === 'right' ? '5vw' : '0',
+                                boxSizing: 'border-box',
+                                pointerEvents: 'none'
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: 'min(90vw, 500px)',
+                                    maxHeight: '80vh',
+                                    overflowY: 'auto',
+                                    pointerEvents: isActive ? 'auto' : 'none',
+                                    backgroundColor: 'rgba(3, 5, 10, 0.75)',
+                                    backdropFilter: 'blur(20px)',
+                                    WebkitBackdropFilter: 'blur(20px)',
+                                    border: `1px solid ${stage.color}`,
+                                    borderRadius: '16px',
+                                    padding: 'clamp(1.5rem, 4vh, 2.5rem)',
+                                    boxShadow: `0 30px 70px rgba(0,0,0,0.85), inset 0 0 30px rgba(${i === 0 ? '0,255,153' : i === 1 ? '0,243,255' : i === 2 ? '0,102,255' : i === 3 ? '143,0,255' : '255,0,170'}, 0.2)`,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-start',
+                                    textAlign: 'left',
+                                    transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                                    opacity: isActive ? 1 : 0,
+                                    transform: isActive ? 'translateY(0) scale(1)' : `translateY(${i < activeStage ? '-40px' : '40px'}) scale(0.95)`
+                                }}
+                            >
+                                <div style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.6rem',
+                                    padding: '0.35rem 1rem',
+                                    backgroundColor: `rgba(${i === 0 ? '0,255,153' : i === 1 ? '0,243,255' : i === 2 ? '0,102,255' : i === 3 ? '143,0,255' : '255,0,170'}, 0.15)`,
+                                    border: `1px solid ${stage.color}`,
+                                    borderRadius: '50px',
+                                    color: stage.color,
+                                    fontFamily: 'var(--font-mono)',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 700,
+                                    letterSpacing: '0.15em',
+                                    marginBottom: '1.2rem',
+                                    textTransform: 'uppercase'
+                                }}>
+                                    <Terminal size={14} />
+                                    {`[ ${stage.id} // ${stage.tag} ]`}
+                                </div>
+
+                                <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 1.15, color: '#ffffff', marginBottom: '1.2rem', textShadow: '0 4px 12px rgba(0,0,0,0.9)' }}>
+                                    {stage.title}
+                                </h1>
+
+                                <p style={{ fontFamily: 'var(--font-body)', fontSize: 'clamp(0.9rem, 1.6vh, 1.05rem)', lineHeight: 1.6, color: '#E2E8F0', marginBottom: '1.8rem', textShadow: '0 2px 6px rgba(0,0,0,0.95)' }}>
+                                    {stage.desc}
+                                </p>
+
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
+                                    {stage.metrics.map((m, midx) => (
+                                        <span key={midx} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', color: '#ffffff', backgroundColor: 'rgba(255,255,255,0.05)', border: `1px solid ${stage.color}`, padding: '0.4rem 0.8rem', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <span style={{ width: '6px', height: '6px', backgroundColor: stage.color, borderRadius: '50%', boxShadow: `0 0 10px ${stage.color}` }} />
+                                            {m}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+                    );
+                })}
+            </div>
+
+            {/* SCROLL DOWN BOUNCING INDICATOR */}
+            <div style={{
+                position: 'fixed',
+                bottom: '2.5rem',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.8rem',
+                opacity: activeStage === 0 ? 0.9 : 0,
+                transition: 'opacity 0.6s ease',
+                pointerEvents: 'none',
+                zIndex: 30,
+                fontFamily: 'var(--font-mono)'
+            }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.3em', color: STAGES_INFO[0].color, textShadow: `0 0 15px ${STAGES_INFO[0].color}` }}>
+                    SCROLL PARA ENSAMBLAR //
+                </span>
+                <div style={{ width: '2px', height: '35px', background: `linear-gradient(to bottom, ${STAGES_INFO[0].color}, transparent)`, animation: 'bounce 2s infinite' }} />
+            </div>
+
             <style>{`
-                @keyframes fadeSlideIn {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
+                .scene-layer {
+                    transform-style: preserve-3d;
+                    will-change: transform, opacity;
+                    backface-visibility: hidden;
                 }
-                @keyframes scanline {
-                    0% { transform: translateY(-100%); }
-                    100% { transform: translateY(100vh); }
+                @media (max-width: 768px) {
+                    .hide-on-mobile {
+                        display: none !important;
+                    }
                 }
-                @keyframes glitchText {
-                    0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 153, 0.5); }
-                    25% { text-shadow: 2px 0 20px rgba(255, 0, 100, 0.5), -2px 0 20px rgba(0, 255, 153, 0.5); }
-                    50% { text-shadow: -2px 0 20px rgba(0, 229, 255, 0.5), 2px 0 20px rgba(143, 0, 255, 0.5); }
-                    75% { text-shadow: 1px 0 20px rgba(0, 255, 153, 0.8); }
+                @keyframes bounce {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(12px); }
                 }
-                .terminal-prompt {
-                    font-family: var(--font-mono);
-                    font-size: 0.75rem;
-                    color: #00FF99;
-                    letter-spacing: 0.1em;
-                    opacity: 0.6;
+                @keyframes float {
+                    0% { transform: translateY(0px) translateX(0px); }
+                    100% { transform: translateY(-80px) translateX(40px); }
                 }
-                .glitch-title {
-                    animation: glitchText 3s infinite;
+                @keyframes pulse {
+                    0% { opacity: 1; transform: scale(1); }
+                    50% { opacity: 0.5; transform: scale(0.8); }
+                    100% { opacity: 1; transform: scale(1); }
                 }
             `}</style>
-
-            {/* Fixed WebGL Background */}
-            <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100vh',
-                zIndex: 1,
-                pointerEvents: isTouch ? 'none' : 'auto'
-            }}>
-                <Canvas
-                    camera={{ position: [0, 2, 12], fov: 60 }}
-                    style={{ touchAction: 'auto', pointerEvents: isTouch ? 'none' : 'auto' }}
-                >
-                    <color attach="background" args={['#030308']} />
-                    <fog attach="fog" args={['#030308', 10, 30]} />
-                    <SceneContent />
-                    {!isTouch && (
-                        <OrbitControls
-                            enableZoom={false}
-                            enablePan={false}
-                            enableRotate={true}
-                            autoRotate={false}
-                            enableDamping={true}
-                            dampingFactor={0.05}
-                        />
-                    )}
-                </Canvas>
-            </div>
-
-            {/* Scan Line Effect */}
-            <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent, #00FF99, transparent)',
-                opacity: 0.3,
-                animation: 'scanline 4s linear infinite',
-                zIndex: 50,
-                pointerEvents: 'none'
-            }} />
-
-            {/* Scrollable Content */}
-            <div style={{
-                height: '1600vh',
-                position: 'relative',
-                zIndex: 10,
-                pointerEvents: isTouch ? 'auto' : 'none'
-            }}>
-
-                {/* Interaction HUD */}
-                <div className="interaction-hud" style={{ position: 'fixed', bottom: '1rem', width: '100%', zIndex: 20 }}>
-                    <InteractionGuide items={[
-                        { type: 'scroll', text: 'SCROLL' },
-                        { type: 'hold', text: 'HOLD' }
-                    ]} />
-                </div>
-
-                {/* HERO - Neural Datacenter Boot Sequence */}
-                <div style={{
-                    position: 'absolute',
-                    top: '0',
-                    width: '100%',
-                    height: '100vh',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center',
-                    color: '#fff'
-                }}>
-                    {/* System Status Tag */}
-                    <div style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.7rem',
-                        color: '#00FF99',
-                        letterSpacing: '0.3em',
-                        marginBottom: '1rem',
-                        opacity: 0.7
-                    }}>
-                        [ NEURAL CORE :: ACTIVE ]
-                    </div>
-
-                    {/* Main Title with Glitch Effect */}
-                    <h1 className="glitch-title" style={{
-                        fontSize: 'clamp(2.5rem, 6vw, 6rem)',
-                        textTransform: 'uppercase',
-                        fontWeight: 800,
-                        letterSpacing: '0.1em',
-                        lineHeight: 0.9,
-                        margin: 0,
-                        color: '#fff',
-                        textShadow: '0 0 20px rgba(0, 255, 153, 0.5)'
-                    }}>
-                        INFRAESTRUCTURA<br />
-                        <span style={{ color: '#00FF99' }}>DIGITAL</span>
-                    </h1>
-
-                    {/* Stat Counters */}
-                    <div style={{
-                        display: 'flex',
-                        gap: 'clamp(2rem, 5vw, 5rem)',
-                        marginTop: '3rem',
-                        flexWrap: 'wrap',
-                        justifyContent: 'center'
-                    }}>
-                        <AnimatedStat label="UPTIME" value="99.99" suffix="%" delay={500} />
-                        <AnimatedStat label="NODES" value="∞" delay={800} />
-                        <AnimatedStat label="LATENCY" value="<1" suffix="ms" delay={1100} />
-                    </div>
-
-                    {/* Boot Sequence Terminal */}
-                    <BootSequence isVisible={true} />
-                </div>
-
-                {/* SECTION 1: Arquitectura de Software */}
-                <div className="arch-section" style={{
-                    position: 'absolute', top: '150vh', width: '100%', textAlign: 'center', color: '#fff',
-                    padding: isMobile ? '0 3%' : '0 5%', boxSizing: 'border-box'
-                }}>
-                    <div className="terminal-prompt" style={{ marginBottom: '0.5rem' }}>
-                        $ ./deploy --architecture core
-                    </div>
-                    <div className="blueprint-decoration" style={{
-                        opacity: 0.3, marginBottom: '1rem', color: '#00FF99',
-                        fontSize: '0.8rem', letterSpacing: '0.2em'
-                    }}>
-                        {'{ ARCHITECTURE_CORE }'}
-                    </div>
-                    <div style={{ overflow: 'hidden' }}>
-                        <h2 className="arch-title" style={{
-                            fontSize: isMobile ? 'clamp(1.4rem, 6vw, 2rem)' : 'clamp(1.8rem, 5vw, 6rem)',
-                            letterSpacing: '0.05em',
-                            marginBottom: isMobile ? '1rem' : '2rem',
-                            textShadow: '0 0 50px rgba(0, 255, 153, 0.4)',
-                            textWrap: 'balance'
-                        }}>
-                            APLICACIONES ESCALABLES<br />&amp; PLATAFORMAS WEB
-                        </h2>
-                    </div>
-                    <p className="arch-text" style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: isMobile ? '0.85rem' : 'clamp(0.9rem, 1.5vw, 1.2rem)',
-                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
-                        margin: '0 auto', lineHeight: 1.6,
-                        color: '#ffffff',
-                        background: 'rgba(3, 3, 8, 0.85)',
-                        backdropFilter: 'blur(5px)',
-                        padding: isMobile ? '1rem' : '2rem',
-                        borderRadius: '4px',
-                        border: '1px solid rgba(0, 255, 153, 0.1)',
-                        borderLeft: '2px solid #00FF99',
-                        textAlign: 'left',
-                        textShadow: '0 2px 4px rgba(0,0,0,0.9)'
-                    }}>
-                        El software barato se rompe justo cuando tienes éxito. Diseñamos para
-                        <strong style={{ color: '#00FF99' }}>100,000 usuarios concurrentes</strong>,
-                        no para demos de 5 minutos. Si tu web se cae, pierdes dinero. Nosotros aseguramos que eso nunca pase.
-                    </p>
-
-                    {/* HUMAN TRANSLATION - WHAT THIS MEANS IN PLAIN LANGUAGE */}
-                    <div className="human-translation" style={{
-                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
-                        margin: '1.5rem auto 0',
-                        padding: isMobile ? '1rem' : '1.5rem 2rem',
-                        background: 'linear-gradient(135deg, rgba(0, 255, 153, 0.08) 0%, rgba(0, 229, 255, 0.05) 100%)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(0, 255, 153, 0.2)',
-                        position: 'relative',
-                        overflow: 'hidden'
-                    }}>
-                        {/* Label */}
-                        <div style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.65rem',
-                            color: '#00FF99',
-                            letterSpacing: '0.2em',
-                            marginBottom: '0.75rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem'
-                        }}>
-                            <span style={{
-                                width: '6px',
-                                height: '6px',
-                                background: '#00FF99',
-                                borderRadius: '50%',
-                                boxShadow: '0 0 10px #00FF99'
-                            }} />
-                            VERDAD FINANCIERA
-                        </div>
-                        {/* Human-friendly text */}
-                        <p style={{
-                            margin: 0,
-                            fontSize: isMobile ? '0.9rem' : '1.1rem',
-                            lineHeight: 1.7,
-                            color: 'rgba(255, 255, 255, 0.9)',
-                            fontWeight: 300
-                        }}>
-                            <strong style={{ color: '#fff', fontWeight: 600 }}>Tu web actual es un folleto estático.</strong>
-                            Nosotros construimos armas de conversión masiva preparadas para escalar.
-                        </p>
-                        {/* Tech Stack Badges */}
-                        <div style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            gap: '0.5rem',
-                            marginTop: '1rem'
-                        }}>
-                            {['SaaS', 'Apps Multiplataforma', 'Ingeniería Headless'].map((tag) => (
-                                <span key={tag} style={{
-                                    padding: '0.35rem 0.8rem',
-                                    fontSize: '0.7rem',
-                                    fontFamily: 'var(--font-mono)',
-                                    color: '#00FF99',
-                                    background: 'rgba(0, 255, 153, 0.1)',
-                                    border: '1px solid rgba(0, 255, 153, 0.3)',
-                                    borderRadius: '20px',
-                                    letterSpacing: '0.05em'
-                                }}>
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* SECTION 2: SaaS & Plataformas */}
-                <div className="arch-section" style={{
-                    position: 'absolute', top: '550vh', width: '100%', textAlign: 'center', color: '#fff',
-                    padding: isMobile ? '0 3%' : '0 5%', boxSizing: 'border-box'
-                }}>
-                    <div className="terminal-prompt" style={{ marginBottom: '0.5rem' }}>
-                        $ saas-engine --init production
-                    </div>
-                    <div className="blueprint-decoration" style={{
-                        opacity: 0.3, marginBottom: '1rem', color: '#8F00FF',
-                        fontSize: '0.8rem', letterSpacing: '0.2em'
-                    }}>
-                        {'[ SAAS_ENGINE ]'}
-                    </div>
-                    <div style={{ overflow: 'hidden' }}>
-                        <h2 className="arch-title" style={{
-                            fontSize: isMobile ? 'clamp(1.4rem, 6vw, 2rem)' : 'clamp(1.8rem, 5vw, 6rem)',
-                            letterSpacing: '0.05em',
-                            marginBottom: isMobile ? '1rem' : '2rem',
-                            textShadow: '0 0 50px rgba(143, 0, 255, 0.4)',
-                            textWrap: 'balance'
-                        }}>
-                            MOTORES DE INGRESO<br />SOFTWARE AS A SERVICE
-                        </h2>
-                    </div>
-                    <p className="arch-text" style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: isMobile ? '0.85rem' : 'clamp(0.9rem, 1.5vw, 1.2rem)',
-                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
-                        margin: '0 auto', lineHeight: 1.6,
-                        color: '#ffffff',
-                        background: 'rgba(3, 3, 8, 0.85)',
-                        backdropFilter: 'blur(5px)',
-                        padding: isMobile ? '1rem' : '2rem',
-                        borderRadius: '4px',
-                        border: '1px solid rgba(143, 0, 255, 0.1)',
-                        borderRight: '2px solid #8F00FF',
-                        textAlign: isMobile ? 'left' : 'right',
-                        textShadow: '0 2px 4px rgba(0,0,0,0.9)'
-                    }}>
-                        El software lento tiene un costo oculto: tu crecimiento.
-                        <strong style={{ color: '#8F00FF' }}> El empleado más caro es el error humano.</strong>
-                        Nuestros sistemas cuestan menos, no se enferman y no duermen.
-                    </p>
-
-                    {/* HUMAN TRANSLATION - SECTION 2 */}
-                    <div className="human-translation" style={{
-                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
-                        margin: '1.5rem auto 0',
-                        padding: isMobile ? '1rem' : '1.5rem 2rem',
-                        background: 'linear-gradient(135deg, rgba(143, 0, 255, 0.08) 0%, rgba(0, 229, 255, 0.05) 100%)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(143, 0, 255, 0.2)',
-                        position: 'relative'
-                    }}>
-                        <div style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.65rem',
-                            color: '#8F00FF',
-                            letterSpacing: '0.2em',
-                            marginBottom: '0.75rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem'
-                        }}>
-                            <span style={{
-                                width: '6px', height: '6px',
-                                background: '#8F00FF',
-                                borderRadius: '50%',
-                                boxShadow: '0 0 10px #8F00FF'
-                            }} />
-                            REALIDAD OPERATIVA
-                        </div>
-                        <p style={{
-                            margin: 0,
-                            fontSize: isMobile ? '0.9rem' : '1.1rem',
-                            lineHeight: 1.7,
-                            color: 'rgba(255, 255, 255, 0.9)',
-                            fontWeight: 300
-                        }}>
-                            Es como tener un <strong style={{ color: '#fff', fontWeight: 600 }}>ejército digital 24/7</strong>.
-                            Un sistema que responde WhatsApp, agenda citas y maneja tus ventas sin intervención.
-                        </p>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem' }}>
-                            {['Software a Medida', 'Aplicaciones Móviles', 'Páginas Ultrarrápidas'].map((tag) => (
-                                <span key={tag} style={{
-                                    padding: '0.35rem 0.8rem',
-                                    fontSize: '0.7rem',
-                                    fontFamily: 'var(--font-mono)',
-                                    color: '#8F00FF',
-                                    background: 'rgba(143, 0, 255, 0.1)',
-                                    border: '1px solid rgba(143, 0, 255, 0.3)',
-                                    borderRadius: '20px',
-                                    letterSpacing: '0.05em'
-                                }}>
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* SECTION 3: Integración Total */}
-                <div className="arch-section" style={{
-                    position: 'absolute', top: '950vh', width: '100%', textAlign: 'center', color: '#fff',
-                    padding: isMobile ? '0 3%' : '0 5%', boxSizing: 'border-box',
-                    transform: isMobile ? 'translateY(-8vh)' : 'none'
-                }}>
-                    <div className="terminal-prompt" style={{ marginBottom: '0.5rem' }}>
-                        $ connect --all-systems unified
-                    </div>
-                    <div className="blueprint-decoration" style={{
-                        opacity: 0.3, marginBottom: '1rem', color: '#00E5FF',
-                        fontSize: '0.8rem', letterSpacing: '0.2em'
-                    }}>
-                        {'< SYSTEM_UNITY />'}
-                    </div>
-                    <div style={{ overflow: 'hidden' }}>
-                        <h2 className="arch-title" style={{
-                            fontSize: isMobile ? 'clamp(1.4rem, 6vw, 2rem)' : 'clamp(1.8rem, 5vw, 6rem)',
-                            letterSpacing: '0.05em',
-                            marginBottom: isMobile ? '1rem' : '2rem',
-                            textShadow: '0 0 50px rgba(0, 229, 255, 0.4)',
-                            textWrap: 'balance'
-                        }}>
-                            CONVERGENCIA TOTAL<br />EL ORGANISMO UNIFICADO
-                        </h2>
-                    </div>
-                    <p className="arch-text" style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: isMobile ? '0.85rem' : 'clamp(0.9rem, 1.5vw, 1.2rem)',
-                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
-                        margin: '0 auto', lineHeight: 1.6,
-                        color: '#ffffff',
-                        background: 'rgba(3, 3, 8, 0.85)',
-                        backdropFilter: 'blur(5px)',
-                        padding: isMobile ? '1rem' : '2rem',
-                        borderRadius: '4px',
-                        border: '1px solid rgba(0, 229, 255, 0.1)',
-                        borderBottom: '2px solid #00E5FF',
-                        textAlign: isMobile ? 'left' : 'center',
-                        textShadow: '0 2px 4px rgba(0,0,0,0.9)'
-                    }}>
-                        Un componente aislado es un punto de fallo.
-                        <strong style={{ color: '#00E5FF' }}> Tu CRM no sabe lo que vende tu Web. Esa desconexión te cuesta dinero.</strong>
-                        Unificamos todos tus datos en tiempo real para que dejes de perder ventas.
-                    </p>
-
-                    {/* HUMAN TRANSLATION - SECTION 3 */}
-                    <div className="human-translation" style={{
-                        maxWidth: isMobile ? 'calc(100vw - 2rem)' : '800px',
-                        margin: '1.5rem auto 0',
-                        padding: isMobile ? '1rem' : '1.5rem 2rem',
-                        background: 'linear-gradient(135deg, rgba(0, 229, 255, 0.08) 0%, rgba(0, 255, 153, 0.05) 100%)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(0, 229, 255, 0.2)',
-                        position: 'relative'
-                    }}>
-                        <div style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.65rem',
-                            color: '#00E5FF',
-                            letterSpacing: '0.2em',
-                            marginBottom: '0.75rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            justifyContent: 'center'
-                        }}>
-                            <span style={{
-                                width: '6px', height: '6px',
-                                background: '#00E5FF',
-                                borderRadius: '50%',
-                                boxShadow: '0 0 10px #00E5FF'
-                            }} />
-                            VERDAD TÉCNICA
-                        </div>
-                        <p style={{
-                            margin: 0,
-                            fontSize: isMobile ? '0.9rem' : '1.1rem',
-                            lineHeight: 1.7,
-                            color: 'rgba(255, 255, 255, 0.9)',
-                            fontWeight: 300,
-                            textAlign: 'center'
-                        }}>
-                            <strong style={{ color: '#fff', fontWeight: 600 }}>Silos de datos = Muerte lenta.</strong>
-                            Conectamos tu web, tu app y tus pagos para que funcionen como un solo organismo.
-                        </p>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem', justifyContent: 'center' }}>
-                            {['APIs Conectadas', 'Cloud Nativo', 'Sistemas Unificados'].map((tag) => (
-                                <span key={tag} style={{
-                                    padding: '0.35rem 0.8rem',
-                                    fontSize: '0.7rem',
-                                    fontFamily: 'var(--font-mono)',
-                                    color: '#00E5FF',
-                                    background: 'rgba(0, 229, 255, 0.1)',
-                                    border: '1px solid rgba(0, 229, 255, 0.3)',
-                                    borderRadius: '20px',
-                                    letterSpacing: '0.05em'
-                                }}>
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* FINAL COPY SECTION */}
-                <div className="final-copy-section" style={{
-                    position: 'absolute', top: '1320vh', width: '100%', textAlign: 'center',
-                    color: '#fff', padding: '0 2rem', boxSizing: 'border-box',
-                    display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh',
-                    transform: 'translateY(-10vh)'
-                }}>
-                    <h3 className="final-line-1" style={{
-                        fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
-                        fontWeight: 300, marginBottom: '1rem', opacity: 0,
-                        textShadow: '0 2px 4px rgba(0,0,0,0.8)'
-                    }}>
-                        No solo construimos software...
-                    </h3>
-
-                    <h1 className="final-line-2" style={{
-                        fontSize: 'clamp(2.5rem, 8vw, 8rem)',
-                        fontWeight: 800, textTransform: 'uppercase', lineHeight: 0.9,
-                        marginBottom: '2rem',
-                        background: 'linear-gradient(to bottom, #fff, #00FF99)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        filter: 'drop-shadow(0 0 30px rgba(0, 255, 153, 0.5))',
-                        opacity: 0
-                    }}>
-                        FORJAMOS<br />ECOSISTEMAS.
-                    </h1>
-
-                    <p className="final-line-3" style={{
-                        fontSize: 'clamp(1.2rem, 2vw, 1.8rem)',
-                        maxWidth: '800px', margin: '0 auto', opacity: 0,
-                        textShadow: '0 2px 4px rgba(0,0,0,0.9)', lineHeight: 1.5
-                    }}>
-                        En AgencIA, cada línea de código es un ladrillo de tu imperio digital.<br />
-                        <strong style={{ color: '#00FF99' }}>Arquitectura que escala. Sistemas que dominan.</strong>
-                    </p>
-                </div>
-
-                {/* ELEGANT CTA */}
-                <div className="action-bar" style={{
-                    position: 'fixed', bottom: '3rem', left: '50%',
-                    transform: 'translateX(-50%)', zIndex: 100, pointerEvents: 'none'
-                }}>
-                    <a
-                        ref={actionBtnRef}
-                        href="/#case-infraestructura"
-                        className="next-protocol-btn elegant-cta"
-                        style={{
-                            opacity: 0,
-                            display: 'inline-flex', alignItems: 'center', gap: '1rem',
-                            background: 'transparent', border: 'none',
-                            color: '#00FF99',
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: 'clamp(0.85rem, 1.2vw, 1rem)',
-                            fontWeight: 500, letterSpacing: '0.25em',
-                            textTransform: 'uppercase', textDecoration: 'none',
-                            cursor: 'pointer', pointerEvents: 'none',
-                            position: 'relative', padding: '0.5rem 0',
-                            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
-                        }}
-                    >
-                        <span className="cta-underline" />
-                        <span style={{ position: 'relative', zIndex: 2 }}>Continuar Exploración</span>
-                        <span className="cta-arrow" style={{
-                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            width: '32px', height: '32px', borderRadius: '50%',
-                            border: '1px solid rgba(0, 255, 153, 0.3)',
-                            fontSize: '0.9rem', position: 'relative', transition: 'all 0.4s ease'
-                        }}>
-                            →
-                            <span className="arrow-glow" />
-                        </span>
-                    </a>
-
-                    <style>{`
-                        .elegant-cta { filter: drop-shadow(0 0 20px rgba(0, 255, 153, 0.2)); }
-                        .elegant-cta:hover { color: #fff !important; filter: drop-shadow(0 0 30px rgba(0, 255, 153, 0.5)); }
-                        .elegant-cta:hover .cta-arrow { background: rgba(0, 255, 153, 0.15); border-color: rgba(0, 255, 153, 0.6); transform: translateX(5px); }
-                        .elegant-cta:hover .cta-underline { width: 100%; opacity: 1; }
-                        .elegant-cta:hover .arrow-glow { opacity: 1; }
-                        .cta-underline { position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: linear-gradient(90deg, #00FF99, #00E5FF, #00FF99); background-size: 200% 100%; opacity: 0; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); animation: shimmer 3s infinite linear; }
-                        .arrow-glow { position: absolute; inset: -2px; border-radius: 50%; background: radial-gradient(circle, rgba(0, 255, 153, 0.4) 0%, transparent 70%); opacity: 0; transition: opacity 0.4s ease; animation: pulse-soft 2s infinite ease-in-out; }
-                        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-                        @keyframes pulse-soft { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.2); opacity: 0.6; } }
-                    `}</style>
-                </div>
-
-            </div>
-
         </div>
     );
 };

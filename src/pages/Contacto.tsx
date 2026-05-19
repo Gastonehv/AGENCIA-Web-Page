@@ -86,7 +86,7 @@ const Contacto: React.FC = () => {
             {/* Vortex Background - Exclusive */}
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, pointerEvents: isMobile ? 'none' : 'auto' }}>
                 <Canvas
-                    camera={{ position: [0, 0, 8], fov: 45 }}
+                    camera={{ position: [0, 0, isMobile ? 14 : 8], fov: 45 }}
                     style={{ pointerEvents: isMobile ? 'none' : 'auto' }}
                 >
                     <Suspense fallback={null}>

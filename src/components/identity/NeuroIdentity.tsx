@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
@@ -163,6 +163,7 @@ const CornerBrackets = ({ color, locLabel, techLabel }: { color: string; locLabe
 const NeuroIdentity: React.FC = () => {
     const navigate = useNavigate();
     const containerRef = useRef<HTMLDivElement>(null);
+    const scrollHintRef = useRef<HTMLDivElement>(null);
     
     // Card Refs for Precise Animations
     const cardRef1 = useRef<HTMLDivElement>(null);
@@ -171,13 +172,23 @@ const NeuroIdentity: React.FC = () => {
     const cardRef4 = useRef<HTMLDivElement>(null);
     const cardRef5 = useRef<HTMLDivElement>(null);
 
-    // Interactive Parallax Mouse Tilt handlers
+    // Responsive State
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Interactive Parallax Mouse Tilt handlers (disabled on mobile)
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (isMobile) return;
         const card = e.currentTarget;
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
-        // Calculate tilt angles (max 5 degrees rotation)
         const tiltX = (y / (rect.height / 2)) * -5;
         const tiltY = (x / (rect.width / 2)) * 5;
         card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
@@ -185,7 +196,6 @@ const NeuroIdentity: React.FC = () => {
 
     const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
         const card = e.currentTarget;
-        // Reset translation state based on active card type
         if (card === cardRef1.current || card === cardRef5.current) {
             card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateY(0px)';
         } else if (card === cardRef2.current || card === cardRef3.current) {
@@ -212,11 +222,11 @@ const NeuroIdentity: React.FC = () => {
 
             // PHASE 2: BLUE STRAND - MATHEMATICAL / LEFT HEMISPHERE (Timeline time: 3.2 to 6.2)
             tl.to(cardRef2.current, { autoAlpha: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 3.2)
-                .to(cardRef2.current, { autoAlpha: 0, x: -100, duration: 1.0, ease: 'power2.in' }, 5.2);
+                .to(cardRef2.current, { autoAlpha: 0, x: isMobile ? -50 : -100, duration: 1.0, ease: 'power2.in' }, 5.2);
 
             // PHASE 3: MAGENTA STRAND - ORGANIC / RIGHT HEMISPHERE (Timeline time: 6.4 to 9.4)
             tl.to(cardRef3.current, { autoAlpha: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 6.4)
-                .to(cardRef3.current, { autoAlpha: 0, x: 100, duration: 1.0, ease: 'power2.in' }, 8.4);
+                .to(cardRef3.current, { autoAlpha: 0, x: isMobile ? 50 : 100, duration: 1.0, ease: 'power2.in' }, 8.4);
 
             // PHASE 4: CONVERGENCE - THE DNA (Timeline time: 9.6 to 12.6)
             tl.to(cardRef4.current, { autoAlpha: 1, scale: 1, duration: 1.0, ease: 'power2.out' }, 9.6)
@@ -225,10 +235,15 @@ const NeuroIdentity: React.FC = () => {
             // PHASE 5: CTA / EXIT (Timeline time: 12.8 to 15.0)
             tl.to(cardRef5.current, { autoAlpha: 1, y: 0, duration: 1.2, ease: 'power2.out' }, 12.8);
 
+            // FADE OUT SCROLL HINT AT CTA PHASE TO PREVENT MOBILE CLUTTER
+            if (scrollHintRef.current) {
+                tl.to(scrollHintRef.current, { autoAlpha: 0, duration: 0.5 }, 12.8);
+            }
+
         }, containerRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [isMobile]);
 
     // SCREEN-SAFE RESPONSIVE FLEX LAYOUTS
     const masterOverlayStyle: React.CSSProperties = {
@@ -250,8 +265,8 @@ const NeuroIdentity: React.FC = () => {
         height: '100%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent,
-        padding: '0 clamp(1.5rem, 6vw, 8rem)',
+        justifyContent: isMobile ? 'center' : justifyContent, // center everything on mobile
+        padding: isMobile ? '0 1rem' : '0 clamp(1.5rem, 6vw, 8rem)',
         boxSizing: 'border-box'
     });
 
@@ -259,9 +274,9 @@ const NeuroIdentity: React.FC = () => {
         background: 'linear-gradient(135deg, rgba(3, 6, 12, 0.5) 0%, rgba(1, 2, 4, 0.65) 100%)',
         backdropFilter: 'blur(35px)',
         border: '1px solid rgba(255, 255, 255, 0.08)',
-        borderLeft: isLeftBorder ? `4px solid ${borderColor}` : '1px solid rgba(255, 255, 255, 0.08)',
-        borderRight: !isLeftBorder ? `4px solid ${borderColor}` : '1px solid rgba(255, 255, 255, 0.08)',
-        padding: '3.5rem 3rem',
+        borderLeft: (isMobile || isLeftBorder) ? `4px solid ${borderColor}` : '1px solid rgba(255, 255, 255, 0.08)',
+        borderRight: (isMobile || !isLeftBorder) ? '1px solid rgba(255, 255, 255, 0.08)' : `4px solid ${borderColor}`,
+        padding: isMobile ? '2rem 1.5rem' : '3.5rem 3rem',
         borderRadius: '16px',
         boxShadow: `0 30px 70px rgba(0, 0, 0, 0.9), 0 0 45px ${glowColor}`,
         position: 'relative',
@@ -270,7 +285,9 @@ const NeuroIdentity: React.FC = () => {
         maxWidth: '540px',
         boxSizing: 'border-box',
         cursor: 'default',
-        pointerEvents: 'auto'
+        pointerEvents: 'auto',
+        maxHeight: isMobile ? '80vh' : 'none',
+        overflowY: isMobile ? 'auto' : 'visible'
     });
 
     return (
@@ -298,12 +315,14 @@ const NeuroIdentity: React.FC = () => {
                 </Canvas>
 
                 {/* UI: SCROLL HINT */}
-                <InteractionGuide
-                    items={[
-                        { type: 'scroll', text: 'DESLIZAR PARA EXPLORAR LA SIMBIOSIS' }
-                    ]}
-                    style={{ zIndex: 9999, bottom: '3.5rem' }}
-                />
+                <div ref={scrollHintRef} style={{ pointerEvents: 'none' }}>
+                    <InteractionGuide
+                        items={[
+                            { type: 'scroll', text: 'DESLIZAR PARA EXPLORAR LA SIMBIOSIS' }
+                        ]}
+                        style={{ zIndex: 9999, bottom: '3.5rem' }}
+                    />
+                </div>
 
                 {/* --- NARRATIVE OVERLAYS (SCREEN SAFE, FLEX ALIGNED) --- */}
                 <div style={masterOverlayStyle}>
@@ -327,13 +346,13 @@ const NeuroIdentity: React.FC = () => {
                             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem', color: '#00E5FF' }}>
                                 <CustomGenesisIcon color="#00E5FF" />
                             </div>
-                            <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff', marginBottom: '1rem', lineHeight: 1.2 }}>
+                            <h2 style={{ fontSize: isMobile ? '1.5rem' : 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff', marginBottom: '1rem', lineHeight: 1.2 }}>
                                 SINOPSIS CROMÁTICA
                             </h2>
-                            <h3 style={{ fontSize: '0.9rem', color: '#00E5FF', letterSpacing: '0.15em', fontWeight: 600, marginBottom: '1.5rem', fontFamily: 'var(--font-mono)' }}>
+                            <h3 style={{ fontSize: '0.8rem', color: '#00E5FF', letterSpacing: '0.15em', fontWeight: 600, marginBottom: '1.5rem', fontFamily: 'var(--font-mono)' }}>
                                 EL CÓDIGO BIOLÓGICO DE LA SUPREMACÍA DIGITAL
                             </h3>
-                            <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.85)', fontWeight: 300 }}>
+                            <p style={{ fontSize: isMobile ? '0.9rem' : '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.85)', fontWeight: 300 }}>
                                 No vendemos plantillas genéricas ni páginas web decorativas. Diseñamos máquinas digitales de prospección y ventas. 
                                 Fusionamos la ingeniería de software más avanzada con la psicología visual para obligar a tu cliente ideal a tomar acción.
                             </p>
@@ -348,7 +367,7 @@ const NeuroIdentity: React.FC = () => {
                                 ...cardStyleBase('rgba(0, 229, 255, 0.08)', true, '#00E5FF'),
                                 opacity: 0,
                                 visibility: 'hidden',
-                                transform: 'translateX(-100px)'
+                                transform: isMobile ? 'translateY(50px)' : 'translateX(-100px)'
                             }}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
@@ -358,10 +377,10 @@ const NeuroIdentity: React.FC = () => {
                                 <CustomMathIcon color="#00E5FF" />
                                 <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>01 // HEMISFERIO IZQUIERDO</span>
                             </div>
-                            <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, letterSpacing: '0.05em', color: '#fff', marginBottom: '1.2rem', lineHeight: 1.1 }}>
+                            <h2 style={{ fontSize: isMobile ? '1.4rem' : 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, letterSpacing: '0.05em', color: '#fff', marginBottom: '1.2rem', lineHeight: 1.1 }}>
                                 EL RIGOR MATEMÁTICO
                             </h2>
-                            <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '2.5rem', fontWeight: 300 }}>
+                            <p style={{ fontSize: isMobile ? '0.9rem' : '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '2.5rem', fontWeight: 300 }}>
                                 Si tu página tarda más de dos segundos en cargar, tu cliente ya se fue con la competencia. 
                                 Desarrollamos plataformas con velocidad extrema y código blindado que nunca se caen, procesando miles de visitas sin pestañear.
                             </p>
@@ -380,23 +399,24 @@ const NeuroIdentity: React.FC = () => {
                                 ...cardStyleBase('rgba(255, 0, 128, 0.08)', false, '#FF0080'),
                                 opacity: 0,
                                 visibility: 'hidden',
-                                transform: 'translateX(100px)'
+                                transform: isMobile ? 'translateY(50px)' : 'translateX(100px)'
                             }}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
                             <CornerBrackets color="#FF0080" locLabel="SYS.HEMISPHERE_RIGHT" techLabel="COGNITIVE_EMOTION" />
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: '#FF0080', marginBottom: '1.5rem', justifyContent: 'flex-end' }}>
-                                <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>02 // HEMISFERIO DERECHO</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: '#FF0080', marginBottom: '1.5rem', justifyContent: isMobile ? 'flex-start' : 'flex-end' }}>
+                                {!isMobile && <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>02 // HEMISFERIO DERECHO</span>}
                                 <CustomEmotionIcon color="#FF0080" />
+                                {isMobile && <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>02 // HEMISFERIO DERECHO</span>}
                             </div>
-                            <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, letterSpacing: '0.05em', color: '#fff', marginBottom: '1.2rem', lineHeight: 1.1, textAlign: 'right' }}>
+                            <h2 style={{ fontSize: isMobile ? '1.4rem' : 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, letterSpacing: '0.05em', color: '#fff', marginBottom: '1.2rem', lineHeight: 1.1, textAlign: isMobile ? 'left' : 'right' }}>
                                 LA EMOCIÓN CEREBRAL
                             </h2>
-                            <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '2.5rem', fontWeight: 300, textAlign: 'right' }}>
+                            <p style={{ fontSize: isMobile ? '0.9rem' : '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '2.5rem', fontWeight: 300, textAlign: isMobile ? 'left' : 'right' }}>
                                 El software confuso o anticuado destruye la confianza. Creamos interfaces magnéticas basadas en psicología visual que guían la mirada y la acción del usuario directo a tu botón de contacto o pasarela de pago.
                             </p>
-                            <div style={{ display: 'flex', gap: '1rem', borderTop: '1px solid rgba(255, 0, 128, 0.15)', paddingTop: '1.5rem', fontSize: '0.7rem', color: '#FF0080', fontWeight: 800, fontFamily: 'var(--font-mono)', justifyContent: 'flex-end' }}>
+                            <div style={{ display: 'flex', gap: '1rem', borderTop: '1px solid rgba(255, 0, 128, 0.15)', paddingTop: '1.5rem', fontSize: '0.7rem', color: '#FF0080', fontWeight: 800, fontFamily: 'var(--font-mono)', justifyContent: isMobile ? 'flex-start' : 'flex-end' }}>
                                 <div>[ RETENCIÓN: EXTREMA ]</div>
                                 <div>[ PERSUASIÓN: PREMIUM ]</div>
                             </div>
@@ -423,13 +443,13 @@ const NeuroIdentity: React.FC = () => {
                                 <CustomMathIcon color="#00E5FF" />
                                 <CustomEmotionIcon color="#FF0080" />
                             </div>
-                            <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 800, textTransform: 'uppercase', color: '#fff', marginBottom: '1rem', lineHeight: 1.1 }}>
+                            <h2 style={{ fontSize: isMobile ? '1.5rem' : 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 800, textTransform: 'uppercase', color: '#fff', marginBottom: '1rem', lineHeight: 1.1 }}>
                                 LA DOBLE HÉLICE
                             </h2>
-                            <h3 style={{ fontSize: '1rem', letterSpacing: '0.2em', color: 'transparent', backgroundImage: 'linear-gradient(to right, #00E5FF, #FF0080)', WebkitBackgroundClip: 'text', fontWeight: 700, marginBottom: '2rem', fontFamily: 'var(--font-mono)' }}>
+                            <h3 style={{ fontSize: '0.9rem', letterSpacing: '0.2em', color: 'transparent', backgroundImage: 'linear-gradient(to right, #00E5FF, #FF0080)', WebkitBackgroundClip: 'text', fontWeight: 700, marginBottom: '2rem', fontFamily: 'var(--font-mono)' }}>
                                 INGENIERÍA E INSTINTO EN SIMBIOSIS
                             </h3>
-                            <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.85)', fontWeight: 300 }}>
+                            <p style={{ fontSize: isMobile ? '0.9rem' : '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.85)', fontWeight: 300 }}>
                                 La velocidad técnica sin belleza es ignorada; el diseño hermoso sin velocidad no genera conversión. 
                                 Al fusionar ambos mundos en tu marca, rompes las reglas del mercado. No es arte digital para ganar aplausos, 
                                 es ingeniería comercial diseñada para capturar ventas.
@@ -447,7 +467,8 @@ const NeuroIdentity: React.FC = () => {
                                 textAlign: 'center',
                                 opacity: 0,
                                 visibility: 'hidden',
-                                transform: 'translateY(50px)'
+                                transform: 'translateY(50px)',
+                                maxHeight: isMobile ? '85vh' : 'none'
                             }}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
@@ -456,15 +477,21 @@ const NeuroIdentity: React.FC = () => {
                             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem', color: '#FF0080' }}>
                                 <CustomZapIcon color="#FF0080" />
                             </div>
-                            <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, letterSpacing: '0.1em', color: '#fff', marginBottom: '1rem', lineHeight: 1.1 }}>
+                            <h2 style={{ fontSize: isMobile ? '1.5rem' : 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, letterSpacing: '0.1em', color: '#fff', marginBottom: '1rem', lineHeight: 1.1 }}>
                                 LIDERA O SIGUE
                             </h2>
-                            <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.75)', marginBottom: '3rem', fontWeight: 300 }}>
+                            <p style={{ fontSize: isMobile ? '0.9rem' : '1rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.75)', marginBottom: isMobile ? '1.5rem' : '3rem', fontWeight: 300 }}>
                                 Tu competencia está contratando agencias comunes para hacer páginas comunes. Rompe el molde. 
                                 Inyecta el ADN de la doble hélice de AgencIA en tu negocio y domina tu sector hoy mismo.
                             </p>
                             
-                            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <div style={{ 
+                                display: 'flex', 
+                                gap: '1rem', 
+                                justifyContent: 'center', 
+                                flexDirection: isMobile ? 'column' : 'row',
+                                width: '100%' 
+                            }}>
                                 <button
                                     onClick={() => navigate('/contacto')}
                                     style={{
@@ -479,13 +506,15 @@ const NeuroIdentity: React.FC = () => {
                                         cursor: 'pointer',
                                         display: 'flex',
                                         alignItems: 'center',
+                                        justifyContent: 'center',
                                         gap: '0.8rem',
                                         boxShadow: '0 10px 30px rgba(0, 229, 255, 0.3)',
                                         transition: 'all 0.3s ease',
-                                        fontFamily: 'var(--font-mono)'
+                                        fontFamily: 'var(--font-mono)',
+                                        width: isMobile ? '100%' : 'auto'
                                     }}
                                     onMouseEnter={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.transform = isMobile ? 'none' : 'translateY(-2px)';
                                         e.currentTarget.style.boxShadow = '0 15px 40px rgba(255, 0, 128, 0.5)';
                                     }}
                                     onMouseLeave={(e) => {
@@ -493,7 +522,7 @@ const NeuroIdentity: React.FC = () => {
                                         e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 229, 255, 0.3)';
                                     }}
                                 >
-                                    INICIAR SECUENCIA <CustomChevronIcon color="#000" />
+                                    HABLAR CON UN AGENTE <CustomChevronIcon color="#000" />
                                 </button>
                                 <button
                                     onClick={() => navigate('/arquitectura')}
@@ -508,7 +537,8 @@ const NeuroIdentity: React.FC = () => {
                                         letterSpacing: '0.15em',
                                         cursor: 'pointer',
                                         transition: 'all 0.3s ease',
-                                        fontFamily: 'var(--font-mono)'
+                                        fontFamily: 'var(--font-mono)',
+                                        width: isMobile ? '100%' : 'auto'
                                     }}
                                     onMouseEnter={(e) => {
                                         e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
@@ -519,7 +549,7 @@ const NeuroIdentity: React.FC = () => {
                                         e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
                                     }}
                                 >
-                                    VER ARQUITECTURA
+                                    VER CÓMO TRABAJAMOS
                                 </button>
                             </div>
                         </div>

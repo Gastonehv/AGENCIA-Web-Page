@@ -256,8 +256,8 @@ const NeuroIdentity: React.FC = () => {
     });
 
     const cardStyleBase = (glowColor: string, isLeftBorder: boolean, borderColor: string): React.CSSProperties => ({
-        background: 'linear-gradient(135deg, rgba(3, 6, 12, 0.45) 0%, rgba(1, 2, 4, 0.6) 100%)',
-        backdropFilter: 'blur(30px)',
+        background: 'linear-gradient(135deg, rgba(3, 6, 12, 0.5) 0%, rgba(1, 2, 4, 0.65) 100%)',
+        backdropFilter: 'blur(35px)',
         border: '1px solid rgba(255, 255, 255, 0.08)',
         borderLeft: isLeftBorder ? `4px solid ${borderColor}` : '1px solid rgba(255, 255, 255, 0.08)',
         borderRight: !isLeftBorder ? `4px solid ${borderColor}` : '1px solid rgba(255, 255, 255, 0.08)',
@@ -334,8 +334,8 @@ const NeuroIdentity: React.FC = () => {
                                 EL CÓDIGO BIOLÓGICO DE LA SUPREMACÍA DIGITAL
                             </h3>
                             <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.85)', fontWeight: 300 }}>
-                                No creamos páginas web convencionales. Esculpimos organismos digitales de alta conversión. 
-                                El ADN de <span style={{ color: '#00E5FF', fontWeight: 600 }}>AgencIA</span> nace de la colisión simbiótica entre dos fuerzas opuestas e inseparables.
+                                No vendemos plantillas genéricas ni páginas web decorativas. Diseñamos máquinas digitales de prospección y ventas. 
+                                Fusionamos la ingeniería de software más avanzada con la psicología visual para obligar a tu cliente ideal a tomar acción.
                             </p>
                         </div>
                     </div>
@@ -356,18 +356,18 @@ const NeuroIdentity: React.FC = () => {
                             <CornerBrackets color="#00E5FF" locLabel="SYS.HEMISPHERE_LEFT" techLabel="COGNITIVE_LOGIC" />
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: '#00E5FF', marginBottom: '1.5rem' }}>
                                 <CustomMathIcon color="#00E5FF" />
-                                <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>01 // HÉLICE SOBERANA</span>
+                                <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>01 // HEMISFERIO IZQUIERDO</span>
                             </div>
                             <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, letterSpacing: '0.05em', color: '#fff', marginBottom: '1.2rem', lineHeight: 1.1 }}>
                                 EL RIGOR MATEMÁTICO
                             </h2>
                             <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '2.5rem', fontWeight: 300 }}>
-                                La hélice azul del lado **izquierdo** encarna la infraestructura implacable: algoritmos deterministas, código estructurado, 
-                                velocidad extrema, seguridad impenetrable y automatización limpia. El motor frío que sostiene el valor de tu negocio.
+                                Si tu página tarda más de dos segundos en cargar, tu cliente ya se fue con la competencia. 
+                                Desarrollamos plataformas con velocidad extrema y código blindado que nunca se caen, procesando miles de visitas sin pestañear.
                             </p>
                             <div style={{ display: 'flex', gap: '1rem', borderTop: '1px solid rgba(0, 229, 255, 0.15)', paddingTop: '1.5rem', fontSize: '0.7rem', color: '#00E5FF', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>
-                                <div>[ LATENCIA: 0.004ms ]</div>
-                                <div>[ SECURITY: ZERO-TRUST ]</div>
+                                <div>[ VELOCIDAD: 0.004ms ]</div>
+                                <div>[ SEGURIDAD: IMPENETRABLE ]</div>
                             </div>
                         </div>
                     </div>
@@ -387,19 +387,18 @@ const NeuroIdentity: React.FC = () => {
                         >
                             <CornerBrackets color="#FF0080" locLabel="SYS.HEMISPHERE_RIGHT" techLabel="COGNITIVE_EMOTION" />
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: '#FF0080', marginBottom: '1.5rem', justifyContent: 'flex-end' }}>
-                                <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>02 // HÉLICE SENSORIAL</span>
+                                <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>02 // HEMISFERIO DERECHO</span>
                                 <CustomEmotionIcon color="#FF0080" />
                             </div>
                             <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, letterSpacing: '0.05em', color: '#fff', marginBottom: '1.2rem', lineHeight: 1.1, textAlign: 'right' }}>
-                                EL CÓDIGO NEURO-EMOCIONAL
+                                LA EMOCIÓN CEREBRAL
                             </h2>
                             <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '2.5rem', fontWeight: 300, textAlign: 'right' }}>
-                                La hélice magenta del lado **derecho** encarna la respuesta viva: psicología del comportamiento, estética sublime, 
-                                interfaces fluidas e intuición visceral. El arte que hackea la percepción humana para transformar software complejo en puro deseo de compra.
+                                El software confuso o anticuado destruye la confianza. Creamos interfaces magnéticas basadas en psicología visual que guían la mirada y la acción del usuario directo a tu botón de contacto o pasarela de pago.
                             </p>
                             <div style={{ display: 'flex', gap: '1rem', borderTop: '1px solid rgba(255, 0, 128, 0.15)', paddingTop: '1.5rem', fontSize: '0.7rem', color: '#FF0080', fontWeight: 800, fontFamily: 'var(--font-mono)', justifyContent: 'flex-end' }}>
-                                <div>[ CONVERSIÓN: +320% ]</div>
-                                <div>[ PERCEPCIÓN: PREMIUM ]</div>
+                                <div>[ RETENCIÓN: EXTREMA ]</div>
+                                <div>[ PERSUASIÓN: PREMIUM ]</div>
                             </div>
                         </div>
                     </div>
@@ -431,9 +430,9 @@ const NeuroIdentity: React.FC = () => {
                                 INGENIERÍA E INSTINTO EN SIMBIOSIS
                             </h3>
                             <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.85)', fontWeight: 300 }}>
-                                Cuando el código frío y calculador se fusiona con la emoción cerebral y la estética disruptiva, 
-                                las hélices se entrelazan. El resultado es el ADN de <span style={{ fontWeight: 600 }}>AgencIA</span>: 
-                                obras de arte de la programación y el diseño web con rendimiento financiero exponencial.
+                                La velocidad técnica sin belleza es ignorada; el diseño hermoso sin velocidad no genera conversión. 
+                                Al fusionar ambos mundos en tu marca, rompes las reglas del mercado. No es arte digital para ganar aplausos, 
+                                es ingeniería comercial diseñada para capturar ventas.
                             </p>
                         </div>
                     </div>
@@ -461,7 +460,8 @@ const NeuroIdentity: React.FC = () => {
                                 LIDERA O SIGUE
                             </h2>
                             <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.75)', marginBottom: '3rem', fontWeight: 300 }}>
-                                El mercado ignora a los mediocres y premia a los audaces. Es hora de desplegar la doble hélice de suprema conversión y diseño estético en tu propia marca.
+                                Tu competencia está contratando agencias comunes para hacer páginas comunes. Rompe el molde. 
+                                Inyecta el ADN de la doble hélice de AgencIA en tu negocio y domina tu sector hoy mismo.
                             </p>
                             
                             <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>

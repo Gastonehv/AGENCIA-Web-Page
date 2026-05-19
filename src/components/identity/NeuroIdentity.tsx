@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import DNAHelix from './DNAHelix';
+import LiquidContactCTA from '../LiquidContactCTA';
 import InteractionGuide from '../InteractionGuide';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -69,13 +70,8 @@ const CustomZapIcon = ({ color, size = 36 }: { color: string; size?: number }) =
     </svg>
 );
 
-// Icono 05: Flecha de Conversión de AgencIA (Botones CTA)
-const CustomChevronIcon = ({ color, size = 16 }: { color: string; size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-        <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M2 12H3" stroke={color} strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
-    </svg>
-);
+// CustomChevronIcon was removed as it's no longer used.
+
 
 // Cybernetic HUD Corner Brackets Component
 const CornerBrackets = ({ color, locLabel, techLabel }: { color: string; locLabel?: string; techLabel?: string }) => (
@@ -492,38 +488,7 @@ const NeuroIdentity: React.FC = () => {
                                 flexDirection: isMobile ? 'column' : 'row',
                                 width: '100%' 
                             }}>
-                                <button
-                                    onClick={() => navigate('/contacto')}
-                                    style={{
-                                        background: 'linear-gradient(to right, #00E5FF, #FF0080)',
-                                        color: '#000',
-                                        border: 'none',
-                                        padding: '1.1rem 2.4rem',
-                                        borderRadius: '50px',
-                                        fontSize: '0.85rem',
-                                        fontWeight: 800,
-                                        letterSpacing: '0.15em',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '0.8rem',
-                                        boxShadow: '0 10px 30px rgba(0, 229, 255, 0.3)',
-                                        transition: 'all 0.3s ease',
-                                        fontFamily: 'var(--font-mono)',
-                                        width: isMobile ? '100%' : 'auto'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.transform = isMobile ? 'none' : 'translateY(-2px)';
-                                        e.currentTarget.style.boxShadow = '0 15px 40px rgba(255, 0, 128, 0.5)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 229, 255, 0.3)';
-                                    }}
-                                >
-                                    HABLAR CON UN AGENTE <CustomChevronIcon color="#000" />
-                                </button>
+                                <LiquidContactCTA text="HABLAR CON UN AGENTE" />
                                 <button
                                     onClick={() => navigate('/arquitectura')}
                                     style={{

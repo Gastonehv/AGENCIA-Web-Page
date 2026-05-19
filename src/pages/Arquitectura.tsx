@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import SEO from '../components/SEO';
 import InteractionGuide from '../components/InteractionGuide';
-import { Terminal, ArrowRight, Activity, Cpu, ShieldCheck, Zap, RefreshCw, Send } from 'lucide-react';
+import { Terminal, Activity, Cpu, ShieldCheck, Zap, RefreshCw, Send } from 'lucide-react';
 import { useSound } from '../context/SoundContext';
+import LiquidContactCTA from '../components/LiquidContactCTA';
 
 // --- STAGE DATA FOR B2B PREMIUM SOFTWARE ANATOMY ---
 const STAGES_INFO = [
@@ -77,7 +78,6 @@ const DUMMY_LOGS = [
 ];
 
 const Arquitectura: React.FC = () => {
-    const navigate = useNavigate();
     const { playClick, playWhoosh } = useSound();
     
     // Scroll orchestration state
@@ -537,31 +537,9 @@ const Arquitectura: React.FC = () => {
                                 <span style={{ color: '#fff', fontFamily: 'var(--font-heading)', fontWeight: 900, fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)' }}>¿Listo para construir tu plataforma corporativa?</span>
                                 <span style={{ color: '#A0AEC0', fontFamily: 'var(--font-body)', fontSize: 'clamp(0.75rem, 1vw, 0.85rem)' }}>Despliegue inmediato con arquitectura garantizada.</span>
                             </div>
-                            <button
-                                onClick={() => { playClick(); navigate('/contacto'); }}
-                                style={{
-                                    padding: '12px 24px',
-                                    backgroundColor: '#00FF99',
-                                    color: '#000',
-                                    border: 'none',
-                                    borderRadius: '8px',
-                                    fontFamily: 'var(--font-heading)',
-                                    fontSize: 'clamp(0.85rem, 1.2vw, 1rem)',
-                                    fontWeight: 900,
-                                    letterSpacing: '0.1em',
-                                    textTransform: 'uppercase',
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '10px',
-                                    boxShadow: '0 0 25px #00FF99',
-                                    transition: 'all 0.3s ease'
-                                }}
-                                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 0 40px #00FF99'; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 0 25px #00FF99'; }}
-                            >
-                                PROYECTO DE ANTOLOGÍA <ArrowRight size={18} />
-                            </button>
+                            <div onClick={playClick}>
+                                <LiquidContactCTA text="PROYECTO DE ANTOLOGÍA" />
+                            </div>
                         </div>
                     </div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import LiquidContactCTA from './LiquidContactCTA';
 
 const Contact: React.FC = () => {
     return (
@@ -27,35 +28,7 @@ const Contact: React.FC = () => {
                 </h2>
 
                 <Link to="/contacto">
-                    <button
-                        style={{
-                            padding: '1.2rem 3rem',
-                            background: 'transparent',
-                            color: 'white',
-                            border: '1px solid rgba(255,255,255,0.5)',
-                            borderRadius: '50px',
-                            fontWeight: 'bold',
-                            fontSize: '1rem',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                            backdropFilter: 'blur(10px)',
-                            letterSpacing: '2px'
-                        }}
-                        onMouseEnter={e => {
-                            e.currentTarget.style.background = 'white';
-                            e.currentTarget.style.color = 'black';
-                            e.currentTarget.style.transform = 'scale(1.05)';
-                            e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.3)';
-                        }}
-                        onMouseLeave={e => {
-                            e.currentTarget.style.background = 'transparent';
-                            e.currentTarget.style.color = 'white';
-                            e.currentTarget.style.transform = 'scale(1)';
-                            e.currentTarget.style.boxShadow = 'none';
-                        }}
-                    >
-                        INICIAR PROYECTO
-                    </button>
+                    <LiquidContactCTA text="INICIAR PROYECTO" />
                 </Link>
             </div>
         </section>

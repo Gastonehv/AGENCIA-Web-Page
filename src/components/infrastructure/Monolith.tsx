@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Float, MeshTransmissionMaterial, Text, Edges } from '@react-three/drei';
 import * as THREE from 'three';
@@ -60,7 +60,7 @@ const Monolith = ({ scrollProgress }: { scrollProgress: number }) => {
                     font="https://fonts.gstatic.com/s/robotomono/v12/L0tkDFI83F8P-7u4xXUGL3_p.woff"
                     color="#00f3ff"
                     anchorX="left"
-                    opacity={scrollProgress > 0.1 ? 1 : 0}
+                    fillOpacity={scrollProgress > 0.1 ? 1 : 0}
                 >
                     {`[ PROTOCOLO_RAG: ACTIVE ]\n[ LATENCIA: 0.02ms ]\n[ NODOS: 1,024 ]`}
                 </Text>

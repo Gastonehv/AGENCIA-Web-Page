@@ -20,6 +20,7 @@ import GlitchPortal from '../components/GlitchPortal';
 import Footer from '../components/Footer';
 import ChapterHUD from '../components/ChapterHUD';
 import Loader from '../components/Loader';
+import InteractionGuide from '../components/InteractionGuide';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -972,6 +973,14 @@ const CinematicDev: React.FC = () => {
                         </g>
                     </svg>
                 </div>
+
+                {/* GUÍA DE INTERACCIÓN PRINCIPAL */}
+                <InteractionGuide
+                    items={[
+                        { type: 'scroll', text: 'DESLIZAR PARA EXPLORAR' }
+                    ]}
+                    style={{ zIndex: 9999, bottom: '3rem' }}
+                />
             </section>
 
             <section id="identidad" style={{

@@ -146,7 +146,6 @@ const ServerRack = ({
                 >
                     {label}
                 </Text>
-
             </Float>
 
             {/* Main rack body */}
@@ -160,7 +159,6 @@ const ServerRack = ({
                     emissiveIntensity={isActive ? 0.5 : 0.05}
                 />
             </mesh>
-
 
             {/* Rack frame/border */}
             <mesh>
@@ -222,7 +220,6 @@ const DataFlowParticles = ({ scrollProgress }: { scrollProgress: number }) => {
     const pointsRef = useRef<THREE.Points>(null);
     const particleCount = 4000;
 
-
     const { positions, velocities, colors, phases } = useMemo(() => {
         const pos = new Float32Array(particleCount * 3);
         const vel = new Float32Array(particleCount * 3);
@@ -268,7 +265,6 @@ const DataFlowParticles = ({ scrollProgress }: { scrollProgress: number }) => {
             const phase = phases[i];
 
             if (orderProgress > 0.2) {
-                // Organized flow patterns - traveling toward center core
                 const speed = 0.8 + Math.sin(phase) * 0.4;
                 const radius = 4 + Math.sin(phase * 3 + time) * 2;
                 const angle = time * speed + phase;
@@ -306,12 +302,14 @@ const DataFlowParticles = ({ scrollProgress }: { scrollProgress: number }) => {
                     count={particleCount}
                     array={positions}
                     itemSize={3}
+                    args={[positions, 3]}
                 />
                 <bufferAttribute
                     attach="attributes-color"
                     count={particleCount}
                     array={colors}
                     itemSize={3}
+                    args={[colors, 3]}
                 />
             </bufferGeometry>
             <pointsMaterial

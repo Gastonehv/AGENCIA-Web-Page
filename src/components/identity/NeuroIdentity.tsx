@@ -2,6 +2,7 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import DNAHelix from './DNAHelix';
+import InteractionGuide from '../InteractionGuide';
 
 // ... (imports remain)
 import gsap from 'gsap';
@@ -90,13 +91,12 @@ const NeuroIdentity: React.FC = () => {
                 </Canvas>
 
                 {/* UI: SCROLL HINT */}
-                <div style={{
-                    position: 'absolute', bottom: '50px', width: '100%', textAlign: 'center', pointerEvents: 'none', zIndex: 10, mixBlendMode: 'difference'
-                }}>
-                    <span style={{ color: '#fff', fontSize: 'clamp(10px, 3vw, 12px)', letterSpacing: '0.3em', fontFamily: 'monospace', textTransform: 'uppercase', opacity: 0.8 }}>
-                        DESLIZA PARA INICIAR SECUENCIA
-                    </span>
-                </div>
+                <InteractionGuide
+                    items={[
+                        { type: 'scroll', text: 'DESLIZAR PARA INICIAR SECUENCIA' }
+                    ]}
+                    style={{ zIndex: 9999, bottom: '3.5rem' }}
+                />
 
                 {/* --- NARRATIVE OVERLAYS --- */}
 

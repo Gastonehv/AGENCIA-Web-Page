@@ -4,6 +4,7 @@ import { ScrollControls, Preload } from '@react-three/drei';
 import { EffectComposer, Bloom, Noise, Vignette, ChromaticAberration } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import ZScrollExperience from '../components/playground/ZScrollExperience';
+import InteractionGuide from '../components/InteractionGuide';
 
 // Loading screen component
 const LoadingScreen = () => (
@@ -161,30 +162,12 @@ const HUD = () => (
         </div>
 
         {/* Bottom Center - Instructions */}
-        <div style={{
-            position: 'fixed',
-            bottom: 40,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            color: '#fff',
-            zIndex: 10,
-            fontFamily: 'monospace',
-            pointerEvents: 'none',
-            textAlign: 'center'
-        }}>
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem',
-                opacity: 0.6
-            }}>
-                <span style={{ fontSize: '1.5rem' }}>⬇</span>
-                <span style={{ fontSize: '0.8rem', letterSpacing: '0.15em' }}>
-                    SCROLL PARA AVANZAR
-                </span>
-                <span style={{ fontSize: '1.5rem' }}>⬇</span>
-            </div>
-        </div>
+        <InteractionGuide
+            items={[
+                { type: 'scroll', text: 'DESLIZAR EN PROFUNDIDAD' }
+            ]}
+            style={{ zIndex: 9999, bottom: '2.5rem' }}
+        />
 
         {/* Bottom Left - Back Link */}
         <a

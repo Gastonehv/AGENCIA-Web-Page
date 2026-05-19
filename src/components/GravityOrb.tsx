@@ -42,9 +42,9 @@ const GravityOrb: React.FC = () => {
 
         const orb = orbRef.current;
 
-        // Posición Inicial (80vw, 80vh)
-        const initialX = window.innerWidth * 0.8 - 32; // -32 por mitad del ancho (64px)
-        const initialY = window.innerHeight * 0.8 - 32;
+        // Posición Inicial (Esquina Superior Derecha: sin estorbar en móviles ni escritorio)
+        const initialX = window.innerWidth - 84; // Margen de 20px desde la derecha (64px ancho)
+        const initialY = 24; // Margen de 24px desde arriba
 
         gsap.set(orb, { x: initialX, y: initialY });
         dragRec.current.currentX = initialX;
@@ -336,6 +336,33 @@ const GravityOrb: React.FC = () => {
                         opacity: 1
                     }}
                 />
+
+                {/* TOOLTIP INFORMATIVO FLOTANTE */}
+                {!isOpen && (
+                    <div className="orb-tooltip-badge" style={{
+                        position: 'absolute',
+                        right: '74px',
+                        whiteSpace: 'nowrap',
+                        backgroundColor: 'rgba(5, 10, 15, 0.9)',
+                        backdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(0, 255, 153, 0.4)',
+                        borderRadius: '30px',
+                        padding: '6px 14px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        pointerEvents: 'none',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.7rem',
+                        fontWeight: 800,
+                        color: '#00FF99',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.8), 0 0 15px rgba(0,255,153,0.3)',
+                        transition: 'opacity 0.3s ease'
+                    }}>
+                        <span style={{ width: '6px', height: '6px', backgroundColor: '#00FF99', borderRadius: '50%', boxShadow: '0 0 10px #00FF99', animation: 'pulse 1.5s infinite' }} />
+                        MENÚ PRINCIPAL // ARRASTRABLE
+                    </div>
+                )}
             </div>
         </div>,
         document.body

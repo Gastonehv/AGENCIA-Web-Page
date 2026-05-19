@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
+import InteractionGuide from '../components/InteractionGuide';
 import { Terminal, ArrowRight, Activity, Cpu, ShieldCheck, Zap, RefreshCw, Send } from 'lucide-react';
 import { useSound } from '../context/SoundContext';
 
@@ -722,27 +723,13 @@ const Arquitectura: React.FC = () => {
                 })}
             </div>
 
-            {/* SCROLL DOWN BOUNCING INDICATOR */}
-            <div style={{
-                position: 'fixed',
-                bottom: '2.5rem',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '0.8rem',
-                opacity: activeStage === 0 ? 0.9 : 0,
-                transition: 'opacity 0.6s ease',
-                pointerEvents: 'none',
-                zIndex: 30,
-                fontFamily: 'var(--font-mono)'
-            }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.3em', color: STAGES_INFO[0].color, textShadow: `0 0 15px ${STAGES_INFO[0].color}` }}>
-                    SCROLL PARA ENSAMBLAR //
-                </span>
-                <div style={{ width: '2px', height: '35px', background: `linear-gradient(to bottom, ${STAGES_INFO[0].color}, transparent)`, animation: 'bounce 2s infinite' }} />
-            </div>
+            {/* GUÍA DE INTERACCIÓN PRINCIPAL */}
+            <InteractionGuide
+                items={[
+                    { type: 'scroll', text: 'DESLIZAR PARA ENSAMBLAR' }
+                ]}
+                style={{ zIndex: 9999, bottom: '3rem' }}
+            />
 
             <style>{`
                 .scene-layer {

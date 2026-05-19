@@ -120,8 +120,7 @@ const IntelligenceNode = ({ position, label, active }: { position: [number, numb
                     color={active ? "#ffffff" : "#00ffff"}
                     anchorX="center"
                     anchorY="middle"
-                    opacity={active ? 1 : 0.2}
-                    transparent
+                    fillOpacity={active ? 1 : 0.2}
                 >
                     {label}
                 </Text>

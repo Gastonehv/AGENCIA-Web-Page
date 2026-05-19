@@ -1,5 +1,5 @@
 import React, { useRef, useMemo } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { Text, Float, Line, MeshTransmissionMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -30,7 +30,7 @@ const BlueprintGrid = ({ scrollProgress }: { scrollProgress: number }) => {
                         position={[(i - 5) * 10, (j - 5) * 10, -9.9]}
                         fontSize={0.2}
                         color="#0066ff"
-                        opacity={0.3}
+                        fillOpacity={0.3}
                     >
                         +
                     </Text>
@@ -106,7 +106,6 @@ const SystemModule = ({ position, label, scrollProgress, index }: { position: [n
 };
 
 const BlueprintArchitecture: React.FC<BlueprintArchitectureProps> = ({ scrollProgress }) => {
-    const { viewport, mouse } = useThree();
     const groupRef = useRef<THREE.Group>(null);
     
     useFrame((state) => {

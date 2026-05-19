@@ -5,6 +5,7 @@ import InteractionGuide from '../components/InteractionGuide';
 import { Terminal, Activity, Cpu, ShieldCheck, Zap, RefreshCw, Send } from 'lucide-react';
 import { useSound } from '../context/SoundContext';
 import LiquidContactCTA from '../components/LiquidContactCTA';
+import officialTypography from '../assets/logos/agencia_typography_official.png';
 
 // --- STAGE DATA FOR B2B PREMIUM SOFTWARE ANATOMY ---
 const STAGES_INFO = [
@@ -387,9 +388,16 @@ const Arquitectura: React.FC = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '12px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: isFullyConverged ? '#00FF99' : '#00F3FF', boxShadow: isFullyConverged ? '0 0 20px #00FF99' : 'none', animation: 'pulse 2s infinite' }} />
-                                <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1rem, 2vw, 1.2rem)', fontWeight: 900, letterSpacing: '0.05em', color: '#fff' }}>
-                                    AGENCIA // EXECUTIVE SUITE
-                                </span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <img 
+                                        src={officialTypography} 
+                                        alt="AgencIA" 
+                                        style={{ height: 'clamp(1rem, 2.5vw, 1.3rem)', width: 'auto', objectFit: 'contain' }} 
+                                    />
+                                    <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)', fontWeight: 900, letterSpacing: '0.05em', color: '#fff' }}>
+                                        // EXECUTIVE SUITE
+                                    </span>
+                                </div>
                             </div>
                             <div style={{ display: 'flex', gap: '10px' }}>
                                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(0.65rem, 1vw, 0.75rem)', padding: '4px 10px', borderRadius: '50px', backgroundColor: isFullyConverged ? 'rgba(0,255,153,0.15)' : 'rgba(255,255,255,0.1)', border: `1px solid ${isFullyConverged ? '#00FF99' : 'rgba(255,255,255,0.2)'}`, color: isFullyConverged ? '#00FF99' : '#fff' }}>
@@ -564,9 +572,16 @@ const Arquitectura: React.FC = () => {
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <div style={{ width: '12px', height: '12px', backgroundColor: STAGES_INFO[activeStage].color, borderRadius: '50%', boxShadow: `0 0 15px ${STAGES_INFO[activeStage].color}`, animation: 'pulse 2s infinite' }} />
-                    <span style={{ fontSize: 'clamp(0.65rem, 1.2vw, 0.85rem)', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.8)', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
-                        AGENCIA_DEV // ARCHITECTURE_V9_FLUID
-                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <img 
+                            src={officialTypography} 
+                            alt="AgencIA" 
+                            style={{ height: 'clamp(0.7rem, 1.5vw, 0.95rem)', width: 'auto', objectFit: 'contain' }} 
+                        />
+                        <span style={{ fontSize: 'clamp(0.6rem, 1.1vw, 0.8rem)', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.8)', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+                            _DEV // ARCHITECTURE_V9_FLUID
+                        </span>
+                    </div>
                 </div>
                 <div style={{ fontSize: 'clamp(0.65rem, 1.2vw, 0.8rem)', letterSpacing: '0.15em', color: STAGES_INFO[activeStage].color, borderBottom: `1px solid ${STAGES_INFO[activeStage].color}`, paddingBottom: '4px', textShadow: `0 0 10px ${STAGES_INFO[activeStage].color}` }}>
                     [ ORGANIC_BUILD_SEQUENCE ]

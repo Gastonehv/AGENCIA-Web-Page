@@ -6,9 +6,76 @@ import DNAHelix from './DNAHelix';
 import InteractionGuide from '../InteractionGuide';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Cpu, Activity, Zap, Sparkles, ArrowRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// --- DESIGN DE ICONOGRAFÍA EXCLUSIVA DE AGENCIA ---
+
+// Icono 01: El Rigor Matemático / Algoritmo (Hélice Izquierda - Azul)
+const CustomMathIcon = ({ color, size = 32 }: { color: string; size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Core central de cómputo */}
+        <rect x="22" y="22" width="20" height="20" rx="4" stroke={color} strokeWidth="2.5" fill="none" />
+        <rect x="28" y="28" width="8" height="8" rx="1.5" fill={color} opacity="0.9" />
+        {/* Buses de flujo lógico */}
+        <path d="M32 6V16M32 48V58M6 32H16M48 32H58" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+        {/* Nodos de intersección binaria */}
+        <circle cx="32" cy="16" r="3" fill={color} />
+        <circle cx="32" cy="48" r="3" fill={color} />
+        <circle cx="16" cy="32" r="3" fill={color} />
+        <circle cx="48" cy="32" r="3" fill={color} />
+        {/* Líneas diagonales de trazo lógico */}
+        <path d="M12 12L20 20M52 12L44 20M12 52L20 44M52 52L44 44" stroke={color} strokeWidth="2" strokeDasharray="3 3" />
+    </svg>
+);
+
+// Icono 02: El Código Neuro-Emocional / Cerebro (Hélice Derecha - Magenta)
+const CustomEmotionIcon = ({ color, size = 32 }: { color: string; size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Onda de feedback cerebral y pulso cardiaco */}
+        <path d="M6 32H18L24 10L32 54L40 20L46 40L50 32H58" stroke={color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        {/* Ondas radiales de transmisión de datos */}
+        <circle cx="24" cy="10" r="4" stroke={color} strokeWidth="1.5" strokeDasharray="2 2" />
+        <circle cx="32" cy="54" r="5" stroke={color} strokeWidth="1.5" strokeDasharray="2 2" />
+        <circle cx="40" cy="20" r="3" stroke={color} strokeWidth="1.5" strokeDasharray="2 2" />
+        {/* Sinapsis activas */}
+        <circle cx="24" cy="10" r="2.5" fill={color} />
+        <circle cx="32" cy="54" r="2.5" fill={color} />
+        <circle cx="40" cy="20" r="2.5" fill={color} />
+    </svg>
+);
+
+// Icono 03: Génesis / Fusión Inicial (Blanco/Cyan)
+const CustomGenesisIcon = ({ color, size = 36 }: { color: string; size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Cruz de alineación dimensional */}
+        <path d="M32 6V58M6 32H58" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+        {/* Anillos orbitales concéntricos */}
+        <circle cx="32" cy="32" r="18" stroke={color} strokeWidth="2" strokeDasharray="4 4" />
+        <circle cx="32" cy="32" r="8" stroke={color} strokeWidth="1.5" />
+        {/* Destellos de origen de código */}
+        <path d="M18 18L24 24M46 18L40 24M18 46L24 40M46 46L40 40" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+    </svg>
+);
+
+// Icono 04: Acción Soberana / Relámpago Quántico (Lidera o Sigue - Magenta)
+const CustomZapIcon = ({ color, size = 36 }: { color: string; size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Rayo vectorial de doble impacto */}
+        <path d="M36 4L16 34H32L28 60L48 30H32L36 4Z" stroke={color} strokeWidth="3" strokeLinejoin="round" fill="none" />
+        <path d="M38 12L22 34H32L28 52" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+        {/* Escudo HUD exterior */}
+        <path d="M8 8H16M8 8V16M56 8H48M56 8V16M8 56H16M8 56V48M56 56H48M56 56V48" stroke={color} strokeWidth="2" opacity="0.6" />
+    </svg>
+);
+
+// Icono 05: Flecha de Conversión de AgencIA (Botones CTA)
+const CustomChevronIcon = ({ color, size = 16 }: { color: string; size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+        <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M2 12H3" stroke={color} strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
+    </svg>
+);
 
 // Cybernetic HUD Corner Brackets Component
 const CornerBrackets = ({ color, locLabel, techLabel }: { color: string; locLabel?: string; techLabel?: string }) => (
@@ -110,7 +177,7 @@ const NeuroIdentity: React.FC = () => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
-        // Calculate tilt angles (max 6 degrees rotation)
+        // Calculate tilt angles (max 5 degrees rotation)
         const tiltX = (y / (rect.height / 2)) * -5;
         const tiltY = (x / (rect.width / 2)) * 5;
         card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
@@ -140,27 +207,22 @@ const NeuroIdentity: React.FC = () => {
             });
 
             // PHASE 1: GENESIS (Timeline time: 0.0 to 3.0)
-            // Fade in: 0.0 -> 1.0. Active: 1.0 -> 2.0. Fade out: 2.0 -> 3.0.
             tl.to(cardRef1.current, { autoAlpha: 1, y: 0, duration: 1.0, ease: 'power2.out' }, 0.0)
                 .to(cardRef1.current, { autoAlpha: 0, y: -60, duration: 1.0, ease: 'power2.in' }, 2.0);
 
             // PHASE 2: BLUE STRAND - MATHEMATICAL / LEFT HEMISPHERE (Timeline time: 3.2 to 6.2)
-            // Fade in: 3.2 -> 4.2. Active: 4.2 -> 5.2. Fade out: 5.2 -> 6.2.
             tl.to(cardRef2.current, { autoAlpha: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 3.2)
                 .to(cardRef2.current, { autoAlpha: 0, x: -100, duration: 1.0, ease: 'power2.in' }, 5.2);
 
             // PHASE 3: MAGENTA STRAND - ORGANIC / RIGHT HEMISPHERE (Timeline time: 6.4 to 9.4)
-            // Fade in: 6.4 -> 7.4. Active: 7.4 -> 8.4. Fade out: 8.4 -> 9.4.
             tl.to(cardRef3.current, { autoAlpha: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 6.4)
                 .to(cardRef3.current, { autoAlpha: 0, x: 100, duration: 1.0, ease: 'power2.in' }, 8.4);
 
             // PHASE 4: CONVERGENCE - THE DNA (Timeline time: 9.6 to 12.6)
-            // Fade in: 9.6 -> 10.6. Active: 10.6 -> 11.6. Fade out: 11.6 -> 12.6.
             tl.to(cardRef4.current, { autoAlpha: 1, scale: 1, duration: 1.0, ease: 'power2.out' }, 9.6)
                 .to(cardRef4.current, { autoAlpha: 0, scale: 1.15, duration: 1.0, ease: 'power2.in' }, 11.6);
 
             // PHASE 5: CTA / EXIT (Timeline time: 12.8 to 15.0)
-            // Fade in: 12.8 -> 14.0. Active: 14.0 onwards.
             tl.to(cardRef5.current, { autoAlpha: 1, y: 0, duration: 1.2, ease: 'power2.out' }, 12.8);
 
         }, containerRef);
@@ -194,8 +256,8 @@ const NeuroIdentity: React.FC = () => {
     });
 
     const cardStyleBase = (glowColor: string, isLeftBorder: boolean, borderColor: string): React.CSSProperties => ({
-        background: 'linear-gradient(135deg, rgba(4, 8, 14, 0.96) 0%, rgba(1, 2, 4, 0.99) 100%)',
-        backdropFilter: 'blur(35px)',
+        background: 'linear-gradient(135deg, rgba(3, 6, 12, 0.45) 0%, rgba(1, 2, 4, 0.6) 100%)',
+        backdropFilter: 'blur(30px)',
         border: '1px solid rgba(255, 255, 255, 0.08)',
         borderLeft: isLeftBorder ? `4px solid ${borderColor}` : '1px solid rgba(255, 255, 255, 0.08)',
         borderRight: !isLeftBorder ? `4px solid ${borderColor}` : '1px solid rgba(255, 255, 255, 0.08)',
@@ -263,7 +325,7 @@ const NeuroIdentity: React.FC = () => {
                         >
                             <CornerBrackets color="#00E5FF" locLabel="SYS.GENESIS" techLabel="DNA_ALIGNMENT" />
                             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem', color: '#00E5FF' }}>
-                                <Sparkles size={36} className="animate-pulse" />
+                                <CustomGenesisIcon color="#00E5FF" />
                             </div>
                             <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff', marginBottom: '1rem', lineHeight: 1.2 }}>
                                 SINOPSIS CROMÁTICA
@@ -271,7 +333,7 @@ const NeuroIdentity: React.FC = () => {
                             <h3 style={{ fontSize: '0.9rem', color: '#00E5FF', letterSpacing: '0.15em', fontWeight: 600, marginBottom: '1.5rem', fontFamily: 'var(--font-mono)' }}>
                                 EL CÓDIGO BIOLÓGICO DE LA SUPREMACÍA DIGITAL
                             </h3>
-                            <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.8)', fontWeight: 300 }}>
+                            <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.85)', fontWeight: 300 }}>
                                 No creamos páginas web convencionales. Esculpimos organismos digitales de alta conversión. 
                                 El ADN de <span style={{ color: '#00E5FF', fontWeight: 600 }}>AgencIA</span> nace de la colisión simbiótica entre dos fuerzas opuestas e inseparables.
                             </p>
@@ -292,14 +354,14 @@ const NeuroIdentity: React.FC = () => {
                             onMouseLeave={handleMouseLeave}
                         >
                             <CornerBrackets color="#00E5FF" locLabel="SYS.HEMISPHERE_LEFT" techLabel="COGNITIVE_LOGIC" />
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#00E5FF', marginBottom: '1.5rem' }}>
-                                <Cpu size={28} />
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: '#00E5FF', marginBottom: '1.5rem' }}>
+                                <CustomMathIcon color="#00E5FF" />
                                 <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>01 // HÉLICE SOBERANA</span>
                             </div>
                             <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, letterSpacing: '0.05em', color: '#fff', marginBottom: '1.2rem', lineHeight: 1.1 }}>
                                 EL RIGOR MATEMÁTICO
                             </h2>
-                            <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.75)', marginBottom: '2.5rem', fontWeight: 300 }}>
+                            <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '2.5rem', fontWeight: 300 }}>
                                 La hélice azul del lado **izquierdo** encarna la infraestructura implacable: algoritmos deterministas, código estructurado, 
                                 velocidad extrema, seguridad impenetrable y automatización limpia. El motor frío que sostiene el valor de tu negocio.
                             </p>
@@ -324,14 +386,14 @@ const NeuroIdentity: React.FC = () => {
                             onMouseLeave={handleMouseLeave}
                         >
                             <CornerBrackets color="#FF0080" locLabel="SYS.HEMISPHERE_RIGHT" techLabel="COGNITIVE_EMOTION" />
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#FF0080', marginBottom: '1.5rem', justifyContent: 'flex-end' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: '#FF0080', marginBottom: '1.5rem', justifyContent: 'flex-end' }}>
                                 <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.2em', fontFamily: 'var(--font-mono)' }}>02 // HÉLICE SENSORIAL</span>
-                                <Activity size={28} />
+                                <CustomEmotionIcon color="#FF0080" />
                             </div>
                             <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, letterSpacing: '0.05em', color: '#fff', marginBottom: '1.2rem', lineHeight: 1.1, textAlign: 'right' }}>
                                 EL CÓDIGO NEURO-EMOCIONAL
                             </h2>
-                            <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.75)', marginBottom: '2.5rem', fontWeight: 300, textAlign: 'right' }}>
+                            <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '2.5rem', fontWeight: 300, textAlign: 'right' }}>
                                 La hélice magenta del lado **derecho** encarna la respuesta viva: psicología del comportamiento, estética sublime, 
                                 interfaces fluidas e intuición visceral. El arte que hackea la percepción humana para transformar software complejo en puro deseo de compra.
                             </p>
@@ -358,9 +420,9 @@ const NeuroIdentity: React.FC = () => {
                             onMouseLeave={handleMouseLeave}
                         >
                             <CornerBrackets color="#ffffff" locLabel="SYS.SYNAPSE" techLabel="NEXUS_CONVERGENCE" />
-                            <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                                <div style={{ color: '#00E5FF' }}><Cpu size={30} /></div>
-                                <div style={{ color: '#FF0080' }}><Activity size={30} /></div>
+                            <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                                <CustomMathIcon color="#00E5FF" />
+                                <CustomEmotionIcon color="#FF0080" />
                             </div>
                             <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 800, textTransform: 'uppercase', color: '#fff', marginBottom: '1rem', lineHeight: 1.1 }}>
                                 LA DOBLE HÉLICE
@@ -368,7 +430,7 @@ const NeuroIdentity: React.FC = () => {
                             <h3 style={{ fontSize: '1rem', letterSpacing: '0.2em', color: 'transparent', backgroundImage: 'linear-gradient(to right, #00E5FF, #FF0080)', WebkitBackgroundClip: 'text', fontWeight: 700, marginBottom: '2rem', fontFamily: 'var(--font-mono)' }}>
                                 INGENIERÍA E INSTINTO EN SIMBIOSIS
                             </h3>
-                            <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.8)', fontWeight: 300 }}>
+                            <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'rgba(255, 255, 255, 0.85)', fontWeight: 300 }}>
                                 Cuando el código frío y calculador se fusiona con la emoción cerebral y la estética disruptiva, 
                                 las hélices se entrelazan. El resultado es el ADN de <span style={{ fontWeight: 600 }}>AgencIA</span>: 
                                 obras de arte de la programación y el diseño web con rendimiento financiero exponencial.
@@ -393,12 +455,12 @@ const NeuroIdentity: React.FC = () => {
                         >
                             <CornerBrackets color="#FF0080" locLabel="SYS.EXIT" techLabel="SOVEREIGN_LAUNCH" />
                             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem', color: '#FF0080' }}>
-                                <Zap size={36} className="animate-bounce" />
+                                <CustomZapIcon color="#FF0080" />
                             </div>
                             <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, letterSpacing: '0.1em', color: '#fff', marginBottom: '1rem', lineHeight: 1.1 }}>
                                 LIDERA O SIGUE
                             </h2>
-                            <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.7)', marginBottom: '3rem', fontWeight: 300 }}>
+                            <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.75)', marginBottom: '3rem', fontWeight: 300 }}>
                                 El mercado ignora a los mediocres y premia a los audaces. Es hora de desplegar la doble hélice de suprema conversión y diseño estético en tu propia marca.
                             </p>
                             
@@ -431,7 +493,7 @@ const NeuroIdentity: React.FC = () => {
                                         e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 229, 255, 0.3)';
                                     }}
                                 >
-                                    INICIAR SECUENCIA <ArrowRight size={16} />
+                                    INICIAR SECUENCIA <CustomChevronIcon color="#000" />
                                 </button>
                                 <button
                                     onClick={() => navigate('/arquitectura')}

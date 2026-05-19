@@ -5,6 +5,7 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import DNAHelix from './DNAHelix';
 import LiquidContactCTA from '../LiquidContactCTA';
 import InteractionGuide from '../InteractionGuide';
+import { useSound } from '../../context/SoundContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -158,6 +159,7 @@ const CornerBrackets = ({ color, locLabel, techLabel }: { color: string; locLabe
 
 const NeuroIdentity: React.FC = () => {
     const navigate = useNavigate();
+    const { playClick } = useSound();
     const containerRef = useRef<HTMLDivElement>(null);
     const scrollHintRef = useRef<HTMLDivElement>(null);
     
@@ -490,31 +492,43 @@ const NeuroIdentity: React.FC = () => {
                             }}>
                                 <LiquidContactCTA text="HABLAR CON UN AGENTE" />
                                 <button
-                                    onClick={() => navigate('/arquitectura')}
+                                    onClick={() => { playClick(); navigate('/infraestructura'); }}
                                     style={{
                                         background: 'transparent',
                                         color: '#fff',
                                         border: '1px solid rgba(255, 255, 255, 0.2)',
-                                        padding: '1.1rem 2.4rem',
-                                        borderRadius: '50px',
-                                        fontSize: '0.85rem',
+                                        padding: '0 2.4rem',
+                                        height: '56px',
+                                        borderRadius: '30px',
+                                        fontSize: '0.8rem',
                                         fontWeight: 800,
-                                        letterSpacing: '0.15em',
+                                        letterSpacing: '0.12em',
                                         cursor: 'pointer',
                                         transition: 'all 0.3s ease',
-                                        fontFamily: 'var(--font-mono)',
+                                        fontFamily: 'var(--font-heading)',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '0.75rem',
+                                        boxSizing: 'border-box',
                                         width: isMobile ? '100%' : 'auto'
                                     }}
                                     onMouseEnter={(e) => {
                                         e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
                                         e.currentTarget.style.borderColor = '#00E5FF';
+                                        e.currentTarget.style.boxShadow = '0 10px 25px rgba(0, 229, 255, 0.1)';
                                     }}
                                     onMouseLeave={(e) => {
                                         e.currentTarget.style.background = 'transparent';
                                         e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                                        e.currentTarget.style.boxShadow = 'none';
                                     }}
                                 >
                                     VER CÓMO TRABAJAMOS
+                                    <svg width="14" height="14" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M25 75 L75 25" />
+                                        <path d="M45 25 H75 V55" />
+                                    </svg>
                                 </button>
                             </div>
                         </div>

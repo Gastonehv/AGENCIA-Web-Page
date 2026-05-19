@@ -24,7 +24,7 @@ body {
     background-color: #f8fafc;
     /* Match EssenceBackground */
     color: var(--color-text);
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

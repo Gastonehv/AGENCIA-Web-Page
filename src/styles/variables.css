@@ -15,9 +15,9 @@
   /* Fonts imported in index.html for performance */
 
   /* Typography */
-  --font-heading: 'Syne', sans-serif;
-  --font-body: 'Manrope', sans-serif;
-  --font-mono: 'Space Mono', 'Roboto Mono', monospace;
+  --font-heading: 'Unbounded', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
 
   /* Spacing */
   --spacing-xs: 0.5rem;

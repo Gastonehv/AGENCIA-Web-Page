@@ -97,12 +97,12 @@ const NeuroIdentity: React.FC = () => {
     const navigate = useNavigate();
     const containerRef = useRef<HTMLDivElement>(null);
     
-    // Slide Container Refs
-    const textRef1 = useRef<HTMLDivElement>(null);
-    const textRef2 = useRef<HTMLDivElement>(null);
-    const textRef3 = useRef<HTMLDivElement>(null);
-    const textRef4 = useRef<HTMLDivElement>(null);
-    const textRef5 = useRef<HTMLDivElement>(null);
+    // Card Refs for Precise Animations
+    const cardRef1 = useRef<HTMLDivElement>(null);
+    const cardRef2 = useRef<HTMLDivElement>(null);
+    const cardRef3 = useRef<HTMLDivElement>(null);
+    const cardRef4 = useRef<HTMLDivElement>(null);
+    const cardRef5 = useRef<HTMLDivElement>(null);
 
     // Interactive Parallax Mouse Tilt handlers
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -110,15 +110,22 @@ const NeuroIdentity: React.FC = () => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
-        // Calculate tilt angles (max 8 degrees rotation)
-        const tiltX = (y / (rect.height / 2)) * -6;
-        const tiltY = (x / (rect.width / 2)) * 6;
+        // Calculate tilt angles (max 6 degrees rotation)
+        const tiltX = (y / (rect.height / 2)) * -5;
+        const tiltY = (x / (rect.width / 2)) * 5;
         card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
     };
 
     const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
         const card = e.currentTarget;
-        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+        // Reset translation state based on active card type
+        if (card === cardRef1.current || card === cardRef5.current) {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateY(0px)';
+        } else if (card === cardRef2.current || card === cardRef3.current) {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateX(0px)';
+        } else {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+        }
     };
 
     useEffect(() => {
@@ -132,40 +139,36 @@ const NeuroIdentity: React.FC = () => {
                 }
             });
 
-            // PHASE 1: GENESIS (0% - 15%)
-            tl.to(textRef1.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0)
-                .set(textRef1.current, { pointerEvents: 'auto' }, 0)
-                .to(textRef1.current, { opacity: 0, scale: 1.1, duration: 0.5, ease: 'power2.in' }, 0.12)
-                .set(textRef1.current, { pointerEvents: 'none' }, 0.12);
+            // PHASE 1: GENESIS (Timeline time: 0.0 to 3.0)
+            // Fade in: 0.0 -> 1.0. Active: 1.0 -> 2.0. Fade out: 2.0 -> 3.0.
+            tl.to(cardRef1.current, { autoAlpha: 1, y: 0, duration: 1.0, ease: 'power2.out' }, 0.0)
+                .to(cardRef1.current, { autoAlpha: 0, y: -60, duration: 1.0, ease: 'power2.in' }, 2.0);
 
-            // PHASE 2: BLUE STRAND - MATHEMATICAL / LEFT HEMISPHERE (15% - 40%)
-            tl.to(textRef2.current, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }, 0.18)
-                .set(textRef2.current, { pointerEvents: 'auto' }, 0.18)
-                .to(textRef2.current, { opacity: 0, x: -80, duration: 0.5, ease: 'power2.in' }, 0.38)
-                .set(textRef2.current, { pointerEvents: 'none' }, 0.38);
+            // PHASE 2: BLUE STRAND - MATHEMATICAL / LEFT HEMISPHERE (Timeline time: 3.2 to 6.2)
+            // Fade in: 3.2 -> 4.2. Active: 4.2 -> 5.2. Fade out: 5.2 -> 6.2.
+            tl.to(cardRef2.current, { autoAlpha: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 3.2)
+                .to(cardRef2.current, { autoAlpha: 0, x: -100, duration: 1.0, ease: 'power2.in' }, 5.2);
 
-            // PHASE 3: MAGENTA STRAND - ORGANIC / RIGHT HEMISPHERE (40% - 68%)
-            tl.to(textRef3.current, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }, 0.44)
-                .set(textRef3.current, { pointerEvents: 'auto' }, 0.44)
-                .to(textRef3.current, { opacity: 0, x: 80, duration: 0.5, ease: 'power2.in' }, 0.68)
-                .set(textRef3.current, { pointerEvents: 'none' }, 0.68);
+            // PHASE 3: MAGENTA STRAND - ORGANIC / RIGHT HEMISPHERE (Timeline time: 6.4 to 9.4)
+            // Fade in: 6.4 -> 7.4. Active: 7.4 -> 8.4. Fade out: 8.4 -> 9.4.
+            tl.to(cardRef3.current, { autoAlpha: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 6.4)
+                .to(cardRef3.current, { autoAlpha: 0, x: 100, duration: 1.0, ease: 'power2.in' }, 8.4);
 
-            // PHASE 4: CONVERGENCE - THE DNA (68% - 88%)
-            tl.to(textRef4.current, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, 0.72)
-                .set(textRef4.current, { pointerEvents: 'auto' }, 0.72)
-                .to(textRef4.current, { opacity: 0, scale: 0.9, filter: 'blur(10px)', duration: 0.5, ease: 'power2.in' }, 0.88)
-                .set(textRef4.current, { pointerEvents: 'none' }, 0.88);
+            // PHASE 4: CONVERGENCE - THE DNA (Timeline time: 9.6 to 12.6)
+            // Fade in: 9.6 -> 10.6. Active: 10.6 -> 11.6. Fade out: 11.6 -> 12.6.
+            tl.to(cardRef4.current, { autoAlpha: 1, scale: 1, duration: 1.0, ease: 'power2.out' }, 9.6)
+                .to(cardRef4.current, { autoAlpha: 0, scale: 1.15, duration: 1.0, ease: 'power2.in' }, 11.6);
 
-            // PHASE 5: CTA / EXIT (88% - 100%)
-            tl.to(textRef5.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.92)
-                .set(textRef5.current, { pointerEvents: 'auto' }, 0.92);
+            // PHASE 5: CTA / EXIT (Timeline time: 12.8 to 15.0)
+            // Fade in: 12.8 -> 14.0. Active: 14.0 onwards.
+            tl.to(cardRef5.current, { autoAlpha: 1, y: 0, duration: 1.2, ease: 'power2.out' }, 12.8);
 
         }, containerRef);
 
         return () => ctx.revert();
     }, []);
 
-    // RESPONSIVE SCREEN-SAFE CONTAINER STYLES (FLEX BASED)
+    // SCREEN-SAFE RESPONSIVE FLEX LAYOUTS
     const masterOverlayStyle: React.CSSProperties = {
         position: 'fixed',
         top: 0,
@@ -186,15 +189,13 @@ const NeuroIdentity: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent,
-        padding: '0 clamp(1rem, 6vw, 8rem)',
-        opacity: 0,
-        pointerEvents: 'none',
+        padding: '0 clamp(1.5rem, 6vw, 8rem)',
         boxSizing: 'border-box'
     });
 
     const cardStyleBase = (glowColor: string, isLeftBorder: boolean, borderColor: string): React.CSSProperties => ({
-        background: 'linear-gradient(135deg, rgba(4, 8, 14, 0.94) 0%, rgba(1, 2, 4, 0.98) 100%)',
-        backdropFilter: 'blur(30px)',
+        background: 'linear-gradient(135deg, rgba(4, 8, 14, 0.96) 0%, rgba(1, 2, 4, 0.99) 100%)',
+        backdropFilter: 'blur(35px)',
         border: '1px solid rgba(255, 255, 255, 0.08)',
         borderLeft: isLeftBorder ? `4px solid ${borderColor}` : '1px solid rgba(255, 255, 255, 0.08)',
         borderRight: !isLeftBorder ? `4px solid ${borderColor}` : '1px solid rgba(255, 255, 255, 0.08)',
@@ -206,7 +207,8 @@ const NeuroIdentity: React.FC = () => {
         width: '100%',
         maxWidth: '540px',
         boxSizing: 'border-box',
-        cursor: 'default'
+        cursor: 'default',
+        pointerEvents: 'auto'
     });
 
     return (
@@ -245,9 +247,17 @@ const NeuroIdentity: React.FC = () => {
                 <div style={masterOverlayStyle}>
 
                     {/* 1. GENESIS (CENTERED) */}
-                    <div ref={textRef1} style={slideStyleBase('center')}>
+                    <div style={slideStyleBase('center')}>
                         <div 
-                            style={{ ...cardStyleBase('rgba(0, 229, 255, 0.08)', true, '#00E5FF'), maxWidth: '720px', textAlign: 'center' }}
+                            ref={cardRef1}
+                            style={{ 
+                                ...cardStyleBase('rgba(0, 229, 255, 0.08)', true, '#00E5FF'), 
+                                maxWidth: '720px', 
+                                textAlign: 'center',
+                                opacity: 0,
+                                visibility: 'hidden',
+                                transform: 'translateY(50px)'
+                            }}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
@@ -269,9 +279,15 @@ const NeuroIdentity: React.FC = () => {
                     </div>
 
                     {/* 2. THE LEFT HEMISPHERE - MATHEMATICAL / AZUL (LEFT ALIGNED) */}
-                    <div ref={textRef2} style={slideStyleBase('flex-start')}>
+                    <div style={slideStyleBase('flex-start')}>
                         <div 
-                            style={cardStyleBase('rgba(0, 229, 255, 0.08)', true, '#00E5FF')}
+                            ref={cardRef2}
+                            style={{
+                                ...cardStyleBase('rgba(0, 229, 255, 0.08)', true, '#00E5FF'),
+                                opacity: 0,
+                                visibility: 'hidden',
+                                transform: 'translateX(-100px)'
+                            }}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
@@ -295,9 +311,15 @@ const NeuroIdentity: React.FC = () => {
                     </div>
 
                     {/* 3. THE RIGHT HEMISPHERE - ORGANIC / MAGENTA (RIGHT ALIGNED) */}
-                    <div ref={textRef3} style={slideStyleBase('flex-end')}>
+                    <div style={slideStyleBase('flex-end')}>
                         <div 
-                            style={cardStyleBase('rgba(255, 0, 128, 0.08)', false, '#FF0080')}
+                            ref={cardRef3}
+                            style={{
+                                ...cardStyleBase('rgba(255, 0, 128, 0.08)', false, '#FF0080'),
+                                opacity: 0,
+                                visibility: 'hidden',
+                                transform: 'translateX(100px)'
+                            }}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
@@ -311,7 +333,7 @@ const NeuroIdentity: React.FC = () => {
                             </h2>
                             <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.75)', marginBottom: '2.5rem', fontWeight: 300, textAlign: 'right' }}>
                                 La hélice magenta del lado **derecho** encarna la respuesta viva: psicología del comportamiento, estética sublime, 
-                                interfaces fluidas e intuición visceral. El arte que hackea la percepción humana para convertir el software en deseo de compra.
+                                interfaces fluidas e intuición visceral. El arte que hackea la percepción humana para transformar software complejo en puro deseo de compra.
                             </p>
                             <div style={{ display: 'flex', gap: '1rem', borderTop: '1px solid rgba(255, 0, 128, 0.15)', paddingTop: '1.5rem', fontSize: '0.7rem', color: '#FF0080', fontWeight: 800, fontFamily: 'var(--font-mono)', justifyContent: 'flex-end' }}>
                                 <div>[ CONVERSIÓN: +320% ]</div>
@@ -321,9 +343,17 @@ const NeuroIdentity: React.FC = () => {
                     </div>
 
                     {/* 4. CONVERGENCE (CENTERED) */}
-                    <div ref={textRef4} style={slideStyleBase('center')}>
+                    <div style={slideStyleBase('center')}>
                         <div 
-                            style={{ ...cardStyleBase('rgba(255, 255, 255, 0.05)', true, '#ffffff'), maxWidth: '750px', textAlign: 'center' }}
+                            ref={cardRef4}
+                            style={{ 
+                                ...cardStyleBase('rgba(255, 255, 255, 0.05)', true, '#ffffff'), 
+                                maxWidth: '750px', 
+                                textAlign: 'center',
+                                opacity: 0,
+                                visibility: 'hidden',
+                                transform: 'scale(0.85)'
+                            }}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
@@ -347,9 +377,17 @@ const NeuroIdentity: React.FC = () => {
                     </div>
 
                     {/* 5. CTA / EXIT (CENTERED) */}
-                    <div ref={textRef5} style={slideStyleBase('center')}>
+                    <div style={slideStyleBase('center')}>
                         <div 
-                            style={{ ...cardStyleBase('rgba(255, 0, 128, 0.08)', false, '#FF0080'), maxWidth: '680px', textAlign: 'center' }}
+                            ref={cardRef5}
+                            style={{ 
+                                ...cardStyleBase('rgba(255, 0, 128, 0.08)', false, '#FF0080'), 
+                                maxWidth: '680px', 
+                                textAlign: 'center',
+                                opacity: 0,
+                                visibility: 'hidden',
+                                transform: 'translateY(50px)'
+                            }}
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
@@ -364,7 +402,7 @@ const NeuroIdentity: React.FC = () => {
                                 El mercado ignora a los mediocres y premia a los audaces. Es hora de desplegar la doble hélice de suprema conversión y diseño estético en tu propia marca.
                             </p>
                             
-                            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap', pointerEvents: 'auto' }}>
+                            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                                 <button
                                     onClick={() => navigate('/contacto')}
                                     style={{

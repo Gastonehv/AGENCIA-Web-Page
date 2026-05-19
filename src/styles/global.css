@@ -38,8 +38,9 @@ h5,
 h6 {
     font-family: var(--font-heading);
     text-transform: uppercase;
-    font-weight: 700;
-    line-height: 1.1;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
 }
 
 a {
@@ -252,4 +253,23 @@ canvas {
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
     }
+}
+
+/* ===== BRAND TEXT SOVEREIGN STYLING ===== */
+.brand-text {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: inherit;
+    display: inline-flex;
+    align-items: baseline;
+}
+
+.brand-text .ia-highlight {
+    background: linear-gradient(135deg, #00E5FF 0%, #FF0080 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-left: 0.03em;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.35);
 }

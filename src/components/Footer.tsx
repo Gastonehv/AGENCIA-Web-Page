@@ -448,7 +448,7 @@ const Footer: React.FC = () => {
                     color: '#888', // LIGHTER GREY for better visibility
                     margin: 0
                 }}>
-                    © {currentYear} AgencIA. Todos los derechos reservados. · A.L.M.A. es propiedad intelectual de AgencIA.
+                    © {currentYear} <span className="brand-text" style={{ fontSize: '0.85rem' }}>Agenc<span className="ia-highlight">IA</span></span>. Todos los derechos reservados. · <span className="brand-text" style={{ fontSize: '0.85rem' }}>A.L.M.A.</span> es propiedad intelectual de <span className="brand-text" style={{ fontSize: '0.85rem' }}>Agenc<span className="ia-highlight">IA</span></span>.
                 </p>
                 <div style={{ display: 'flex', gap: '2rem' }}>
                     <Link

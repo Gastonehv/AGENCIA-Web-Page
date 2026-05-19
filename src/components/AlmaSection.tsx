@@ -138,7 +138,7 @@ const AlmaSection: React.FC = () => {
                         maxWidth: '600px',
                         opacity: 0.8
                     }}>
-                        A.L.M.A. es una propiedad intelectual de <strong style={{ color: '#000', fontWeight: 800 }}>AgencIA</strong>. <br />
+                        A.L.M.A. es una propiedad intelectual de <span className="brand-text" style={{ fontSize: 'inherit', color: '#000' }}>Agenc<span className="ia-highlight">IA</span></span>. <br />
                         Sistemas de orquestación propietaria. All rights reserved.
                     </p>
                 </div>

@@ -482,7 +482,7 @@ const NeuroIdentity: React.FC = () => {
                             </h2>
                             <p style={{ fontSize: isMobile ? '0.9rem' : '1rem', lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.75)', marginBottom: isMobile ? '1.5rem' : '3rem', fontWeight: 300 }}>
                                 Tu competencia está contratando agencias comunes para hacer páginas comunes. Rompe el molde. 
-                                Inyecta el ADN de la doble hélice de AgencIA en tu negocio y domina tu sector hoy mismo.
+                                Inyecta el ADN de la doble hélice de <span className="brand-text">Agenc<span className="ia-highlight">IA</span></span> en tu negocio y domina tu sector hoy mismo.
                             </p>
                             
                             <div style={{ 

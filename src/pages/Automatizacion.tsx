@@ -485,7 +485,7 @@ const Automatizacion: React.FC = () => {
                         textShadow: '0 2px 4px rgba(0,0,0,0.9)',
                         boxSizing: 'border-box'
                     }}>
-                        Las tareas repetitivas devoran tu tiempo y tu margen. En AgencIA diseñamos <strong style={{ color: '#00FF99' }}>ecosistemas de gestión empresarial</strong> que centralizan operaciones, inventarios, clientes y finanzas en una sola interfaz. Tu negocio opera en piloto automático mientras tú te enfocas en lo que realmente importa: crecer.
+                        Las tareas repetitivas devoran tu tiempo y tu margen. En <span className="brand-text">Agenc<span className="ia-highlight">IA</span></span> diseñamos <strong style={{ color: '#00FF99' }}>ecosistemas de gestión empresarial</strong> que centralizan operaciones, inventarios, clientes y finanzas en una sola interfaz. Tu negocio opera en piloto automático mientras tú te enfocas en lo que realmente importa: crecer.
                     </p>
 
                     {/* HUMAN TRANSLATION - SECTION 1 */}
@@ -632,7 +632,7 @@ const Automatizacion: React.FC = () => {
                             fontWeight: 300
                         }}>
                             <strong style={{ color: '#fff', fontWeight: 600 }}>Para un equipo humano de 20 personas</strong>, coordinar ventas, soporte y despliegue en 100ms es imposible.
-                            Para AgencIA, es solo un martes por la mañana.
+                            Para <span className="brand-text">Agenc<span className="ia-highlight">IA</span></span>, es solo un martes por la mañana.
                         </p>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem', justifyContent: isMobile ? 'flex-start' : 'flex-end' }}>
                             {['Control Absoluto', 'Sistemas Conectados', 'Visión 360'].map((tag) => (
@@ -807,7 +807,7 @@ const Automatizacion: React.FC = () => {
                         wordSpacing: '0.15em',
                         lineHeight: 1.5
                     }}>
-                        En AgencIA, transformamos el ruido operativo en sinfonía automatizada.<br />
+                        En <span className="brand-text">Agenc<span className="ia-highlight">IA</span></span>, transformamos el ruido operativo en sinfonía automatizada.<br />
                         <strong style={{ color: '#00FF99', fontWeight: 600 }}>Porque tu tiempo es tu recurso más valioso.</strong>
                     </p>
                 </div>

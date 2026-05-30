@@ -11,51 +11,51 @@ import officialTypography from '../assets/logos/agencia_typography_official.png'
 const STAGES_INFO = [
     {
         id: '01',
-        name: 'SÍNTESIS GENERATIVA',
-        tag: 'INFERENCIA DE LAYOUTS IA',
-        title: 'EL FIN DEL WIREFRAME MANUAL',
-        desc: 'En la era autónoma, dibujar retículas a mano es obsoleto. Nuestro enjambre ALMA Core ingiere los requerimientos de tu negocio y sintetiza instantáneamente arquitecturas de información dinámicas, optimizadas por IA para maximizar la retención y conversión desde el minuto cero.',
-        metrics: ['AI SYNTHESIS: < 500MS', 'AUTONOMOUS UX: ACTIVE', 'CONVERSION PATH: OPTIMIZED'],
+        name: 'PLANIFICACIÓN',
+        tag: 'ARQUITECTURA DE INFORMACIÓN',
+        title: 'Estructura y Flujo Digital',
+        desc: 'Diseñamos la estructura digital de tu plataforma analizando objetivos comerciales específicos. Desarrollamos mapas de navegación y diagramas de flujo optimizados para asegurar una experiencia de usuario fluida, intuitiva y orientada a la conversión.',
+        metrics: ['PLANIFICACIÓN: DE NEGOCIO', 'UX: OPTIMIZADA', 'ESTRUCTURA: MÓVIL Y ESCRITORIO'],
         color: '#00FF99',
         align: 'left'
     },
     {
         id: '02',
-        name: 'LÓGICA & CÓDIGO',
-        tag: 'INGENIERÍA PURA',
-        title: 'EL MÚSCULO DE PROGRAMACIÓN',
-        desc: 'Inyectamos vida a la estructura mediante código de altísimo rendimiento. Escribimos algoritmos eficientes, tipado estricto y lógica modular (React, Node, TypeScript) que aseguran un funcionamiento ultrarrápido y mantenibilidad a largo plazo.',
-        metrics: ['CODE: CLEAN & STRICT', 'PERFORMANCE: SUB-MILLISECOND', 'ARCHITECTURE: MODULAR'],
+        name: 'DESARROLLO',
+        tag: 'CÓDIGO DE ALTO RENDIMIENTO',
+        title: 'Programación y Lógica Modular',
+        desc: 'Implementamos las funcionalidades de tu plataforma utilizando tecnologías modernas y estables (como React, TypeScript y Node.js). Escribimos código limpio, modular y con tipado estricto que garantiza un funcionamiento ágil, escalable y fácil de mantener.',
+        metrics: ['TECNOLOGÍA: MODERNA', 'CÓDIGO: LIMPIO Y ORDENADO', 'ARQUITECTURA: ESCALABLE'],
         color: '#00F3FF',
         align: 'right'
     },
     {
         id: '03',
-        name: 'DATOS & SEGURIDAD',
-        tag: 'INFRAESTRUCTURA ZERO-TRUST',
-        title: 'EL SISTEMA NERVIOSO CENTRAL',
-        desc: 'Integramos flujos de datos en tiempo real, microservicios en el borde y protocolos de encriptación bancaria. Tu plataforma resiste picos masivos de tráfico mientras resguarda celosamente la información de tu empresa y tus clientes.',
-        metrics: ['UPTIME: 99.999%', 'ENCRYPTION: AES-256', 'DATA: REAL-TIME'],
+        name: 'INFRAESTRUCTURA',
+        tag: 'SEGURIDAD DE INFORMACIÓN',
+        title: 'Integración y Protección de Datos',
+        desc: 'Configuramos conexiones de datos seguras y protocolos de protección de nivel empresarial (AES-256). Aseguramos que la infraestructura resista altos volúmenes de visitas y transacciones simultáneas de forma estable.',
+        metrics: ['ESTABILIDAD: GARANTIZADA', 'ENCRIPTACIÓN: AES-256', 'DATOS: PROTEGIDOS'],
         color: '#0066FF',
         align: 'left'
     },
     {
         id: '04',
-        name: 'UI PREMIUM',
-        tag: 'DISEÑO CAUTIVADOR',
-        title: 'LA PIEL Y EL ACABADO VISUAL',
-        desc: 'Sobre la ingeniería perfecta, aplicamos una capa visual deslumbrante. Glassmorfismo, sombras precisas, tipografías corporativas y micro-interacciones a 120 FPS que enamoran al usuario y multiplican las tasas de conversión.',
-        metrics: ['FPS: 120 FIXED', 'AESTHETICS: PREMIUM B2B', 'CONVERSION: MAXIMIZED'],
+        name: 'INTERFAZ',
+        tag: 'DISEÑO CORPORATIVO',
+        title: 'Diseño Visual Premium',
+        desc: 'Aplicamos un diseño visual moderno, limpio y profesional. Utilizamos tipografías elegantes, transiciones fluidas y una estructura adaptada a cualquier dispositivo que genera confianza en tus clientes y facilita la navegación.',
+        metrics: ['DISEÑO: RESPONSIVO', 'ESTILO: PREMIUM B2B', 'USABILIDAD: DE ALTO NIVEL'],
         color: '#8F00FF',
         align: 'right'
     },
     {
         id: '05',
-        name: 'PRODUCTO FINAL',
-        tag: 'SUPREMACÍA FULL-STACK',
-        title: 'LA CONVERGENCIA PERFECTA',
-        desc: 'La unión impecable de estructura, código, datos y diseño. Al finalizar el viaje, el sistema colapsa en un producto vivo. Explora e interactúa con el centro de control corporativo que hemos ensamblado frente a tus ojos.',
-        metrics: ['DELIVERY: FLAWLESS', 'IMPACT: MARKET-LEADING', 'ROI: EXPONENTIAL'],
+        name: 'PRODUCTO EN VIVO',
+        tag: 'SISTEMA LISTO PARA OPERACIÓN',
+        title: 'Plataforma Corporativa Operativa',
+        desc: 'La integración total de estructura, código, seguridad y diseño visual. Al completar el recorrido, la plataforma queda 100% operativa. Interactúa con el panel de administración de ejemplo para conocer el alcance del sistema.',
+        metrics: ['DESPLIEGUE: LISTO', 'OPERATIVIDAD: INMEDIATA', 'MANTENIMIENTO: INCLUIDO'],
         color: '#FF00AA',
         align: 'center'
     }
@@ -79,7 +79,7 @@ const DUMMY_LOGS = [
 ];
 
 const Arquitectura: React.FC = () => {
-    const { playClick, playWhoosh } = useSound();
+    const { playClick, playWhoosh, playHover } = useSound();
     
     // Scroll orchestration state
     const [activeStage, setActiveStage] = useState(0);
@@ -223,8 +223,8 @@ const Arquitectura: React.FC = () => {
             }}
         >
             <SEO 
-                title="Génesis de Software Premium | AgencIA" 
-                description="Presencia la construcción orgánica de una aplicación de antología. Desde el wireframe hasta un centro de control operativo totalmente funcional en vivo." 
+                title="Arquitectura de Software y Sistemas a Medida | AgencIA" 
+                description="Desarrollo e infraestructura de software robusto para empresas. Diseñamos sistemas escalables, seguros y listos para operar desde el primer día." 
             />
 
             {/* FIXED 3D VIEWPORT */}
@@ -410,6 +410,7 @@ const Arquitectura: React.FC = () => {
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                             <button
                                 onClick={() => { playClick(); setActiveTab('FINANCIAL'); }}
+                                onMouseEnter={playHover}
                                 style={{
                                     flex: '1 1 140px', padding: '10px', borderRadius: '10px',
                                     backgroundColor: activeTab === 'FINANCIAL' ? '#00FF99' : 'rgba(255,255,255,0.05)',
@@ -425,6 +426,7 @@ const Arquitectura: React.FC = () => {
                             </button>
                             <button
                                 onClick={() => { playClick(); setActiveTab('AGENTS'); }}
+                                onMouseEnter={playHover}
                                 style={{
                                     flex: '1 1 140px', padding: '10px', borderRadius: '10px',
                                     backgroundColor: activeTab === 'AGENTS' ? '#00F3FF' : 'rgba(255,255,255,0.05)',
@@ -440,6 +442,7 @@ const Arquitectura: React.FC = () => {
                             </button>
                             <button
                                 onClick={() => { playClick(); setActiveTab('SECURITY'); }}
+                                onMouseEnter={playHover}
                                 style={{
                                     flex: '1 1 140px', padding: '10px', borderRadius: '10px',
                                     backgroundColor: activeTab === 'SECURITY' ? '#FF00AA' : 'rgba(255,255,255,0.05)',
@@ -462,9 +465,9 @@ const Arquitectura: React.FC = () => {
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
                                         <span style={{ color: '#E2E8F0', fontFamily: 'var(--font-heading)', fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)', fontWeight: 'bold' }}>Conversión B2B Proyectada</span>
                                         <div style={{ display: 'flex', gap: '8px' }}>
-                                            <button onClick={() => { playClick(); setChartMultiplier(1); }} style={{ background: chartMultiplier === 1 ? '#00FF99' : 'transparent', color: chartMultiplier === 1 ? '#000' : '#fff', border: '1px solid #00FF99', padding: '4px 10px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', cursor: 'pointer' }}>1X</button>
-                                            <button onClick={() => { playClick(); setChartMultiplier(5); }} style={{ background: chartMultiplier === 5 ? '#00F3FF' : 'transparent', color: chartMultiplier === 5 ? '#000' : '#fff', border: '1px solid #00F3FF', padding: '4px 10px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', cursor: 'pointer' }}>5X</button>
-                                            <button onClick={() => { playClick(); setChartMultiplier(10); }} style={{ background: chartMultiplier === 10 ? '#FF00AA' : 'transparent', color: chartMultiplier === 10 ? '#000' : '#fff', border: '1px solid #FF00AA', padding: '4px 10px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', cursor: 'pointer' }}>10X</button>
+                                            <button onClick={() => { playClick(); setChartMultiplier(1); }} onMouseEnter={playHover} style={{ background: chartMultiplier === 1 ? '#00FF99' : 'transparent', color: chartMultiplier === 1 ? '#000' : '#fff', border: '1px solid #00FF99', padding: '4px 10px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', cursor: 'pointer' }}>1X</button>
+                                            <button onClick={() => { playClick(); setChartMultiplier(5); }} onMouseEnter={playHover} style={{ background: chartMultiplier === 5 ? '#00F3FF' : 'transparent', color: chartMultiplier === 5 ? '#000' : '#fff', border: '1px solid #00F3FF', padding: '4px 10px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', cursor: 'pointer' }}>5X</button>
+                                            <button onClick={() => { playClick(); setChartMultiplier(10); }} onMouseEnter={playHover} style={{ background: chartMultiplier === 10 ? '#FF00AA' : 'transparent', color: chartMultiplier === 10 ? '#000' : '#fff', border: '1px solid #FF00AA', padding: '4px 10px', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', cursor: 'pointer' }}>10X</button>
                                         </div>
                                     </div>
                                     <div style={{ display: 'flex', alignItems: 'flex-end', gap: 'clamp(10px, 2vw, 25px)', flex: 1, borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '15px' }}>
@@ -494,7 +497,7 @@ const Arquitectura: React.FC = () => {
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', height: '100%', overflowY: 'auto' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
                                         <span style={{ color: '#E2E8F0', fontFamily: 'var(--font-heading)', fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)', fontWeight: 'bold' }}>Topología del Enjambre IA</span>
-                                        <button onClick={() => { playWhoosh(); setAgentNodesCount(prev => prev === 4096 ? 16384 : 4096); }} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(0,243,255,0.15)', color: '#00F3FF', border: '1px solid #00F3FF', padding: '4px 12px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', cursor: 'pointer' }}>
+                                        <button onClick={() => { playWhoosh(); setAgentNodesCount(prev => prev === 4096 ? 16384 : 4096); }} onMouseEnter={playHover} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(0,243,255,0.15)', color: '#00F3FF', border: '1px solid #00F3FF', padding: '4px 12px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', cursor: 'pointer' }}>
                                             <RefreshCw size={12} /> Rebalancear Nodos
                                         </button>
                                     </div>
@@ -531,7 +534,7 @@ const Arquitectura: React.FC = () => {
                                             placeholder="Ingresa comando (/audit, /scale)..."
                                             style={{ flex: 1, padding: '10px 14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '6px', color: '#fff', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', outline: 'none' }}
                                         />
-                                        <button type="submit" style={{ padding: '0 16px', backgroundColor: '#FF00AA', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-mono)', fontWeight: 'bold', fontSize: '0.8rem' }}>
+                                        <button type="submit" onMouseEnter={playHover} style={{ padding: '0 16px', backgroundColor: '#FF00AA', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-mono)', fontWeight: 'bold', fontSize: '0.8rem' }}>
                                             <Send size={14} /> Ejecutar
                                         </button>
                                     </form>
@@ -545,8 +548,8 @@ const Arquitectura: React.FC = () => {
                                 <span style={{ color: '#fff', fontFamily: 'var(--font-heading)', fontWeight: 900, fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)' }}>¿Listo para construir tu plataforma corporativa?</span>
                                 <span style={{ color: '#A0AEC0', fontFamily: 'var(--font-body)', fontSize: 'clamp(0.75rem, 1vw, 0.85rem)' }}>Despliegue inmediato con arquitectura garantizada.</span>
                             </div>
-                            <div onClick={playClick}>
-                                <LiquidContactCTA text="PROYECTO DE ANTOLOGÍA" />
+                            <div onClick={playClick} onMouseEnter={playHover} style={{ cursor: 'pointer' }}>
+                                <LiquidContactCTA text="INICIAR MI PROYECTO" />
                             </div>
                         </div>
                     </div>

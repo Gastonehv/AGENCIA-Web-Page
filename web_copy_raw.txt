@@ -1,0 +1,2350 @@
+--- src\components\AIChatbot.tsx ---
+(null); const inputRef = useRef
+AGENCIA_CORE_V1.0
+SYS.STATUS: NORMAL
+(
+PROCESSING...
+CONCILIANDO FACTURAS: Buscando anomalías en el estado de cuenta contable...
+CALIFICANDO PROSPECTOS: Analizando leads con alta intención de compra...
+REDACTANDO CAMPAÑAS: Creando copys de anuncios listos para publicar...
+SINCRONIZANDO CRM: Conectando la información de tus clientes al instante...
+PROCESO COMPLETADO: Tarea rutinaria resuelta. Eficiencia contable en vivo.
+w-full max-w-2xl mx-auto h-[500px] md:h-[600px] flex flex-col bg-black/80 backdrop-blur-md border border-cyan-500/30 rounded-sm shadow-[0_0_30px_rgba(0,255,255,0.1)] overflow-hidden relative font-mono
+absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan-500 z-20
+absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyan-500 z-20
+absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyan-500 z-20
+absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan-500 z-20
+absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,255,255,0.02)_50%)] bg-[length:100%_4px] pointer-events-none z-10
+p-3 border-b border-cyan-500/30 flex items-center justify-between bg-cyan-900/10
+flex items-center gap-2
+w-2 h-2 bg-cyan-500 animate-pulse
+text-cyan-500 text-xs tracking-[0.2em]
+text-cyan-500/50 text-[10px]
+flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-cyan-500/30 scrollbar-track-transparent z-20
+opacity-50 text-[10px] mb-1
+flex justify-start
+border-l-2 border-cyan-500 bg-cyan-900/10 p-3 flex items-center gap-1
+w-1 h-1 bg-cyan-500 animate-ping
+text-cyan-500 text-xs animate-pulse
+p-3 bg-black/50 border-t border-cyan-500/30 z-20
+relative flex items-center group
+absolute left-3 text-cyan-500 text-xs
+text
+Escribe tu consulta aquí...
+w-full bg-transparent text-cyan-100 placeholder-cyan-800 text-sm py-2 pl-6 pr-10 border border-cyan-500/20 focus:border-cyan-500/80 focus:outline-none focus:bg-cyan-900/5 transition-all font-mono
+submit
+absolute right-2 text-cyan-500 hover:text-cyan-300 disabled:opacity-30 transition-colors
+http://www.w3.org/2000/svg
+0 0 24 24
+none
+currentColor
+round
+round
+9 18 15 12 9 6
+--- src\components\AlmaSection.tsx ---
+(null); const containerRef = useRef
+ALGORITMO LÓGICO DE MENTE ARTIFICIAL
+A.L.M.A. es una propiedad intelectual de
+Agenc
+IA
+.
+Sistemas de orquestación propietaria. All rights reserved.
+.alma-video-element
+sine.inOut
+alma-editorial-section
+alma-video-element
+auto
+brand-text
+ia-highlight
+--- src\components\AsciiRipple.tsx ---
+t - w.startTime
+) return
+FLASHAZOS
+brincos
+--- src\components\CanvasSequence.tsx ---
+(null); const imagesRef = useRef
+([]); const imagesLoadedRef = useRef
+cover
+--- src\components\ChapterHUD.tsx ---
+(
+(
+#capacidades
+top 20%
+bottom 20%
+hud-desktop
+hud-dynamic-text
+hud-odometer
+hud-mobile
+--- src\components\ChapterTitle.tsx ---
+(null); const numberRef = useRef
+(null); const titleRef = useRef
+(null); const lineRef = useRef
+chapter-title-container
+--- src\components\CinematicTitle.tsx ---
+(
+(
+top 85%
+play none none reverse
+expo.out
+cinematic-char
+cinematic-char
+--- src\components\Contact.tsx ---
+¿LISTO PARA LA SINGULARIDAD?
+INICIAR PROYECTO
+contact-cta
+/contacto
+--- src\components\Cursor.tsx ---
+(null); const visualRef = useRef
+(null); const textRef = useRef
+(); const elementListeners: Array
+0 on Surface/Laptops), // we check if the primary input mechanism is a "fine" pointer (Mouse/Trackpad). // This matches the CSS media query that hides the default cursor. const hasFinePointer = window.matchMedia('(pointer: fine)').matches; // Safety check for strictly touch devices (Mobile/Tablet without mouse) if (!hasFinePointer) return null; return (
+OPEN
+ABRIR
+, { duration: 0.6, ease:
+, { duration: 0.6, ease:
+mousemove
+mouseleave
+fine
+cursor-container
+Cursor
+--- src\components\EntropyReactor.tsx ---
+(null); const count = 3000; // Core Refs for styling const coreRef = useRef
+(null); const ringRef = useRef
+X
+-3
+3 let scale = 1; const currentColor = new THREE.Color(); if (particle.x
+= -3 && particle.x
+purity
+impure
+random
+#ffffff
+black
+#00FF99
+#00FF99
+#FF3333
+--- src\components\EsenciaCTA.tsx ---
+(null); const containerRef = useRef
+(null); const line1Ref = useRef
+(null); const line2Ref = useRef
+(null); const line3Ref = useRef
+(null); const buttonRef = useRef
+(null); const buttonContainerRef = useRef
+(null); const navigate = useNavigate(); // Magnetic Button Refs const xTo = useRef
+(null); const yTo = useRef
+(null); const textXTo = useRef
+(null); const textYTo = useRef
+X0_S0M0S
+C0D1G0
+SOMOS ESENCIA
+DESCUBRIR
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()
+top top
++=150%
+.cta-backdrop
+NO SOMOS
+CÓDIGO
+SOMOS ESENCIA
+none
+elastic.out(1, 0.5)
++=0.5
+, { duration: 0.3, ease:
+, { duration: 0.3, ease:
+, { duration: 0.2, ease:
+, { duration: 0.2, ease:
+w-full h-screen flex flex-col items-center justify-center relative z-50 overflow-hidden bg-transparent
+cta-backdrop absolute inset-0 bg-black opacity-0 transition-opacity pointer-events-none
+absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] pointer-events-none
+relative z-10 flex flex-col items-center justify-center space-y-2 md:space-y-6 select-none bg-transparent
+text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter text-center leading-none
+text-6xl md:text-9xl lg:text-[10rem] font-black tracking-tighter text-center leading-none
+text-4xl md:text-7xl lg:text-[14rem] font-black tracking-[0.1em] text-center mt-4 md:mt-12
+mt-24 relative z-20 w-64 h-32 flex items-center justify-center
+group relative flex items-center justify-center px-16 py-6 overflow-visible rounded-full cursor-pointer transition-transform ease-out
+absolute -inset-[2px] rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500 opacity-50 blur-[4px] group-hover:opacity-100 group-hover:blur-[8px] transition-all duration-500 animate-spin-slow pointer-events-none
+absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-500/50 to-purple-500/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full
+btn-text relative z-10 text-xl md:text-2xl font-bold tracking-[0.3em] text-white group-hover:text-white transition-colors duration-300 drop-shadow-[0_0_10px_rgba(0,255,255,0.8)]
+absolute inset-0 rounded-full border border-cyan-400 opacity-20 animate-ping group-hover:animate-none pointer-events-none
+--- src\components\FloatingWindow.tsx ---
+(null); const contentRef = useRef
+[ NO FEED DETECTED ]
+Visual Stream
+--- src\components\Footer.tsx ---
+(null); const gradientRef = useRef
+No somos una agencia con IA. Somos la IA como agencia. Lideramos la frontera de la transformación digital con arquitectura de código puro e identidad visual que respira.
+(
+/// NAVEGACIÓN
+(
+/// CONTACTO
+hola@agenciamx.app
+Xalapa, Veracruz, México
+. Todos los derechos reservados. ·
+A.L.M.A.
+es propiedad intelectual de
+.
+Privacidad
+Términos
+); case 'Instagram': return (
+); case 'Twitter': return (
+); case 'Facebook': return (
+); case 'TikTok': return (
+); case 'YouTube': return (
+); case 'Behance': return (
+); case 'GitHub': return (
+); default: return
+sine.inOut
+sweep
+repeat
+, x2:
+-100%
+none
+footer-content-grid
+AgencIA Logo
+_blank
+noopener noreferrer
+social-icon-link
+true
+140
+viewBox=
+xmlns=
+mexico-shine-gradient
+y1=
+x2=
+y2=
+spreadMethod=
+stopColor=
+33%
+#FFFFFF
+66%
+#CE1126
+100%
+#006847
+turn-white
+matrix
+0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0
+seal-mask
+160
+filter=
+160
+fill=
+mask=
+footer-nav-group
+mailto:hola@agenciamx.app
+footer-bottom-bar
+AgencIA
+brand-text
+AgencIA
+/privacidad
+/terminos
+0 0 24 24
+M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z
+0 0 24 24
+M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z
+0 0 24 24
+M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z
+0 0 24 24
+M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z
+0 0 24 24
+M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z
+0 0 24 24
+M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z
+0 0 24 24
+M6.938 4.503c.702 0 1.34.06 1.92.188.577.13 1.07.33 1.485.61.41.28.733.65.96 1.12.225.47.34 1.05.34 1.73 0 .74-.17 1.36-.507 1.86-.338.5-.837.9-1.502 1.22.906.26 1.576.72 2.022 1.37.448.66.665 1.45.665 2.36 0 .75-.13 1.39-.41 1.93-.28.55-.67 1-1.16 1.35-.48.348-1.05.6-1.67.767-.61.165-1.252.254-1.91.254H0V4.51h6.938v-.007zM16.94 16.665c.44.428 1.073.643 1.894.643.59 0 1.1-.148 1.53-.447.424-.29.68-.61.78-.94h2.588c-.403 1.28-1.048 2.2-1.9 2.75-.85.56-1.884.83-3.08.83-.837 0-1.584-.13-2.272-.4-.673-.27-1.24-.65-1.72-1.14-.464-.49-.823-1.07-1.077-1.74-.253-.67-.373-1.41-.373-2.23 0-.8.125-1.55.373-2.23.253-.68.62-1.27 1.077-1.75.48-.48 1.047-.86 1.72-1.14.688-.27 1.435-.41 2.272-.41.86 0 1.63.15 2.317.45.685.3 1.253.72 1.717 1.27.465.55.806 1.2 1.025 1.94.22.74.323 1.54.308 2.42H14.43c0 .87.433 1.43.877 1.86zm.01-7.53h3.993v-.96h-3.993v.96zm-10.868 4.15c.48 0 .878-.114 1.192-.345.312-.23.536-.55.688-.96.15-.41.223-.87.223-1.37 0-.51-.073-.96-.223-1.35-.152-.39-.376-.7-.688-.93-.314-.228-.712-.35-1.192-.35H3.24v5.31h2.842v-.006zm.99 4.95c.48 0 .878-.114 1.192-.345.312-.23.536-.55.688-.96.15-.41.223-.87.223-1.37 0-.51-.073-.96-.223-1.35-.152-.39-.376-.7-.688-.93-.314-.228-.712-.35-1.192-.35H3.24v5.31h3.83v-.006z
+0 0 24 24
+M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z
+--- src\components\ForceCard.tsx ---
+(null); const glowRef = useRef
+(null); const [isHovered, setIsHovered] = useState(false); const handleMouseMove = (e: React.MouseEvent
+); // Conditional Wrapper could go here, but fitting HoldToReveal into the flow: return (
+force-card-container
+force-card-wrapper
+--- src\components\GlitchPortal.tsx ---
+(null); const sliceContainerRef = useRef
+(null); const rgbRef = useRef
+(
+none
+none
+glitch-portal-overlay
+data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E
+--- src\components\GravityOrb.tsx ---
+(null); const menuRef = useRef
+(null); const containerRef = useRef
+setIsMobile(window.innerWidth
+AGENCIA SYSTEM // ONLINE
+(
+// MENÚ MODO FLUIDO: ARRASTRAR PARA MOVER
+MENÚ PRINCIPAL // ARRASTRABLE
+back.out(1.7)
+power2.out
+power3.out
+power3.in
+orb-menu-overlay
+true
+menu-item-glitch
+gravity-orb-btn
+true
+CONTRASTE FORZADO
+Gravity Orb
+Sticker-like
+orb-tooltip-badge
+--- src\components\Hero.tsx ---
+hero-section
+--- src\components\HeroParallax.tsx ---
+(null); const svgRef = useRef
+#h2-1
+#bg_grad
+-50
+.scrollElement
+top top
+45% 100%
+#h1-1
+power1.in
+#h1-2
+power1.in
+#h1-3
+#h1-4
+#h1-5
+#h1-6
+#h1-7
+#h1-8
+#h1-9
+.scrollElement
+1% top
+2150 100%
+#bg_grad
+-50
+330
+.scrollElement
+15% top
+40% 100%
+#h2-1
+#h2-2
+#h2-3
+#h2-4
+#h2-5
+#h2-6
+.scrollElement
+60% top
+bottom 100%
+#h2-1
+50% 50%
+#bg_grad
+-80
+#bg2
+#scene3
+visible
+.scrollElement
+70% 50%
+bottom 100%
+#h3-1
+#h3-2
+#h3-3
+#h3-4
+#h3-5
+#stars
+#bg2-grad
+#bg2-grad
+wrapper
+scrollElement
+parallax
+0 0 750 500
+xMidYMax slice
+bg_grad
+375
+-30
+318.69
+userSpaceOnUse
+0.0
+#00f3ff
+0.1
+#0066ff
+0.3
+#050510
+1.0
+#000000
+grad1
+-154.32
+263.27
+-154.32
+374.3
+matrix(-1, 0, 0, 1.36, 231.36, -100.14)
+userSpaceOnUse
+0.0
+#1a1a2e
+1.0
+#16213e
+grad2
+242.5
+356.25
+750
+356.25
+userSpaceOnUse
+stopColor=
+stopColor=
+grad3
+467.26
+500
+467.26
+225.47
+userSpaceOnUse
+0.01
+#16213e
+stopColor=
+lg4
+641.98
+274.9
+638.02
+334.36
+userSpaceOnUse
+stopColor=
+stopColor=
+lg5
+172.37
+286.02
+171.33
+343.08
+#lg4
+lg6
+505.71
+261.55
+504.61
+322.08
+#lg4
+lg7
+301.32
+260.99
+295.66
+345.9
+#lg4
+lg8
+375.59
+381.01
+373.3
+507.08
+#lg4
+bg2-grad
+365.22
+500
+631.74
+translate(750 552.6) rotate(180) scale(1 1.11)
+userSpaceOnUse
+stopColor=
+0.5
+#1a1a2e
+stopColor=
+linear-gradient
+472
+461.56
+872.58
+461.56
+userSpaceOnUse
+stopColor=
+stopColor=
+linear-gradient-2
+214.61
+508.49
+166.09
+361.12
+#linear-gradient
+linear-gradient-3
+57.65
+508.01
+448.08
+508.01
+#linear-gradient
+linear-gradient-4
+193.48
+508.3
+761.05
+508.3
+#linear-gradient
+width=
+height=
+opacity=
+fill=
+scene1
+hills1
+h1-9
+M696.36,409H75V335.47c10.19-.52,20.5-.36,30.05-3.65,8.11-2.8,15.84-8.49,23.78-11.33s18.18,1.84,25.36-4.85C165,305.56,172,289.79,186.71,292.8c6.21,1.27,12.09,3.66,18.43.84,6-2.65,9.73-9.46,14.69-13.54,2.87-2.35,6.42-3.2,9.35-5.49,1.65-1.28,5.45-6.37,7-6.92,7.94-2.93,10.34,2.69,18.56-3.47,6.45-4.84,8.52-8.21,15.45-5,5,2.35,11.89,10.09,16,15.37C294.9,286,302,297.77,312.71,307.53c11.62,10.63,21.59,9.37,34.67,5.83,16.12-4.37,18.32,9.06,32.24,15.28,7.45,3.32,13.23-1.7,19.6-2.08,3.64-.22,5.85,2.12,9.37,1.82,3.12-.27,4.08-4.44,8.33-3,7.32,12.31,15.75,20,28.21,20.59,14.32.7,27.12.76,39.73-4.94A145.24,145.24,0,0,0,502.11,332c8.71-5.36,11.22-2.82,19.35,1.5,11.66,6.21,25.31,1.08,36.56,9.18,5.53,4,8.36,12.23,14.64,14.79,4.86,2,15.59.38,20.4-1.18,13.47-4.38,21.52-16.59,36.56-17.33,13.57-.67,25.19-4.17,39.11-2.31,10.91,1.46,18.72-.1,27.63-2.61Z
+url(#grad1)
+h1-8
+M750,500V212.49a19.09,19.09,0,0,0-11.54,8.17c-2.21,3.35-4.39,7.9-7.92,7.69-1.44-.08-2.78-1-4.23-1.08-5.12-.2-7.87,10.11-12.84,8.66a2.7,2.7,0,0,0-2.57-3.34c-1.49.1-2.72,1.38-3.77,2.67a46.94,46.94,0,0,0-7.7,14c-1.76-6-8.53-7.93-13.43-5.51s-8.31,7.76-11.48,12.87l-17.31,27.92c-4.54,7.33-11.47,15.57-18.52,12.15-3.38-1.64-5.76-5.76-9.32-6.73s-7.55,1.64-11.18.48c-5.45-1.76-8.37-11.36-14-10.4-3.13.54-5.93,4.55-8.87,3.14-1.52-.73-2.44-2.76-4-3.36s-3.32.52-5,1.13c-7.4,2.73-14.16-5.41-21.27-9.08-12.35-6.38-26.85,1.31-36.59,12.45-3.1,3.54-6,7.5-9.78,9.89-3.22,2-6.88,2.8-10.48,3.54L480,303.58c-15,3.07-30.14,6.2-44.07,13.54-6.63,3.48-13,7.91-19.94,10.16-10.83,3.5-22.26,1.5-33.47,1.18-9.18-.27-102.2,122.09-140,171.54Z
+url(#grad2)
+h1-7
+M749.79,500,750,239.12c-.58-.62-1.15-1.25-1.74-1.87-5.67-5.95-12.57-12.05-20.78-11.77s-15.44,7.12-23.74,6.87c-7.55-.23-14.09-6.33-21.65-6.11-5.79.17-10.74,4-15.29,7.6C639.78,255.2,328.89,423.17,184.52,500Z
+url(#grad3)
+scene2
+hills2
+h2-6
+M524.28,418.82c6.36,0,80.19-14.81,103.12-36.53S655.28,345.8,679,359.64s33.69,18.54,46.63,18.82a158.62,158.62,0,0,1,23.88,2.4V447L632,458.92Z
+url(#lg4)
+h2-5
+M294.06,498.2l49.09-66.93s-64-6.48-93.59-31.29-63.47-49.78-87.15-41.46-81.7,4.44-98.73,15S.1,387.08.1,387.08l.37,60.18L209.75,498.2Z
+url(#lg5)
+h2-4
+M264.94,449.2s61-16.39,94.07-37.28,61.37-37.2,73.53-36.12,69.9-40,80.18-42.62,13.55-.37,29,1.85,22-5.27,34.52,6.39,43.29,34.86,75.51,48.52c25.88,11,91.48,28.88,91.48,28.88l-31.58,67.73-326.93,9.27Z
+url(#lg6)
+h2-3
+M.47,469.58V420s113.73-2.74,171.72-26.68,101.69-72.29,134.53-52,31.37-18.48,61.9,13.28S446.68,393.48,478,406.86s113.08,26.06,113.08,26.06l-59.28,53.4L272.55,485Z
+url(#lg7)
+h2-2
+M749.55,500V398.27l-38.48-6.67s-29.86,12.13-63,11.53-39.61-7.26-70.33-13.41-72.58,21.4-105.61,21.4-75.5-17.78-110.64-17.78c-24.85,0-90.08,20.12-110.82,18.48s-51.11-20.42-82-6.26S.47,409.26.47,409.26V500Z
+url(#lg8)
+h2-1
+M750,371 L740,360 L720,380 L700,350 L650,400 L600,380 L550,420 L500,390 L450,430 L400,400 L350,440 L300,410 L250,450 L200,420 L150,460 L100,430 L50,470 L0,440 V500 H750 V371 Z
+url(#lg8)
+scene3
+bg2
+-59.8
+750
+612.4
+translate(750 492.8) rotate(180)
+url(#bg2-grad)
+stars
+#fff
+636.11
+77.24
+1.46
+711.49
+170.22
+1.46
+473.23
+34.67
+1.46
+616.73
+121.26
+1.46
+559.97
+25.73
+1.46
+679.95
+161.38
+1.46
+558.51
+229.54
+1.46
+616.73
+201.91
+1.46
+544.82
+223.87
+1.46
+166.68
+270.45
+1.46
+671.95
+113.82
+1.46
+104.05
+109.88
+1.46
+252.58
+229.54
+1.46
+351.16
+104.5
+1.46
+32.33
+82.62
+48.8
+202.91
+474.23
+222.87
+663.41
+189.82
+349.25
+41.39
+557.51
+100.02
+122.39
+60.39
+1.46
+hills3
+translate(0, -110)
+h3-5
+756.3 330.5 750.6 327 742.4 331.1 719.1 317.4 705.9 311.9 695.1 307.3 688 314.2 675.7 336.9 665.3 346.8 657.8 353.1 641.2 353.5 633.5 362.6 626.6 373.1 618.5 378.9 596.8 411.3 588.9 404.9 578.9 406.5 539.9 443.4 472 493.8 556 490.9 756.1 490.9 756.3 330.5
+h3-4
+m453.1,471c-20-.3-48.5-14.4-68.1-10.1-13.5-4.7-34.5-19.9-48.2-23.8-4.1-5.1-13.2-13.6-18.3-16.9l-21.4,5.1c-25.8-9-71.7-48.8-92.2-70.8-23.3,8-24.4,17.5-52.5,13.5l-26.5-23.2c-7.3,4.7-21.4,3.1-28.9,0-10.3-12.3-37.7-44.9-50.7-51.2l-26.6,39.7-21.4-3.8v161.3s204.1-2.7,204.1-2.7l2.2,2.7h252.5l-3.8-19.9Z
+h3-3
+m369.3,490.9h71.8l-20.4-23.4c-12.5-1.8-31-7.3-43-11.4-4.4,2-12-2.4-15.7-5.3-24-16.4-52.4-28.7-75.6-47.8l-36.3,12.9-13.2-10.5-44.3,23c-4.1-6-13.7-11.8-19.9-12.4-29.3,7.5-89.7,52.2-115.1,72.8,56.6,2.7,251.8,2.1,311.6,2.1Z
+h3-2
+m756.1,490.9l-8-59.6-53-.2c-15.1-2.4-50.9-7.7-64.2,4.9-19.1-2.9-49.7-19.3-69.1-17.5-5.3-5.7-16.9-13.1-23.7-14.8l-26.9,20.4c-26.9,1.9-30.4-8.1-52.6-17.2l-12.9,14.9c-8.8-4.9-25.3-12.2-33.6-18.1-22.7,22.2-39,46.1-70,32.9-19.4,17.9-46.6,30.6-69.4,40.5-20.6-4.2-50.8,9.7-71.7,9.9l-.8,4h555.8Z
+h3-1
+M754.1,270.8 L716.1,330.8 L669.3,392.1 L580.1,447.7 L511.6,468.2 L456.7,432.2 L380.6,449.8 L355.5,456.3 L324,446.9 L287.2,409.4 L279.1,416.1 L225,404.7 L216.6,409.5 L177.6,377.7 L139.8,397 L97.9,338.7 L57.3,291.1 L52.6,293.1 V681.7 H810.8 V270.8 Z
+#000
+--- src\components\HexGridBackground.tsx ---
+(null); const canvas1Ref = useRef
+Mas visible el color verde
+visible green
+hex-grid-container
+--- src\components\HoldToReveal.tsx ---
+(null); const progressRef = useRef
+--- src\components\InteractionGuide.tsx ---
+); case 'drag': return (
+); case 'hold': return (
+); case 'click': return (
+); case 'hover': return (
+(
+ACCIÓN //
+sine.inOut
+.cyber-scroll-wheel
+power2.inOut
+.cyber-drag-arrows
+sine.inOut
+.cyber-drag-ring
+none
+.cyber-hold-pulse
+power1.out
+center center
+.cyber-click-core
+power2.inOut
+center center
+height=
+viewBox=
+fill=
+xmlns=
+y=
+width=
+height=
+rx=
+stroke=
+strokeWidth=
+strokeOpacity=
+filter=
+M7 12H21
+#00FF99
+strokeDasharray=
+strokeOpacity=
+M7 30H21
+#00FF99
+strokeDasharray=
+strokeOpacity=
+cyber-scroll-wheel
+cy=
+r=
+fill=
+filter=
+height=
+viewBox=
+fill=
+xmlns=
+cyber-drag-ring
+cy=
+r=
+stroke=
+strokeWidth=
+strokeDasharray=
+strokeOpacity=
+filter=
+cyber-drag-arrows
+M12 20L16 16M12 20L16 24
+#00F3FF
+strokeLinecap=
+strokeLinejoin=
+M28 20L24 16M28 20L24 24
+#00F3FF
+strokeLinecap=
+strokeLinejoin=
+y1=
+x2=
+y2=
+stroke=
+strokeWidth=
+cy=
+r=
+fill=
+filter=
+height=
+viewBox=
+fill=
+xmlns=
+cyber-hold-pulse
+cy=
+r=
+stroke=
+strokeWidth=
+fill=
+filter=
+cy=
+r=
+stroke=
+strokeWidth=
+strokeDasharray=
+M20 12V15M20 25V28M12 20H15M25 20H28
+#00FF99
+strokeLinecap=
+cy=
+r=
+fill=
+fillOpacity=
+filter=
+height=
+viewBox=
+fill=
+xmlns=
+M8 14V8H14
+#FF00AA
+strokeLinecap=
+filter=
+M32 14V8H26
+#FF00AA
+strokeLinecap=
+filter=
+M8 26V32H14
+#FF00AA
+strokeLinecap=
+filter=
+M32 26V32H26
+#FF00AA
+strokeLinecap=
+filter=
+cyber-click-core
+cy=
+r=
+fill=
+filter=
+height=
+viewBox=
+fill=
+xmlns=
+cy=
+rx=
+ry=
+transform=
+stroke=
+strokeWidth=
+strokeDasharray=
+strokeOpacity=
+filter=
+cy=
+rx=
+ry=
+transform=
+stroke=
+strokeWidth=
+strokeDasharray=
+strokeOpacity=
+filter=
+cy=
+r=
+fill=
+filter=
+--- src\components\Layout.tsx ---
+layout-wrapper
+--- src\components\LiquidContactCTA.tsx ---
+(null); const mountRef = useRef
+HABLAR CON UN AGENTE
+text-box
+0 0 100 100
+none
+currentColor
+strokeLinecap=
+strokeLinejoin=
+cy=
+r=
+fill=
+opacity=
+M50 15 L80 32 L80 68 L50 85 L20 68 L20 32 Z
+0.5
+M50 30 L67 40 L67 60 L50 70 L33 60 L33 40 Z
+y1=
+x2=
+y2=
+strokeWidth=
+strokeDasharray=
+0 0 100 100
+none
+currentColor
+strokeLinecap=
+cy=
+r=
+strokeDasharray=
+opacity=
+cy=
+r=
+strokeWidth=
+cy=
+r=
+fill=
+cy=
+r=
+fill=
+cy=
+r=
+fill=
+cy=
+r=
+fill=
+50,38 54,46 62,50 54,54 50,62 46,54 38,50 46,46
+currentColor
+cta-label-text
+liquid-metal
+outline
+liquid-cta-shader
+svg-icon
+0 0 100 100
+none
+currentColor
+strokeLinecap=
+strokeLinejoin=
+M25 75 L75 25
+M45 25 H75 V55
+M20 50 H15 V85 H50 V80
+opacity=
+M80 50 V75
+strokeDasharray=
+--- src\components\Loader.tsx ---
+(null); const textRef = useRef
+(null); const logoRef = useRef
+(null); const counterRef = useRef
+000
+INIT
+Fake Boost
+ESTRATEGIA
+DISEÑO
+TECNOLOGÍA
+FUTURO
+none
+FUTURO
+back.in(2)
+explosion
+100
+#00FF99
+explosion
+expo.in
+explosion
+explosion+=0.1
+expo.out
+-=0.1
+power4.inOut
+AgencIA
+--- src\components\MaskedText.tsx ---
+(null); const textRef = useRef
+top 80%
+masked-main
+masked-sub bio-text
+--- src\components\MoneyButton.tsx ---
+Iniciar Proyecto
+money-button-glass
+--- src\components\Navbar.tsx ---
+(null); const menuRef = useRef
+(null); const linksRef = useRef
+([]); const location = useLocation(); const navigate = useNavigate(); const [isOpen, setIsOpen] = useState(false); const [activeSection, setActiveSection] = useState
+(null); const [isMobile, setIsMobile] = useState(false); const tl = useRef
+setIsMobile(window.innerWidth
+//
+(
+AI
+SYSTEM READY // SELECT MODULE
+(
+AGENCIA © 2025 // [ SYSTEM_READY ]
+top 10%
+bottom 10%
+universal-control-widget
+true
+AgencIA Core
+widget-label
+nav-link-item
+true
+holo-default
+holo-services-grid
+--- src\components\NebulaBackground.tsx ---
+Narrative Dust
+Texture ready:
+--- src\components\NeuralNetwork3D.tsx ---
+(null); const [hovered, setHover] = useState
+(
+(
+#00ffff
+#00ffff
+#ffffff
+#0088aa
+#00ffff
+#000000
+--- src\components\NeuralNetworkALMA.tsx ---
+(null); const mouseRef = useRef
+canvas.width) this.x = 0; else if (this.x
+canvas.height) this.y = 0; else if (this.y
+0.25) continue; const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const distanceSq = dx * dx + dy * dy; if (distanceSq
+url('https://grainy-gradients.vercel.app/noise.svg')
+--- src\components\Prism.tsx ---
+(null); const programRef = useRef
+(null); const transitionRef = useRef
+power2.out
+power2.inOut
+power2.inOut
+power2.inOut
+power2.inOut
+prism-container
+--- src\components\ProjectModal.tsx ---
+(null); const contentRef = useRef
+(null); const textRef = useRef
+(null); const servicesRef = useRef
+(null); const toggleBtnRef = useRef
+(null); const ctaRef = useRef
+setIsMobile(window.innerWidth
+✕
+) : (
+→
+-=0.3
+-=0.1
+power2.out
+power2.out
+true
+super-cta-button
+cta-scanline
+cta-glow
+--- src\components\ScrambleText.tsx ---
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?/
+power2.out
+--- src\components\ScrollProgress.tsx ---
+max
+scroll-progress-container
+scroll-progress-bar
+--- src\components\SEO.tsx ---
+Agencia de Transformación Digital. Inteligencia Artificial, Automatización y Diseño Estratégico.
+Agencia IA, Desarrollo Web, Automatización, Diseño, Branding, México, Xalapa, Global
+/og-image.jpg
+https://www.agenciamx.app
+description
+keywords
+og:type
+website
+og:url
+og:title
+og:description
+og:image
+twitter:card
+summary_large_image
+twitter:url
+twitter:title
+twitter:description
+twitter:image
+--- src\components\Services.tsx ---
+(null); const sliderRef = useRef
+(
+→
+(min-width: 769px)
+(max-width: 768px)
+power1.inOut
+nexus-section
+services-slider
+card-content
+service-img-height
+holographic-sheen
+Swipe
+mobile-swipe-hint
+--- src\components\ShowcaseSlider.tsx ---
+setIsMobile(window.innerWidth
+(null); const [hoveredIndex, setHoveredIndex] = useState
+(null); const containerRef = useRef
+(null); const sliderRef = useRef
+(null); const cardContainerRefs = useRef
+([]); // New ref for the outer card const cardsRef = useRef
+([]); // Keeps existing ref for image window (Parallax) // Fix: Allow both Div and Video elements for the parallax target const imagesRef = useRef
+0) targetX = 0; if (targetX
+0) targetTrans = 0; if (targetTrans
+INGENIERÍA
+/// CREATIVA
+Construimos infraestructura
+que piensa, escala y domina.
+(
+) : (
+../assets/videos/web_apps_final_opt.mp4
+Plataforma 360
+Portal
+(max-width: 768px)
+(min-width: 769px) and (max-width: 1024px)
+(min-width: 1025px) and (max-width: 1440px)
+(min-width: 1441px)
+all
+top top
++=600%
+none
+none
+left 100%
+right 0%
+power1.inOut
+none
+power1.inOut
+showcase-slider-container
+showcase-track
+showcase-headline
+showcase-card
+open
+showcase-media-window
+true
+metadata
+showcase-video
+showcase-image
+showcase-title
+showcase-subtitle
+--- src\components\SideNav.tsx ---
+= offsetTop && scrollPos
+(
+side-nav
+side-nav-label
+--- src\components\SoulManifesto.tsx ---
+(null); const trackRef = useRef
+(
+(
+EN LA ERA DEL RUIDO INFINITO
+La tecnología ha democratizado la creación,
+pero ha mercantilizado el alma,
+En este frenesí de velocidad,
+hemos olvidado por qué creamos.
+EL ALGORITMO NO TIENE PULSO
+La IA es el pincel más poderoso,
+pero sigue siendo solo eso: un pincel.
+Buscamos 'el error hermoso',
+esa chispa que la lógica pura jamás descubriría.
+ARQUITECTOS DE LA NUEVA REALIDAD
+Fusionamos sensibilidad artística visceral
+con potencia de cálculo masiva.
+Donde otros ven simples 'prompts',
+nosotros vemos partituras complejas.
+LA MEDIOCRIDAD ES EL ENEMIGO
+Si buscas lo seguro,
+el mundo está lleno de agencias.
+Pero si buscas lo imposible,
+bienvenido a casa.
+top top
+manifesto-void
+behind
+power2.inOut
+Void
+power2.inOut
+manifesto-section
+manifesto
+hover
+#FFFFFF
+manifesto-body
+--- src\components\SoundToggle.tsx ---
+(
+sound-toggle-btn
+--- src\components\StructuredData.tsx ---
+application/ld+json
+--- src\components\Symbiosis.tsx ---
+(null); const titleRef = useRef
+/// SISTEMA_OPERATIVO_DE_CRECIMIENTO
+No buscamos clientes.
+Buscamos imperios.
+/// 01_ÉLITE
+INGENIERÍA
+DE ÉLITE
+CTO Fraccional & Dev Team.
+De idea a mercado en 30 días. Sin excusas.
+/// 02_ESCALABILIDAD
+ESCALABILIDAD
+TOTAL
+AWS / Google Cloud Partners.
+99.9% Uptime Garantizado.
+/// 03_DOMINIO
+DOMINIO DE
+MERCADO
+Infraestructura & Talento.
+Tú pones la visión, nosotros el motor.
+Data Visualization
+true
+auto
+(min-width: 800px)
+top 70%
+power2.out
+(max-width: 799px)
+top 80%
+power2.out
+simbiosis-startups
+data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E
+SIMBIOSIS
+manifesto-block
+pillars-grid
+pillar-item
+pillar-item
+pillar-item
+--- src\components\TouchTracker.tsx ---
+(null); // Use a ref to track active touches to avoid re-renders on every move const touchesRef = useRef
+, { duration: 0.1, ease:
+, { duration: 0.1, ease:
+back.out(1.7)
+power2.out
+touch-tracker-container
+--- src\components\TypewriterText.tsx ---
+AI/Tech
+!@#$%/&*<>[]01
+--- src\components\Vortex.tsx ---
+(null); const [logoImage, setLogoImage] = useState
+(null); const textureBackRef = useRef
+#ffffff
+--- src\components\WarpTunnel.tsx ---
+attributes-aSpeed
+attributes-aOffset
+attributes-aSize
+--- src\components\automation\AutomationScene.tsx ---
+(null); const coreRef = useRef
+[ 001_CAOS_OPERATIVO ]
+Datos dispersos. Procesos manuales. La entropía consume tus recursos. Sin un sistema central, el crecimiento es solo ruido.
+[ 002_ANÁLISIS_IA ]
+El Núcleo despierta. Nuestros algoritmos detectan patrones invisibles en tus operaciones. Convertimos información cruda en inteligencia accionable.
+[ 003_ARQUITECTURA_LÓGICA ]
+Implementación de flujos autónomos. Cada pieza de tu negocio encuentra su lugar en una retícula perfecta de eficiencia ininterrumpida.
+SUPREMACÍA
+DIGITAL
+[ SYSTEM_OPTIMIZED_AT_100% ]
+INICIAR TRANSFORMACIÓN
+background
+#00FF99
+Brain
+#000
+#00FF99
+--- src\components\automation\DataParticles.tsx ---
+Scale Up // Color Logic let mixFactor = 0; if (t
+Order) // Start transitioning at 0.3, finish at 0.6 const orderProgress = THREE.MathUtils.smoothstep(t, 0.3, 0.6); for (let i = 0; i
+#00FF99
+--- src\components\debug\PerformanceMonitor.tsx ---
+Dev Mode
+--- src\components\Footer\HexGridBackground.tsx ---
+(null); const canvasRef2 = useRef
+(null); const containerRef = useRef
+flashlight effect
+EXACT
+--- src\components\hero\CinematicDrinkHero.tsx ---
+(null); const videoRef = useRef
+(null); const canvasRef = useRef
+ÉXITO
+PURO
+PODER
+ABSOLUTO
+change
+top top
++=400%
+-40%
+--- src\components\hero\DigitalTerrain.tsx ---
+#00f3ff
+--- src\components\hero\FloatingParticles.tsx ---
+#ffffff
+--- src\components\hero\HeroOverlay.tsx ---
+(null); const logoRef = useRef
+hero-overlay
+AGENCIA
+SCROLL TO ENTER
+DESCUBRIR
+scroll-hint
+--- src\components\hero\Scene.tsx ---
+power3.out
+none
+#hero-section
+top top
+bottom top
+city
+--- src\components\hero\TheCore.tsx ---
+(null); const sphereRef = useRef
+(null); const ringsRef = useRef
+#00f3ff
+#00f3ff
+#0066ff
+#ff00ff
+#00f3ff
+--- src\components\identity\DNAHelix.tsx ---
+0.85) currentPos.x += 0.5; else if (dataFlow
+(null); const groupRef = useRef
+#00FFFF
+#FF0080
+#FFFFFF
+attributes-position
+attributes-linePos
+attributes-color
+attributes-size
+attributes-shape
+attributes-random
+--- src\components\identity\NeuroIdentity.tsx ---
+(
+(
+(
+(
+(
+(null); const scrollHintRef = useRef
+(null); // Card Refs for Precise Animations const cardRef1 = useRef
+(null); const cardRef2 = useRef
+(null); const cardRef3 = useRef
+(null); const cardRef4 = useRef
+(null); const cardRef5 = useRef
+setIsMobile(window.innerWidth
+SINOPSIS CROMÁTICA
+EL CÓDIGO BIOLÓGICO DE LA SUPREMACÍA DIGITAL
+No vendemos plantillas genéricas ni páginas web decorativas. Diseñamos máquinas digitales de prospección y ventas. Fusionamos la ingeniería de software más avanzada con la psicología visual para obligar a tu cliente ideal a tomar acción.
+01 // HEMISFERIO IZQUIERDO
+EL RIGOR MATEMÁTICO
+Si tu página tarda más de dos segundos en cargar, tu cliente ya se fue con la competencia. Desarrollamos plataformas con velocidad extrema y código blindado que nunca se caen, procesando miles de visitas sin pestañear.
+[ VELOCIDAD: 0.004ms ]
+[ SEGURIDAD: IMPENETRABLE ]
+02 // HEMISFERIO DERECHO
+02 // HEMISFERIO DERECHO
+LA EMOCIÓN CEREBRAL
+El software confuso o anticuado destruye la confianza. Creamos interfaces magnéticas basadas en psicología visual que guían la mirada y la acción del usuario directo a tu botón de contacto o pasarela de pago.
+[ RETENCIÓN: EXTREMA ]
+[ PERSUASIÓN: PREMIUM ]
+LA DOBLE HÉLICE
+INGENIERÍA E INSTINTO EN SIMBIOSIS
+La velocidad técnica sin belleza es ignorada; el diseño hermoso sin velocidad no genera conversión. Al fusionar ambos mundos en tu marca, rompes las reglas del mercado. No es arte digital para ganar aplausos, es ingeniería comercial diseñada para capturar ventas.
+LIDERA O SIGUE
+Tu competencia está contratando agencias comunes para hacer páginas comunes. Rompe el molde. Inyecta el ADN de la doble hélice de
+Agenc
+IA
+en tu negocio y domina tu sector hoy mismo.
+VER CÓMO TRABAJAMOS
+0 0 64 64
+none
+http://www.w3.org/2000/svg
+y=
+width=
+height=
+rx=
+stroke={color} strokeWidth=
+fill=
+y=
+width=
+height=
+rx=
+fill={color} opacity=
+M32 6V16M32 48V58M6 32H16M48 32H58
+2.5
+round
+cy=
+r=
+cy=
+r=
+cy=
+r=
+cy=
+r=
+M12 12L20 20M52 12L44 20M12 52L20 44M52 52L44 44
+strokeDasharray=
+0 0 64 64
+none
+http://www.w3.org/2000/svg
+M6 32H18L24 10L32 54L40 20L46 40L50 32H58
+strokeLinecap=
+strokeLinejoin=
+cy=
+r=
+stroke={color} strokeWidth=
+strokeDasharray=
+cy=
+r=
+stroke={color} strokeWidth=
+strokeDasharray=
+cy=
+r=
+stroke={color} strokeWidth=
+strokeDasharray=
+cy=
+r=
+cy=
+r=
+cy=
+r=
+0 0 64 64
+none
+http://www.w3.org/2000/svg
+M32 6V58M6 32H58
+2.5
+round
+cy=
+r=
+stroke={color} strokeWidth=
+strokeDasharray=
+cy=
+r=
+stroke={color} strokeWidth=
+M18 18L24 24M46 18L40 24M18 46L24 40M46 46L40 40
+2.5
+round
+0 0 64 64
+none
+http://www.w3.org/2000/svg
+M36 4L16 34H32L28 60L48 30H32L36 4Z
+strokeLinejoin=
+fill=
+M38 12L22 34H32L28 52
+1.5
+round
+M8 8H16M8 8V16M56 8H48M56 8V16M8 56H16M8 56V48M56 56H48M56 56V48
+opacity=
+neuro-identity-master
+background
+#00E5FF
+SYS.GENESIS
+DNA_ALIGNMENT
+#00E5FF
+#00E5FF
+SYS.HEMISPHERE_LEFT
+COGNITIVE_LOGIC
+#00E5FF
+#FF0080
+SYS.HEMISPHERE_RIGHT
+COGNITIVE_EMOTION
+#FF0080
+#ffffff
+SYS.SYNAPSE
+NEXUS_CONVERGENCE
+#00E5FF
+#FF0080
+#FF0080
+SYS.EXIT
+SOVEREIGN_LAUNCH
+#FF0080
+brand-text
+ia-highlight
+HABLAR CON UN AGENTE
+height=
+viewBox=
+fill=
+stroke=
+strokeWidth=
+strokeLinecap=
+strokeLinejoin=
+M25 75 L75 25
+M45 25 H75 V55
+--- src\components\identity\OrganicCore.tsx ---
+(null); const contentRef = useRef
+(null); const seedRef = useRef
+(null); const treeRef = useRef
+(null); const rootsRef = useRef
+ground
+stage1
+stage2
+stage2
+stage2+=1
+stage3
+stage4
+organic-core-section
+0 0 1000 800
+none
+cyanGlow
+-50%
+-50%
+200%
+200%
+result=
+coloredBlur
+SourceGraphic
+M500,0 Q500,100 400,200 T200,400
+#00ffff
+fill=
+filter=
+M500,0 Q500,150 600,250 T800,500
+#00ffff
+fill=
+filter=
+M500,0 Q450,150 350,300
+#00ffff
+fill=
+filter=
+opacity=
+M500,0 Q550,150 650,300
+#00ffff
+fill=
+filter=
+opacity=
+M500,0 Q500,200 500,600
+#00ffff
+fill=
+filter=
+strokeOpacity=
+M400,200 Q300,250 100,250
+#00ffff
+fill=
+filter=
+M600,250 Q700,300 900,300
+#00ffff
+fill=
+filter=
+Seed
+Bonsai
+--- src\components\infrastructure\BlueprintArchitecture.tsx ---
+(
++
+(null); const lineRef = useRef
+(
+(
+#0066ff
+#00ffff
+#0088ff
+#ffffff
+#00ffff
+#ffffff
+#00ffff
+center
+middle
+#00ffff
+#0066ff
+#00ffff
+fog
+--- src\components\infrastructure\EcosystemGraph.tsx ---
+(null); const glowRef = useRef
+(
+(
+#00FF99
+#ffffff
+#00FF99
+#00FF99
+--- src\components\infrastructure\GenerativeNexus.tsx ---
+(
+node.trigger && scrollProgress
+#00ffff
+#00ffff
+#0044ff
+#ffffff
+#00ffff
+center
+middle
+#00ffff
+#0066ff
+fog
+--- src\components\infrastructure\Monolith.tsx ---
+(null); const innerRef = useRef
+#ffffff
+#00f3ff
+#00f3ff
+#00f3ff
+https://fonts.gstatic.com/s/robotomono/v12/L0tkDFI83F8P-7u4xXUGL3_p.woff
+#00f3ff
+left
+--- src\components\infrastructure\NeuralDatacenter.tsx ---
+(null); const ledsRef = useRef
+(null); const glowRef = useRef
+(null); const textRef = useRef
+(
+(null); const ringRefs = useRef
+(
+(
+center
+middle
+#000
+#05050a
+#050510
+attributes-position
+attributes-color
+#00FF99
+#00FF99
+#00FF99
+#00FF99
+#8F00FF
+#00E5FF
+fog
+--- src\components\infrastructure\SovereignMonolith.tsx ---
+#00FF99
+#ffffff
+#00FF99
+#00FF99
+attributes-position
+#00E5FF
+#00FF99
+#00E5FF
+fog
+--- src\components\playground\HolographicPanel.tsx ---
+(null); const glowRef = useRef
+(
+#0a0a0a
+left
+middle
+/fonts/SpaceMono-Bold.ttf
+#ffffff
+center
+middle
+center
+/fonts/SpaceMono-Bold.ttf
+center
+middle
+/fonts/SpaceMono-Regular.ttf
+rgba(255,255,255,0.6)
+center
+middle
+center
+--- src\components\playground\ZScrollExperience.tsx ---
+[ AGENCIA_LAB ]
+Z-AXIS EXPERIENCE
+Scroll para navegar a través de nuestros servicios
+#00FF99
+center
+/fonts/SpaceMono-Regular.ttf
+#ffffff
+center
+/fonts/SpaceMono-Bold.ttf
+rgba(255,255,255,0.5)
+center
+#ffffff
+#00FF99
+#7700ff
+#ff2a6d
+--- src\pages\Arquitectura.tsx ---
+('FINANCIAL'); const [chartMultiplier, setChartMultiplier] = useState(1); const [agentNodesCount, setAgentNodesCount] = useState(4096); const [dashboardLogs, setDashboardLogs] = useState
+([DUMMY_LOGS[0]]); const [terminalInput, setTerminalInput] = useState(''); const containerRef = useRef
+(null); const fixedViewportRef = useRef
+(null); const progressRef = useRef(0); const animFrameRef = useRef
+(0); // Refs for 3D elements const sceneRef = useRef
+(null); const layer1Ref = useRef
+(null); // Wireframe const layer2Ref = useRef
+(null); // Code const layer3Ref = useRef
+(null); // Data const layer4Ref = useRef
+(
+[ ALMA_AUTONOMOUS_SYNTHESIS ]
+[ NEURAL_INFERENCE: ACTIVE ]
+[ GENERATING REAL-TIME CONVERSION PATH ]
+[ CLUSTER_01 ]
+[ SYNTHETIC_VIEWPORT_RENDERER ]
+IDE // ALMACore_Controller.tsx
+TypeScript 5.8 // Strict
+import
+from
+'@agencia/architect'
+;
+const
+orchestrator
+=
+new
+&nbsp;&nbsp;clusterNodes:
+,
+&nbsp;&nbsp;autoScale:
+true
+,
+&nbsp;&nbsp;encryption:
+'AES-GCM-256'
+export
+default
+function
+EnterpriseDashboard
+&nbsp;&nbsp;
+return
+(
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;
+ZeroTrustMesh
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;
+PremiumUI
+"#00FF99"
+/&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/
+ZeroTrustMesh
+&gt;
+&nbsp;&nbsp;);
+[ LIVE_TELEMETRY_PIPELINE ]
+EDGE: ONLINE
+THROUGHPUT
+12.4 GB/s
+EDGE LATENCY
+1.8 ms
+ZERO-TRUST
+SECURE
+ENCRYPTION: AES-GCM-256
+// EXECUTIVE SUITE
+METRICAS & CONVERSIÓN
+ENJAMBRE ALMA
+AUDITORÍA ZERO-TRUST
+Conversión B2B Proyectada
+1X
+5X
+10X
+Topología del Enjambre IA
+Rebalancear Nodos
+(
+[ACTIVO]
+Terminal de Auditoría en Tiempo Real
+(
+Ejecutar
+¿Listo para construir tu plataforma corporativa?
+Despliegue inmediato con arquitectura garantizada.
+_DEV // ARCHITECTURE_V9_FLUID
+[ ORGANIC_BUILD_SEQUENCE ]
+(
+(
+[ALMA Core]: Swarm orchestration initialized at 4096 nodes.
+[Security]: Quantum zero-trust mesh verified (AES-GCM-256).
+[Telemetry]: Edge latency stabilized at 3.2ms.
+[Memory]: GC swept 1.2GB successfully.
+[Network]: BGP anycast route optimized for NA-East.
+Génesis de Software Premium | AgencIA
+Presencia la construcción orgánica de una aplicación de antología. Desde el wireframe hasta un centro de control operativo totalmente funcional en vivo.
+particles-container
+particle
+scene-layer
+hide-on-mobile
+scene-layer
+hide-on-mobile
+#00FF99
+scene-layer
+#00FF99
+scene-layer
+AgencIA
+#00F3FF
+text
+Ingresa comando (/audit, /scale)...
+submit
+PROYECTO DE ANTOLOGÍA
+AgencIA
+--- src\pages\Automatizacion.tsx ---
+(null); const geometryRef = useRef
+(null); const actionBtnRef = useRef
+← RETORNAR AL TOUR
+_DEV // AUTOMATIZACIÓN
+ESPECIFICACIÓN // [AUTOMATIZACIÓN]
+[ PROTOCOLO DE EFICIENCIA ]
+AUTOMATIZACIÓN TOTAL
+PLATAFORMA 360°
+CONTROL ABSOLUTO
+Las tareas repetitivas devoran tu tiempo y tu margen. En
+diseñamos
+ecosistemas de gestión empresarial
+que centralizan operaciones, inventarios, clientes y finanzas en una sola interfaz. Tu negocio opera en piloto automático mientras tú te enfocas en lo que realmente importa: crecer.
+EN SIMPLE
+Cambiamos el
+caos por orden automático
+. Sistemas que trabajan mientras tú descansas, gestionando clientes e inventarios sin errores humanos.
+(
+AGENTES AUTÓNOMOS
+INTELIGENCIA OPERATIVA
+¿Y si tus procesos pensaran por sí mismos? Desplegamos
+agentes de IA que ejecutan, deciden y optimizan
+sin intervención humana. Desde atención al cliente 24/7 hasta análisis predictivo y generación de reportes. Tu equipo se libera para tareas de alto valor mientras la IA maneja lo demás.
+EN SIMPLE
+Para un equipo humano de 20 personas
+, coordinar ventas, soporte y despliegue en 100ms es imposible. Para
+, es solo un martes por la mañana.
+(
+FLUJOS SIN FRICCIÓN
+CONEXIONES QUE MULTIPLICAN
+Tus herramientas actuales no colaboran, compiten. Creamos
+integraciones que conectan CRM, e-commerce, contabilidad y logística
+en un flujo continuo. Cada dato en su lugar, cada proceso eslabonado. Sin copiar y pegar. Sin errores humanos. Solo eficiencia pura.
+EN SIMPLE
+Todo conectado, todo funcionando
+. Tu web, tu CRM y tu inventario hablando el mismo idioma. Sin copiar y pegar datos; solo eficiencia pura.
+(
+No eliminamos tareas...
+LIBERAMOS
+TU POTENCIAL.
+En
+, transformamos el ruido operativo en sinfonía automatizada.
+Porque tu tiempo es tu recurso más valioso.
+Continuar Exploración
+→
+attributes-position
+attributes-color
+power2.out
+power2.out
+Automatización & Plataformas 360
+Eficiencia imposible para humanos. Sistemas de gestión total y agentes autónomos de IA.
+@context
+https://schema.org
+@type
+Service
+name
+Automatización
+provider
+@type
+Organization
+name
+AgencIA
+description
+Automatización de procesos empresariales con IA y plataformas de gestión 360°.
+AgencIA
+background
+interaction-hud
+auto-section
+flow-decoration
+auto-title
+auto-text
+AgencIA
+human-translation
+auto-section
+flow-decoration
+auto-title
+auto-text
+human-translation
+AgencIA
+auto-section
+flow-decoration
+auto-title
+auto-text
+human-translation
+final-auto-section
+final-auto-1
+final-auto-2
+final-auto-3
+AgencIA
+action-bar
+next-auto-btn elegant-cta pulse-cta-btn
+cta-arrow
+--- src\pages\CinematicDev.tsx ---
+(null); const entranceGlitchRef = useRef
+(null); const [currentChapter, setCurrentChapter] = React.useState('ESENCIA'); const [chapterNumber, setChapterNumber] = React.useState('1'); // RUTAS DEL LOGOTIPO (Vectores "AGENCIA") const logoPaths = [ "449.17,2442.5 90.53,2442.5 1043.39,157.04 1992.73,2442.5 1637.6,2442.5 1043.39,1025.52", // A "M3825.9 519.19c-206.28,0 -382.09,76.19 -527.41,228.55 -145.34,152.36 -218,335.2 -218,548.51 0,215.66 72.66,400.84 218,555.54 145.33,154.71 321.13,232.07 527.41,232.07 119.54,0 234.99,-30.47 346.33,-91.43 111.35,-60.95 203.35,-145.33 276.01,-253.15l80.88 -116.04 -397.32 -348.09 235.58 -270.75 559.06 488.74c-77.35,285.97 -216.24,515.7 -416.65,689.15 -200.42,173.46 -428.37,260.2 -683.87,260.2 -304.74,0 -564.92,-111.93 -780.58,-335.79 -215.66,-223.86 -323.48,-494.01 -323.48,-810.46 0,-314.11 107.82,-582.5 323.48,-805.18 215.66,-222.69 475.84,-334.03 780.58,-334.03 215.65,0 416.07,59.78 601.25,179.32l-242.61 274.26c-107.82,-60.95 -227.38,-91.43 -358.64,-91.43z", // G "6253.29,515.69 6253.29,1120.45 6995.18,1120.45 6995.18,1479.09 6253.29,1479.09 6253.29,2083.86 7297.56,2083.86 7297.56,2442.5 5894.64,2442.5 5894.64,157.04 7297.56,157.04 7297.56,515.69", // E "9999.2,2438.98 8687.7,1074.74 8687.7,2442.5 8329.06,2442.5 8329.06,157.04 9640.56,1531.83 9640.56,157.04 9999.2,157.04", // N "M12138.27 519.19c-206.28,0 -382.09,76.19 -527.41,228.55 -145.34,152.36 -218,335.2 -218,548.51 0,218 72.66,403.77 218,557.3 145.33,153.54 321.13,230.31 527.41,230.31 128.92,0 248.47,-31.65 358.64,-94.93l242.61 274.25c-180.5,119.54 -380.91,179.32 -601.25,179.32 -304.74,0 -564.92,-111.34 -780.58,-334.03 -215.66,-222.69 -323.48,-491.08 -323.48,-805.18 0,-316.44 107.82,-586.6 323.48,-810.46 215.66,-223.86 475.84,-335.79 780.58,-335.79 220.34,0 420.75,59.78 601.25,179.32l-242.61 277.77c-105.48,-63.28 -225.03,-94.93 -358.64,-94.93z", // C "13718.27,2442.5 13718.27,157.04 14076.92,157.04 14076.92,2442.5", // I "15375.63,2442.5 15016.99,2442.5 15969.85,157.04 16919.2,2442.5 16564.07,2442.5 15969.85,1025.52" // A ]; // Referencia para el fondo const bgRef = useRef
+(null); // Referencia para la capa roja intermedia const redLayerRef = useRef
+(null); // Referencia para la capa de éter líquido (Deprecado) // const etherLayerRef = useRef
+(null); // Referencia para la ventana contenedora const windowRef = useRef
+(null); // Referencia al Prisma para controlarlo vía ScrollTrigger const prismRef = useRef
+(null); // REFS FOR CHAPTER 7 (HOME REACTION RECREATION) const ctaSectionRef = useRef
+(null); const pulseButtonRef = useRef
+(null); const [activeManifestoItem, setActiveManifestoItem] = React.useState(0); const [mountEssence, setMountEssence] = React.useState(true); const [mountNeural, setMountNeural] = React.useState(true); const [mountPrism, setMountPrism] = React.useState(false); // Referencia para el grupo SVG que vamos a escalar const maskGroupRef = useRef
++0.5"); // --- 3. CAPÍTULO 3: EL MANIFIESTO (PRISM RESTORATION) --- const manifestoItems = gsap.utils.toArray
+NUESTRA
+ESENC
+IA
+:
+:
+NO SOMOS UNA
+AGENCIA CON IA.
+SOMOS LA IA
+COMO
+No hacemos "diseño bonito". Construimos interfaces que
+imponen autoridad
+y capturan mercado.
+Estética superior. Ejecución quirúrgica. Resultados financieros.
+Creatividad humana. Velocidad de máquina.
+(
+(
+EL NÚCLEO
+(
+SOMOS
+¿TIENES UNA IDEA?
+Tómate un café virtual
+→
+EN LA ERA DEL RUIDO INFINITO
+La tecnología ha democratizado la creación,
+pero ha mercantilizado el alma,
+En este frenesí de velocidad,
+hemos olvidado por qué creamos.
+EL ALGORITMO NO TIENE PULSO
+La IA es el pincel más poderoso,
+pero sigue siendo solo eso: un pincel.
+Buscamos 'el error hermoso',
+esa chispa que la lógica pura jamás descubriría.
+ARQUITECTOS DE LA NUEVA REALIDAD
+Fusionamos sensibilidad artística visceral
+con potencia de cálculo masiva.
+Donde otros ven simples 'prompts',
+nosotros vemos partituras complejas.
+LA MEDIOCRIDAD ES EL ENEMIGO
+Si buscas lo seguro,
+el mundo está lleno de agencias.
+Pero si buscas lo imposible,
+bienvenido a casa.
+AGENCIA
+449.17,2442.5 90.53,2442.5 1043.39,157.04 1992.73,2442.5 1637.6,2442.5 1043.39,1025.52
+M3825.9 519.19c-206.28,0 -382.09,76.19 -527.41,228.55 -145.34,152.36 -218,335.2 -218,548.51 0,215.66 72.66,400.84 218,555.54 145.33,154.71 321.13,232.07 527.41,232.07 119.54,0 234.99,-30.47 346.33,-91.43 111.35,-60.95 203.35,-145.33 276.01,-253.15l80.88 -116.04 -397.32 -348.09 235.58 -270.75 559.06 488.74c-77.35,285.97 -216.24,515.7 -416.65,689.15 -200.42,173.46 -428.37,260.2 -683.87,260.2 -304.74,0 -564.92,-111.93 -780.58,-335.79 -215.66,-223.86 -323.48,-494.01 -323.48,-810.46 0,-314.11 107.82,-582.5 323.48,-805.18 215.66,-222.69 475.84,-334.03 780.58,-334.03 215.65,0 416.07,59.78 601.25,179.32l-242.61 274.26c-107.82,-60.95 -227.38,-91.43 -358.64,-91.43z
+6253.29,515.69 6253.29,1120.45 6995.18,1120.45 6995.18,1479.09 6253.29,1479.09 6253.29,2083.86 7297.56,2083.86 7297.56,2442.5 5894.64,2442.5 5894.64,157.04 7297.56,157.04 7297.56,515.69
+9999.2,2438.98 8687.7,1074.74 8687.7,2442.5 8329.06,2442.5 8329.06,157.04 9640.56,1531.83 9640.56,157.04 9999.2,157.04
+M12138.27 519.19c-206.28,0 -382.09,76.19 -527.41,228.55 -145.34,152.36 -218,335.2 -218,548.51 0,218 72.66,403.77 218,557.3 145.33,153.54 321.13,230.31 527.41,230.31 128.92,0 248.47,-31.65 358.64,-94.93l242.61 274.25c-180.5,119.54 -380.91,179.32 -601.25,179.32 -304.74,0 -564.92,-111.34 -780.58,-334.03 -215.66,-222.69 -323.48,-491.08 -323.48,-805.18 0,-316.44 107.82,-586.6 323.48,-810.46 215.66,-223.86 475.84,-335.79 780.58,-335.79 220.34,0 420.75,59.78 601.25,179.32l-242.61 277.77c-105.48,-63.28 -225.03,-94.93 -358.64,-94.93z
+13718.27,2442.5 13718.27,157.04 14076.92,157.04 14076.92,2442.5
+15375.63,2442.5 15016.99,2442.5 15969.85,157.04 16919.2,2442.5 16564.07,2442.5 15969.85,1025.52
+sine.inOut
+atravesar
+53.8% 50.1%
+power2.inOut
+power1.out
+); //
+power2.inOut
+power2.out
+-=0.4
+power2.out
+>-0.6
+NUESTRA ESENCIA
+NUESTRA IA
+ESENC
+power2.inOut
+>+0.5
+ESENCIA
+power2.out
+.essence-dev-wrapper
+NUESTRA
+power2.inOut
+NUESTRA IA
+NUESTRA
+power2.inOut
+expo.in
+power2.inOut
+power2.in
+<0.2
+power2.inOut
+power2.in
+#identidad
+top top
++=800%
+>-0.5
+>-1
+>-1.5
+>-1.5
+SOMOS LA IA QUE ESTÁS BUSCANDO
+>+0.5
+#capitulo-3
+top top
++=1000%
+power2.inOut
+power2.out
+-=0.5
+power2.inOut
+); // NOTA: Empieza DESPUÉS de la pausa (
+power2.inOut
+.alma-focus-trigger
+top top
++=1vh
+#capacidades
+top top
++=600%
+power2.out
+#nucleo
+top top
++=500%
+power2.out
+power2.out
+power2.out
+power2.out
+power2.inOut
+power2.inOut
+power2.inOut
+>+1
+.alma-pinned-content
+>+1
+#simbiosis
+top top
++=400%
+power2.out
+#entrance-trigger
+top 80%
+somos
+>-0.4
+final
+#capitulo-7
+top center
+bottom center
+footer
+top 90%
+iridescent-layer
+cinematic-content
+hud-marker-1
+text-container
+text-nuestra
+text-esencia
+word-esenc
+hero-char-ia
+0 0 17009 2588
+80%
+n-portal-mask
+-50000
+-50000
+100000
+100000
+white
+black
+black
+-50000
+-50000
+100000
+100000
+white
+url(#n-portal-mask)
+black
+identidad
+hud-marker-2
+neural-container
+identidad-headline-container
+entropy-block-1
+entropy-el
+entropy-el
+entropy-block-2
+entropy-catchphrase
+entropy-finish
+AgencIA
+identidad-body-container
+entropy-line
+entropy-body
+diseño bonito
+entropy-body
+entropy-body
+capitulo-3
+hud-marker-3
+manifesto-white-fog
+prism-background-container
+drift
+data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E
+#FFFFFF
+manifesto-body-line
+capacidades
+hud-marker-4
+nucleo
+hud-marker-5
+team-container
+team-member-row
+rift-row
+power2.out
+power2.out
+power2.out
+power2.inOut
+power2.inOut
+power2.inOut
+rift-img
+rift-id
+rift-left
+rift-right
+alma-focus-trigger
+alma-pinned-content
+alma-trigger
+simbiosis
+simbiosis-content
+hud-marker-6
+entrance-trigger
+capitulo-7
+hud-marker-7
+cta-pinned-content
+cta-somos-text
+cta-brain-container
+cap7-logo-monolith
+AgencIA Logo
+ia-light-pulse
+cta-invitation-container
+https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssM2lUv8W368QO4u3P7Z9h8r6o2l1
+_blank
+noopener noreferrer
+hud-marker-8
+--- src\pages\Contacto.tsx ---
+(null); const formRef = useRef
+('IDLE'); const [errors, setErrors] = useState
+✓
+¡ENVIADO CON ÉXITO!
+Tu mensaje ha sido capturado. Nuestro equipo B2B analizará la viabilidad tecnológica del proyecto y te responderá en breve.
+ENVIAR OTRA SOLICITUD
+) : (
+CONTACTO
+Hablemos sobre tu infraestructura y objetivos B2B.
+Nombre Completo
+Correo Corporativo
+Nombre de la Empresa
+Detalles del Proyecto
+Error de red o campos inválidos. Por favor, intenta de nuevo.
+Contacto
+Conéctate con el futuro. Hablemos de cómo la IA puede transformar tu marca.
+@context
+https://schema.org
+@type
+ContactPage
+name
+Contacto AgencIA
+publisher
+@type
+Organization
+name
+AgencIA
+city
+contacto
+POST
+true
+hidden
+form-name
+contacto
+text
+nombre
+Ej. Alexander Pierce
+email
+email
+ejemplo@empresa.com
+text
+empresa
+Ej. Stripe Inc.
+detalles
+Cuéntanos sobre tus objetivos de automatización o digitalización...
+submit
+--- src\pages\HomeCinematic.tsx ---
+(null); const entranceGlitchRef = useRef
+(null); // Parallax Refs for Hero const heroWindowRef = useRef
+(null); const heroTextRef = useRef
+(null); const [currentChapter, setCurrentChapter] = React.useState('ESENCIA'); const [chapterNumber, setChapterNumber] = React.useState('1'); // RUTAS DEL LOGOTIPO (Vectores "AGENCIA") const logoPaths = [ "449.17,2442.5 90.53,2442.5 1043.39,157.04 1992.73,2442.5 1637.6,2442.5 1043.39,1025.52", // A "M3825.9 519.19c-206.28,0 -382.09,76.19 -527.41,228.55 -145.34,152.36 -218,335.2 -218,548.51 0,215.66 72.66,400.84 218,555.54 145.33,154.71 321.13,232.07 527.41,232.07 119.54,0 234.99,-30.47 346.33,-91.43 111.35,-60.95 203.35,-145.33 276.01,-253.15l80.88 -116.04 -397.32 -348.09 235.58 -270.75 559.06 488.74c-77.35,285.97 -216.24,515.7 -416.65,689.15 -200.42,173.46 -428.37,260.2 -683.87,260.2 -304.74,0 -564.92,-111.93 -780.58,-335.79 -215.66,-223.86 -323.48,-494.01 -323.48,-810.46 0,-314.11 107.82,-582.5 323.48,-805.18 215.66,-222.69 475.84,-334.03 780.58,-334.03 215.65,0 416.07,59.78 601.25,179.32l-242.61 274.26c-107.82,-60.95 -227.38,-91.43 -358.64,-91.43z", // G "6253.29,515.69 6253.29,1120.45 6995.18,1120.45 6995.18,1479.09 6253.29,1479.09 6253.29,2083.86 7297.56,2083.86 7297.56,2442.5 5894.64,2442.5 5894.64,157.04 7297.56,157.04 7297.56,515.69", // E "9999.2,2438.98 8687.7,1074.74 8687.7,2442.5 8329.06,2442.5 8329.06,157.04 9640.56,1531.83 9640.56,157.04 9999.2,157.04", // N "M12138.27 519.19c-206.28,0 -382.09,76.19 -527.41,228.55 -145.34,152.36 -218,335.2 -218,548.51 0,218 72.66,403.77 218,557.3 145.33,153.54 321.13,230.31 527.41,230.31 128.92,0 248.47,-31.65 358.64,-94.93l242.61 274.25c-180.5,119.54 -380.91,179.32 -601.25,179.32 -304.74,0 -564.92,-111.34 -780.58,-334.03 -215.66,-222.69 -323.48,-491.08 -323.48,-805.18 0,-316.44 107.82,-586.6 323.48,-810.46 215.66,-223.86 475.84,-335.79 780.58,-335.79 220.34,0 420.75,59.78 601.25,179.32l-242.61 277.77c-105.48,-63.28 -225.03,-94.93 -358.64,-94.93z", // C "13718.27,2442.5 13718.27,157.04 14076.92,157.04 14076.92,2442.5", // I "15375.63,2442.5 15016.99,2442.5 15969.85,157.04 16919.2,2442.5 16564.07,2442.5 15969.85,1025.52" // A ]; // Referencia para el fondo const bgRef = useRef
+(null); // Referencia para la capa roja intermedia const redLayerRef = useRef
+(null); // Referencia para la capa de éter líquido (Deprecado) // const etherLayerRef = useRef
+(null); // Referencia para la ventana contenedora (Re-asignada al heroWindowRef) const windowRef = heroWindowRef; // Referencia al Prisma para controlarlo vía ScrollTrigger const prismRef = useRef
+(null); // REFS FOR CHAPTER 7 (HOME REACTION RECREATION) const ctaSectionRef = useRef
+(null); const pulseButtonRef = useRef
+(null); const monolithRef = useRef
++0.5"); // --- 3. CAPÍTULO 3: EL MANIFIESTO (PRISM RESTORATION) --- const manifestoItems = gsap.utils.toArray
+NUESTRA
+ESENC
+IA
+:
+:
+NO SOMOS UNA
+AGENCIA CON IA.
+SOMOS LA IA
+COMO
+No hacemos "diseño bonito". Construimos interfaces que
+imponen autoridad
+y capturan mercado.
+Estética superior. Ejecución quirúrgica. Resultados financieros.
+Creatividad humana. Velocidad de máquina.
+(
+(
+EL NÚCLEO
+(
+) : (
+SOMOS
+¿TIENES UNA IDEA?
+Tómate un café virtual
+→
+EN LA ERA DEL RUIDO INFINITO
+La tecnología ha democratizado la creación,
+pero ha mercantilizado el alma,
+En este frenesí de velocidad,
+hemos olvidado por qué creamos.
+EL ALGORITMO NO TIENE PULSO
+La IA es el pincel más poderoso,
+pero sigue siendo solo eso: un pincel.
+Buscamos 'el error hermoso',
+esa chispa que la lógica pura jamás descubriría.
+ARQUITECTOS DE LA NUEVA REALIDAD
+Fusionamos sensibilidad artística visceral
+con potencia de cálculo masiva.
+Donde otros ven simples 'prompts',
+nosotros vemos partituras complejas.
+LA MEDIOCRIDAD ES EL ENEMIGO
+Si buscas lo seguro,
+el mundo está lleno de agencias.
+Pero si buscas lo imposible,
+bienvenido a casa.
+AGENCIA
+449.17,2442.5 90.53,2442.5 1043.39,157.04 1992.73,2442.5 1637.6,2442.5 1043.39,1025.52
+M3825.9 519.19c-206.28,0 -382.09,76.19 -527.41,228.55 -145.34,152.36 -218,335.2 -218,548.51 0,215.66 72.66,400.84 218,555.54 145.33,154.71 321.13,232.07 527.41,232.07 119.54,0 234.99,-30.47 346.33,-91.43 111.35,-60.95 203.35,-145.33 276.01,-253.15l80.88 -116.04 -397.32 -348.09 235.58 -270.75 559.06 488.74c-77.35,285.97 -216.24,515.7 -416.65,689.15 -200.42,173.46 -428.37,260.2 -683.87,260.2 -304.74,0 -564.92,-111.93 -780.58,-335.79 -215.66,-223.86 -323.48,-494.01 -323.48,-810.46 0,-314.11 107.82,-582.5 323.48,-805.18 215.66,-222.69 475.84,-334.03 780.58,-334.03 215.65,0 416.07,59.78 601.25,179.32l-242.61 274.26c-107.82,-60.95 -227.38,-91.43 -358.64,-91.43z
+6253.29,515.69 6253.29,1120.45 6995.18,1120.45 6995.18,1479.09 6253.29,1479.09 6253.29,2083.86 7297.56,2083.86 7297.56,2442.5 5894.64,2442.5 5894.64,157.04 7297.56,157.04 7297.56,515.69
+9999.2,2438.98 8687.7,1074.74 8687.7,2442.5 8329.06,2442.5 8329.06,157.04 9640.56,1531.83 9640.56,157.04 9999.2,157.04
+M12138.27 519.19c-206.28,0 -382.09,76.19 -527.41,228.55 -145.34,152.36 -218,335.2 -218,548.51 0,218 72.66,403.77 218,557.3 145.33,153.54 321.13,230.31 527.41,230.31 128.92,0 248.47,-31.65 358.64,-94.93l242.61 274.25c-180.5,119.54 -380.91,179.32 -601.25,179.32 -304.74,0 -564.92,-111.34 -780.58,-334.03 -215.66,-222.69 -323.48,-491.08 -323.48,-805.18 0,-316.44 107.82,-586.6 323.48,-810.46 215.66,-223.86 475.84,-335.79 780.58,-335.79 220.34,0 420.75,59.78 601.25,179.32l-242.61 277.77c-105.48,-63.28 -225.03,-94.93 -358.64,-94.93z
+13718.27,2442.5 13718.27,157.04 14076.92,157.04 14076.92,2442.5
+15375.63,2442.5 15016.99,2442.5 15969.85,157.04 16919.2,2442.5 16564.07,2442.5 15969.85,1025.52
+DeviceOrientation permission error:
+, { duration: 0.8, ease:
+, { duration: 0.8, ease:
+, { duration: 1.2, ease:
+, { duration: 1.2, ease:
+sine.inOut
+atravesar
+53.8% 50.1%
+power2.inOut
+power1.out
+); //
+power2.inOut
+power2.out
+-=0.4
+power2.out
+>-0.6
+NUESTRA ESENCIA
+NUESTRA IA
+ESENC
+power2.inOut
+>+0.5
+ESENCIA
+power2.out
+.essence-dev-wrapper
+NUESTRA
+power2.inOut
+NUESTRA IA
+NUESTRA
+power2.inOut
+expo.in
+power2.inOut
+power2.in
+<0.2
+power2.inOut
+power2.in
+#identidad
+top top
++=800%
+>-0.5
+>-1
+>-1.5
+>-1.5
+SOMOS LA IA QUE ESTÁS BUSCANDO
+>+0.5
+#capitulo-3
+top top
++=1000%
+power2.inOut
+power2.out
+power4.out
+-=0.5
+power3.out
+>-0.6
+power4.inOut
+>-0.5
+sine.inOut
+power2.inOut
+); // NOTA: Empieza DESPUÉS de la pausa (
+power2.inOut
+#capacidades
+top top
++=600%
+#nucleo
+top top
++=500%
++=0.2
+power4.inOut
+power4.inOut
+power4.inOut
+power2.in
+power2.in
+>+0.5
+power4.inOut
+power4.inOut
+power4.inOut
+power2.in
+power2.in
+>+0.5
+power4.inOut
+power4.inOut
+power4.inOut
+#nucleo
+linear-gradient(to bottom, #FFFFFF 0%, #FFFFFF 55%, #050505 90%)
+power2.inOut
+#simbiosis
+top top
++=200%
+#entrance-trigger
+top 80%
+somos
+>-0.4
+final
+#capitulo-7
+top center
+bottom center
+footer
+top 90%
+iridescent-layer
+hero
+cinematic-content
+hud-marker-1
+text-container
+text-nuestra
+text-esencia
+word-esenc
+hero-char-ia
+0 0 17009 2588
+80%
+n-portal-mask
+-50000
+-50000
+100000
+100000
+white
+black
+black
+-50000
+-50000
+100000
+100000
+white
+url(#n-portal-mask)
+black
+identidad
+hud-marker-2
+neural-container
+identidad-headline-container
+entropy-block-1
+entropy-el
+entropy-el
+entropy-block-2
+entropy-catchphrase
+entropy-finish
+AgencIA
+identidad-body-container
+entropy-line
+entropy-body
+diseño bonito
+entropy-body
+entropy-body
+capitulo-3
+hud-marker-3
+manifesto-white-fog
+prism-background-container
+drift
+data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E
+#FFFFFF
+capacidades
+hud-marker-4
+nucleo
+hud-marker-5
+team-container
+team-member-row
+rift-row
+rift-img
+rift-left
+rift-right
+rift-text-overlay
+simbiosis
+simbiosis-content
+hud-marker-6
+entrance-trigger
+capitulo-7
+hud-marker-7
+cta-pinned-content
+cta-somos-text
+cta-brain-container
+cap7-logo-monolith
+AgencIA Logo
+ia-light-pulse
+cta-invitation-container
+https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssM2lUv8W368QO4u3P7Z9h8r6o2l1
+_blank
+noopener noreferrer
+hud-marker-8
+contacto
+--- src\pages\Identidad.tsx ---
+identidad-page-root
+Neuro-Glass | La Identidad del Futuro
+Conoce el origen de Neuro-Glass. Una historia de evolución, data y diseño forjada por A.L.M.A.
+--- src\pages\NarrativePrototype.tsx ---
+// PROTOCOL_GENESIS_V0.5_CANON_GEOMETRY
+background
+WOW
+--- src\pages\NotFound.tsx ---
+not-found-container
+face
+0 0 320 380
+320px
+380px
+A 404 becomes a face, looks to the sides, and blinks. The 4s slide up, the 0 slides down, and then a mouth appears.
+none
+currentColor
+round
+round
+face__eyes
+translate(0, 112.5)
+translate(15, 0)
+face__eye-lid
+37,0 0,120 75,120
+face__pupil
+55,120 55,155
+35 35
+translate(230, 0)
+face__eye-lid
+37,0 0,120 75,120
+face__pupil
+55,120 55,155
+35 35
+face__nose
+ry=
+x=
+y=
+width=
+height=
+102 102
+translate(65, 334)
+face__mouth-left
+M 0 30 C 0 30 40 0 95 0
+-102
+face__mouth-right
+M 95 0 C 150 0 190 30 190 30
+102
+error-content
+error-phrase
+btn-primary
+--- src\pages\Playground.tsx ---
+•
+) : (
+CARGA COGNITIVA
+(
+(
+🖥️
+Experiencia Desktop
+Este simulador 3D inmersivo de agentes autónomos está optimizado para pantallas grandes. Por favor, ingresa desde una computadora.
+← VOLVER AL INICIO
+setIsMobile(window.innerWidth
+('IDLE'); const [activeGoal, setActiveGoal] = useState
+(null); const [selectedGoal, setSelectedGoal] = useState
+('LEAD'); const [currentStep, setCurrentStep] = useState
+(0); const [waitingForSignature, setWaitingForSignature] = useState(false); const [chatMessages, setChatMessages] = useState
+([]); const [loopActive, setLoopActive] = useState
+('none'); const [swarmSpeed, setSwarmSpeed] = useState
+(0.6); const [showManifesto, setShowManifesto] = useState
+(true); const [isPaused, setIsPaused] = useState
+(false); const [simSubStep, setSimSubStep] = useState
+(-1); const activeTimeoutsRef = useRef
+agenc
+IA
+LAB
+VOLVER
+Simulador de Procesos
+Automatización inteligente y flujos B2B sin fricciones. Descubre cómo cooperan nuestros módulos inteligentes en tareas operativas complejas de forma ágil y segura.
+▲ SELECCIONA UN CASO DE USO ARRIBA
+VOLVER A EMPEZAR
+) : (
+Simulación:
+AVANZAR →
+DETENER
+Diferencia Operativa
+OCULTAR
+La automatización tradicional ejecuta tareas rígidas sin analizar el contexto. Nuestro sistema integra flujos de trabajo inteligentes que investigan, validan y personalizan cada acción, eliminando errores operativos.
+AUTOMATIZACIÓN TRADICIONAL
+) : (
+DIFERENCIA OPERATIVA
+REQUERIMIENTO DE APROBACIÓN
+El sistema inteligente detectó una oportunidad comercial lista para cierre y estructuró una propuesta de $15,000 USD. Aprueba la transacción de forma inmediata y segura con un solo clic desde tu dispositivo para cobrar y activar el servicio.
+COBRAR Y CAPTAR VENTA
+SIMULADOR:
+ACTIVO
+RESOLUCIÓN: REAL-TIME 3D
+TELEMETRÍA EN TIEMPO REAL
+Valor Comercial
+© agencIA LAB :: SISTEMA COGNITIVO
+var(--font-body)
+var(--font-heading)
+automatización B2B
+consejos para automatizar tareas diarias
+Simulador de Automatización Inteligente | agencIA
+Experimenta en tiempo real cómo nuestros flujos de trabajo inteligentes automatizan la prospección, el cierre comercial y las campañas sin fricciones.
+spinning-loader
+#00f3ff
+#00f3ff
+#10B981
+Orquestador ALMA
+Orquestador Cognitivo
+#4285F4
+Asistente de Búsqueda
+Investigador de Datos
+#00F3FF
+Asistente de Ventas
+Redactor de Propuestas
+#9B51E0
+Asistente Supervisor
+Validador de Calidad
+#FF3D00
+Asistente de Envíos
+Ejecutor de Procesos
+#FF8A00
+#4285F4
+#00F3FF
+#9B51E0
+#9B51E0
+#4285F4
+#00F3FF
+#FF3D00
+#FF3D00
+#4285F4
+#4285F4
+#00F3FF
+#9B51E0
+#FF3D00
+hud-scrollable-container
+--- src\pages\Privacidad.tsx ---
+PRIVACIDAD
+/// 01. EL ALGORITMO Y TÚ
+En AgencIA, la privacidad no es una opción, es un parámetro fundamental de nuestro código. Entendemos que en la era de la Inteligencia Artificial, tus datos son tu activo más valioso. Por ello, procesamos la información mínima necesaria para brindarte una experiencia excepcional.
+/// 02. DATOS RECOLECTADOS
+Recolectamos únicamente información de contacto que tú decides proporcionarnos a través de nuestros formularios: nombre, correo electrónico y detalles del proyecto. No utilizamos cookies de rastreo intrusivo ni vendemos tu información a terceros.
+/// 03. PROCESAMIENTO IA
+Nuestros sistemas de IA (incluyendo A.L.M.A.) analizan las solicitudes de proyectos para optimizar nuestra respuesta. Estos datos se procesan de forma segura y no se utilizan para entrenar modelos públicos sin tu consentimiento explícito.
+← VOLVER AL ORIGEN
+Privacidad | AgencIA
+Política de privacidad y tratamiento de datos de AgencIA.
+--- src\pages\Terminos.tsx ---
+TÉRMINOS
+/// 01. ALCANCE DEL SERVICIO
+Los servicios prestados por AgencIA incluyen diseño estratégico, desarrollo de software y orquestación de sistemas de Inteligencia Artificial. Al navegar por este sitio, aceptas nuestras metodologías disruptivas y el enfoque experimental que define nuestra identidad.
+/// 02. PROPIEDAD INTELECTUAL
+A.L.M.A. (Algoritmo Lógico de Mente Artificial) y todos los sistemas propietarios de AgencIA son propiedad intelectual exclusiva de la agencia. El uso de nuestros activos sin autorización será procesado bajo las leyes de propiedad intelectual vigentes.
+/// 03. LIMITACIÓN DE RESPONSABILIDAD
+AgencIA no se hace responsable de las interpretaciones subjetivas de nuestros sistemas de IA. La IA es una herramienta de amplificación, y los resultados finales dependen de la colaboración sinérgica entre el cliente y nuestro ecosistema digital.
+← VOLVER AL ORIGEN
+Términos | AgencIA
+Términos y condiciones de uso de los servicios de AgencIA.

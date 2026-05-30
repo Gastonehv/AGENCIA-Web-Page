@@ -11,7 +11,7 @@ const AIChatbot: React.FC = () => {
     const [messages, setMessages] = useState<Message[]>([
         {
             id: 'init',
-            text: 'SYSTEM INITIALIZED. COGNITIVE CORE ONLINE. AWAITING INPUT.',
+            text: 'SISTEMA AUTOMATIZADO ACTIVO. ¿QUÉ PROCESO DE TU NEGOCIO DESEAS SIMULAR HOY?',
             sender: 'ai',
             timestamp: new Date()
         }
@@ -47,11 +47,11 @@ const AIChatbot: React.FC = () => {
         // Simulate AI processing
         setTimeout(() => {
             const responses = [
-                "ANALYZING DATA PATTERNS...",
-                "OPTIMIZING NEURAL PATHWAYS...",
-                "CALCULATING SCALABILITY VECTORS...",
-                "INTEGRATING USER VISION...",
-                "SYSTEM ARCHITECTURE: CONFIRMED."
+                "CONCILIANDO FACTURAS: Buscando anomalías en el estado de cuenta contable...",
+                "CALIFICANDO PROSPECTOS: Analizando leads con alta intención de compra...",
+                "REDACTANDO CAMPAÑAS: Creando copys de anuncios listos para publicar...",
+                "SINCRONIZANDO CRM: Conectando la información de tus clientes al instante...",
+                "PROCESO COMPLETADO: Tarea rutinaria resuelta. Eficiencia contable en vivo."
             ];
             const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 
@@ -130,7 +130,7 @@ const AIChatbot: React.FC = () => {
                         type="text"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        placeholder="ENTER_COMMAND..."
+                        placeholder="Escribe tu consulta aquí..."
                         className="w-full bg-transparent text-cyan-100 placeholder-cyan-800 text-sm py-2 pl-6 pr-10 border border-cyan-500/20 focus:border-cyan-500/80 focus:outline-none focus:bg-cyan-900/5 transition-all font-mono"
                     />
                     <button

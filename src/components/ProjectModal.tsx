@@ -83,7 +83,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    if (!project) return null;
+
 
     const handleClose = () => {
         const tl = gsap.timeline({ onComplete: onClose });
@@ -128,6 +128,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
         window.addEventListener('mousemove', handleMouseMove);
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, [isMobile]);
+
+    if (!project) return null;
 
     // Derived Display Content
     const descriptionText = isHumanMode ? (project.humanDesc || project.fullDesc || project.desc) : (project.fullDesc || project.desc);

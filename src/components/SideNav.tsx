@@ -8,11 +8,12 @@ interface Section {
 
 const SECTIONS: Section[] = [
     { id: 'hero', label: 'INICIO' },
+    { id: 'identidad', label: 'IDENTIDAD' },
+    { id: 'capitulo-3', label: 'AUTOMATIZACIÓN' },
     { id: 'capacidades', label: 'EJECUCIÓN' },
-    { id: 'esencia', label: 'ESENCIA' }, // This might need anchor matching
-    { id: 'manifesto', label: 'GÉNESIS' },
     { id: 'nucleo', label: 'NÚCLEO' },
     { id: 'simbiosis', label: 'SIMBIOSIS' },
+    { id: 'capitulo-7', label: 'EL SALTO' },
     { id: 'contacto', label: 'CONTACTO' }
 ];
 

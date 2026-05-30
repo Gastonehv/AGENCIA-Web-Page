@@ -58,23 +58,16 @@ const LiquidContactCTA: React.FC<LiquidContactCTAProps> = ({
     return (
         <div className={`liquid-cta-wrapper ${className}`} style={style}>
             <div className="text-box" onClick={() => navigate('/contacto')}>
-                {/* Custom Neural Link Icon (Abstract, replaces paperclip) */}
-                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" style={{ width: '20px', height: '20px' }}>
-                    <circle cx="50" cy="50" r="12" fill="currentColor" opacity="0.3" />
-                    <path d="M50 15 L80 32 L80 68 L50 85 L20 68 L20 32 Z" opacity="0.5" />
-                    <path d="M50 30 L67 40 L67 60 L50 70 L33 60 L33 40 Z" strokeWidth="8" />
-                    <line x1="50" y1="15" x2="50" y2="85" strokeWidth="4" strokeDasharray="6 6" />
+                {/* Signal node — minimal 3-point connector */}
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '14px', height: '14px', flexShrink: 0 }}>
+                    <circle cx="8" cy="8" r="2" fill="currentColor" />
+                    <path d="M8 2V5M8 11V14M2 8H5M11 8H14" />
                 </svg>
 
-                {/* Custom Quantum Core/Swarm Icon (Abstract, replaces sparkles) */}
-                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" style={{ width: '20px', height: '20px' }}>
-                    <circle cx="50" cy="50" r="40" strokeDasharray="8 8" opacity="0.4" />
-                    <circle cx="50" cy="50" r="25" strokeWidth="7" />
-                    <circle cx="50" cy="10" r="5" fill="currentColor" />
-                    <circle cx="50" cy="90" r="5" fill="currentColor" />
-                    <circle cx="10" cy="50" r="5" fill="currentColor" />
-                    <circle cx="90" cy="50" r="5" fill="currentColor" />
-                    <polygon points="50,38 54,46 62,50 54,54 50,62 46,54 38,50 46,46" fill="currentColor" />
+                {/* Spark — minimal 4-point star */}
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" style={{ width: '14px', height: '14px', flexShrink: 0 }}>
+                    <path d="M8 2L8 14M2 8L14 8" />
+                    <path d="M4.5 4.5L11.5 11.5M11.5 4.5L4.5 11.5" strokeWidth="1" opacity="0.5" />
                 </svg>
 
                 {/* Optional Text Label */}
@@ -85,11 +78,10 @@ const LiquidContactCTA: React.FC<LiquidContactCTAProps> = ({
                     <div className="outline">
                         <div ref={liquidRef} className="liquid-cta-shader"></div>
                         {/* Custom Tech Vector Arrow */}
-                        <svg className="svg-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M25 75 L75 25" strokeWidth="10" />
-                            <path d="M45 25 H75 V55" strokeWidth="10" />
-                            <path d="M20 50 H15 V85 H50 V80" strokeWidth="4" opacity="0.5" />
-                            <path d="M80 50 V75" strokeWidth="5" strokeDasharray="6 6" />
+                        {/* Arrow — single diagonal stroke */}
+                        <svg className="svg-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M5 11L11 5" />
+                            <path d="M7 5H11V9" />
                         </svg>
                     </div>
                 </div>

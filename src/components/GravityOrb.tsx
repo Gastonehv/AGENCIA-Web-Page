@@ -3,11 +3,13 @@ import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import brainIcon from '../assets/logos/header-brain.png';
+import { useSound } from '../context/SoundContext';
 
 const GravityOrb: React.FC = () => {
     // Hooks
     const navigate = useNavigate();
     const location = useLocation();
+    const { playClick, playHover } = useSound();
     const [isMobile, setIsMobile] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -151,10 +153,12 @@ const GravityOrb: React.FC = () => {
             return;
         }
         e.stopPropagation();
+        playClick();
         setIsOpen(!isOpen);
     };
 
     const handleMenuClick = (path: string) => {
+        playClick();
         setIsOpen(false);
         navigate(path);
         // FORCE SCROLL TO TOP (especially if already on home '/')
@@ -237,6 +241,7 @@ const GravityOrb: React.FC = () => {
                                 flexShrink: 1 // Permitir que se encojan si la pantalla es muy pequeña verticalmente
                             }}
                             onMouseEnter={(e) => {
+                                playHover();
                                 gsap.to(e.currentTarget, { paddingLeft: '20px', color: '#00FF99', duration: 0.3 });
                             }}
                             onMouseLeave={(e) => {

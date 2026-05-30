@@ -18,11 +18,11 @@ const CASES = [
     {
         id: '01',
         title: 'PÁGINAS WEB Y APPS',
-        subtitle: 'Arquitectura para Alto Rendimiento',
-        desc: 'Sistemas y sitios digitales que no solo existen, dominan. Ecosistemas diseñados para resistir tráfico masivo y operaciones críticas.',
+        subtitle: 'Plataformas de Alto Impacto',
+        desc: 'Creamos activos digitales veloces y estables que cargan al instante y convierten visitas en clientes. Diseñados para escalar sin límites ni caídas.',
         fullDesc: 'Construimos la interfaz de tu autoridad. Creamos plataformas web y aplicaciones de alto rendimiento que proyectan poder y escalan tu negocio sin límites.',
         humanDesc: 'Tu negocio necesita un activo digital, no un folleto. Hacemos webs y apps que aguantan millones de usuarios y se cargan en milisegundos. Si no domina, no es AgencIA.',
-        services: 'Desarrollo Web de Élite, Apps Inmersivas, SaaS Escalables',
+        services: 'Desarrollo Web de Élite, Aplicaciones Web a Medida, SaaS Escalables',
         humanServices: 'Webs Premium, Apps para Negocio, Plataformas de Software',
         buttonCopy: 'NIVEL DE ACCESO: HUMANO',
         year: '2025',
@@ -34,8 +34,8 @@ const CASES = [
     {
         id: '02',
         title: 'AUTOMATIZACIÓN E IA',
-        subtitle: 'Sistemas que Operan por Ti',
-        desc: 'El fin de la micro-gestión. Implementamos cerebros digitales que optimizan procesos y escalan tu operación sin intervención humana.',
+        subtitle: 'Flujos en Piloto Automático',
+        desc: 'Elimina las tareas repetitivas y administrativas. Implementamos asistentes con IA que atienden clientes, califican prospectos y operan tu negocio 24/7.',
         fullDesc: 'Implementamos la "Plataforma 360", un ecosistema donde la IA asume el control operativo de tu negocio. Ventas, soporte y agendamiento ocurren solos con precisión absoluta.',
         humanDesc: 'Imagina un ejército de clones perfectos que venden, atienden y organizan tu empresa mientras tú te enfocas en liderar su crecimiento.',
         services: 'Agentes Autónomos de IA, Flujos Automáticos, Sistemas de Control',
@@ -50,12 +50,12 @@ const CASES = [
     {
         id: '03',
         title: 'ESTRATEGIA Y MARKETING',
-        subtitle: 'Ingeniería para Dominar tu Mercado',
-        desc: 'No diseñamos logos, codificamos respeto. Estrategia de crecimiento e identidad inmersiva diseñada para posicionarte como líder indiscutible.',
+        subtitle: 'Estrategias de Adquisición',
+        desc: 'Posicionamos tu marca como la autoridad de tu industria. Diseñamos embudos de adquisición y campañas que atraen clientes listos para comprar.',
         fullDesc: 'Trascendemos lo visual para diseñar sistemas de dominio de mercado. Tu marca dejará de competir para empezar a reinar mediante estrategias de adquisición y conversión de alto impacto.',
         humanDesc: 'El marketing de AgencIA no es publicidad, es conquista. Hacemos que tu marca se vea tan poderosa que la confianza de tus clientes sea absoluta y la competencia se vuelva irrelevante.',
         services: 'Estrategia de Crecimiento, Marketing de Autoridad, Branding Pro',
-        humanServices: 'Ventas Escalables, Imagen de Líder, Campaños de Alto Impacto',
+        humanServices: 'Ventas Escalables, Imagen de Líder, Campañas de Alto Impacto',
         buttonCopy: 'ENTENDER EL CONCEPTO',
         year: '2025',
         img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop',
@@ -257,13 +257,14 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
         }, containerRef);
 
         // 5. DEEP LINKING
-        if (initialHash && initialHash.startsWith('#case-') && lenis) {
+        const hash = initialHash || window.location.hash;
+        if (hash && hash.startsWith('#case-') && lenis) {
             setTimeout(() => {
                 ScrollTrigger.refresh();
                 const st = ScrollTrigger.getById('showcase-scroll');
                 if (!st || !sliderRef.current) return;
 
-                const targetId = initialHash.replace('#case-', '');
+                const targetId = hash.replace('#case-', '');
                 const targetIndex = CASES.findIndex(c => c.id === targetId);
                 const card = cardsRef.current[targetIndex];
 
@@ -425,11 +426,11 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     poster={item.img}
                                     className="showcase-video"
                                     style={{
-                                        width: '100%', // NATIVE 16:9 
+                                        width: '120%', // Wider to allow parallax bleed
                                         height: '100%',
                                         objectFit: 'cover',
                                         position: 'absolute',
-                                        left: 0,
+                                        left: '-10%', // Offset center
                                         top: 0,
                                         willChange: 'transform',
                                         backfaceVisibility: 'hidden',
@@ -442,13 +443,13 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                                     ref={el => { imagesRef.current[i] = el; }}
                                     className="showcase-image"
                                     style={{
-                                        width: '100%',
+                                        width: '120%', // Wider to allow parallax bleed
                                         height: '100%',
                                         backgroundImage: `url(${item.img})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         position: 'absolute',
-                                        left: 0,
+                                        left: '-10%', // Offset center
                                         top: 0,
                                         backfaceVisibility: 'hidden'
                                     }}

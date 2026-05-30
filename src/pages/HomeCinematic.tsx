@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
 import EssenceBackground from '../components/EssenceBackground';
-import officialTypography from '../assets/logos/agencia_typography_official.png';
+import officialTypography from '../assets/logos/Tipografia_agencIA_negro.png';
 import NeuralNetworkALMA from '../components/NeuralNetworkALMA';
 import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
@@ -26,20 +26,20 @@ gsap.registerPlugin(ScrollTrigger);
 
 const MANIFESTO = [
     {
-        title: "EN LA ERA DEL RUIDO INFINITO",
-        body: ["La tecnología ha democratizado la creación,", "pero ha mercantilizado el alma,", "En este frenesí de velocidad,", "hemos olvidado por qué creamos."],
+        title: "CUALQUIERA PUEDE GENERAR RUIDO.",
+        body: ["La democratización tecnológica llenó el mercado", "de software mediocre y plantillas baratas.", "Hoy cualquiera genera código genérico,", "pero casi nadie construye sistemas que resuelvan problemas."],
     },
     {
-        title: "EL ALGORITMO NO TIENE PULSO",
-        body: ["La IA es el pincel más poderoso,", "pero sigue siendo solo eso: un pincel.", "Buscamos 'el error hermoso',", "esa chispa que la lógica pura jamás descubriría."],
+        title: "LA IA SIN CRITERIO ES RUIDO.",
+        body: ["La Inteligencia Artificial es el motor más potente.", "Pero las herramientas genéricas solo repiten", "los mismos errores a mayor velocidad.", "No automatizamos el caos: estructuramos para dominar."],
     },
     {
-        title: "ARQUITECTOS DE LA NUEVA REALIDAD",
-        body: ["Fusionamos sensibilidad artística visceral", "con potencia de cálculo masiva.", "Donde otros ven simples 'prompts',", "nosotros vemos partituras complejas."],
+        title: "INGENIERÍA VISCERAL.",
+        body: ["Unimos diseño visual que se siente premium al instante", "con arquitecturas de código optimizadas al milisegundo.", "Donde otros usan parches listos para romperse,", "nosotros construimos pilares estables."],
     },
     {
-        title: "LA MEDIOCRIDAD ES EL ENEMIGO",
-        body: ["Si buscas lo seguro,", "el mundo está lleno de agencias.", "Pero si buscas lo imposible,", "bienvenido a casa."],
+        title: "LA MEDIOCRIDAD ES EL ENEMIGO.",
+        body: ["Si buscas soluciones comunes que colapsan a las 10,000 visitas,", "el mercado está lleno de opciones.", "Si buscas arquitectura inquebrantable", "que sostenga tu crecimiento, bienvenido a casa."],
     }
 ];
 
@@ -865,7 +865,7 @@ const CinematicDev: React.FC = () => {
             }}></div>
 
             {/* SECCIÓN 1: HERO PORTAL */}
-            <section className="cinematic-content" style={{
+            <section id="hero" className="cinematic-content" style={{
                 position: 'relative',
                 width: '100%', height: '100vh',
                 zIndex: 1000,
@@ -910,7 +910,7 @@ const CinematicDev: React.FC = () => {
                     {/* 1.2 CAPA DE TEXTO (Encima del Video, sin restricciones de overflow) */}
                     <div ref={heroTextRef} className="text-container" style={{ textAlign: 'center', zIndex: 10, position: 'relative' }}>
                         <h1 style={{
-                            fontSize: 'clamp(2rem, 8vw, 10rem)',
+                            fontSize: 'clamp(2rem, 6.5vw, 8.5rem)',
                             lineHeight: 0.9, fontWeight: 900, letterSpacing: '-0.04em', margin: 0,
                             textTransform: 'uppercase', color: '#000000',
                             // Glow blanco ultra-refinado y multicapa para separar del video oscuro
@@ -976,8 +976,10 @@ const CinematicDev: React.FC = () => {
 
                 {/* GUÍA DE INTERACCIÓN PRINCIPAL */}
                 <InteractionGuide
+                    isActive={currentChapter === 'ESENCIA'}
                     items={[
-                        { type: 'scroll', text: 'DESLIZAR PARA EXPLORAR' }
+                        { type: 'scroll', text: 'DESLIZAR PARA EXPLORAR' },
+                        { type: 'hover', text: 'MOVER CURSOR PARA INTERACTUAR' }
                     ]}
                     style={{ zIndex: 9999, bottom: '3rem' }}
                 />
@@ -1140,6 +1142,15 @@ const CinematicDev: React.FC = () => {
                         Creatividad humana. Velocidad de máquina.
                     </p>
                 </div>
+                {/* GUÍA DE INTERACCIÓN LOCAL */}
+                <InteractionGuide
+                    isActive={currentChapter === 'IDENTIDAD'}
+                    items={[
+                        { type: 'scroll', text: 'DESLIZAR PARA AVANZAR' },
+                        { type: 'hover', text: 'MOVER CURSOR PARA INFLUIR EN LA RED NEURAL' }
+                    ]}
+                    style={{ zIndex: 9999, bottom: '2rem' }}
+                />
             </section>
 
             {/* BRIDGE GRADIENT: WHITE (IDENTIDAD) -> BLUE (MANIFIESTO) */}
@@ -1247,6 +1258,14 @@ const CinematicDev: React.FC = () => {
                         </div>
                     </div>
                 ))}
+                {/* GUÍA DE INTERACCIÓN LOCAL */}
+                <InteractionGuide
+                    isActive={currentChapter === 'GÉNESIS'}
+                    items={[
+                        { type: 'hover', text: 'MOVER CURSOR PARA REFRACTAR LA LUZ' }
+                    ]}
+                    style={{ zIndex: 9999, bottom: '2rem' }}
+                />
             </section>
 
             {/* --- SECCIÓN 4: CAPACIDADES (SHOWCASE SLIDER) --- */}
@@ -1259,6 +1278,15 @@ const CinematicDev: React.FC = () => {
             }}>
                 <div id="hud-marker-4" style={{ position: 'absolute', top: 0, height: '1px' }} />
                 <ShowcaseSlider />
+                {/* GUÍA DE INTERACCIÓN LOCAL */}
+                <InteractionGuide
+                    isActive={currentChapter === 'EJECUCIÓN'}
+                    items={[
+                        { type: 'scroll', text: 'DESLIZAR PARA DESPLAZAMIENTO HORIZONTAL' },
+                        { type: 'click', text: 'SELECCIONAR CASO' }
+                    ]}
+                    style={{ zIndex: 9999, bottom: '2rem' }}
+                />
             </section>
 
             {/* --- SECCIÓN 5: EL NÚCLEO (TEAM RIFT) --- */}
@@ -1412,7 +1440,14 @@ const CinematicDev: React.FC = () => {
                 </div>
 
                 {/* Alma Section removida por redundancia (integrada en el Núcleo) */}
-
+                {/* GUÍA DE INTERACCIÓN LOCAL */}
+                <InteractionGuide
+                    isActive={currentChapter === 'EL NÚCLEO'}
+                    items={[
+                        { type: 'scroll', text: 'DESLIZAR PARA ABRIR EL NÚCLEO' }
+                    ]}
+                    style={{ zIndex: 9999, bottom: '2rem' }}
+                />
             </section>
 
             {/* Puente eliminado para unión directa */}
@@ -1426,6 +1461,14 @@ const CinematicDev: React.FC = () => {
                 <div id="simbiosis-content" style={{ width: '100%', height: '100%', position: 'relative' }}>
                     <div id="hud-marker-6" style={{ position: 'absolute', top: 0, height: '1px' }} />
                     <Symbiosis />
+                    {/* GUÍA DE INTERACCIÓN LOCAL */}
+                    <InteractionGuide
+                        isActive={currentChapter === 'SIMBIOSIS'}
+                        items={[
+                            { type: 'hover', text: 'EXPLORAR COMPONENTES DE CRECIMIENTO' }
+                        ]}
+                        style={{ zIndex: 9999, bottom: '2rem' }}
+                    />
                 </div>
             </div>
 
@@ -1624,10 +1667,21 @@ const CinematicDev: React.FC = () => {
                         50% { transform: scale(1.02); filter: brightness(1.2) drop-shadow(0 0 15px rgba(0,255,153,0.3)); }
                     }
                 `}</style>
+                {/* GUÍA DE INTERACCIÓN LOCAL */}
+                <InteractionGuide
+                    isActive={currentChapter === 'EL SALTO'}
+                    items={[
+                        { type: 'hover', text: 'EXPLORAR ELEMENTOS CLÍMAX Y CTA' },
+                        { type: 'click', text: 'INICIAR CO-CREACIÓN' }
+                    ]}
+                    style={{ zIndex: 9999, bottom: '2rem' }}
+                />
             </section>
             {/* FINAL FOOTER - PURE ORIGINAL */}
             <div id="hud-marker-8" style={{ width: '100%', height: '1px' }} />
-            <Footer />
+            <div id="contacto">
+                <Footer />
+            </div>
 
             {/* CINEMATIC HUD (ODOMETER + CHAPTERS) */}
             <ChapterHUD currentChapter={currentChapter} chapterNumber={chapterNumber} />

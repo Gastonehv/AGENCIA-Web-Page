@@ -14,238 +14,249 @@ interface InteractionGuideProps {
     className?: string;
     style?: React.CSSProperties;
     persist?: boolean;
+    isActive?: boolean;
 }
 
-const InteractionGuide: React.FC<InteractionGuideProps> = ({ items, mode, className, style, persist = false }) => {
-    const [isVisible, setIsVisible] = useState(true);
+// ─────────────────────────────────────────────────────────────────────────────
+// ICON MAP — each icon is a unique signal glyph, 24px, 1.25px stroke
+// Language: frequency lines, not generic UI metaphors
+// ─────────────────────────────────────────────────────────────────────────────
+
+// SCROLL — single vertical bar + downward chevron. Reads instantly as "go down".
+const IconScroll = () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="2" x2="10" y2="14" stroke="#00FF99" strokeWidth="1.25" strokeLinecap="round" />
+        <path d="M7 11L10 14L13 11" stroke="#00FF99" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="ig-scroll-arrow" />
+    </svg>
+);
+
+// DRAG — pure bidirectional arrow ←→. One line, two heads.
+const IconDrag = () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 10H18" stroke="#00E5FF" strokeWidth="1.25" strokeLinecap="round" />
+        <path d="M5 7L2 10L5 13" stroke="#00E5FF" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="ig-drag-left" />
+        <path d="M15 7L18 10L15 13" stroke="#00E5FF" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="ig-drag-right" />
+    </svg>
+);
+
+// HOVER — one circle. Nothing else. The ring pulsing IS the meaning.
+const IconHover = () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10" r="7" stroke="#00FF99" strokeWidth="1.25" className="ig-hover-r1" />
+        <circle cx="10" cy="10" r="2" fill="#00FF99" />
+    </svg>
+);
+
+// CLICK — diagonal tap arrow. Not a burst, just a finger vector pointing down-right.
+const IconClick = () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 5L15 15" stroke="#FF0080" strokeWidth="1.25" strokeLinecap="round" className="ig-click-rays" />
+        <path d="M9 15H15V9" stroke="#FF0080" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
+// HOLD — a simple arc (semicircle). Open = waiting. Animates to closed.
+const IconHold = () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10" r="7" stroke="rgba(255,255,255,0.1)" strokeWidth="1.25" />
+        <path d="M10 3 A7 7 0 0 1 10 17" stroke="#00FF99" strokeWidth="1.25" strokeLinecap="round" className="ig-hold-arc" />
+    </svg>
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WORD MAP — one word per action
+// ─────────────────────────────────────────────────────────────────────────────
+const WORD_MAP: Record<InteractionType, string> = {
+    scroll: 'EXPLORAR',
+    drag:   'ARRASTRAR',
+    hover:  'DETECTAR',
+    click:  'ACTIVAR',
+    hold:   'CARGAR',
+};
+
+const COLOR_MAP: Record<InteractionType, string> = {
+    scroll: '#00FF99',
+    drag:   '#00E5FF',
+    hover:  '#00FF99',
+    click:  '#FF0080',
+    hold:   '#00FF99',
+};
+
+const ICON_MAP: Record<InteractionType, React.ReactNode> = {
+    scroll: <IconScroll />,
+    drag:   <IconDrag />,
+    hover:  <IconHover />,
+    click:  <IconClick />,
+    hold:   <IconHold />,
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MAIN COMPONENT
+// ─────────────────────────────────────────────────────────────────────────────
+const InteractionGuide: React.FC<InteractionGuideProps> = ({
+    items, mode, className, style, persist = false, isActive
+}) => {
+    const [isVisible, setIsVisible] = useState(isActive !== undefined ? isActive : true);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Normalize functionality
     const activeItems = items || (() => {
         const defaults: InteractionItem[] = [];
-        if (mode === 'scroll' || mode === 'both') defaults.push({ type: 'scroll', text: 'DESLIZAR' });
-        if (mode === 'drag' || mode === 'both') defaults.push({ type: 'drag', text: 'ARRASTRAR' });
+        if (mode === 'scroll' || mode === 'both') defaults.push({ type: 'scroll', text: 'EXPLORAR' });
+        if (mode === 'drag'   || mode === 'both') defaults.push({ type: 'drag',   text: 'ARRASTRAR' });
         return defaults;
     })();
 
-    // Auto-hide after user starts interacting (unless persist is true)
+    // Visibility logic — fully reversible on scroll
     useEffect(() => {
-        if (persist) return;
-        const hideOnScroll = () => {
-            if (window.scrollY > 250) {
+        if (isActive !== undefined) {
+            if (isActive) {
+                setIsVisible(true);
+                const startScroll = window.scrollY;
+                const handleScroll = () => {
+                    if (Math.abs(window.scrollY - startScroll) > 100) {
+                        setIsVisible(false);
+                    } else {
+                        setIsVisible(true);
+                    }
+                };
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                return () => window.removeEventListener('scroll', handleScroll);
+            } else {
                 setIsVisible(false);
             }
+            return;
+        }
+        if (persist) { setIsVisible(true); return; }
+        
+        const hideOnScroll = () => { 
+            if (window.scrollY > 250) {
+                setIsVisible(false); 
+            } else {
+                setIsVisible(true);
+            }
         };
+        
+        // Initial execution to match current position
+        hideOnScroll();
+        
         window.addEventListener('scroll', hideOnScroll, { passive: true });
         return () => window.removeEventListener('scroll', hideOnScroll);
-    }, [persist]);
+    }, [isActive, persist]);
 
+    // GSAP micro-animations
     useEffect(() => {
-        if (!containerRef.current || !isVisible) return;
-
+        if (!containerRef.current) return;
         const ctx = gsap.context(() => {
-            // Subtle float animation for the entire HUD pill
+            // Gentle float of the entire pill
             gsap.to(containerRef.current, {
-                y: -6,
-                duration: 2.5,
-                yoyo: true,
-                repeat: -1,
-                ease: "sine.inOut"
+                y: -5, duration: 2.8, yoyo: true, repeat: -1, ease: 'sine.inOut'
             });
 
-            // Specific icon animations
-            activeItems.forEach(item => {
-                if (item.type === 'scroll') {
-                    gsap.to('.cyber-scroll-wheel', {
-                        y: 12,
-                        opacity: 0.2,
-                        duration: 1.4,
-                        repeat: -1,
-                        ease: "power2.inOut"
-                    });
-                }
-                if (item.type === 'drag') {
-                    gsap.to('.cyber-drag-arrows', {
-                        x: 6,
-                        duration: 1.2,
-                        yoyo: true,
-                        repeat: -1,
-                        ease: "sine.inOut"
-                    });
-                    gsap.to('.cyber-drag-ring', {
-                        rotation: 360,
-                        duration: 8,
-                        repeat: -1,
-                        ease: "linear",
-                        transformOrigin: "center center"
-                    });
-                }
-                if (item.type === 'hold') {
-                    gsap.to('.cyber-hold-pulse', {
-                        scale: 1.8,
-                        opacity: 0,
-                        duration: 1.8,
-                        repeat: -1,
-                        ease: "power2.out",
-                        transformOrigin: "center center"
-                    });
-                }
-                if (item.type === 'click') {
-                    gsap.to('.cyber-click-core', {
-                        scale: 0.7,
-                        duration: 0.8,
-                        yoyo: true,
-                        repeat: -1,
-                        ease: "power3.inOut",
-                        transformOrigin: "center center"
-                    });
-                }
+            // SCROLL: chevron drifts down and fades
+            gsap.to('.ig-scroll-arrow', {
+                y: 3, opacity: 0.2, duration: 1.1, yoyo: true, repeat: -1, ease: 'sine.inOut'
             });
+
+            // DRAG: arrowheads spread apart
+            gsap.to('.ig-drag-left',  { x: -2, duration: 0.9, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+            gsap.to('.ig-drag-right', { x:  2, duration: 0.9, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: 0.45 });
+
+            // HOVER: single ring pulses outward
+            gsap.to('.ig-hover-r1', {
+                scale: 1.2, opacity: 0.15, duration: 1.4,
+                yoyo: true, repeat: -1, ease: 'sine.inOut',
+                transformOrigin: 'center'
+            });
+
+            // CLICK: diagonal line flickers
+            gsap.to('.ig-click-rays', {
+                opacity: 0.3, duration: 0.4,
+                yoyo: true, repeat: -1, ease: 'power2.out', repeatDelay: 1.2
+            });
+
+            // HOLD: arc charges from open to closed, resets
+            gsap.fromTo('.ig-hold-arc',
+                { strokeDashoffset: 44 },
+                { strokeDashoffset: 0, duration: 1.8, ease: 'power1.inOut', repeat: -1, repeatDelay: 0.4 }
+            );
         }, containerRef);
-
         return () => ctx.revert();
-    }, [activeItems, isVisible]);
+    }, [activeItems]);
 
-    const renderCyberIcon = (type: InteractionType) => {
-        switch (type) {
-            case 'scroll':
-                return (
-                    <div style={{ position: 'relative', width: '28px', height: '42px', display: 'flex', justifyContent: 'center' }}>
-                        <svg width="28" height="42" viewBox="0 0 28 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="1" y="1" width="26" height="40" rx="13" stroke="#00FF99" strokeWidth="2" strokeOpacity="0.8" filter="drop-shadow(0 0 8px rgba(0,255,153,0.5))" />
-                            <path d="M7 12H21" stroke="#00FF99" strokeWidth="1" strokeDasharray="2 2" strokeOpacity="0.4" />
-                            <path d="M7 30H21" stroke="#00FF99" strokeWidth="1" strokeDasharray="2 2" strokeOpacity="0.4" />
-                            <circle className="cyber-scroll-wheel" cx="14" cy="10" r="3.5" fill="#00FF99" filter="drop-shadow(0 0 6px #00FF99)" />
-                        </svg>
-                    </div>
-                );
-            case 'drag':
-                return (
-                    <div style={{ position: 'relative', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle className="cyber-drag-ring" cx="20" cy="20" r="16" stroke="#8F00FF" strokeWidth="1.5" strokeDasharray="6 4" strokeOpacity="0.8" filter="drop-shadow(0 0 8px #8F00FF)" />
-                            <g className="cyber-drag-arrows">
-                                <path d="M12 20L16 16M12 20L16 24" stroke="#00F3FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M28 20L24 16M28 20L24 24" stroke="#00F3FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                <line x1="12" y1="20" x2="28" y2="20" stroke="#00F3FF" strokeWidth="2" />
-                            </g>
-                            <circle cx="20" cy="20" r="3" fill="#00FF99" filter="drop-shadow(0 0 6px #00FF99)" />
-                        </svg>
-                    </div>
-                );
-            case 'hold':
-                return (
-                    <div style={{ position: 'relative', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle className="cyber-hold-pulse" cx="20" cy="20" r="12" stroke="#00FF99" strokeWidth="1.5" fill="none" filter="drop-shadow(0 0 10px #00FF99)" />
-                            <circle cx="20" cy="20" r="16" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="4 4" />
-                            <path d="M20 12V15M20 25V28M12 20H15M25 20H28" stroke="#00FF99" strokeWidth="2" strokeLinecap="round" />
-                            <circle cx="20" cy="20" r="6" fill="#00FF99" fillOpacity="0.9" filter="drop-shadow(0 0 8px #00FF99)" />
-                        </svg>
-                    </div>
-                );
-            case 'click':
-                return (
-                    <div style={{ position: 'relative', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            {/* Reticle brackets */}
-                            <path d="M8 14V8H14" stroke="#FF00AA" strokeWidth="2" strokeLinecap="round" filter="drop-shadow(0 0 6px #FF00AA)" />
-                            <path d="M32 14V8H26" stroke="#FF00AA" strokeWidth="2" strokeLinecap="round" filter="drop-shadow(0 0 6px #FF00AA)" />
-                            <path d="M8 26V32H14" stroke="#FF00AA" strokeWidth="2" strokeLinecap="round" filter="drop-shadow(0 0 6px #FF00AA)" />
-                            <path d="M32 26V32H26" stroke="#FF00AA" strokeWidth="2" strokeLinecap="round" filter="drop-shadow(0 0 6px #FF00AA)" />
-                            {/* Central core */}
-                            <circle className="cyber-click-core" cx="20" cy="20" r="7" fill="#00FF99" filter="drop-shadow(0 0 10px #00FF99)" />
-                        </svg>
-                    </div>
-                );
-            case 'hover':
-                return (
-                    <div style={{ position: 'relative', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <ellipse cx="20" cy="20" rx="18" ry="8" transform="rotate(30 20 20)" stroke="#00F3FF" strokeWidth="1.5" strokeDasharray="4 2" strokeOpacity="0.8" filter="drop-shadow(0 0 6px #00F3FF)" />
-                            <ellipse cx="20" cy="20" rx="18" ry="8" transform="rotate(-30 20 20)" stroke="#8F00FF" strokeWidth="1.5" strokeDasharray="4 2" strokeOpacity="0.8" filter="drop-shadow(0 0 6px #8F00FF)" />
-                            <circle cx="20" cy="20" r="5" fill="#00F3FF" filter="drop-shadow(0 0 10px #00F3FF)" />
-                        </svg>
-                    </div>
-                );
-            default:
-                return null;
-        }
-    };
-
-    const getColor = (type: InteractionType) => {
-        switch (type) {
-            case 'scroll': return '#00FF99';
-            case 'drag': return '#00F3FF';
-            case 'hover': return '#00F3FF';
-            case 'click': return '#FF00AA';
-            case 'hold': return '#00FF99';
-            default: return '#FFFFFF';
-        }
-    };
-
-    if (!isVisible) return null;
+    const hasDivider = activeItems.length > 1;
 
     return (
-        <div
-            ref={containerRef}
-            className={`cyber-interaction-guide ${className || ''}`}
-            style={{
-                position: 'absolute',
-                bottom: '2.5rem',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '2.5rem',
-                backgroundColor: 'rgba(6, 12, 18, 0.85)',
-                backdropFilter: 'blur(16px)',
-                WebkitBackdropFilter: 'blur(16px)',
-                border: '1px solid rgba(0, 255, 153, 0.3)',
-                padding: '12px 32px',
-                borderRadius: '50px',
-                boxShadow: '0 15px 35px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 255, 153, 0.15), inset 0 0 15px rgba(255, 255, 255, 0.05)',
-                zIndex: 8888,
-                pointerEvents: 'none',
-                transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                ...style
-            }}
-        >
-            {activeItems.map((item, index) => (
-                <div
-                    key={index}
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px'
-                    }}
-                >
-                    {renderCyberIcon(item.type)}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <span style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.6rem',
-                            color: 'rgba(255,255,255,0.5)',
-                            letterSpacing: '0.2em',
-                            textTransform: 'uppercase'
-                        }}>
-                            ACCIÓN //
-                        </span>
-                        <span style={{
-                            fontFamily: 'var(--font-heading)',
-                            fontSize: '0.85rem',
-                            fontWeight: 900,
-                            color: getColor(item.type),
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.15em',
-                            textShadow: `0 0 15px ${getColor(item.type)}`
-                        }}>
-                            {item.text}
-                        </span>
-                    </div>
-                </div>
-            ))}
-        </div>
+        <>
+            <style>{`
+                .ig-pill {
+                    position: absolute;
+                    bottom: 1.5rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0;
+                    background: rgba(4, 7, 14, 0.75);
+                    backdrop-filter: blur(16px);
+                    -webkit-backdrop-filter: blur(16px);
+                    border: 1px solid rgba(255,255,255,0.08);
+                    border-radius: 40px;
+                    padding: 0 4px;
+                    height: 40px;
+                    box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+                    z-index: 8888;
+                    pointer-events: none;
+                    white-space: nowrap;
+                }
+                .ig-item {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 0 14px;
+                }
+                .ig-divider {
+                    width: 1px;
+                    height: 18px;
+                    background: rgba(255,255,255,0.1);
+                    flex-shrink: 0;
+                }
+                .ig-word {
+                    font-family: var(--font-mono);
+                    font-size: 0.52rem;
+                    font-weight: 600;
+                    letter-spacing: 0.22em;
+                    text-transform: uppercase;
+                    line-height: 1;
+                }
+            `}</style>
+
+            <div
+                ref={containerRef}
+                className={`ig-pill ${className || ''}`}
+                style={{
+                    ...style,
+                    opacity: isVisible ? 1 : 0,
+                    visibility: isVisible ? 'visible' : 'hidden',
+                    transition: 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    pointerEvents: isVisible ? 'auto' : 'none'
+                }}
+            >
+                {activeItems.map((item, index) => (
+                    <React.Fragment key={index}>
+                        {index > 0 && hasDivider && <div className="ig-divider" />}
+                        <div className="ig-item">
+                            {ICON_MAP[item.type]}
+                            <span
+                                className="ig-word"
+                                style={{ color: COLOR_MAP[item.type] }}
+                            >
+                                {WORD_MAP[item.type]}
+                            </span>
+                        </div>
+                    </React.Fragment>
+                ))}
+            </div>
+        </>
     );
 };
 

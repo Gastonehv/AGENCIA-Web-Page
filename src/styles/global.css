@@ -275,3 +275,12 @@ canvas {
     margin-left: 0.03em;
     text-shadow: 0 0 15px rgba(0, 229, 255, 0.35);
 }
+
+/* ===== HIDE SCROLLBAR UTILITY ===== */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}

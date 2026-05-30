@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import footerLogo from '../assets/logo_agencia_full.png';
 import hechoEnMexicoLogo from '../assets/images/hecho_en_mexico.png';
 import HexGridBackground from './Footer/HexGridBackground';
+import logoAgenciaBlanco from '../assets/logos/Tipografia_agencIA_blanco.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -446,9 +447,13 @@ const Footer: React.FC = () => {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.85rem',
                     color: '#888', // LIGHTER GREY for better visibility
-                    margin: 0
+                    margin: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '0.25rem'
                 }}>
-                    © {currentYear} <span className="brand-text" style={{ fontSize: '0.85rem' }}>Agenc<span className="ia-highlight">IA</span></span>. Todos los derechos reservados. · <span className="brand-text" style={{ fontSize: '0.85rem' }}>A.L.M.A.</span> es propiedad intelectual de <span className="brand-text" style={{ fontSize: '0.85rem' }}>Agenc<span className="ia-highlight">IA</span></span>.
+                    © {currentYear} <img src={logoAgenciaBlanco} alt="AgencIA" style={{ height: '14px', width: 'auto', display: 'inline-block', verticalAlign: 'middle', margin: '0 4px' }} />. Todos los derechos reservados. · <span className="brand-text" style={{ fontSize: '0.85rem' }}>A.L.M.A.</span> es propiedad intelectual de <img src={logoAgenciaBlanco} alt="AgencIA" style={{ height: '14px', width: 'auto', display: 'inline-block', verticalAlign: 'middle', margin: '0 4px' }} />.
                 </p>
                 <div style={{ display: 'flex', gap: '2rem' }}>
                     <Link

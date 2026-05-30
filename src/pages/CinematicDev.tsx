@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
 import EssenceBackground from '../components/EssenceBackground';
-import officialTypography from '../assets/logos/agencia_typography_official.png';
+import officialTypography from '../assets/logos/Tipografia_agencIA_negro.png';
 import NeuralNetworkALMA from '../components/NeuralNetworkALMA';
 import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
@@ -722,7 +722,7 @@ const CinematicDev: React.FC = () => {
                     {/* 1.2 CAPA DE TEXTO (Encima del Video, sin restricciones de overflow) */}
                     <div className="text-container" style={{ textAlign: 'center', zIndex: 10, position: 'relative' }}>
                         <h1 style={{
-                            fontSize: 'clamp(2rem, 8vw, 10rem)',
+                            fontSize: 'clamp(2rem, 6.5vw, 8.5rem)',
                             lineHeight: 0.9, fontWeight: 900, letterSpacing: '-0.04em', margin: 0,
                             textTransform: 'uppercase', color: '#000000',
                             // Glow blanco ultra-refinado y multicapa para separar del video oscuro

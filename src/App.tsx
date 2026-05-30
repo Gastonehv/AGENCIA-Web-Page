@@ -21,10 +21,10 @@ import Contacto from './pages/Contacto';
 import Privacidad from './pages/Privacidad';
 import Terminos from './pages/Terminos';
 import Playground from './pages/Playground';
-import NarrativePrototype from './pages/NarrativePrototype';
+// import NarrativePrototype from './pages/NarrativePrototype';
 import Cursor from './components/Cursor';
 import NotFound from './pages/NotFound';
-import CinematicDev from './pages/CinematicDev'; // Development Environment
+// import CinematicDev from './pages/CinematicDev'; // Development Environment
 import SoundToggle from './components/SoundToggle';
 
 function App() {
@@ -65,8 +65,10 @@ function App() {
             <Layout>
               {/* <Navbar /> SC: REMOVED as per user request. Gravity Orb is now the Universal Interface. */}
               <Routes>
+                {/* Development paths disabled for production security
                 <Route path="/cinematic-dev" element={<CinematicDev />} />
                 <Route path="/narrativa-v1" element={<NarrativePrototype />} />
+                */}
                 <Route path="/automatizacion" element={<Automatizacion />} />
                 <Route path="/esencia" element={<Navigate to="/" replace />} />
                 <Route path="/" element={<Home />} />

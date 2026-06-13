@@ -217,8 +217,7 @@ const GravityOrb: React.FC = () => {
                         { idx: '02', label: 'INFRAESTRUCTURA', path: '/infraestructura' },
                         { idx: '03', label: 'AUTOMATIZACIÓN', path: '/automatizacion' },
                         { idx: '04', label: 'IDENTIDAD', path: '/identidad' },
-                        { idx: '05', label: 'PLAYGROUND', path: '/playground' },
-                        { idx: '06', label: 'CONTACTO', path: '/contacto' }
+                        { idx: '05', label: 'CONTACTO', path: '/contacto' }
                     ].map((item) => (
                         <button
                             key={item.path}

@@ -52,8 +52,8 @@ const CinematicDev: React.FC = () => {
     const heroWindowRef = useRef<HTMLDivElement>(null);
     const heroTextRef = useRef<HTMLDivElement>(null);
 
-    const [currentChapter, setCurrentChapter] = React.useState('ESENCIA');
-    const [chapterNumber, setChapterNumber] = React.useState('1');
+    const [currentChapter, setCurrentChapter] = React.useState(window.location.pathname === '/esencia' ? 'ESENCIA' : 'INICIO');
+    const [chapterNumber, setChapterNumber] = React.useState(window.location.pathname === '/esencia' ? '1' : '0');
 
     // RUTAS DEL LOGOTIPO (Vectores "AGENCIA")
     const logoPaths = [
@@ -244,8 +244,8 @@ const CinematicDev: React.FC = () => {
                     fastScrollEnd: true,
                     onToggle: (self) => {
                         if (self.isActive) {
-                            setCurrentChapter('ESENCIA');
-                            setChapterNumber('1');
+                            setCurrentChapter(window.location.pathname === '/esencia' ? 'ESENCIA' : 'INICIO');
+                            setChapterNumber(window.location.pathname === '/esencia' ? '1' : '0');
                             setMountEssence(true);
                         }
                         

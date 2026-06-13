@@ -30,7 +30,6 @@ const Navbar: React.FC = () => {
         { path: '/infraestructura', label: 'INFRAESTRUCTURA' },
         { path: '/automatizacion', label: 'AUTOMATIZACIÓN' },
         { path: '/identidad', label: 'IDENTIDAD' },
-        { path: '/playground', label: 'PLAYGROUND' },
         { path: '/contacto', label: 'CONTACTO' }
     ];
 

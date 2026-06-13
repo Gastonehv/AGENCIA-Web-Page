@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 // import Navbar from './components/Navbar'; // Removed per universal navigation update
 import ScrollToTop from './components/ScrollToTop';
@@ -70,7 +70,7 @@ function App() {
                 <Route path="/narrativa-v1" element={<NarrativePrototype />} />
                 */}
                 <Route path="/automatizacion" element={<Automatizacion />} />
-                <Route path="/esencia" element={<Navigate to="/" replace />} />
+                <Route path="/esencia" element={<Home />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/identidad" element={<Identidad />} />
                 <Route path="/infraestructura" element={<Arquitectura />} />

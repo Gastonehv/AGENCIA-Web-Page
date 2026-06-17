@@ -884,15 +884,17 @@ const CinematicDev: React.FC = () => {
                     position: 'absolute',
                     top: '50%', left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    width: '60vw', height: '35vw',
+                    // FIX: mobile-safe size - 90vw width, height scales proportionally
+                    width: 'min(60vw, 90vw)',
+                    height: 'clamp(160px, 35vw, 600px)',
                     borderRadius: '20px',
-                    // Sombra direccional MUY marcada para la ilusión de profundidad extrema
-                    boxShadow: '-40px 50px 60px rgba(0,0,0,0.5), -15px 20px 25px rgba(0,0,0,0.3)',
+                    // FIX: reduced shadow offsets for mobile (original 40-50px caused viewport bleed)
+                    boxShadow: '-2.8vw 3.5vw 4vw rgba(0,0,0,0.5), -1vw 1.4vw 1.7vw rgba(0,0,0,0.3)',
                     border: '1px solid rgba(255, 255, 255, 0.4)',
-                    backgroundColor: '#000000', // Fondo negro para video
+                    backgroundColor: '#000000',
                     zIndex: 1,
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                    overflow: 'visible' // CAMBIADO a visible para que "IA" explote fuera de la caja
+                    overflow: 'visible'
                 }}>
                     {/* Contenedor estricto para redondear el video SIN cortar el texto */}
                     <div style={{ position: 'absolute', inset: 0, borderRadius: '20px', overflow: 'hidden' }}>
@@ -1006,7 +1008,13 @@ const CinematicDev: React.FC = () => {
                     </div>
                 )}
 
-                <div className="identidad-headline-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', perspective: '1000px', width: '100%', maxWidth: '800px' }}>
+                <div className="identidad-headline-container" style={{
+                    display: 'flex', flexDirection: 'column', gap: '0.5rem',
+                    perspective: '1000px', width: '100%', maxWidth: '800px',
+                    // FIX: horizontal padding so text doesn't touch viewport edges on mobile
+                    padding: '0 clamp(1rem, 5vw, 2rem)',
+                    boxSizing: 'border-box'
+                }}>
 
                     {/* BLOCK 1: NO SOMOS UNA AGENCIA... */}
                     <div className="entropy-block-1" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -1074,7 +1082,8 @@ const CinematicDev: React.FC = () => {
 
                 <div className="identidad-body-container" style={{
                     marginTop: '1.5rem',
-                    paddingLeft: '1.5rem',
+                    paddingLeft: 'clamp(1rem, 5vw, 1.5rem)',
+                    paddingRight: 'clamp(1rem, 5vw, 1.5rem)',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '0.8rem',
@@ -1098,7 +1107,7 @@ const CinematicDev: React.FC = () => {
                         fontFamily: 'var(--font-body)',
                         fontSize: 'clamp(0.9rem, 1.2vw, 1.15rem)',
                         lineHeight: 1.3,
-                        maxWidth: '550px',
+                        maxWidth: 'min(550px, 100%)',
                         color: '#333',
                         margin: 0,
                         opacity: 0,
@@ -1389,7 +1398,9 @@ const CinematicDev: React.FC = () => {
                                 {/* TEXT OVERLAY (Diseño Senior Editorial) */}
                                 <div className="rift-text-overlay" style={{
                                     position: 'absolute', bottom: '12%', left: '50%', transform: 'translateX(-50%)',
-                                    width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center',
+                                    // FIX: width 100vw causes Android scrollbar overflow; use 100% + maxWidth instead
+                                    width: '100%', maxWidth: '100vw',
+                                    display: 'flex', flexDirection: 'column', alignItems: 'center',
                                     zIndex: 5, pointerEvents: 'none', textAlign: 'center'
                                 }}>
                                     {/* ROLE / PUESTO (Oculto para ALMA) */}
@@ -1527,9 +1538,10 @@ const CinematicDev: React.FC = () => {
                             fontSize: 'clamp(1rem, 4vw, 1.4rem)',
                             textAlign: 'center',
                             fontWeight: 900,
-                            margin: '0 0 15vh 0',
+                            // FIX: clamp margin to avoid pushing logo off-screen on mobile
+                            margin: '0 0 clamp(2rem, 8vh, 15vh) 0',
                             letterSpacing: '1em',
-                            paddingLeft: '1em', // CENTERING COMPENSATOR
+                            paddingLeft: '1em',
                             width: '100%',
                             color: '#000',
                             position: 'relative',
@@ -1544,7 +1556,8 @@ const CinematicDev: React.FC = () => {
                     <div
                         className="cta-brain-container"
                         style={{
-                            width: 'clamp(350px, 70vw, 1000px)', // Slightly more contained
+                            // FIX: min(350px, 90vw) prevents overflow on 320-375px screens
+                            width: 'clamp(min(350px, 90vw), 70vw, 1000px)',
                             maxHeight: '55vh',
                             marginBottom: '10vh',
                             position: 'relative',
@@ -1618,13 +1631,15 @@ const CinematicDev: React.FC = () => {
                             <button
                                 ref={pulseButtonRef}
                                 style={{
-                                    padding: '1.2rem 4.5rem',
+                                    // FIX: clamp padding to prevent overflow on 320-360px screens
+                                    padding: 'clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 8vw, 4.5rem)',
+                                    maxWidth: '90vw',
                                     background: 'transparent',
                                     color: '#000',
-                                    border: '2px solid #000', // SURGICAL OUTLINE
+                                    border: '2px solid #000',
                                     borderRadius: '0px',
                                     fontWeight: '900',
-                                    fontSize: '1.1rem',
+                                    fontSize: 'clamp(0.85rem, 2.5vw, 1.1rem)',
                                     cursor: 'pointer',
                                     position: 'relative',
                                     transition: 'all 0.4s cubic-bezier(0.19, 1, 0.22, 1)',
@@ -1632,7 +1647,9 @@ const CinematicDev: React.FC = () => {
                                     textTransform: 'uppercase',
                                     display: 'flex',
                                     alignItems: 'center',
+                                    justifyContent: 'center',
                                     gap: '1.5rem',
+                                    boxSizing: 'border-box',
                                     boxShadow: '0 0px 0px rgba(0,0,0,0)'
                                 }}
                                 onMouseEnter={e => {

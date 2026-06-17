@@ -66,11 +66,13 @@ const CASES = [
 ];
 
 const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
-    const [isMobile, setIsMobile] = useState(false);
+    // FIX: Initialize from window to avoid SSR/hydration layout flash on mobile
+    const [isMobile, setIsMobile] = useState(() =>
+        typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+    );
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-        checkMobile();
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
@@ -355,12 +357,15 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                             width: cardWidth, // Strict Width
                             maxWidth: cardWidth, // Prevent expansion
                             minWidth: cardWidth, // Prevent shrinking
-                            height: isMobile ? 'auto' : '80%', // AUTO on mobile to prevent clipping
+                            // FIX: Remove inline height ternary — let CSS handle mobile height
+                            // Inline styles override CSS !important; height is now purely in CSS
+                            height: isMobile ? undefined : '80%',
                             alignSelf: 'center',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'flex-start',
                             padding: isMobile ? '1.5rem' : '2rem',
+                            boxSizing: 'border-box', // FIX: prevent padding overflow
                             backgroundColor: '#FFFFFF',
                             cursor: 'none',
                             flexShrink: 0,
@@ -466,9 +471,10 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                         }}>
                             <div>
                                 <h3 className="showcase-title" style={{
-                                    fontSize: isMobile ? '1.4rem' : '2.5rem', // FURTHER REDUCED ON MOBILE
+                                    // FIX: fluid clamp instead of fixed breakpoint
+                                    fontSize: 'clamp(1.2rem, 3.5vw, 2.5rem)',
                                     fontWeight: 800,
-                                    margin: '0 0 0.25rem 0', // TIGHTER
+                                    margin: '0 0 0.25rem 0',
                                     color: '#000',
                                     textTransform: 'uppercase',
                                     letterSpacing: '-1px',
@@ -579,7 +585,6 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
                     .floating-button {
                         display: none !important;
                     }
-                }
                 }
             `}</style>
 

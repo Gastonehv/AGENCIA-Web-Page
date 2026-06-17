@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
     const socialLinks = [
         {
             name: 'LinkedIn',
-            url: '#',
+            url: 'https://www.linkedin.com/in/gast%C3%B3n-eduardo-hern%C3%A1ndez-vista-9b4047417/',
             colors: ['#0A66C2', '#0077B5'],
             gradient: 'linear-gradient(135deg, #0A66C2 0%, #0077B5 100%)',
             glow: '0 0 40px rgba(10, 102, 194, 0.6), 0 0 80px rgba(0, 119, 181, 0.4), 0 20px 60px rgba(10, 102, 194, 0.5)',
@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
         },
         {
             name: 'Instagram',
-            url: '#',
+            url: 'https://www.instagram.com/agenciamx.app/',
             colors: ['#E1306C', '#833AB4'],
             gradient: 'linear-gradient(135deg, #833AB4 0%, #E1306C 50%, #FCAF45 100%)',
             glow: '0 0 40px rgba(225, 48, 108, 0.5), 0 0 80px rgba(131, 58, 180, 0.3), 0 20px 60px rgba(225, 48, 108, 0.4)',
@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
         },
         {
             name: 'Twitter',
-            url: '#',
+            url: 'https://x.com/agenciamx_app',
             colors: ['#FFFFFF', '#E7E9EA'],
             gradient: 'linear-gradient(135deg, #FFFFFF 0%, #E7E9EA 100%)',
             glow: '0 0 40px rgba(255, 255, 255, 0.8), 0 0 80px rgba(231, 233, 234, 0.6), 0 20px 60px rgba(255, 255, 255, 0.7)',
@@ -42,26 +42,8 @@ const Footer: React.FC = () => {
             yOffset: 0
         },
         {
-            name: 'Facebook',
-            url: '#',
-            colors: ['#1877F2', '#0C5DC7'],
-            gradient: 'linear-gradient(135deg, #1877F2 0%, #0C5DC7 100%)',
-            glow: '0 0 40px rgba(24, 119, 242, 0.5), 0 0 80px rgba(24, 119, 242, 0.3), 0 20px 60px rgba(24, 119, 242, 0.4)',
-            size: 54,
-            yOffset: 0
-        },
-        {
-            name: 'TikTok',
-            url: '#',
-            colors: ['#000000', '#25F4EE'],
-            gradient: 'linear-gradient(135deg, #000000 0%, #25F4EE 50%, #FE2C55 100%)',
-            glow: '0 0 40px rgba(37, 244, 238, 0.4), 0 0 40px rgba(254, 44, 85, 0.4)',
-            size: 54,
-            yOffset: 0
-        },
-        {
             name: 'YouTube',
-            url: '#',
+            url: 'https://www.youtube.com/@agenciamx_app',
             colors: ['#FF0000', '#CC0000'],
             gradient: 'linear-gradient(135deg, #FF0000 0%, #CC0000 100%)',
             glow: '0 0 40px rgba(255, 0, 0, 0.5), 0 0 80px rgba(204, 0, 0, 0.3), 0 20px 60px rgba(255, 0, 0, 0.4)',
@@ -69,17 +51,8 @@ const Footer: React.FC = () => {
             yOffset: 0
         },
         {
-            name: 'Behance',
-            url: '#',
-            colors: ['#0057FF', '#003ECC'],
-            gradient: 'linear-gradient(135deg, #0057FF 0%, #003ECC 100%)',
-            glow: '0 0 40px rgba(0, 87, 255, 0.5), 0 0 80px rgba(0, 62, 204, 0.3)',
-            size: 54,
-            yOffset: 0
-        },
-        {
             name: 'GitHub',
-            url: '#',
+            url: 'https://github.com/Agenciamx-app',
             colors: ['#333', '#000'],
             gradient: 'linear-gradient(135deg, #333333 0%, #000000 100%)',
             glow: '0 0 40px rgba(255, 255, 255, 0.2), 0 0 80px rgba(255, 255, 255, 0.1)',
@@ -227,10 +200,10 @@ const Footer: React.FC = () => {
                             ref={socialContainerRef}
                             style={{
                                 display: 'grid',
-                                gridTemplateColumns: 'repeat(4, 1fr)', // 4 per row
+                                gridTemplateColumns: 'repeat(5, 1fr)', // 5 per row
                                 gap: '1rem',
                                 width: '100%',
-                                maxWidth: '300px', // Control width
+                                maxWidth: '350px', // Control width
                                 marginBottom: '2rem' // Space before Seal
                             }}
                         >
@@ -394,7 +367,7 @@ const Footer: React.FC = () => {
                             </h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 <a
-                                    href="mailto:hola@agenciamx.app"
+                                    href="mailto:proyectos@agenciamx.app"
                                     style={{
                                         color: '#FFF',
                                         textDecoration: 'none',
@@ -405,7 +378,7 @@ const Footer: React.FC = () => {
                                     onMouseEnter={(e) => e.currentTarget.style.color = '#00FF99'}
                                     onMouseLeave={(e) => e.currentTarget.style.color = '#FFF'}
                                 >
-                                    hola@agenciamx.app
+                                    proyectos@agenciamx.app
                                 </a>
                                 <p style={{ color: '#888', fontSize: '0.9rem', margin: 0, fontFamily: 'var(--font-mono)' }}>
                                     Xalapa, Veracruz, México

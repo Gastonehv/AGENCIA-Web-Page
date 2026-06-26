@@ -4,15 +4,22 @@
 
 [build.environment]
   CI = "false"
+  NPM_CONFIG_LEGACY_PEER_DEPS = "true"
+  NODE_VERSION = "22"
 
 [context.production.environment]
-  NPM_FLAGS = "--legacy-peer-deps"
+  NPM_CONFIG_LEGACY_PEER_DEPS = "true"
   NODE_VERSION = "22"
 
 [context.deploy-preview.environment]
-  NPM_FLAGS = "--legacy-peer-deps"
+  NPM_CONFIG_LEGACY_PEER_DEPS = "true"
   NODE_VERSION = "22"
 
 [context.branch-deploy.environment]
-  NPM_FLAGS = "--legacy-peer-deps"
+  NPM_CONFIG_LEGACY_PEER_DEPS = "true"
   NODE_VERSION = "22"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

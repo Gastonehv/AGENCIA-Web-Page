@@ -9,7 +9,7 @@ const MoneyButton = () => {
     const handleClick = () => {
         // Si Lenis está activo, úsalo para navegar suavemente
         if (lenis) {
-            // Lenis usa 'easing' en lugar de 'ease' y la duración suele ser en segundos o ms según versión, 
+            // Lenis usa 'easing' en lugar de 'ease' y la duración suele ser en segundos o ms según versión,
             // pero el error TS2353 indica que 'ease' no es válido.
             lenis.scrollTo('#contacto', {
                 duration: 1.5,

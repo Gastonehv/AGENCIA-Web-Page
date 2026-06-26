@@ -828,7 +828,7 @@ const CinematicDev: React.FC = () => {
 
             // CONTACTO (Footer)
             ScrollTrigger.create({
-                trigger: "footer",
+                trigger: "#contacto",
                 start: "top 90%",
                 onEnter: () => {
                     setCurrentChapter('CONTACTO');
@@ -875,7 +875,7 @@ const CinematicDev: React.FC = () => {
                 <div id="hud-marker-1" style={{ position: 'absolute', top: 0, height: '1px' }} />
                 {/* FONDO ESENCIA INTEGRADO */}
                 {mountEssence && (
-                    <div style={{ position: 'absolute', inset: 0, zIndex: -1 }}>
+                    <div className="essence-dev-wrapper" style={{ position: 'absolute', inset: 0, zIndex: -1 }}>
                         <EssenceBackground paused={false} />
                     </div>
                 )}

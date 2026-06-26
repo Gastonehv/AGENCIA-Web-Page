@@ -147,35 +147,41 @@ const InteractionGuide: React.FC<InteractionGuideProps> = ({
     useEffect(() => {
         if (!containerRef.current) return;
         const ctx = gsap.context(() => {
+            const q = gsap.utils.selector(containerRef);
+            const animateIfPresent = (selector: string, vars: gsap.TweenVars) => {
+                const targets = q(selector);
+                if (targets.length > 0) gsap.to(targets, vars);
+            };
+            const fromToIfPresent = (selector: string, fromVars: gsap.TweenVars, toVars: gsap.TweenVars) => {
+                const targets = q(selector);
+                if (targets.length > 0) gsap.fromTo(targets, fromVars, toVars);
+            };
+
             // Gentle float of the entire pill
             gsap.to(containerRef.current, {
                 y: -5, duration: 2.8, yoyo: true, repeat: -1, ease: 'sine.inOut'
             });
 
-            // SCROLL: chevron drifts down and fades
-            gsap.to('.ig-scroll-arrow', {
+            // Animate only the glyphs rendered by this specific guide instance.
+            animateIfPresent('.ig-scroll-arrow', {
                 y: 3, opacity: 0.2, duration: 1.1, yoyo: true, repeat: -1, ease: 'sine.inOut'
             });
 
-            // DRAG: arrowheads spread apart
-            gsap.to('.ig-drag-left',  { x: -2, duration: 0.9, yoyo: true, repeat: -1, ease: 'sine.inOut' });
-            gsap.to('.ig-drag-right', { x:  2, duration: 0.9, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: 0.45 });
+            animateIfPresent('.ig-drag-left',  { x: -2, duration: 0.9, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+            animateIfPresent('.ig-drag-right', { x:  2, duration: 0.9, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: 0.45 });
 
-            // HOVER: single ring pulses outward
-            gsap.to('.ig-hover-r1', {
+            animateIfPresent('.ig-hover-r1', {
                 scale: 1.2, opacity: 0.15, duration: 1.4,
                 yoyo: true, repeat: -1, ease: 'sine.inOut',
                 transformOrigin: 'center'
             });
 
-            // CLICK: diagonal line flickers
-            gsap.to('.ig-click-rays', {
+            animateIfPresent('.ig-click-rays', {
                 opacity: 0.3, duration: 0.4,
                 yoyo: true, repeat: -1, ease: 'power2.out', repeatDelay: 1.2
             });
 
-            // HOLD: arc charges from open to closed, resets
-            gsap.fromTo('.ig-hold-arc',
+            fromToIfPresent('.ig-hold-arc',
                 { strokeDashoffset: 44 },
                 { strokeDashoffset: 0, duration: 1.8, ease: 'power1.inOut', repeat: -1, repeatDelay: 0.4 }
             );

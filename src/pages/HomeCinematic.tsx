@@ -650,63 +650,63 @@ const CinematicDev: React.FC = () => {
             // Secuencia Explícita y Simétrica para el Equipo (Totalmente atada al scroll)
             const rows = gsap.utils.toArray<HTMLElement>('.team-member-row');
 
+            const addToTimeline = (
+                target: Element | HTMLElement | null,
+                vars: gsap.TweenVars,
+                position?: gsap.Position
+            ) => {
+                if (target) tlNucleoGlobal.to(target, vars, position);
+                return tlNucleoGlobal;
+            };
+
+            const animateMember = (row: HTMLElement | undefined, position: gsap.Position) => {
+                if (!row) return;
+                const left = row.querySelector('.rift-left');
+                const right = row.querySelector('.rift-right');
+                const image = row.querySelector('.rift-img');
+
+                tlNucleoGlobal.to(row, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, position);
+                addToTimeline(left, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<");
+                addToTimeline(right, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<");
+                addToTimeline(image, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
+            };
+
+            const exitMember = (row: HTMLElement | undefined) => {
+                if (!row) return;
+                const left = row.querySelector('.rift-left');
+                const right = row.querySelector('.rift-right');
+                const image = row.querySelector('.rift-img');
+
+                tlNucleoGlobal.to(row, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">");
+                addToTimeline(left, { xPercent: 0, duration: 1, ease: "power2.in" }, "<");
+                addToTimeline(right, { xPercent: 0, duration: 1, ease: "power2.in" }, "<");
+                addToTimeline(image, { opacity: 0, scale: 1, duration: 1 }, "<");
+            };
+
             // --- INTEGRANTE 1: CEO (USUARIO) ---
             const row1 = rows[0];
-            const l1 = row1.querySelector('.rift-left');
-            const r1 = row1.querySelector('.rift-right');
-            const img1 = row1.querySelector('.rift-img');
-            // const id1 = row1.querySelector('.rift-id');
-
-            // Entrada CEO
-            tlNucleoGlobal.to(row1, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, "+=0.2")
-                .to(l1, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
-                .to(r1, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
-                .to(img1, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
+            animateMember(row1, "+=0.2");
 
             // Pausa CEO
             tlNucleoGlobal.to({}, { duration: 3 });
 
             // Salida CEO
-            tlNucleoGlobal.to(row1, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
-                .to(l1, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                .to(r1, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                .to(img1, { opacity: 0, scale: 1, duration: 1 }, "<");
+            exitMember(row1);
 
             // --- INTEGRANTE 2: CTO (GAEL) ---
             const row2 = rows[1];
-            const l2 = row2.querySelector('.rift-left');
-            const r2 = row2.querySelector('.rift-right');
-            const img2 = row2.querySelector('.rift-img');
-            // const id2 = row2.querySelector('.rift-id');
-
-            // Entrada CTO
-            tlNucleoGlobal.to(row2, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
-                .to(l2, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
-                .to(r2, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
-                .to(img2, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
+            animateMember(row2, ">+0.5");
 
             // Pausa CTO
             tlNucleoGlobal.to({}, { duration: 3 });
 
             // Salida CTO
-            tlNucleoGlobal.to(row2, { opacity: 0, pointerEvents: 'none', duration: 0.5 }, ">")
-                .to(l2, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                .to(r2, { xPercent: 0, duration: 1, ease: "power2.in" }, "<")
-                .to(img2, { opacity: 0, scale: 1, duration: 1 }, "<");
+            exitMember(row2);
 
             // --- INTEGRANTE 3: ALMA ---
             const row3 = rows[2];
             if (row3) {
-                const l3 = row3.querySelector('.rift-left');
-                const r3 = row3.querySelector('.rift-right');
-                const img3 = row3.querySelector('.rift-img');
-                // const id3 = row3.querySelector('.rift-id');
-
-                // Entrada ALMA
-                tlNucleoGlobal.to(row3, { opacity: 1, pointerEvents: 'all', duration: 0.5 }, ">+0.5")
-                    .to(l3, { xPercent: -100, duration: 1.5, ease: "power4.inOut" }, "<")
-                    .to(r3, { xPercent: 100, duration: 1.5, ease: "power4.inOut" }, "<")
-                    .to(img3, { opacity: 0.95, scale: 1.1, duration: 1.5, ease: "power4.inOut" }, "<");
+                animateMember(row3, ">+0.5");
 
                 // Pausa ALMA
                 tlNucleoGlobal.to({}, { duration: 3 });

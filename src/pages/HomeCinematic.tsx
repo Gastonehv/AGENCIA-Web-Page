@@ -218,7 +218,7 @@ const CinematicDev: React.FC = () => {
     React.useEffect(() => {
         const ctx = gsap.context(() => {
             // Animación de Fondo (Ciclo de Color) - MANTENIDA
-            gsap.to(bgRef.current, {
+            if (bgRef.current || containerRef.current) gsap.to(bgRef.current || containerRef.current, {
                 backgroundColor: '#89CFF0',
                 duration: 2,
                 repeat: -1,
@@ -266,7 +266,7 @@ const CinematicDev: React.FC = () => {
                 }
             });
 
-            tlZoom.to(maskGroupRef.current, {
+            if (maskGroupRef.current) tlZoom.to(maskGroupRef.current, {
                 scale: 150, // Crecimiento masivo para "atravesar"
                 // Coordenadas calculadas del centro de la N (9164, 1299) sobre el viewBox (17009, 2588)
                 // X: 9164/17009 = 53.8%
@@ -277,14 +277,14 @@ const CinematicDev: React.FC = () => {
             });
 
             // 2. Desvanecimiento de la Capa Roja
-            tlZoom.to(redLayerRef.current, {
+            if (redLayerRef.current) tlZoom.to(redLayerRef.current, {
                 autoAlpha: 0, // Se desvanece hasta ser invisible
                 ease: "power1.out",
                 duration: 0.6 // Un poco más rápido para revelar la ventana antes
             }, "<"); // "<" = Inicia al mismo tiempo que el inicio del zoom
 
             // 3. Aparición/Acercamiento de la Ventana
-            tlZoom.fromTo(windowRef.current,
+            if (windowRef.current) tlZoom.fromTo(windowRef.current,
                 { scale: 0.4 },
                 { scale: 0.8, duration: 1, ease: "power2.inOut" },
                 "<"
@@ -371,7 +371,7 @@ const CinematicDev: React.FC = () => {
             }, "<");
 
             // SIMULTÁNEO: La ventana de video se desvanece y desaparece para revelar el fondo blanco
-            tlZoom.to(windowRef.current, {
+            if (windowRef.current) tlZoom.to(windowRef.current, {
                 autoAlpha: 0,
                 scale: 0.9,
                 filter: 'blur(20px)',

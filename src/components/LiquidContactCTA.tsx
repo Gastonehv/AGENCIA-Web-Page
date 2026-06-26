@@ -33,7 +33,6 @@ const LiquidContactCTA: React.FC<LiquidContactCTAProps> = ({
                 u_softness: 0.5,
                 u_shiftRed: 0.3,   // Magenta/Cyan aesthetic
                 u_shiftBlue: 0.6,
-                u_shiftGreen: 0.2,
                 u_distortion: 0.1,
                 u_contour: 0.05,
                 u_angle: 120,

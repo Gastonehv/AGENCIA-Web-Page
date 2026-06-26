@@ -4,25 +4,26 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
 import EssenceBackground from '../components/EssenceBackground';
 import officialTypography from '../assets/logos/Tipografia_agencIA_negro.png';
-import NeuralNetworkALMA from '../components/NeuralNetworkALMA';
 import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
 import Prism from '../components/Prism';
-import ShowcaseSlider from '../components/ShowcaseSlider';
 import ceoImg from '../assets/team/ceo.jpg';
 import gaelImg from '../assets/team/gael_oracle.png';
 import almaLogo from '../assets/images/alma_logo_final.png';
 import almaVideo from '../assets/videos/alma_fondo_v3_opt.mp4';
 import footerLogo from '../assets/logo_agencia_full.png';
 // import AlmaSection from '../components/AlmaSection'; // Unused in this version
-import Symbiosis from '../components/Symbiosis';
 import GlitchPortal from '../components/GlitchPortal';
-import Footer from '../components/Footer';
 import ChapterHUD from '../components/ChapterHUD';
 import Loader from '../components/Loader';
 import InteractionGuide from '../components/InteractionGuide';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const NeuralNetworkALMA = React.lazy(() => import('../components/NeuralNetworkALMA'));
+const ShowcaseSlider = React.lazy(() => import('../components/ShowcaseSlider'));
+const Symbiosis = React.lazy(() => import('../components/Symbiosis'));
+const Footer = React.lazy(() => import('../components/Footer'));
 
 const MANIFESTO = [
     {
@@ -1004,7 +1005,9 @@ const CinematicDev: React.FC = () => {
                 {/* Alma Section removida por redundancia (ya integrada en el Rift) */}
                 {mountNeural && (
                     <div className="neural-container" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-                        <NeuralNetworkALMA />
+                        <React.Suspense fallback={null}>
+                            <NeuralNetworkALMA />
+                        </React.Suspense>
                     </div>
                 )}
 
@@ -1286,7 +1289,9 @@ const CinematicDev: React.FC = () => {
                 overflow: 'hidden'
             }}>
                 <div id="hud-marker-4" style={{ position: 'absolute', top: 0, height: '1px' }} />
-                <ShowcaseSlider />
+                <React.Suspense fallback={null}>
+                    <ShowcaseSlider />
+                </React.Suspense>
                 {/* GUÍA DE INTERACCIÓN LOCAL */}
                 <InteractionGuide
                     isActive={currentChapter === 'EJECUCIÓN'}
@@ -1471,7 +1476,9 @@ const CinematicDev: React.FC = () => {
             }}>
                 <div id="simbiosis-content" style={{ width: '100%', height: '100%', position: 'relative' }}>
                     <div id="hud-marker-6" style={{ position: 'absolute', top: 0, height: '1px' }} />
-                    <Symbiosis />
+                    <React.Suspense fallback={null}>
+                        <Symbiosis />
+                    </React.Suspense>
                     {/* GUÍA DE INTERACCIÓN LOCAL */}
                     <InteractionGuide
                         isActive={currentChapter === 'SIMBIOSIS'}
@@ -1697,7 +1704,9 @@ const CinematicDev: React.FC = () => {
             {/* FINAL FOOTER - PURE ORIGINAL */}
             <div id="hud-marker-8" style={{ width: '100%', height: '1px' }} />
             <div id="contacto">
-                <Footer />
+                <React.Suspense fallback={null}>
+                    <Footer />
+                </React.Suspense>
             </div>
 
             {/* CINEMATIC HUD (ODOMETER + CHAPTERS) */}

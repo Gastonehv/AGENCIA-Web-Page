@@ -901,7 +901,7 @@ const CinematicDev: React.FC = () => {
                         {/* VIDEO DE FONDO: Esencia Hero Ultra */}
                         <video
                             src={essenceHeroVideo}
-                            autoPlay muted loop playsInline
+                            autoPlay muted loop playsInline preload="metadata"
                             style={{
                                 width: '100%', height: '100%',
                                 objectFit: 'cover', opacity: 0.8
@@ -1358,7 +1358,7 @@ const CinematicDev: React.FC = () => {
                                             }}>
                                                 <video
                                                     src={almaVideo}
-                                                    autoPlay muted loop playsInline
+                                                    autoPlay muted loop playsInline preload="metadata"
                                                     style={{
                                                         width: '100%', height: '100%',
                                                         objectFit: 'cover',

@@ -177,6 +177,8 @@ const Footer: React.FC = () => {
                         <img
                             src={footerLogo}
                             alt="AgencIA Logo"
+                            loading="lazy"
+                            decoding="async"
                             style={{
                                 width: '180px', // Slightly larger for impact
                                 height: 'auto',

@@ -26,6 +26,21 @@ const SEO: React.FC<SEOProps> = ({
     const canonicalUrl = canonical || url;
     const imageUrl = toAbsoluteImage(image);
 
+    React.useEffect(() => {
+        const cleanup = window.setTimeout(() => {
+            const keepLast = (selector: string) => {
+                const nodes = Array.from(document.querySelectorAll(selector));
+                nodes.slice(0, -1).forEach(node => node.parentElement?.removeChild(node));
+            };
+            keepLast('meta[name="description"]');
+            keepLast('meta[name="keywords"]');
+            keepLast('meta[name="robots"]');
+            keepLast('link[rel="canonical"]');
+        }, 0);
+
+        return () => window.clearTimeout(cleanup);
+    }, [description, keywords, canonicalUrl, noindex]);
+
     return (
         <Helmet>
             {/* Standard Metrics */}

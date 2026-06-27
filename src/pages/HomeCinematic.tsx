@@ -895,15 +895,17 @@ const CinematicDev: React.FC = () => {
                 opacity: 1,
             }}></div>
 
-            {/* SECCIÓN 1: HERO PORTAL */}
-            <section id="hero" className="cinematic-content" style={{
+            <section id="hero" className="cinematic-content"
+                style={{
                 position: 'relative',
-                width: '100%', height: '100vh',
+                width: '100%',
+                height: isMobileViewport ? 'auto' : '100vh',
+                minHeight: isMobileViewport ? '100svh' : '100vh',
                 zIndex: 1000,
-                overflow: 'hidden' // BLOCK SIDE MARGIN BUG
+                overflow: isMobileViewport ? 'visible' : 'hidden' // BLOCK SIDE MARGIN BUG
             }}>
                 <div id="hud-marker-1" style={{ position: 'absolute', top: 0, height: '1px' }} />
-                {/* FONDO ESENCIA INTEGRADO */}
+
                 {mountEssence && (
                     <div className="essence-dev-wrapper" style={{ position: 'absolute', inset: 0, zIndex: -1 }}>
                         <EssenceBackground paused={false} />
@@ -913,13 +915,13 @@ const CinematicDev: React.FC = () => {
                 {/* CAPA 1: VENTANA FLOTANTE (TEXTO SOBRE BLANCO) */}
                 <div ref={windowRef} style={{
                     position: 'absolute',
-                    top: '50%', left: '50%',
+                    top: isMobileViewport ? '46%' : '50%', left: '50%',
                     transform: 'translate(-50%, -50%)',
                     // FIX: mobile-safe size - 90vw width, height scales proportionally
-                    width: 'min(60vw, 90vw)',
-                    height: 'clamp(160px, 35vw, 600px)',
+                    width: isMobileViewport ? 'min(94vw, 520px)' : 'min(60vw, 90vw)',
+                    height: isMobileViewport ? 'clamp(240px, 72vw, 420px)' : 'clamp(160px, 35vw, 600px)',
                     borderRadius: '20px',
-                    // FIX: reduced shadow offsets for mobile (original 40-50px caused viewport bleed)
+
                     boxShadow: '-2.8vw 3.5vw 4vw rgba(0,0,0,0.5), -1vw 1.4vw 1.7vw rgba(0,0,0,0.3)',
                     border: '1px solid rgba(255, 255, 255, 0.4)',
                     backgroundColor: '#000000',
@@ -1215,12 +1217,12 @@ const CinematicDev: React.FC = () => {
                 width: '100%',
                 backgroundColor: '#000000',
                 display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                overflow: 'hidden',
+                justifyContent: isMobileViewport ? 'flex-start' : 'center',
+                alignItems: isMobileViewport ? 'flex-start' : 'center',
+                overflow: isMobileViewport ? 'visible' : 'hidden',
                 zIndex: 800, // Narrative Shield
                 position: 'relative',
-                padding: isMobileViewport ? '5rem 0 4rem' : 0
+                padding: isMobileViewport ? '7rem 0 4rem' : 0
             }}>
 
                 <div id="hud-marker-3" style={{ position: 'absolute', top: 0, height: '1px' }} />
@@ -1673,8 +1675,7 @@ const CinematicDev: React.FC = () => {
                         </h2>
 
                         <a
-                            href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssM2lUv8W368QO4u3P7Z9h8r6o2l1"
-                            target="_blank" rel="noopener noreferrer"
+                            href="/contacto"
                             style={{ textDecoration: 'none' }}
                         >
                             <button
@@ -1718,6 +1719,7 @@ const CinematicDev: React.FC = () => {
                                 <span style={{ fontSize: '1.8rem' }}>→</span>
                             </button>
                         </a>
+
                     </div>
                 </div>
 

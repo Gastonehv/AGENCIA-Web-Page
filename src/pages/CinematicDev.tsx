@@ -1319,8 +1319,7 @@ const CinematicDev: React.FC = () => {
                         </h2>
 
                         <a
-                            href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssM2lUv8W368QO4u3P7Z9h8r6o2l1"
-                            target="_blank" rel="noopener noreferrer"
+                            href="/contacto"
                             style={{ textDecoration: 'none' }}
                         >
                             <button
@@ -1360,6 +1359,7 @@ const CinematicDev: React.FC = () => {
                                 <span style={{ fontSize: '1.8rem' }}>→</span>
                             </button>
                         </a>
+
                     </div>
                 </div>
 

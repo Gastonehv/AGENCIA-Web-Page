@@ -108,9 +108,10 @@ const CinematicDev: React.FC = () => {
     const monolithRef = useRef<HTMLDivElement>(null);
 
     const [activeManifestoItem, setActiveManifestoItem] = React.useState(0);
-    const [mountEssence, setMountEssence] = React.useState(true);
+    const [mountEssence, setMountEssence] = React.useState(false);
     const [mountNeural, setMountNeural] = React.useState(true);
     const [mountPrism, setMountPrism] = React.useState(false);
+
 
     React.useEffect(() => {
         const el = almaVideoWrapRef.current;

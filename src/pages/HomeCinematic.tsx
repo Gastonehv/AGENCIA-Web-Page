@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
+import essenceHeroPoster from '../assets/images/neuro_glass_hero.png';
 import EssenceBackground from '../components/EssenceBackground';
 import officialTypography from '../assets/logos/Tipografia_agencIA_negro.png';
 import ScrambleText from '../components/ScrambleText';
@@ -74,8 +75,13 @@ const CinematicDev: React.FC = () => {
     // Referencia para la capa de éter líquido (Deprecado)
     // const etherLayerRef = useRef<HTMLDivElement>(null);
 
-    // Referencia para la ventana contenedora (Re-asignada al heroWindowRef)
+    // Referencia al Prisma para controlarlo vía ScrollTrigger
     const windowRef = heroWindowRef;
+
+    // Referencia al contenedor de medios para carga diferida
+    const almaVideoWrapRef = useRef<HTMLDivElement>(null);
+    const [loadHeroVideo, setLoadHeroVideo] = React.useState(false);
+    const [loadAlmaVideo, setLoadAlmaVideo] = React.useState(false);
 
     // Referencia al Prisma para controlarlo vía ScrollTrigger
     const prismRef = useRef<any>(null);
@@ -89,6 +95,24 @@ const CinematicDev: React.FC = () => {
     const [mountEssence, setMountEssence] = React.useState(true);
     const [mountNeural, setMountNeural] = React.useState(true);
     const [mountPrism, setMountPrism] = React.useState(false);
+
+    React.useEffect(() => {
+        const timer = window.setTimeout(() => setLoadHeroVideo(true), 1100);
+        return () => window.clearTimeout(timer);
+    }, []);
+
+    React.useEffect(() => {
+        const el = almaVideoWrapRef.current;
+        if (!el) return;
+        const obs = new IntersectionObserver((entries) => {
+            if (entries.some(entry => entry.isIntersecting)) {
+                setLoadAlmaVideo(true);
+                obs.disconnect();
+            }
+        }, { rootMargin: '240px 0px' });
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
 
     const [orientationPermitted, setOrientationPermitted] = React.useState(false);
     const orientationRef = useRef({ x: 0, y: 0 });
@@ -901,8 +925,9 @@ const CinematicDev: React.FC = () => {
                     <div style={{ position: 'absolute', inset: 0, borderRadius: '20px', overflow: 'hidden' }}>
                         {/* VIDEO DE FONDO: Esencia Hero Ultra */}
                         <video
-                            src={essenceHeroVideo}
-                            autoPlay muted loop playsInline preload="metadata"
+                            src={loadHeroVideo ? essenceHeroVideo : ''}
+                            poster={essenceHeroPoster}
+                            autoPlay muted loop playsInline preload="none"
                             style={{
                                 width: '100%', height: '100%',
                                 objectFit: 'cover', opacity: 0.8
@@ -1351,19 +1376,23 @@ const CinematicDev: React.FC = () => {
                                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                                             backgroundColor: 'transparent'
                                         }}>
-                                            <div style={{
-                                                width: 'clamp(280px, 30vw, 450px)',
-                                                aspectRatio: '2.5 / 1',
-                                                maskImage: `url(${almaLogo})`,
-                                                WebkitMaskImage: `url(${almaLogo})`,
-                                                maskSize: 'contain', WebkitMaskSize: 'contain',
-                                                maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
-                                                maskPosition: 'center', WebkitMaskPosition: 'center',
-                                                backgroundColor: '#000'
-                                            }}>
+                                            <div
+                                                ref={almaVideoWrapRef}
+                                                style={{
+                                                    width: 'clamp(280px, 30vw, 450px)',
+                                                    aspectRatio: '2.5 / 1',
+                                                    position: 'relative',
+                                                    maskImage: `url(${almaLogo})`,
+                                                    WebkitMaskImage: `url(${almaLogo})`,
+                                                    maskSize: 'contain', WebkitMaskSize: 'contain',
+                                                    maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
+                                                    maskPosition: 'center', WebkitMaskPosition: 'center',
+                                                    backgroundColor: '#000'
+                                                }}>
                                                 <video
-                                                    src={almaVideo}
-                                                    autoPlay muted loop playsInline preload="metadata"
+                                                    src={loadAlmaVideo ? almaVideo : ''}
+                                                    poster={almaLogo}
+                                                    autoPlay muted loop playsInline preload="none"
                                                     style={{
                                                         width: '100%', height: '100%',
                                                         objectFit: 'cover',

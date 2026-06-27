@@ -83,8 +83,9 @@ const ShowcaseSlider: React.FC<ShowcaseSliderProps> = ({ initialHash }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const sliderRef = useRef<HTMLDivElement>(null);
     const cardContainerRefs = useRef<(HTMLDivElement | null)[]>([]); // New ref for the outer card
+
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]); // Keeps existing ref for image window (Parallax)
-    // Fix: Allow both Div and Video elements for the parallax target
+
     const imagesRef = useRef<(HTMLElement | null)[]>([]);
 
     const { lenis } = useScroll(); // Need Lenis for precision scrolling

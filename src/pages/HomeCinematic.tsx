@@ -56,6 +56,16 @@ const CinematicDev: React.FC = () => {
 
     const [currentChapter, setCurrentChapter] = React.useState(window.location.pathname === '/esencia' ? 'ESENCIA' : 'INICIO');
     const [chapterNumber, setChapterNumber] = React.useState(window.location.pathname === '/esencia' ? '1' : '0');
+    const [isMobileViewport, setIsMobileViewport] = React.useState(() =>
+        typeof window !== 'undefined' ? window.innerWidth < 768 : false
+    );
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobileViewport(window.innerWidth < 768);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // RUTAS DEL LOGOTIPO (Vectores "AGENCIA")
     const logoPaths = [
@@ -932,16 +942,18 @@ const CinematicDev: React.FC = () => {
                     </div>
 
                     {/* 1.2 CAPA DE TEXTO (Encima del Video, sin restricciones de overflow) */}
-                    <div ref={heroTextRef} className="text-container" style={{ textAlign: 'center', zIndex: 10, position: 'relative' }}>
+                    <div ref={heroTextRef} className="text-container" style={{ textAlign: 'center', zIndex: 10, position: 'relative', width: '100%', maxWidth: '100%', padding: isMobileViewport ? '0 1rem' : 0, boxSizing: 'border-box' }}>
                         <h1 style={{
-                            fontSize: 'clamp(2rem, 6.5vw, 8.5rem)',
-                            lineHeight: 0.9, fontWeight: 900, letterSpacing: '-0.04em', margin: 0,
+                            fontSize: isMobileViewport ? 'clamp(1.5rem, 11vw, 4rem)' : 'clamp(2rem, 6.5vw, 8.5rem)',
+                            lineHeight: isMobileViewport ? 0.95 : 0.9, fontWeight: 900, letterSpacing: isMobileViewport ? '-0.02em' : '-0.04em', margin: 0,
                             textTransform: 'uppercase', color: '#000000',
                             // Glow blanco ultra-refinado y multicapa para separar del video oscuro
                             textShadow: '0 0 5px rgba(255,255,255,1), 0 0 15px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.5)',
-                            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
+                            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                            width: '100%',
+                            maxWidth: isMobileViewport ? 'calc(100vw - 2rem)' : 'none'
                         }}>
-                            {/* LÍNEA 1: NUESTRA */}
+
                             <span className="text-nuestra" style={{
                                 display: 'inline-block', fontSize: '0.4em', letterSpacing: '0.2em', marginBottom: '0.2em',
                                 // Glow proporcional para línea menor
@@ -953,10 +965,10 @@ const CinematicDev: React.FC = () => {
 
                             {/* LÍNEA 2: ESENCIA */}
                             <div className="text-esencia" style={{
-                                display: 'flex', gap: '0', whiteSpace: 'nowrap',
-                                opacity: 0, transform: 'scale(0.9)', filter: 'blur(10px)'
+                                display: 'flex', gap: '0', whiteSpace: isMobileViewport ? 'normal' : 'nowrap', flexWrap: isMobileViewport ? 'wrap' : 'nowrap', justifyContent: 'center', alignItems: 'center',
+                                opacity: 0, transform: 'scale(0.9)', filter: 'blur(10px)', width: '100%'
                             }}>
-                                <span className="word-esenc" style={{ display: 'inline-block' }}>ESENC</span>
+                                <span className="word-esenc" style={{ display: 'inline-block', overflow: 'hidden' }}>ESENC</span>
                                 <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', transformOrigin: '70% 50%' }}>IA</span>
                             </div>
                         </h1>
@@ -964,6 +976,7 @@ const CinematicDev: React.FC = () => {
                 </div>
 
                 {/* CAPA 2: CAPA NEGRA INTERMEDIA (Transición) */}
+
                 <div ref={redLayerRef} style={{
                     position: 'absolute', inset: 0, zIndex: 2,
                     backgroundColor: '#000000', // Modificado a NEGRO por solicitud
@@ -1197,7 +1210,8 @@ const CinematicDev: React.FC = () => {
 
             {/* --- SECCIÓN 3: CAPÍTULO 3 (EL MANIFIESTO CON VELO IRIDISCENTE) --- */}
             <section id="capitulo-3" style={{
-                height: '100vh',
+                height: isMobileViewport ? 'auto' : '100vh',
+                minHeight: isMobileViewport ? '100svh' : '100vh',
                 width: '100%',
                 backgroundColor: '#000000',
                 display: 'flex',
@@ -1205,8 +1219,10 @@ const CinematicDev: React.FC = () => {
                 alignItems: 'center',
                 overflow: 'hidden',
                 zIndex: 800, // Narrative Shield
-                position: 'relative'
+                position: 'relative',
+                padding: isMobileViewport ? '5rem 0 4rem' : 0
             }}>
+
                 <div id="hud-marker-3" style={{ position: 'absolute', top: 0, height: '1px' }} />
                 {/* ATMOSPHERIC WHITE FOG OVERLAY (FOR SEAMLESS TRANSITION) */}
                 <div className="manifesto-white-fog" style={{
@@ -1253,14 +1269,15 @@ const CinematicDev: React.FC = () => {
                         className={`manifesto-item manifesto-item-${i}`}
                         style={{
                             display: 'flex', flexDirection: 'column', justifyContent: 'center',
-                            alignItems: 'center', textAlign: 'center', padding: 'clamp(2rem, 5vw, 4rem)',
+                            alignItems: 'center', textAlign: 'center', padding: isMobileViewport ? '1.5rem 1rem' : 'clamp(2rem, 5vw, 4rem)',
                             width: '100%', boxSizing: 'border-box', zIndex: 10,
                         }}
                     >
                         <h2 style={{
-                            fontSize: 'clamp(1.5rem, 5vw, 6rem)', lineHeight: 1.1, textTransform: 'uppercase',
-                            marginBottom: '2rem', color: '#FFF', fontWeight: 900,
+                            fontSize: isMobileViewport ? 'clamp(1.8rem, 8vw, 3rem)' : 'clamp(1.5rem, 5vw, 6rem)', lineHeight: 1.08, textTransform: 'uppercase',
+                            marginBottom: isMobileViewport ? '1rem' : '2rem', color: '#FFF', fontWeight: 900,
                             letterSpacing: '-0.02em', textShadow: '0 4px 20px rgba(0,0,0,0.8)',
+                            maxWidth: isMobileViewport ? '92vw' : 'none'
                         }}>
                             <ScrambleText
                                 text={item.title} speed={1.2} iridescent={true}
@@ -1269,16 +1286,16 @@ const CinematicDev: React.FC = () => {
                         </h2>
 
                         <div style={{
-                            fontSize: 'clamp(1rem, 1.8vw, 1.3rem)', lineHeight: 1.6,
+                            fontSize: isMobileViewport ? 'clamp(0.95rem, 3.6vw, 1.15rem)' : 'clamp(1rem, 1.8vw, 1.3rem)', lineHeight: isMobileViewport ? 1.45 : 1.6,
                             color: 'rgba(255,255,255,0.85)', textShadow: '0 2px 10px rgba(0,0,0,0.5)',
-                            fontFamily: 'monospace', maxWidth: '800px',
+                            fontFamily: 'monospace', maxWidth: isMobileViewport ? '92vw' : '800px',
                         }}>
                             {item.body.map((line, j) => (
                                 <p key={j} className={`manifesto-body-line ${i === 3 ? 'imposible-climax' : ''}`} style={{
                                     margin: '0 0 0.8rem 0',
                                     opacity: 0,
                                     fontWeight: i === 3 ? 900 : 500,
-                                    fontSize: i === 3 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 'inherit',
+                                    fontSize: i === 3 ? (isMobileViewport ? 'clamp(1rem, 5vw, 1.6rem)' : 'clamp(1.5rem, 3vw, 2.5rem)') : 'inherit',
                                     color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
                                     textShadow: i === 3
                                         ? '0 0 20px rgba(0,255,153,0.5), 0 0 40px rgba(0,255,153,0.2)'
@@ -1291,7 +1308,7 @@ const CinematicDev: React.FC = () => {
                         </div>
                     </div>
                 ))}
-                {/* GUÍA DE INTERACCIÓN LOCAL */}
+
                 <InteractionGuide
                     isActive={currentChapter === 'GÉNESIS'}
                     items={[

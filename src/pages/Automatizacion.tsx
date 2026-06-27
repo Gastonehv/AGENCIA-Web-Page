@@ -126,15 +126,25 @@ const Automatizacion: React.FC = () => {
             overflowX: 'hidden',
         }}>
             <SEO
-                title="Automatización de Procesos con IA para Empresas | AgencIA"
-                description="Automatiza tus operaciones con agentes de IA. Respuesta al cliente 10× más rápida, −73% errores operativos, operación 24/7 sin intervención humana."
+                title="Automatización de procesos con IA para empresas"
+                description="Automatiza atención, ventas, seguimiento y operaciones con agentes de IA. AgencIA diseña flujos inteligentes para operar 24/7 y escalar con menos fricción."
+                keywords="automatización con IA, agentes de IA, automatización de procesos, IA para empresas, workflows, México"
+                url="https://agenciamx.app/automatizacion"
+                canonical="https://agenciamx.app/automatizacion"
             />
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "Service",
                 "name": "Automatización de Procesos con IA",
-                "provider": { "@type": "Organization", "name": "AgencIA" },
-                "description": "Automatización de procesos empresariales con agentes de IA."
+                "serviceType": "Automatización de procesos empresariales con inteligencia artificial",
+                "provider": {
+                    "@type": "Organization",
+                    "name": "AgencIA",
+                    "url": "https://agenciamx.app/"
+                },
+                "areaServed": "MX",
+                "url": "https://agenciamx.app/automatizacion",
+                "description": "Automatización de atención, ventas, seguimiento y operaciones con agentes de IA para empresas."
             }} />
 
             {/* SHARE TOAST */}

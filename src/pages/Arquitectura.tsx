@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-
 import SEO from '../components/SEO';
+import StructuredData from '../components/StructuredData';
 import InteractionGuide from '../components/InteractionGuide';
 import { Terminal, Activity, Cpu, ShieldCheck, Zap, RefreshCw, Send } from 'lucide-react';
 import { useSound } from '../context/SoundContext';
@@ -223,9 +223,26 @@ const Arquitectura: React.FC = () => {
             }}
         >
             <SEO 
-                title="Arquitectura de Software y Sistemas a Medida | AgencIA" 
-                description="Desarrollo e infraestructura de software robusto para empresas. Diseñamos sistemas escalables, seguros y listos para operar desde el primer día." 
+                title="Infraestructura digital y arquitectura de software" 
+                description="AgencIA construye sistemas a medida, apps, integraciones y arquitectura de software escalable para negocios que necesitan operar sin fragilidad." 
+                keywords="arquitectura de software, sistemas a medida, infraestructura digital, desarrollo de apps, integraciones, México"
+                url="https://agenciamx.app/infraestructura"
+                canonical="https://agenciamx.app/infraestructura"
             />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "name": "Infraestructura digital y arquitectura de software",
+                "serviceType": "Desarrollo de sistemas a medida e infraestructura digital",
+                "provider": {
+                    "@type": "Organization",
+                    "name": "AgencIA",
+                    "url": "https://agenciamx.app/"
+                },
+                "areaServed": "MX",
+                "url": "https://agenciamx.app/infraestructura",
+                "description": "Diseño y construcción de sistemas digitales, integraciones, apps y arquitectura de software escalable."
+            }} />
 
             {/* FIXED 3D VIEWPORT */}
             <div ref={fixedViewportRef} style={{

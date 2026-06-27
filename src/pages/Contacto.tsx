@@ -125,16 +125,23 @@ const Contacto: React.FC = () => {
             }}
         >
             <SEO
-                title="Contacto"
-                description="Conéctate con el futuro. Hablemos de cómo la IA puede transformar tu marca."
+                title="Contacto para proyectos de IA, web y automatización"
+                description="Agenda una conversación con AgencIA para desarrollar tu sitio, app, automatización con IA, sistema digital o estrategia de crecimiento."
+                keywords="contacto agencia IA, cotizar desarrollo web, cotizar automatización con IA, agencia digital México"
+                url="https://agenciamx.app/contacto"
+                canonical="https://agenciamx.app/contacto"
             />
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "ContactPage",
                 "name": "Contacto AgencIA",
+                "url": "https://agenciamx.app/contacto",
+                "description": "Formulario de contacto para proyectos de desarrollo web, automatización con IA, sistemas digitales e identidad premium.",
                 "publisher": {
                     "@type": "Organization",
-                    "name": "AgencIA"
+                    "name": "AgencIA",
+                    "url": "https://agenciamx.app/",
+                    "email": "contacto@agenciamx.app"
                 }
             }} />
             {/* Vortex Background - Exclusive */}

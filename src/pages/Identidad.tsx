@@ -6,8 +6,11 @@ const Identidad: React.FC = () => {
     return (
         <div className="identidad-page-root">
             <SEO
-                title="Neuro-Glass | La Identidad del Futuro"
-                description="Conoce el origen de Neuro-Glass. Una historia de evolución, data y diseño forjada por A.L.M.A."
+                title="Identidad visual premium y estrategia de marca"
+                description="AgencIA crea identidad visual, narrativa y dirección artística premium para marcas que necesitan verse memorables, elegantes y diferentes."
+                keywords="identidad visual premium, branding con IA, estrategia de marca, dirección artística, AgencIA"
+                url="https://agenciamx.app/identidad"
+                canonical="https://agenciamx.app/identidad"
             />
             <NeuroIdentity />
         </div>

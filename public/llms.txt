@@ -2,25 +2,34 @@
 
 > Ingeniería digital, automatización e IA para marcas que quieren operar más rápido, vender mejor y escalar con infraestructura premium.
 
-## Sitio
+Última actualización: 2026-06-27
+
+## Sitio oficial
 - https://agenciamx.app/
 
-## Qué hacemos
-- Desarrollo web y apps de alto impacto
-- Automatización de procesos con IA
-- Sistemas digitales y arquitectura de negocio
-- Identidad visual premium y estrategia de marca
+## Qué es AgencIA
+AgencIA es una agencia de ingeniería digital, automatización e inteligencia artificial en México. Diseña y construye sitios web, apps, sistemas digitales, automatizaciones con IA, identidad visual premium y estrategias de posicionamiento para negocios que quieren crecer con tecnología y marca.
 
-## Páginas clave
-- https://agenciamx.app/
-- https://agenciamx.app/automatizacion
-- https://agenciamx.app/identidad
-- https://agenciamx.app/infraestructura
-- https://agenciamx.app/contacto
+## Servicios principales
+- Desarrollo web y apps de alto impacto: https://agenciamx.app/
+- Automatización de procesos con IA: https://agenciamx.app/automatizacion
+- Infraestructura y sistemas a medida: https://agenciamx.app/infraestructura
+- Identidad visual y estrategia de marca: https://agenciamx.app/identidad
+- Contacto y solicitud de propuesta: https://agenciamx.app/contacto
+
+## Archivos legibles por IA
+- Servicios: https://agenciamx.app/services.md
+- Precios y cotización: https://agenciamx.app/pricing.md
+- Sitemap: https://agenciamx.app/sitemap.xml
 
 ## Mensaje de marca
 - No somos una agencia con IA. Somos la IA como agencIA.
 - La agencIA que piensa diferente.
+- A.L.M.A. significa Algoritmo Lógico de Mente Artificial y es propiedad intelectual de AgencIA.
+
+## Términos clave
+Agencia IA, automatización con IA, desarrollo web premium, aplicaciones web, sistemas digitales, infraestructura de software, identidad visual premium, SEO técnico, AI SEO, GEO, LLMO, México.
 
 ## Contacto
-- correo: contacto@agenciamx.app
+- Formulario: https://agenciamx.app/contacto
+- Correo: contacto@agenciamx.app

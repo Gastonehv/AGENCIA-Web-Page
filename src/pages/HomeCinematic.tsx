@@ -97,11 +97,6 @@ const CinematicDev: React.FC = () => {
     const [mountPrism, setMountPrism] = React.useState(false);
 
     React.useEffect(() => {
-        const timer = window.setTimeout(() => setLoadHeroVideo(true), 1100);
-        return () => window.clearTimeout(timer);
-    }, []);
-
-    React.useEffect(() => {
         const el = almaVideoWrapRef.current;
         if (!el) return;
         const obs = new IntersectionObserver((entries) => {
@@ -137,6 +132,7 @@ const CinematicDev: React.FC = () => {
     React.useEffect(() => {
         const handleFirstInteraction = () => {
             requestOrientationPermission();
+            setLoadHeroVideo(true);
             window.removeEventListener('click', handleFirstInteraction);
             window.removeEventListener('touchstart', handleFirstInteraction);
         };

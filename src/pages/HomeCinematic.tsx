@@ -289,7 +289,7 @@ const CinematicDev: React.FC = () => {
                         if (self.isActive) {
                             setCurrentChapter(window.location.pathname === '/esencia' ? 'ESENCIA' : 'INICIO');
                             setChapterNumber(window.location.pathname === '/esencia' ? '1' : '0');
-                            setMountEssence(true);
+                            setMountEssence(window.location.pathname === '/esencia');
                         }
                         
                         // MOUNT LOGIC - Absolute Death to Ghosting

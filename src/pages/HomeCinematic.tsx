@@ -8,6 +8,8 @@ import officialTypography from '../assets/logos/Tipografia_agencIA_negro.png';
 import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
 import Prism from '../components/Prism';
+import SEO from '../components/SEO';
+import StructuredData from '../components/StructuredData';
 import ceoImg from '../assets/team/ceo.jpg';
 import gaelImg from '../assets/team/gael_oracle.png';
 import almaLogo from '../assets/images/alma_logo_final.png';
@@ -49,10 +51,10 @@ const CinematicDev: React.FC = () => {
     const [isLoading, setIsLoading] = React.useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
     const entranceGlitchRef = useRef<any>(null);
-    
-    // Parallax Refs for Hero
     const heroWindowRef = useRef<HTMLDivElement>(null);
     const heroTextRef = useRef<HTMLDivElement>(null);
+    
+    // Parallax Refs for Hero
 
     const [currentChapter, setCurrentChapter] = React.useState(window.location.pathname === '/esencia' ? 'ESENCIA' : 'INICIO');
     const [chapterNumber, setChapterNumber] = React.useState(window.location.pathname === '/esencia' ? '1' : '0');
@@ -84,12 +86,8 @@ const CinematicDev: React.FC = () => {
         "15375.63,2442.5 15016.99,2442.5 15969.85,157.04 16919.2,2442.5 16564.07,2442.5 15969.85,1025.52" // A
     ];
 
-    // Referencia para el fondo
-    const bgRef = useRef<HTMLDivElement>(null);
-    // Referencia para la capa roja intermedia
+
     const redLayerRef = useRef<HTMLDivElement>(null);
-    // Referencia para la capa de éter líquido (Deprecado)
-    // const etherLayerRef = useRef<HTMLDivElement>(null);
 
     // Referencia al Prisma para controlarlo vía ScrollTrigger
     const windowRef = heroWindowRef;
@@ -259,20 +257,8 @@ const CinematicDev: React.FC = () => {
 
     React.useEffect(() => {
         const ctx = gsap.context(() => {
-            // Animación de Fondo (Ciclo de Color) - MANTENIDA
-            if (bgRef.current || containerRef.current) gsap.to(bgRef.current || containerRef.current, {
-                backgroundColor: '#89CFF0',
-                duration: 2,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut",
-                keyframes: [
-                    { backgroundColor: '#A7C7E7', duration: 2 },
-                    { backgroundColor: '#B0E0E6', duration: 2 },
-                    { backgroundColor: '#89CFF0', duration: 2 },
-                    { backgroundColor: '#ADD8E6', duration: 2 }
-                ]
-            });
+            // Mantener el fondo estable para evitar el rectángulo azul persistente.
+            if (containerRef.current) gsap.set(containerRef.current, { backgroundColor: '#fff' });
 
             // --- 1. ANIMACIÓN DE ZOOM DEL PORTAL ---
             const tlZoom = gsap.timeline({
@@ -893,6 +879,39 @@ const CinematicDev: React.FC = () => {
 
     return (
         <>
+            <SEO
+                title="Desarrollo web, automatización e IA en México"
+                description="AgencIA diseña sitios web, apps y automatizaciones con IA para marcas que quieren operar mejor, convertir más y posicionarse como primera opción."
+                keywords="desarrollo web, automatización con IA, agencia IA, AI SEO, GEO, LLMO, sitios web premium, apps web, México"
+                image="https://agenciamx.app/og-image.jpg"
+                url="https://agenciamx.app/"
+            />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "AgencIA",
+                "url": "https://agenciamx.app/",
+                "logo": "https://agenciamx.app/favicon-512.png",
+                "email": "contacto@agenciamx.app",
+                "description": "Agencia de ingeniería digital, automatización e inteligencia artificial en México.",
+                "areaServed": "MX",
+                "knowsAbout": ["Desarrollo web", "Automatización con IA", "AI SEO", "SEO técnico", "Aplicaciones web"]
+            }} />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "AgencIA",
+                "url": "https://agenciamx.app/",
+                "inLanguage": "es-MX"
+            }} />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "name": "Desarrollo web, automatización e IA",
+                "provider": { "@type": "Organization", "name": "AgencIA" },
+                "areaServed": "MX",
+                "description": "Sitios web premium, apps y automatizaciones con IA para crecimiento medible."
+            }} />
             {isLoading && <Loader onComplete={() => setIsLoading(false)} />}
             <div ref={containerRef} style={{
             width: '100%',

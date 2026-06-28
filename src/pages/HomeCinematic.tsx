@@ -1009,11 +1009,10 @@ const CinematicDev: React.FC = () => {
                         </defs>
                         <rect x="-50000" y="-50000" width="100000" height="100000" fill="white" mask="url(#n-portal-mask)" />
                         <g fill="black">
-                            {logoPaths.map((d, i) => {
-                                if (i === 3) return null;
+                            {logoPaths.map((d) => {
                                 return d.startsWith('M') ?
-                                    <path key={i} d={d} /> :
-                                    <polygon key={i} points={d} />;
+                                    <path key={d} d={d} /> :
+                                    <polygon key={d} points={d} />;
                             })}
                         </g>
                     </svg>

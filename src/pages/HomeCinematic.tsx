@@ -1221,7 +1221,7 @@ const CinematicDev: React.FC = () => {
                 height: (isMobileViewport || isCompactViewport) ? 'auto' : '100vh',
                 minHeight: (isMobileViewport || isCompactViewport) ? '100svh' : '100vh',
                 width: '100%',
-                backgroundColor: '#000000',
+                backgroundColor: '#FFFFFF',
                 display: 'flex',
                 justifyContent: (isMobileViewport || isCompactViewport) ? 'flex-start' : 'center',
                 alignItems: (isMobileViewport || isCompactViewport) ? 'flex-start' : 'center',
@@ -1283,20 +1283,20 @@ const CinematicDev: React.FC = () => {
                     >
                         <h2 style={{
                             fontSize: (isMobileViewport || isCompactViewport) ? 'clamp(1.25rem, 4.5vw, 3rem)' : 'clamp(1.5rem, 5vw, 6rem)', lineHeight: 1.02, textTransform: 'uppercase',
-                            marginBottom: (isMobileViewport || isCompactViewport) ? '0.8rem' : '2rem', color: '#FFF', fontWeight: 900,
-                            letterSpacing: '-0.02em', textShadow: '0 4px 20px rgba(0,0,0,0.8)',
+                            marginBottom: (isMobileViewport || isCompactViewport) ? '0.8rem' : '2rem', color: '#000', fontWeight: 900,
+                            letterSpacing: '-0.02em', textShadow: '0 4px 20px rgba(0,0,0,0.12)',
                             maxWidth: (isMobileViewport || isCompactViewport) ? '92vw' : 'none'
                         }}>
                             <ScrambleText
                                 text={item.title} speed={1.2} iridescent={true}
-                                finalColor="#FFFFFF" trigger={activeManifestoItem === i}
+                                finalColor="#000000" trigger={activeManifestoItem === i}
                             />
                         </h2>
 
                         <div style={{
                             fontSize: (isMobileViewport || isCompactViewport) ? 'clamp(0.88rem, 2.4vw, 1.05rem)' : 'clamp(1rem, 1.8vw, 1.3rem)',
                             lineHeight: (isMobileViewport || isCompactViewport) ? 1.35 : 1.6,
-                            color: 'rgba(255,255,255,0.85)', textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+                            color: 'rgba(0,0,0,0.72)', textShadow: 'none',
                             fontFamily: 'monospace', maxWidth: (isMobileViewport || isCompactViewport) ? '92vw' : '800px',
                         }}>
                             {item.body.map((line, j) => (
@@ -1307,8 +1307,8 @@ const CinematicDev: React.FC = () => {
                                     fontSize: i === 3 ? ((isMobileViewport || isCompactViewport) ? 'clamp(0.95rem, 4vw, 1.3rem)' : 'clamp(1.5rem, 3vw, 2.5rem)') : 'inherit',
                                     color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
                                     textShadow: i === 3
-                                        ? '0 0 20px rgba(0,255,153,0.5), 0 0 40px rgba(0,255,153,0.2)'
-                                        : '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)',
+                                        ? '0 0 20px rgba(0,255,153,0.25)'
+                                        : 'none',
                                     transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)'
                                 }}>
                                     <AsciiRipple text={line} autoTrigger={true} trigger={activeManifestoItem === i} />

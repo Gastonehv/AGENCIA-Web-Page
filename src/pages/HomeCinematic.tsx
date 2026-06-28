@@ -1523,7 +1523,7 @@ const CinematicDev: React.FC = () => {
             <div id="simbiosis" style={{
                 position: 'relative',
                 zIndex: 700,
-                backgroundColor: '#050505',
+                backgroundColor: '#FFFFFF',
                 minHeight: '100vh'
             }}>
                 <div id="simbiosis-content" style={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -1543,11 +1543,11 @@ const CinematicDev: React.FC = () => {
             </div>
 
             {/* BRIDGE GRADIENT: BLACK (SIMBIOSIS) -> WHITE (CAPITULO 7) */}
-            <div id="entrance-trigger" style={{ height: '5vh', width: '100%', background: '#050505' }} />
+            <div id="entrance-trigger" style={{ height: '5vh', width: '100%', background: '#FFFFFF' }} />
             <div style={{
                 width: '100%',
                 height: '15vh',
-                background: 'linear-gradient(to bottom, #050505 0%, #FFFFFF 100%)',
+                background: '#FFFFFF',
                 position: 'relative',
                 zIndex: 450 // BETWEEN SIMBIOSIS (500) AND SALTO (400)
             }} />

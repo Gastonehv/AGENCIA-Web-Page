@@ -105,8 +105,8 @@ const Symbiosis: React.FC = () => {
                 // FIX CRITICO: height controlado por React state, no CSS !important
                 height: isMobile ? 'auto' : '100vh',
                 minHeight: isMobile ? 'auto' : undefined,
-                backgroundColor: '#000000',
-                color: '#FFFFFF',
+                backgroundColor: '#FFFFFF',
+                color: '#000000',
                 position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
@@ -118,18 +118,18 @@ const Symbiosis: React.FC = () => {
         >
             {/* BACKGROUND SYSTEM */}
             <div style={{
+                display: 'none',
                 position: 'absolute', inset: 0,
-                backgroundColor: '#050505',
+                backgroundColor: 'transparent',
                 zIndex: 1,
                 overflow: 'hidden'
             }}>
                 {/* DATA GRID - disabled on mobile for performance */}
                 <div style={{
                     position: 'absolute', inset: -200,
-                    backgroundImage: `linear-gradient(rgba(0, 255, 153, 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 153, 0.4) 1px, transparent 1px)`,
-                    backgroundSize: '20px 20px',
-                    opacity: 0.5,
-                    animation: isMobile ? 'none' : 'grid-ascension 40s linear infinite'
+                    backgroundImage: 'none',
+                    opacity: 0,
+                    animation: 'none'
                 }}>
                     <div style={{
                         position: 'absolute', inset: 0,
@@ -220,7 +220,7 @@ const Symbiosis: React.FC = () => {
                             letterSpacing: '-0.06em',
                             margin: 0,
                             textTransform: 'uppercase',
-                            color: '#FFF',
+                            color: '#000',
                             whiteSpace: isMobile ? 'normal' : 'nowrap',
                             flex: '1 1 auto'
                         }}>
@@ -239,7 +239,7 @@ const Symbiosis: React.FC = () => {
                             <h3 style={{
                                 fontSize: 'clamp(1rem, 1.3vw, 1.5rem)',
                                 fontWeight: 600,
-                                color: '#FFF',
+                                color: '#000',
                                 margin: 0,
                                 textTransform: 'uppercase',
                                 letterSpacing: '-0.02em',

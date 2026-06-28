@@ -333,13 +333,17 @@ const CinematicDev: React.FC = () => {
                 ease: "power2.out"
             }, "<"); // Al mismo tiempo que ESENC desaparece
 
-            // Desaparecer la red neuronal / capa de esencia de fondo (Como en original)
-            tlZoom.to(".essence-dev-wrapper", {
-                opacity: 0,
-                autoAlpha: 0,
-                duration: 1,
-                ease: 'power1.in'
-            }, "<");
+            // Desaparecer la red neuronal / capa de esencia de fondo solo si existe.
+            // En home normal no se monta, y animar un selector ausente generaba warning GSAP.
+            const essenceWrapper = containerRef.current?.querySelector('.essence-dev-wrapper');
+            if (essenceWrapper) {
+                tlZoom.to(essenceWrapper, {
+                    opacity: 0,
+                    autoAlpha: 0,
+                    duration: 1,
+                    ease: 'power1.in'
+                }, "<");
+            }
 
             // ALINEACIÓN PERFECTAMENTE MILIMÉTRICA: "NUESTRA" se acopla con "IA"
             tlZoom.to('.text-nuestra', {
@@ -1210,7 +1214,7 @@ const CinematicDev: React.FC = () => {
             <div style={{
                 width: '100%',
                 height: '15vh',
-                background: 'linear-gradient(to bottom, #f8fafc 0%, #0A192F 100%)',
+                background: 'linear-gradient(to bottom, #f8fafc 0%, #000000 100%)',
                 position: 'relative',
                 zIndex: 850 // BETWEEN IDENTIDAD (900) AND MANIFIESTO (800)
             }} />
@@ -1220,7 +1224,7 @@ const CinematicDev: React.FC = () => {
                 height: (isMobileViewport || isCompactViewport) ? 'auto' : '100vh',
                 minHeight: (isMobileViewport || isCompactViewport) ? '100svh' : '100vh',
                 width: '100%',
-                backgroundColor: '#FFFFFF',
+                backgroundColor: '#000000',
                 display: 'flex',
                 justifyContent: (isMobileViewport || isCompactViewport) ? 'flex-start' : 'center',
                 alignItems: (isMobileViewport || isCompactViewport) ? 'flex-start' : 'center',
@@ -1282,20 +1286,20 @@ const CinematicDev: React.FC = () => {
                     >
                         <h2 style={{
                             fontSize: (isMobileViewport || isCompactViewport) ? 'clamp(1.25rem, 4.5vw, 3rem)' : 'clamp(1.5rem, 5vw, 6rem)', lineHeight: 1.02, textTransform: 'uppercase',
-                            marginBottom: (isMobileViewport || isCompactViewport) ? '0.8rem' : '2rem', color: '#000', fontWeight: 900,
-                            letterSpacing: '-0.02em', textShadow: '0 4px 20px rgba(0,0,0,0.12)',
+                            marginBottom: (isMobileViewport || isCompactViewport) ? '0.8rem' : '2rem', color: '#FFF', fontWeight: 900,
+                            letterSpacing: '-0.02em', textShadow: '0 4px 20px rgba(0,0,0,0.8)',
                             maxWidth: (isMobileViewport || isCompactViewport) ? '92vw' : 'none'
                         }}>
                             <ScrambleText
                                 text={item.title} speed={1.2} iridescent={true}
-                                finalColor="#000000" trigger={activeManifestoItem === i}
+                                finalColor="#FFFFFF" trigger={activeManifestoItem === i}
                             />
                         </h2>
 
                         <div style={{
                             fontSize: (isMobileViewport || isCompactViewport) ? 'clamp(0.88rem, 2.4vw, 1.05rem)' : 'clamp(1rem, 1.8vw, 1.3rem)',
                             lineHeight: (isMobileViewport || isCompactViewport) ? 1.35 : 1.6,
-                            color: 'rgba(0,0,0,0.72)', textShadow: 'none',
+                            color: 'rgba(255,255,255,0.85)', textShadow: '0 2px 10px rgba(0,0,0,0.5)',
                             fontFamily: 'monospace', maxWidth: (isMobileViewport || isCompactViewport) ? '92vw' : '800px',
                         }}>
                             {item.body.map((line, j) => (
@@ -1306,8 +1310,8 @@ const CinematicDev: React.FC = () => {
                                     fontSize: i === 3 ? ((isMobileViewport || isCompactViewport) ? 'clamp(0.95rem, 4vw, 1.3rem)' : 'clamp(1.5rem, 3vw, 2.5rem)') : 'inherit',
                                     color: i === 3 && line.includes('imposible') ? '#00FF99' : 'inherit',
                                     textShadow: i === 3
-                                        ? '0 0 20px rgba(0,255,153,0.25)'
-                                        : 'none',
+                                        ? '0 0 20px rgba(0,255,153,0.5), 0 0 40px rgba(0,255,153,0.2)'
+                                        : '1px 1px 2px #000, 0 4px 12px rgba(0,0,0,1), 0 10px 40px rgba(0,0,0,0.8)',
                                     transition: 'all 0.8s cubic-bezier(0.19, 1, 0.22, 1)'
                                 }}>
                                     <AsciiRipple text={line} autoTrigger={true} trigger={activeManifestoItem === i} />
@@ -1522,7 +1526,7 @@ const CinematicDev: React.FC = () => {
             <div id="simbiosis" style={{
                 position: 'relative',
                 zIndex: 700,
-                backgroundColor: '#FFFFFF',
+                backgroundColor: '#050505',
                 minHeight: '100vh'
             }}>
                 <div id="simbiosis-content" style={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -1542,11 +1546,11 @@ const CinematicDev: React.FC = () => {
             </div>
 
             {/* BRIDGE GRADIENT: BLACK (SIMBIOSIS) -> WHITE (CAPITULO 7) */}
-            <div id="entrance-trigger" style={{ height: '5vh', width: '100%', background: '#FFFFFF' }} />
+            <div id="entrance-trigger" style={{ height: '5vh', width: '100%', background: '#050505' }} />
             <div style={{
                 width: '100%',
                 height: '15vh',
-                background: '#FFFFFF',
+                background: 'linear-gradient(to bottom, #050505 0%, #FFFFFF 100%)',
                 position: 'relative',
                 zIndex: 450 // BETWEEN SIMBIOSIS (500) AND SALTO (400)
             }} />

@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4'; // IMPORTACI├ôN DE VIDEO
-import essenceHeroPoster from '../assets/images/neuro_glass_hero.png';
 import EssenceBackground from '../components/EssenceBackground';
+
 import officialTypography from '../assets/logos/Tipografia_agencIA_negro.png';
 import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
@@ -94,7 +93,6 @@ const CinematicDev: React.FC = () => {
 
     // Referencia al contenedor de medios para carga diferida
     const almaVideoWrapRef = useRef<HTMLDivElement>(null);
-    const [loadHeroVideo, setLoadHeroVideo] = React.useState(false);
     const [loadAlmaVideo, setLoadAlmaVideo] = React.useState(false);
 
     // Referencia al Prisma para controlarlo vía ScrollTrigger
@@ -143,15 +141,9 @@ const CinematicDev: React.FC = () => {
             setOrientationPermitted(true);
         }
     };
-
-    React.useEffect(() => {
-        setLoadHeroVideo(true);
-    }, []);
-
     React.useEffect(() => {
         const handleFirstInteraction = () => {
             requestOrientationPermission();
-            setLoadHeroVideo(true);
             window.removeEventListener('click', handleFirstInteraction);
             window.removeEventListener('touchstart', handleFirstInteraction);
         };
@@ -304,19 +296,10 @@ const CinematicDev: React.FC = () => {
                 duration: 1
             });
 
-            // 2. Desvanecimiento de la Capa Roja
-            if (redLayerRef.current) tlZoom.to(redLayerRef.current, {
-                autoAlpha: 0, // Se desvanece hasta ser invisible
-                ease: "power1.out",
-                duration: 0.6 // Un poco más rápido para revelar la ventana antes
-            }, "<"); // "<" = Inicia al mismo tiempo que el inicio del zoom
-
-            // 3. Aparición/Acercamiento de la Ventana
-            if (windowRef.current) tlZoom.fromTo(windowRef.current,
-                { scale: 0.4 },
-                { scale: 0.8, duration: 1, ease: "power2.inOut" },
-                "<"
-            );
+            // La capa intermedia y la ventana física se mantienen invisibles para evitar
+            // el recuadro azul/negro pulsante que bloqueaba la experiencia inicial.
+            if (redLayerRef.current) gsap.set(redLayerRef.current, { autoAlpha: 0, display: 'none' });
+            if (windowRef.current) gsap.set(windowRef.current, { autoAlpha: 1, scale: 1, backgroundColor: 'transparent', boxShadow: 'none', borderColor: 'transparent' });
 
             // 4. Secuencia de TEXTO (NUESTRA -> ESENCIA)
             // Aparecen con estilo cinemático (Blur + Fade + Scale)
@@ -953,28 +936,16 @@ const CinematicDev: React.FC = () => {
                     height: isMobileViewport ? 'clamp(240px, 72vw, 420px)' : 'clamp(160px, 35vw, 600px)',
                     borderRadius: '20px',
 
-                    boxShadow: '-2.8vw 3.5vw 4vw rgba(0,0,0,0.5), -1vw 1.4vw 1.7vw rgba(0,0,0,0.3)',
-                    border: '1px solid rgba(255, 255, 255, 0.4)',
-                    backgroundColor: '#000000',
+                    boxShadow: 'none',
+                    border: '1px solid transparent',
+                    backgroundColor: 'transparent',
                     zIndex: 1,
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                     overflow: 'visible'
                 }}>
-                    {/* Contenedor estricto para redondear el video SIN cortar el texto */}
-                    <div style={{ position: 'absolute', inset: 0, borderRadius: '20px', overflow: 'hidden' }}>
-                        {/* VIDEO DE FONDO: Esencia Hero Ultra */}
-                        <video
-                            src={loadHeroVideo ? essenceHeroVideo : ''}
-                            poster={essenceHeroPoster}
-                            autoPlay muted loop playsInline preload="none"
-                            style={{
-                                width: '100%', height: '100%',
-                                objectFit: 'cover', opacity: 0.8
-                            }}
-                        />
-                    </div>
+                    {/* Video de fondo desactivado: era el origen visual del recuadro pulsante. */}
 
-                    {/* 1.2 CAPA DE TEXTO (Encima del Video, sin restricciones de overflow) */}
+                    {/* 1.2 CAPA DE TEXTO (sin contenedor rectangular visible) */}
                     <div ref={heroTextRef} className="text-container" style={{ textAlign: 'center', zIndex: 10, position: 'relative', width: '100%', maxWidth: '100%', padding: isMobileViewport ? '0 1rem' : 0, boxSizing: 'border-box' }}>
                         <h1 style={{
                             fontSize: isMobileViewport ? 'clamp(1.5rem, 11vw, 4rem)' : 'clamp(2rem, 6.5vw, 8.5rem)',
@@ -1011,9 +982,13 @@ const CinematicDev: React.FC = () => {
                 {/* CAPA 2: CAPA NEGRA INTERMEDIA (Transición) */}
 
                 <div ref={redLayerRef} style={{
+                    display: 'none',
                     position: 'absolute', inset: 0, zIndex: 2,
-                    backgroundColor: '#000000', // Modificado a NEGRO por solicitud
-                    mixBlendMode: 'normal'
+                    backgroundColor: 'transparent',
+                    mixBlendMode: 'normal',
+                    opacity: 0,
+                    visibility: 'hidden',
+                    pointerEvents: 'none'
                 }} />
 
                 {/* CAPA 3: PARED BLANCA CON RECORTE EN LA "N" */}

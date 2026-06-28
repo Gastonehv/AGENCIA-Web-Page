@@ -73,7 +73,7 @@ const ChapterHUD: React.FC<ChapterHUDProps> = ({ currentChapter, chapterNumber }
     return (
         <>
             {/* --- DESKTOP HUD (ORIGINAL VERTICAL) --- */}
-            <div className="hud-desktop" style={{
+            <div className="hud-desktop chapter-hud-container" style={{
                 position: 'fixed',
                 top: '50%',
                 right: '1.5rem',

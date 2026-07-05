@@ -303,6 +303,22 @@ const CinematicDev: React.FC = () => {
                 duration: 1
             });
 
+            // Evita que el SVG/portal escalado tape el frame de Capítulo 1 durante el odómetro.
+            // Al inicio sigue mostrando AGENCIA; al avanzar el scroll revela el video/fondo.
+            tlZoom.to('.hero-portal-wall', {
+                autoAlpha: 0,
+                duration: 0.18,
+                ease: 'none'
+            }, 0.025);
+
+            // Evita que el relleno negro del logo se escale y tape todo el Capítulo 1.
+            // El usuario debe ver el frame/video de fondo durante el odómetro, no un bloque negro.
+            tlZoom.to('.hero-logo-fill', {
+                autoAlpha: 0,
+                duration: 0.12,
+                ease: 'none'
+            }, 0.02);
+
             // La capa intermedia y la ventana física se mantienen invisibles para evitar
             // el recuadro azul/negro pulsante que bloqueaba la experiencia inicial.
             if (redLayerRef.current) gsap.set(redLayerRef.current, { autoAlpha: 0, display: 'none' });
@@ -959,12 +975,15 @@ const CinematicDev: React.FC = () => {
                     overflow: 'visible'
                 }}>
                     {/* Frame de video del Capítulo 1: restaurado sin sombra/borde azul. */}
-                    <div style={{
+                    <div className="chapter1-video-bg" style={{
                         position: 'absolute',
                         inset: 0,
                         borderRadius: '20px',
                         overflow: 'hidden',
                         backgroundColor: '#050505',
+                        backgroundImage: `url(${essenceHeroPoster})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
                         pointerEvents: 'none'
                     }}>
                         {loadHeroVideo && (
@@ -1041,7 +1060,7 @@ const CinematicDev: React.FC = () => {
                 }} />
 
                 {/* CAPA 3: PARED BLANCA CON RECORTE EN LA "N" */}
-                <div style={{
+                <div className="hero-portal-wall" style={{
                     position: 'absolute', inset: 0, zIndex: 3,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     width: '100%', height: '100%'
@@ -1057,7 +1076,7 @@ const CinematicDev: React.FC = () => {
                             </mask>
                         </defs>
                         <rect x="-50000" y="-50000" width="100000" height="100000" fill="white" mask="url(#n-portal-mask)" />
-                        <g fill="black">
+                        <g className="hero-logo-fill" fill="black">
                             {logoPaths.map((d) => {
                                 return d.startsWith('M') ?
                                     <path key={d} d={d} /> :
@@ -1079,7 +1098,8 @@ const CinematicDev: React.FC = () => {
             </section>
 
             <section id="identidad" style={{
-                minHeight: '100vh',
+                minHeight: isMobileViewport ? '100svh' : '100vh',
+                height: isMobileViewport ? '100svh' : undefined,
                 width: '100%',
                 backgroundColor: '#FFF',
                 position: 'relative',
@@ -1099,7 +1119,7 @@ const CinematicDev: React.FC = () => {
                         inset: 0,
                         zIndex: 0,
                         width: '100%',
-                        height: '100%',
+                        height: isMobileViewport ? '100svh' : '100%',
                         minHeight: isMobileViewport ? '100svh' : '100vh',
                         overflow: 'hidden'
                     }}>

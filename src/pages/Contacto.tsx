@@ -71,10 +71,18 @@ const Contacto: React.FC = () => {
         try {
             const encodedData = new URLSearchParams({
                 'form-name': 'contacto',
-                ...formData
+                subject: 'Nuevo proyecto desde agenciamx.app',
+                recipient: 'proyectos@agenciamx.app',
+                nombre: formData.nombre.trim(),
+                email: formData.email.trim(),
+                empresa: formData.empresa.trim(),
+                detalles: formData.detalles.trim(),
+                origen: typeof window !== 'undefined' ? window.location.href : 'https://agenciamx.app/contacto',
+                timestamp: new Date().toISOString(),
+                'bot-field': formData['bot-field']
             }).toString();
 
-            const response = await fetch('/', {
+            const response = await fetch('/contacto', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: encodedData
@@ -141,7 +149,7 @@ const Contacto: React.FC = () => {
                     "@type": "Organization",
                     "name": "AgencIA",
                     "url": "https://agenciamx.app/",
-                    "email": "contacto@agenciamx.app"
+                    "email": "proyectos@agenciamx.app"
                 }
             }} />
             {/* Vortex Background - Exclusive */}

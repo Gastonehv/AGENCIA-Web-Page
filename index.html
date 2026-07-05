@@ -42,7 +42,7 @@
       "name": "AgencIA",
       "url": "https://agenciamx.app/",
       "logo": "https://agenciamx.app/favicon-512.png",
-      "email": "contacto@agenciamx.app",
+      "email": "proyectos@agenciamx.app",
       "description": "Agencia de ingeniería digital, automatización e inteligencia artificial en México.",
       "areaServed": "MX",
       "sameAs": [],
@@ -82,12 +82,18 @@
 
 <body>
   <div id="root"></div>
-  <!-- Hidden form for Netlify forms detection in React SPA -->
-  <form name="contacto" method="POST" netlify="true" netlify-honeypot="bot-field" hidden>
+  <!-- Netlify Forms detector for React SPA. Keep this static HTML in sync with src/pages/Contacto.tsx. -->
+  <form name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contacto" hidden>
+    <input type="hidden" name="form-name" value="contacto" />
+    <input type="hidden" name="subject" value="Nuevo proyecto desde agenciamx.app" />
+    <input type="hidden" name="recipient" value="proyectos@agenciamx.app" />
+    <input type="text" name="bot-field" />
     <input type="text" name="nombre" />
     <input type="email" name="email" />
     <input type="text" name="empresa" />
     <textarea name="detalles"></textarea>
+    <input type="text" name="origen" />
+    <input type="text" name="timestamp" />
   </form>
   <script type="module" src="/src/main.tsx"></script>
 </body>

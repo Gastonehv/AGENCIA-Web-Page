@@ -879,7 +879,7 @@ const CinematicDev: React.FC = () => {
                 "name": "AgencIA",
                 "url": "https://agenciamx.app/",
                 "logo": "https://agenciamx.app/favicon-512.png",
-                "email": "contacto@agenciamx.app",
+                "email": "proyectos@agenciamx.app",
                 "description": "Agencia de ingeniería digital, automatización e inteligencia artificial en México.",
                 "areaServed": "MX",
                 "knowsAbout": ["Desarrollo web", "Automatización con IA", "AI SEO", "SEO técnico", "Aplicaciones web"]

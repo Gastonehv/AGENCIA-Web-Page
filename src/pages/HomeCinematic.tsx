@@ -110,7 +110,21 @@ const CinematicDev: React.FC = () => {
     const [mountEssence, setMountEssence] = React.useState(false);
     const [mountNeural, setMountNeural] = React.useState(true);
     const [mountPrism, setMountPrism] = React.useState(false);
+    const [heroPortalReleased, setHeroPortalReleased] = React.useState(false);
 
+
+    React.useEffect(() => {
+        const updateHeroPortalRelease = () => {
+            setHeroPortalReleased(window.scrollY > 40);
+        };
+        updateHeroPortalRelease();
+        window.addEventListener('scroll', updateHeroPortalRelease, { passive: true });
+        window.addEventListener('resize', updateHeroPortalRelease);
+        return () => {
+            window.removeEventListener('scroll', updateHeroPortalRelease);
+            window.removeEventListener('resize', updateHeroPortalRelease);
+        };
+    }, []);
 
     React.useEffect(() => {
         setLoadHeroVideo(true);
@@ -1063,7 +1077,10 @@ const CinematicDev: React.FC = () => {
                 <div className="hero-portal-wall" style={{
                     position: 'absolute', inset: 0, zIndex: 3,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    width: '100%', height: '100%'
+                    width: '100%', height: '100%',
+                    opacity: heroPortalReleased ? 0 : 1,
+                    visibility: heroPortalReleased ? 'hidden' : 'visible',
+                    pointerEvents: 'none'
                 }}>
                     <svg ref={maskGroupRef} viewBox="0 0 17009 2588" width="80%" style={{ height: 'auto', overflow: 'visible' }}>
                         <defs>
@@ -1076,7 +1093,7 @@ const CinematicDev: React.FC = () => {
                             </mask>
                         </defs>
                         <rect x="-50000" y="-50000" width="100000" height="100000" fill="white" mask="url(#n-portal-mask)" />
-                        <g className="hero-logo-fill" fill="black">
+                        <g className="hero-logo-fill" fill="black" style={{ opacity: heroPortalReleased ? 0 : 1, visibility: heroPortalReleased ? 'hidden' : 'visible' }}>
                             {logoPaths.map((d) => {
                                 return d.startsWith('M') ?
                                     <path key={d} d={d} /> :

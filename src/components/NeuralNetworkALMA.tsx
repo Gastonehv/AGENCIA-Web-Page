@@ -17,10 +17,23 @@ const NeuralNetworkALMA: React.FC = () => {
 
         let animationFrameId: number;
         let particles: Particle[] = [];
+        let logicalWidth = window.innerWidth;
+        let logicalHeight = window.innerHeight;
 
         const resize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const parent = canvas.parentElement;
+            const rect = parent?.getBoundingClientRect();
+            const width = Math.max(1, Math.ceil(rect?.width || window.innerWidth));
+            const height = Math.max(1, Math.ceil(rect?.height || window.innerHeight));
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+            logicalWidth = width;
+            logicalHeight = height;
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             init();
         };
 
@@ -42,8 +55,8 @@ const NeuralNetworkALMA: React.FC = () => {
 
             init() {
                 if (!canvas) return;
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
+                this.x = Math.random() * logicalWidth;
+                this.y = Math.random() * logicalHeight;
 
                 // Coordenada Z (0 = fondo, 1 = frente)
                 this.z = Math.random();
@@ -70,10 +83,10 @@ const NeuralNetworkALMA: React.FC = () => {
                 this.speedX += (this.baseSpeedX - this.speedX) * 0.08;
                 this.speedY += (this.baseSpeedY - this.speedY) * 0.08;
 
-                if (this.x > canvas.width) this.x = 0;
-                else if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                else if (this.y < 0) this.y = canvas.height;
+                if (this.x > logicalWidth) this.x = 0;
+                else if (this.x < 0) this.x = logicalWidth;
+                if (this.y > logicalHeight) this.y = 0;
+                else if (this.y < 0) this.y = logicalHeight;
 
                 // Interacción reactiva ágil
                 if (mouseRef.current.x !== null && mouseRef.current.y !== null) {
@@ -111,7 +124,9 @@ const NeuralNetworkALMA: React.FC = () => {
         const init = () => {
             if (!canvas) return;
             particles = [];
-            const count = Math.min((canvas.width * canvas.height) / 10000, 150);
+            const cssWidth = logicalWidth;
+            const cssHeight = logicalHeight;
+            const count = Math.min((cssWidth * cssHeight) / 10000, 150);
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
@@ -154,7 +169,7 @@ const NeuralNetworkALMA: React.FC = () => {
             if (!ctx || !canvas) return;
             // Fondo sólido oficial para máxima velocidad y limpieza
             ctx.fillStyle = '#f8fafc';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(0, 0, logicalWidth, logicalHeight);
 
             drawPlexus();
 
@@ -186,11 +201,17 @@ const NeuralNetworkALMA: React.FC = () => {
             const cny = Math.max(-1, Math.min(1, ny));
 
             // Mapeamos el centro de la pantalla + el desplazamiento del sensor
-            mouseRef.current.x = (canvas.width / 2) + (cnx * canvas.width / 2);
-            mouseRef.current.y = (canvas.height / 2) + (cny * canvas.height / 2);
+            mouseRef.current.x = (logicalWidth / 2) + (cnx * logicalWidth / 2);
+            mouseRef.current.y = (logicalHeight / 2) + (cny * logicalHeight / 2);
         };
 
+        const resizeObserver = typeof ResizeObserver !== 'undefined'
+            ? new ResizeObserver(() => resize())
+            : null;
+        if (canvas.parentElement && resizeObserver) resizeObserver.observe(canvas.parentElement);
+
         window.addEventListener('resize', resize);
+        window.addEventListener('orientationchange', resize);
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseleave', handleMouseLeave);
         window.addEventListener('deviceorientation', handleOrientation);
@@ -199,7 +220,9 @@ const NeuralNetworkALMA: React.FC = () => {
         animate();
 
         return () => {
+            resizeObserver?.disconnect();
             window.removeEventListener('resize', resize);
+            window.removeEventListener('orientationchange', resize);
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseleave', handleMouseLeave);
             window.removeEventListener('deviceorientation', handleOrientation);
@@ -208,7 +231,7 @@ const NeuralNetworkALMA: React.FC = () => {
     }, []);
 
     return (
-        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', backgroundColor: '#f8fafc' }}>
+        <div style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', minHeight: '100svh', overflow: 'hidden', backgroundColor: '#f8fafc' }}>
             {/* Capas de fondo con CSS Blur (Alta eficiencia) */}
             <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
                 <div style={{
@@ -235,7 +258,7 @@ const NeuralNetworkALMA: React.FC = () => {
 
             <canvas
                 ref={canvasRef}
-                style={{ position: 'absolute', inset: 0, display: 'block' }}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}
             />
 
             {/* Textura de ruido ligera */}

@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import EssenceBackground from '../components/EssenceBackground';
+import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4';
+import essenceHeroPoster from '../assets/logos/header-brain.png';
 
 import officialTypography from '../assets/logos/Tipografia_agencIA_negro.png';
 import ScrambleText from '../components/ScrambleText';
@@ -94,8 +96,9 @@ const CinematicDev: React.FC = () => {
     // Referencia al contenedor de medios para carga diferida
     const almaVideoWrapRef = useRef<HTMLDivElement>(null);
     const [loadAlmaVideo, setLoadAlmaVideo] = React.useState(false);
+    const [loadHeroVideo, setLoadHeroVideo] = React.useState(false);
 
-    // Referencia al Prisma para controlarlo vía ScrollTrigger
+    // Referencia al Prisma
     const prismRef = useRef<any>(null);
 
     // REFS FOR CHAPTER 7 (HOME REACTION RECREATION)
@@ -108,6 +111,10 @@ const CinematicDev: React.FC = () => {
     const [mountNeural, setMountNeural] = React.useState(true);
     const [mountPrism, setMountPrism] = React.useState(false);
 
+
+    React.useEffect(() => {
+        setLoadHeroVideo(true);
+    }, []);
 
     React.useEffect(() => {
         const el = almaVideoWrapRef.current;
@@ -428,8 +435,12 @@ const CinematicDev: React.FC = () => {
                             setChapterNumber('2');
                         }
                     },
-                    onLeaveBack: () => setMountNeural(false),
-                    onLeave: () => setMountNeural(false),
+                    onLeaveBack: () => {
+                        if (!isMobileViewport) setMountNeural(false);
+                    },
+                    onLeave: () => {
+                        if (!isMobileViewport) setMountNeural(false);
+                    },
                     onEnterBack: () => setMountNeural(true)
                 }
             });
@@ -947,9 +958,43 @@ const CinematicDev: React.FC = () => {
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                     overflow: 'visible'
                 }}>
-                    {/* Video de fondo desactivado: era el origen visual del recuadro pulsante. */}
+                    {/* Frame de video del Capítulo 1: restaurado sin sombra/borde azul. */}
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        borderRadius: '20px',
+                        overflow: 'hidden',
+                        backgroundColor: '#050505',
+                        pointerEvents: 'none'
+                    }}>
+                        {loadHeroVideo && (
+                            <video
+                                src={essenceHeroVideo}
+                                poster={essenceHeroPoster}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                preload="metadata"
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    display: 'block',
+                                    opacity: 0.92,
+                                    filter: 'brightness(1.05) contrast(1.05) saturate(0.92)'
+                                }}
+                            />
+                        )}
+                        <div style={{
+                            position: 'absolute',
+                            inset: 0,
+                            background: 'linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03))',
+                            pointerEvents: 'none'
+                        }} />
+                    </div>
 
-                    {/* 1.2 CAPA DE TEXTO (sin contenedor rectangular visible) */}
+                    {/* 1.2 CAPA DE TEXTO */}
                     <div ref={heroTextRef} className="text-container" style={{ textAlign: 'center', zIndex: 10, position: 'relative', width: '100%', maxWidth: '100%', padding: isMobileViewport ? '0 1rem' : 0, boxSizing: 'border-box' }}>
                         <h1 style={{
                             fontSize: isMobileViewport ? 'clamp(1.5rem, 11vw, 4rem)' : 'clamp(2rem, 6.5vw, 8.5rem)',
@@ -1049,7 +1094,15 @@ const CinematicDev: React.FC = () => {
                 {/* FONDO NEURAL INTEGRADO */}
                 {/* Alma Section removida por redundancia (ya integrada en el Rift) */}
                 {mountNeural && (
-                    <div className="neural-container" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                    <div className="neural-container" style={{
+                        position: 'absolute',
+                        inset: 0,
+                        zIndex: 0,
+                        width: '100%',
+                        height: '100%',
+                        minHeight: isMobileViewport ? '100svh' : '100vh',
+                        overflow: 'hidden'
+                    }}>
                         <React.Suspense fallback={null}>
                             <NeuralNetworkALMA />
                         </React.Suspense>

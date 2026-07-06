@@ -314,7 +314,15 @@ const CinematicDev: React.FC = () => {
             // La capa intermedia y la ventana física se mantienen invisibles para evitar
             // el recuadro azul/negro pulsante que bloqueaba la experiencia inicial.
             if (redLayerRef.current) gsap.set(redLayerRef.current, { autoAlpha: 0, display: 'none' });
-            if (windowRef.current) gsap.set(windowRef.current, { autoAlpha: 1, scale: 1, backgroundColor: 'transparent', boxShadow: 'none', borderColor: 'transparent' });
+            if (windowRef.current) gsap.set(windowRef.current, {
+                autoAlpha: 1,
+                scale: 1,
+                backgroundColor: 'transparent',
+                boxShadow: isMobileViewport
+                    ? '0 24px 42px rgba(0,0,0,0.38), 0 10px 20px rgba(0,0,0,0.24)'
+                    : '-2.8vw 3.5vw 4vw rgba(0,0,0,0.42), -1vw 1.4vw 1.7vw rgba(0,0,0,0.24), 0 0 0 1px rgba(255,255,255,0.12)',
+                borderColor: 'rgba(255,255,255,0.12)'
+            });
 
             // 4. Secuencia de TEXTO (NUESTRA -> ESENCIA)
             // Aparecen con estilo cinemático (Blur + Fade + Scale)
@@ -340,8 +348,8 @@ const CinematicDev: React.FC = () => {
 
             // "IA" se vuelve Verde Radiactivo con efecto de TUBOS DE NEÓN
             tlZoom.to('.hero-char-ia', {
-                color: '#00FF99', // Color base
-                textShadow: 'none', // Limpio, sin halo difuminado excesivo
+                color: '#00FF99', // Color exacto agencIA
+                textShadow: '0 0 10px rgba(0,255,153,0.70), 0 0 24px rgba(0,255,153,0.42), 0 0 48px rgba(0,255,153,0.22)',
                 WebkitTextStroke: '0px',
                 scale: 1.15, // Poco más de peso
                 duration: 1.5,
@@ -967,8 +975,10 @@ const CinematicDev: React.FC = () => {
                     height: isMobileViewport ? 'clamp(220px, 56vw, 360px)' : 'clamp(160px, 35vw, 600px)',
                     borderRadius: '20px',
 
-                    boxShadow: 'none',
-                    border: '1px solid transparent',
+                    boxShadow: isMobileViewport
+                        ? '0 24px 42px rgba(0,0,0,0.38), 0 10px 20px rgba(0,0,0,0.24)'
+                        : '-2.8vw 3.5vw 4vw rgba(0,0,0,0.42), -1vw 1.4vw 1.7vw rgba(0,0,0,0.24), 0 0 0 1px rgba(255,255,255,0.12)',
+                    border: '1px solid rgba(255,255,255,0.12)',
                     backgroundColor: 'transparent',
                     zIndex: 1,
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -1015,8 +1025,8 @@ const CinematicDev: React.FC = () => {
                             fontSize: isMobileViewport ? 'clamp(1.5rem, 11vw, 4rem)' : 'clamp(2rem, 6.5vw, 8.5rem)',
                             lineHeight: isMobileViewport ? 0.95 : 0.9, fontWeight: 900, letterSpacing: isMobileViewport ? '-0.02em' : '-0.04em', margin: 0,
                             textTransform: 'uppercase', color: '#000000',
-                            // Glow blanco ultra-refinado y multicapa para separar del video oscuro
-                            textShadow: '0 0 5px rgba(255,255,255,1), 0 0 15px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.5)',
+                            // Sin glow global: evita el halo rectangular alrededor de ESENC.
+                            textShadow: 'none',
                             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                             width: '100%',
                             maxWidth: isMobileViewport ? 'calc(100vw - 2rem)' : 'none'
@@ -1036,8 +1046,21 @@ const CinematicDev: React.FC = () => {
                                 display: 'flex', gap: '0', whiteSpace: isMobileViewport ? 'normal' : 'nowrap', flexWrap: isMobileViewport ? 'wrap' : 'nowrap', justifyContent: 'center', alignItems: 'center',
                                 opacity: 0, transform: 'scale(0.9)', filter: 'blur(10px)', width: '100%'
                             }}>
-                                <span className="word-esenc" style={{ display: 'inline-block', overflow: 'hidden' }}>ESENC</span>
-                                <span className="hero-char-ia" style={{ display: 'inline-block', position: 'relative', transformOrigin: '70% 50%' }}>IA</span>
+                                <span className="word-esenc" style={{
+                                    display: 'inline-block',
+                                    overflow: 'hidden',
+                                    padding: '0 0.06em',
+                                    margin: '0 -0.06em',
+                                    textShadow: '0 1px 2px rgba(255,255,255,0.96), 0 0 8px rgba(255,255,255,0.78), 0 0 18px rgba(255,255,255,0.42)',
+                                    filter: 'drop-shadow(0 0 7px rgba(255,255,255,0.50))'
+                                }}>ESENC</span>
+                                <span className="hero-char-ia" style={{
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    transformOrigin: '70% 50%',
+                                    color: '#00FF99',
+                                    textShadow: '0 0 10px rgba(0,255,153,0.70), 0 0 24px rgba(0,255,153,0.42), 0 0 48px rgba(0,255,153,0.22)'
+                                }}>IA</span>
                             </div>
                         </h1>
                     </div>

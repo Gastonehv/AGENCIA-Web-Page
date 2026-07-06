@@ -114,12 +114,9 @@ const CinematicDev: React.FC = () => {
 
     React.useEffect(() => {
         const updateHeroPortalRelease = () => {
-            const released = window.scrollY > 40;
-            setHeroPortalReleased(released);
-            if (released) {
-                setCurrentChapter('ESENCIA');
-                setChapterNumber('1');
-            }
+            // Solo libera visualmente el portal para que no tape el video.
+            // El odómetro lo controlan los ScrollTrigger de cada capítulo.
+            setHeroPortalReleased(window.scrollY > 40);
         };
         updateHeroPortalRelease();
         window.addEventListener('scroll', updateHeroPortalRelease, { passive: true });

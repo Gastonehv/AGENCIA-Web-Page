@@ -3,7 +3,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import EssenceBackground from '../components/EssenceBackground';
 import essenceHeroVideo from '../assets/videos/esencia_hero_ultra.mp4';
-import essenceHeroPoster from '../assets/logos/header-brain.png';
 
 import officialTypography from '../assets/logos/Tipografia_agencIA_negro.png';
 import ScrambleText from '../components/ScrambleText';
@@ -115,7 +114,12 @@ const CinematicDev: React.FC = () => {
 
     React.useEffect(() => {
         const updateHeroPortalRelease = () => {
-            setHeroPortalReleased(window.scrollY > 40);
+            const released = window.scrollY > 40;
+            setHeroPortalReleased(released);
+            if (released) {
+                setCurrentChapter('ESENCIA');
+                setChapterNumber('1');
+            }
         };
         updateHeroPortalRelease();
         window.addEventListener('scroll', updateHeroPortalRelease, { passive: true });
@@ -286,9 +290,9 @@ const CinematicDev: React.FC = () => {
                     fastScrollEnd: true,
                     onToggle: (self) => {
                         if (self.isActive) {
-                            setCurrentChapter(window.location.pathname === '/esencia' ? 'ESENCIA' : 'INICIO');
-                            setChapterNumber(window.location.pathname === '/esencia' ? '1' : '0');
-                            setMountEssence(window.location.pathname === '/esencia');
+                            setCurrentChapter('ESENCIA');
+                            setChapterNumber('1');
+                            setMountEssence(true);
                         }
                         
                         // MOUNT LOGIC - Absolute Death to Ghosting
@@ -974,11 +978,11 @@ const CinematicDev: React.FC = () => {
                 {/* CAPA 1: VENTANA FLOTANTE (TEXTO SOBRE BLANCO) */}
                 <div ref={windowRef} style={{
                     position: 'absolute',
-                    top: isMobileViewport ? '46%' : '50%', left: '50%',
+                    top: '50%', left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    // FIX: mobile-safe size - 90vw width, height scales proportionally
-                    width: isMobileViewport ? 'min(94vw, 520px)' : 'min(60vw, 90vw)',
-                    height: isMobileViewport ? 'clamp(240px, 72vw, 420px)' : 'clamp(160px, 35vw, 600px)',
+                    // Mobile: margen real y proporción estable para que el frame se autoajuste y se centre visualmente.
+                    width: isMobileViewport ? 'min(calc(100vw - 2rem), 520px)' : 'min(60vw, 90vw)',
+                    height: isMobileViewport ? 'clamp(220px, 56vw, 360px)' : 'clamp(160px, 35vw, 600px)',
                     borderRadius: '20px',
 
                     boxShadow: 'none',
@@ -995,15 +999,11 @@ const CinematicDev: React.FC = () => {
                         borderRadius: '20px',
                         overflow: 'hidden',
                         backgroundColor: '#050505',
-                        backgroundImage: `url(${essenceHeroPoster})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
                         pointerEvents: 'none'
                     }}>
                         {loadHeroVideo && (
                             <video
                                 src={essenceHeroVideo}
-                                poster={essenceHeroPoster}
                                 autoPlay
                                 muted
                                 loop
@@ -1014,15 +1014,15 @@ const CinematicDev: React.FC = () => {
                                     height: '100%',
                                     objectFit: 'cover',
                                     display: 'block',
-                                    opacity: 0.92,
-                                    filter: 'brightness(1.05) contrast(1.05) saturate(0.92)'
+                                    opacity: 1,
+                                    filter: 'brightness(1.04) contrast(1.06) saturate(0.95)'
                                 }}
                             />
                         )}
                         <div style={{
                             position: 'absolute',
                             inset: 0,
-                            background: 'linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03))',
+                            background: 'linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015))',
                             pointerEvents: 'none'
                         }} />
                     </div>

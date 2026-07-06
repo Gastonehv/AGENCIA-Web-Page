@@ -109,23 +109,7 @@ const CinematicDev: React.FC = () => {
     const [mountEssence, setMountEssence] = React.useState(false);
     const [mountNeural, setMountNeural] = React.useState(true);
     const [mountPrism, setMountPrism] = React.useState(false);
-    const [heroPortalReleased, setHeroPortalReleased] = React.useState(false);
 
-
-    React.useEffect(() => {
-        const updateHeroPortalRelease = () => {
-            // Solo libera visualmente el portal para que no tape el video.
-            // El odómetro lo controlan los ScrollTrigger de cada capítulo.
-            setHeroPortalReleased(window.scrollY > 40);
-        };
-        updateHeroPortalRelease();
-        window.addEventListener('scroll', updateHeroPortalRelease, { passive: true });
-        window.addEventListener('resize', updateHeroPortalRelease);
-        return () => {
-            window.removeEventListener('scroll', updateHeroPortalRelease);
-            window.removeEventListener('resize', updateHeroPortalRelease);
-        };
-    }, []);
 
     React.useEffect(() => {
         setLoadHeroVideo(true);
@@ -318,21 +302,14 @@ const CinematicDev: React.FC = () => {
                 duration: 1
             });
 
-            // Evita que el SVG/portal escalado tape el frame de Capítulo 1 durante el odómetro.
-            // Al inicio sigue mostrando AGENCIA; al avanzar el scroll revela el video/fondo.
-            tlZoom.to('.hero-portal-wall', {
+            // Mantener la pared/máscara visible durante el zoom: el frame debe revelarse
+            // atravesando el recorte de AGENCIA/N, como en la versión base. Solo apagamos
+            // el relleno negro de las letras para que no se convierta en bloque negro gigante.
+            tlZoom.to('.hero-logo-fill', {
                 autoAlpha: 0,
                 duration: 0.18,
                 ease: 'none'
-            }, 0.025);
-
-            // Evita que el relleno negro del logo se escale y tape todo el Capítulo 1.
-            // El usuario debe ver el frame/video de fondo durante el odómetro, no un bloque negro.
-            tlZoom.to('.hero-logo-fill', {
-                autoAlpha: 0,
-                duration: 0.12,
-                ease: 'none'
-            }, 0.02);
+            }, 0.035);
 
             // La capa intermedia y la ventana física se mantienen invisibles para evitar
             // el recuadro azul/negro pulsante que bloqueaba la experiencia inicial.
@@ -422,6 +399,14 @@ const CinematicDev: React.FC = () => {
                 ease: "power2.inOut",
                 immediateRender: false
             }, "<");
+
+            // La pared/máscara se retira solo al final, después de completar el acceso por el portal.
+            tlZoom.to('.hero-portal-wall', {
+                autoAlpha: 0,
+                duration: 0.8,
+                ease: 'power2.inOut',
+                immediateRender: false
+            }, '<0.15');
 
             // SIMULTÁNEO: La ventana de video se desvanece y desaparece para revelar el fondo blanco
             if (windowRef.current) tlZoom.to(windowRef.current, {
@@ -1075,8 +1060,6 @@ const CinematicDev: React.FC = () => {
                     position: 'absolute', inset: 0, zIndex: 3,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     width: '100%', height: '100%',
-                    opacity: heroPortalReleased ? 0 : 1,
-                    visibility: heroPortalReleased ? 'hidden' : 'visible',
                     pointerEvents: 'none'
                 }}>
                     <svg ref={maskGroupRef} viewBox="0 0 17009 2588" width="80%" style={{ height: 'auto', overflow: 'visible' }}>
@@ -1090,7 +1073,7 @@ const CinematicDev: React.FC = () => {
                             </mask>
                         </defs>
                         <rect x="-50000" y="-50000" width="100000" height="100000" fill="white" mask="url(#n-portal-mask)" />
-                        <g className="hero-logo-fill" fill="black" style={{ opacity: heroPortalReleased ? 0 : 1, visibility: heroPortalReleased ? 'hidden' : 'visible' }}>
+                        <g className="hero-logo-fill" fill="black">
                             {logoPaths.map((d) => {
                                 return d.startsWith('M') ?
                                     <path key={d} d={d} /> :

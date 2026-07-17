@@ -15,8 +15,8 @@ const toAbsoluteImage = (image: string) => image.startsWith('http') ? image : `h
 
 const SEO: React.FC<SEOProps> = ({
     title,
-    description = "Diseño, instalación y gobierno de sistemas, automatización y agentes autónomos para empresas.",
-    keywords = "agencIA, infraestructura digital inteligente, agentes autónomos, automatización empresarial, inteligencia operativa, sistemas 360, gobierno de sistemas, México",
+    description = "Diseñamos y ponemos a trabajar sistemas y agentes de IA que ejecutan procesos, coordinan operaciones y amplían la capacidad de tu equipo.",
+    keywords = "agencIA, fuerza laboral digital, agentes de IA, agentes autónomos, automatización empresarial, inteligencia operativa, sistemas 360, infraestructura digital inteligente, México",
     image = "/og-infraestructura-digital-inteligente.png",
     url = "https://agenciamx.app/",
     canonical,
@@ -59,7 +59,7 @@ const SEO: React.FC<SEOProps> = ({
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1200" />
             <meta property="og:image:height" content="630" />
-            <meta property="og:image:alt" content="agencIA — Infraestructura digital inteligente" />
+            <meta property="og:image:alt" content="agencIA — La fuerza laboral digital de tu empresa" />
             <meta property="og:site_name" content="agencIA" />
             <meta property="og:locale" content="es_MX" />
 
@@ -69,7 +69,7 @@ const SEO: React.FC<SEOProps> = ({
             <meta name="twitter:title" content={siteTitle} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={imageUrl} />
-            <meta name="twitter:image:alt" content="agencIA — Infraestructura digital inteligente" />
+            <meta name="twitter:image:alt" content="agencIA — La fuerza laboral digital de tu empresa" />
         </Helmet>
     );
 };

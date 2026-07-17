@@ -1,6 +1,6 @@
 # agencIA
 
-> Infraestructura digital inteligente para empresas.
+> La fuerza laboral digital de tu empresa.
 
 Última actualización: 2026-07-17
 
@@ -8,9 +8,10 @@
 - https://agenciamx.app/
 
 ## Qué es agencIA
-agencIA diseña, instala y gobierna sistemas, automatización y agentes autónomos para empresas. Su propuesta es infraestructura digital inteligente orientada a crear inteligencia operativa y ecosistemas integrales 360°.
+agencIA diseña y pone a trabajar sistemas y agentes de IA que ejecutan procesos, coordinan operaciones y amplían la capacidad de los equipos. Su propuesta es construir la fuerza laboral digital de cada empresa sobre infraestructura inteligente, automatización y gobierno técnico.
 
 ## Servicios principales
+- Fuerza laboral digital: https://agenciamx.app/
 - Agentes autónomos: https://agenciamx.app/automatizacion
 - Automatización empresarial: https://agenciamx.app/automatizacion
 - Inteligencia operativa: https://agenciamx.app/infraestructura
@@ -29,7 +30,7 @@ agencIA diseña, instala y gobierna sistemas, automatización y agentes autónom
 - A.L.M.A. significa Algoritmo Lógico de Mente Artificial y es propiedad intelectual de agencIA.
 
 ## Términos clave
-Infraestructura digital inteligente, agentes autónomos, automatización empresarial, inteligencia operativa, gobierno de sistemas, sistemas 360°, agencia IA, México.
+Fuerza laboral digital, agentes de IA, agentes autónomos, automatización empresarial, infraestructura digital inteligente, inteligencia operativa, gobierno de sistemas, sistemas 360°, agencia IA, México.
 
 ## Contacto
 - Formulario: https://agenciamx.app/contacto

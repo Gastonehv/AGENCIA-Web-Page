@@ -902,9 +902,9 @@ const CinematicDev: React.FC = () => {
     return (
         <>
             <SEO
-                title="agencIA | Infraestructura digital inteligente"
-                description="Diseño, instalación y gobierno de sistemas, automatización y agentes autónomos para empresas."
-                keywords="agencIA, infraestructura digital inteligente, agentes autónomos, automatización empresarial, inteligencia operativa, sistemas 360, gobierno de sistemas, México"
+                title="agencIA | La fuerza laboral digital de tu empresa"
+                description="Diseñamos y ponemos a trabajar sistemas y agentes de IA que ejecutan procesos, coordinan operaciones y amplían la capacidad de tu equipo."
+                keywords="agencIA, fuerza laboral digital, agentes de IA, agentes autónomos, automatización empresarial, inteligencia operativa, sistemas 360, infraestructura digital inteligente, México"
                 image="https://agenciamx.app/og-infraestructura-digital-inteligente.png"
                 url="https://agenciamx.app/"
             />
@@ -915,9 +915,9 @@ const CinematicDev: React.FC = () => {
                 "url": "https://agenciamx.app/",
                 "logo": "https://agenciamx.app/favicon-512.png",
                 "email": "proyectos@agenciamx.app",
-                "description": "Infraestructura digital inteligente: diseño, instalación y gobierno de sistemas, automatización y agentes autónomos para empresas.",
+                "description": "Diseñamos y ponemos a trabajar sistemas y agentes de IA que ejecutan procesos, coordinan operaciones y amplían la capacidad de tu equipo.",
                 "areaServed": "MX",
-                "knowsAbout": ["Agentes autónomos", "Automatización empresarial", "Inteligencia operativa", "Gobierno de sistemas", "Sistemas 360"]
+                "knowsAbout": ["Fuerza laboral digital", "Agentes de IA", "Agentes autónomos", "Automatización empresarial", "Inteligencia operativa", "Gobierno de sistemas", "Sistemas 360"]
             }} />
             <StructuredData data={{
                 "@context": "https://schema.org",
@@ -929,11 +929,11 @@ const CinematicDev: React.FC = () => {
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "Service",
-                "name": "Infraestructura digital inteligente",
-                "serviceType": ["Diseño de sistemas", "Instalación de infraestructura digital", "Gobierno de sistemas", "Agentes autónomos", "Automatización empresarial", "Inteligencia operativa", "Sistemas 360"],
+                "name": "Fuerza laboral digital para empresas",
+                "serviceType": ["Fuerza laboral digital", "Diseño de sistemas", "Agentes de IA", "Instalación de infraestructura digital", "Gobierno de sistemas", "Agentes autónomos", "Automatización empresarial", "Inteligencia operativa", "Sistemas 360"],
                 "provider": { "@type": "Organization", "name": "agencIA" },
                 "areaServed": "MX",
-                "description": "Diseño, instalación y gobierno de sistemas, automatización y agentes autónomos para empresas."
+                "description": "Diseñamos y ponemos a trabajar sistemas y agentes de IA que ejecutan procesos, coordinan operaciones y amplían la capacidad de tu equipo."
             }} />
             {isLoading && <Loader onComplete={() => setIsLoading(false)} />}
             <div ref={containerRef} style={{

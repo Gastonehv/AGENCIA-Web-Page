@@ -2,7 +2,10 @@
 
 Última actualización: 2026-07-17
 
-agencIA diseña, instala y gobierna sistemas, automatización y agentes autónomos para empresas. Su propuesta es infraestructura digital inteligente.
+agencIA diseña y pone a trabajar sistemas y agentes de IA que ejecutan procesos, coordinan operaciones y amplían la capacidad de los equipos. Construimos la fuerza laboral digital de cada empresa sobre infraestructura inteligente, automatización y gobierno técnico.
+
+## Fuerza laboral digital
+Sistemas y agentes de IA integrados a la operación para ejecutar trabajo real, coordinar procesos y ampliar la capacidad de cada equipo.
 
 ## Agentes autónomos
 Diseño e implementación de agentes capaces de ejecutar tareas, coordinar herramientas y operar procesos empresariales con objetivos, verificación y límites definidos.

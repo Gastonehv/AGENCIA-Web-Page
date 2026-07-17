@@ -1,8 +1,8 @@
-# Precios y cotización — AgencIA
+# Precios y cotización — agencIA
 
-Última actualización: 2026-06-27
+Última actualización: 2026-07-17
 
-AgencIA trabaja proyectos a medida. El precio depende del alcance, complejidad técnica, número de integraciones, profundidad de automatización, entregables de diseño, velocidad requerida y mantenimiento posterior.
+agencIA trabaja proyectos de infraestructura digital inteligente a medida. El precio depende del alcance, complejidad técnica, número de integraciones, profundidad de automatización, agentes autónomos, gobierno requerido y mantenimiento posterior.
 
 ## Modalidades comunes
 
@@ -21,10 +21,10 @@ AgencIA trabaja proyectos a medida. El precio depende del alcance, complejidad t
 - Incluye diseño del flujo, implementación, pruebas e integración con herramientas existentes.
 - Cotización: a medida.
 
-### Sistema integral
-- Para empresas que requieren web, automatización, infraestructura, identidad y estrategia en un mismo ecosistema.
+### Sistema 360°
+- Para empresas que requieren infraestructura, aplicaciones, automatización, agentes e inteligencia operativa en un mismo ecosistema gobernado.
 - Cotización: a medida.
 
 ## Solicitar propuesta
 - Formulario: https://agenciamx.app/contacto
-- Correo: contacto@agenciamx.app
+- Correo: proyectos@agenciamx.app

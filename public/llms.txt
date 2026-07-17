@@ -1,20 +1,21 @@
-# AgencIA
+# agencIA
 
-> Ingeniería digital, automatización e IA para marcas que quieren operar más rápido, vender mejor y escalar con infraestructura premium.
+> Infraestructura digital inteligente para empresas.
 
-Última actualización: 2026-06-27
+Última actualización: 2026-07-17
 
 ## Sitio oficial
 - https://agenciamx.app/
 
-## Qué es AgencIA
-AgencIA es una agencia de ingeniería digital, automatización e inteligencia artificial en México. Diseña y construye sitios web, apps, sistemas digitales, automatizaciones con IA, identidad visual premium y estrategias de posicionamiento para negocios que quieren crecer con tecnología y marca.
+## Qué es agencIA
+agencIA diseña, instala y gobierna sistemas, automatización y agentes autónomos para empresas. Su propuesta es infraestructura digital inteligente orientada a crear inteligencia operativa y ecosistemas integrales 360°.
 
 ## Servicios principales
-- Desarrollo web y apps de alto impacto: https://agenciamx.app/
-- Automatización de procesos con IA: https://agenciamx.app/automatizacion
-- Infraestructura y sistemas a medida: https://agenciamx.app/infraestructura
-- Identidad visual y estrategia de marca: https://agenciamx.app/identidad
+- Agentes autónomos: https://agenciamx.app/automatizacion
+- Automatización empresarial: https://agenciamx.app/automatizacion
+- Inteligencia operativa: https://agenciamx.app/infraestructura
+- Sistemas 360°: https://agenciamx.app/
+- Diseño, instalación y gobierno de sistemas: https://agenciamx.app/infraestructura
 - Contacto y solicitud de propuesta: https://agenciamx.app/contacto
 
 ## Archivos legibles por IA
@@ -25,11 +26,11 @@ AgencIA es una agencia de ingeniería digital, automatización e inteligencia ar
 ## Mensaje de marca
 - No somos una agencia con IA. Somos la IA como agencIA.
 - La agencIA que piensa diferente.
-- A.L.M.A. significa Algoritmo Lógico de Mente Artificial y es propiedad intelectual de AgencIA.
+- A.L.M.A. significa Algoritmo Lógico de Mente Artificial y es propiedad intelectual de agencIA.
 
 ## Términos clave
-Agencia IA, automatización con IA, desarrollo web premium, aplicaciones web, sistemas digitales, infraestructura de software, identidad visual premium, SEO técnico, AI SEO, GEO, LLMO, México.
+Infraestructura digital inteligente, agentes autónomos, automatización empresarial, inteligencia operativa, gobierno de sistemas, sistemas 360°, agencia IA, México.
 
 ## Contacto
 - Formulario: https://agenciamx.app/contacto
-- Correo: contacto@agenciamx.app
+- Correo: proyectos@agenciamx.app

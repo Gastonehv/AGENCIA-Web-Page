@@ -15,14 +15,14 @@ const toAbsoluteImage = (image: string) => image.startsWith('http') ? image : `h
 
 const SEO: React.FC<SEOProps> = ({
     title,
-    description = "AgencIA diseña sitios web, apps, automatizaciones con IA y sistemas digitales premium para negocios que quieren crecer.",
-    keywords = "Agencia IA, desarrollo web, automatización con IA, apps web, sistemas digitales, SEO técnico, AI SEO, México",
-    image = "/og-image.jpg",
+    description = "Diseño, instalación y gobierno de sistemas, automatización y agentes autónomos para empresas.",
+    keywords = "agencIA, infraestructura digital inteligente, agentes autónomos, automatización empresarial, inteligencia operativa, sistemas 360, gobierno de sistemas, México",
+    image = "/og-infraestructura-digital-inteligente.png",
     url = "https://agenciamx.app/",
     canonical,
     noindex = false
 }) => {
-    const siteTitle = title.includes('AgencIA') ? title : `AgencIA | ${title}`;
+    const siteTitle = /agencIA/i.test(title) ? title.replace(/AgencIA/g, 'agencIA') : `agencIA | ${title}`;
     const canonicalUrl = canonical || url;
     const imageUrl = toAbsoluteImage(image);
 
@@ -56,7 +56,11 @@ const SEO: React.FC<SEOProps> = ({
             <meta property="og:title" content={siteTitle} />
             <meta property="og:description" content={description} />
             <meta property="og:image" content={imageUrl} />
-            <meta property="og:site_name" content="AgencIA" />
+            <meta property="og:image:type" content="image/png" />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+            <meta property="og:image:alt" content="agencIA — Infraestructura digital inteligente" />
+            <meta property="og:site_name" content="agencIA" />
             <meta property="og:locale" content="es_MX" />
 
             {/* Twitter */}
@@ -65,6 +69,7 @@ const SEO: React.FC<SEOProps> = ({
             <meta name="twitter:title" content={siteTitle} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={imageUrl} />
+            <meta name="twitter:image:alt" content="agencIA — Infraestructura digital inteligente" />
         </Helmet>
     );
 };

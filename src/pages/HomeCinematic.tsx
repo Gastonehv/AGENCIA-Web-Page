@@ -902,37 +902,38 @@ const CinematicDev: React.FC = () => {
     return (
         <>
             <SEO
-                title="Desarrollo web, automatización e IA en México"
-                description="AgencIA diseña sitios web, apps y automatizaciones con IA para marcas que quieren operar mejor, convertir más y posicionarse como primera opción."
-                keywords="desarrollo web, automatización con IA, agencia IA, AI SEO, GEO, LLMO, sitios web premium, apps web, México"
-                image="https://agenciamx.app/og-image.jpg"
+                title="agencIA | Infraestructura digital inteligente"
+                description="Diseño, instalación y gobierno de sistemas, automatización y agentes autónomos para empresas."
+                keywords="agencIA, infraestructura digital inteligente, agentes autónomos, automatización empresarial, inteligencia operativa, sistemas 360, gobierno de sistemas, México"
+                image="https://agenciamx.app/og-infraestructura-digital-inteligente.png"
                 url="https://agenciamx.app/"
             />
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "Organization",
-                "name": "AgencIA",
+                "name": "agencIA",
                 "url": "https://agenciamx.app/",
                 "logo": "https://agenciamx.app/favicon-512.png",
                 "email": "proyectos@agenciamx.app",
-                "description": "Agencia de ingeniería digital, automatización e inteligencia artificial en México.",
+                "description": "Infraestructura digital inteligente: diseño, instalación y gobierno de sistemas, automatización y agentes autónomos para empresas.",
                 "areaServed": "MX",
-                "knowsAbout": ["Desarrollo web", "Automatización con IA", "AI SEO", "SEO técnico", "Aplicaciones web"]
+                "knowsAbout": ["Agentes autónomos", "Automatización empresarial", "Inteligencia operativa", "Gobierno de sistemas", "Sistemas 360"]
             }} />
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "WebSite",
-                "name": "AgencIA",
+                "name": "agencIA",
                 "url": "https://agenciamx.app/",
                 "inLanguage": "es-MX"
             }} />
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "Service",
-                "name": "Desarrollo web, automatización e IA",
-                "provider": { "@type": "Organization", "name": "AgencIA" },
+                "name": "Infraestructura digital inteligente",
+                "serviceType": ["Diseño de sistemas", "Instalación de infraestructura digital", "Gobierno de sistemas", "Agentes autónomos", "Automatización empresarial", "Inteligencia operativa", "Sistemas 360"],
+                "provider": { "@type": "Organization", "name": "agencIA" },
                 "areaServed": "MX",
-                "description": "Sitios web premium, apps y automatizaciones con IA para crecimiento medible."
+                "description": "Diseño, instalación y gobierno de sistemas, automatización y agentes autónomos para empresas."
             }} />
             {isLoading && <Loader onComplete={() => setIsLoading(false)} />}
             <div ref={containerRef} style={{

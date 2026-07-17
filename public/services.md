@@ -1,22 +1,25 @@
-# Servicios de AgencIA
+# Servicios de agencIA
 
-Última actualización: 2026-06-27
+Última actualización: 2026-07-17
 
-AgencIA es una agencia de ingeniería digital, automatización e inteligencia artificial para negocios que quieren convertir mejor, operar con menos fricción y escalar con infraestructura premium.
+agencIA diseña, instala y gobierna sistemas, automatización y agentes autónomos para empresas. Su propuesta es infraestructura digital inteligente.
 
-## Desarrollo web y apps
-AgencIA diseña y desarrolla sitios web, aplicaciones web y plataformas digitales de alto impacto. El enfoque combina identidad visual premium, velocidad, arquitectura estable y experiencia de usuario orientada a conversión.
+## Agentes autónomos
+Diseño e implementación de agentes capaces de ejecutar tareas, coordinar herramientas y operar procesos empresariales con objetivos, verificación y límites definidos.
 
-## Automatización con IA
-AgencIA implementa automatizaciones, agentes de IA y flujos operativos para atención, ventas, seguimiento comercial, procesos internos y reducción de tareas repetitivas.
+## Automatización empresarial
+Diseño e integración de flujos para atención, ventas, seguimiento comercial, operaciones y reducción de tareas repetitivas.
 
-## Infraestructura digital
-AgencIA construye sistemas a medida, integraciones, dashboards, backend, arquitectura de software y bases operativas para negocios que necesitan crecer sin depender de soluciones frágiles.
+## Inteligencia operativa
+Sistemas que conectan datos, decisiones y ejecución para ofrecer visibilidad, control y capacidad de respuesta en la operación.
 
-## Identidad y estrategia
-AgencIA desarrolla identidad visual, narrativa de marca, posicionamiento y dirección creativa para empresas que quieren verse premium, memorables y diferentes desde el primer contacto.
+## Sistemas 360°
+Ecosistemas integrales que combinan infraestructura, aplicaciones, automatización, agentes e interfaces bajo un mismo gobierno técnico.
+
+## Diseño, instalación y gobierno de sistemas
+Arquitectura, implementación, integración, observabilidad y evolución de infraestructura digital diseñada para operar con estabilidad y escalar.
 
 ## Contacto
 - Sitio: https://agenciamx.app/
 - Contacto: https://agenciamx.app/contacto
-- Correo: contacto@agenciamx.app
+- Correo: proyectos@agenciamx.app

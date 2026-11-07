@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Página no encontrada · agencIA</title>
+<link rel="alternate" type="text/markdown" href="/404.md">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --tinta: #05070d; --verde: #00FF99; --cobalto: #3d7bff; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    background: radial-gradient(ellipse 70% 50% at 50% 38%, rgba(61,123,255,0.16), rgba(5,7,13,0) 70%), var(--tinta);
+    color: #e8ebf2; font-family: Poppins, system-ui, sans-serif; text-align: center; padding: 84px 24px 24px; overflow-x: hidden; }
+  .face { width: min(62vw, 260px); height: auto; color: #fff; overflow: visible; }
+  /* caos → orden: cada trazo llega revuelto y se acomoda de golpe */
+  .chaos { animation: order 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+  .c1 { --x: -90px; --y: -60px; --r: -38deg; animation-delay: 0.25s; }
+  .c2 { --x: 80px; --y: -90px; --r: 52deg; animation-delay: 0.32s; }
+  .c3 { --x: 30px; --y: 110px; --r: -70deg; animation-delay: 0.28s; }
+  @keyframes order { 0% { opacity: 0; transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.6); } 35% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+  /* la carita (el 404 se vuelve cara: los 4 son ojos, el 0 la nariz) */
+  .eyes, .nose { animation: eyes 1s 1.25s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+  .nose { animation-name: nose; }
+  .lid, .pupil { animation-duration: 4s; animation-delay: 2.3s; animation-iteration-count: infinite; animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  .lid { animation-name: lid; }
+  .pupil { animation-name: pupil; }
+  .mouth path { stroke: #fff; }
+  .ml { animation: ml 1.6s 1.25s cubic-bezier(0.33, 1, 0.68, 1) forwards; }
+  .mr { animation: mr 1.6s 1.25s cubic-bezier(0.33, 1, 0.68, 1) forwards; }
+  @keyframes eyes { from { transform: translateY(112.5px); } to { transform: translateY(15px); } }
+  @keyframes nose { from { transform: translate(0, 0); } to { transform: translate(0, 22.5px); } }
+  @keyframes lid { from, 40%, 45%, to { transform: translateY(0); } 42.5% { transform: translateY(17.5px); } }
+  @keyframes pupil { from, 37.5%, 40%, 45%, 87.5%, to { stroke-dashoffset: 0; transform: translate(0, 0); } 12.5%, 25%, 62.5%, 75% { stroke-dashoffset: 0; transform: translate(-35px, 0); } 42.5% { stroke-dashoffset: 35; transform: translate(0, 17.5px); } }
+  @keyframes ml { from, 50% { stroke-dashoffset: -102; } to { stroke-dashoffset: 0; } }
+  @keyframes mr { from, 50% { stroke-dashoffset: 102; } to { stroke-dashoffset: 0; } }
+  .code { font: 500 12px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.24em; color: rgba(255,255,255,0.45); margin-top: 22px; min-height: 12px; }
+  .code b { color: #fff; font-weight: 600; }
+  h1 { font-weight: 600; font-size: clamp(24px, 6.4vw, 38px); line-height: 1.15; margin: 14px 0 6px; letter-spacing: -0.01em; }
+  p { margin: 0 auto 26px; max-width: 420px; font-size: clamp(16px, 4.2vw, 19px); line-height: 1.5; color: rgba(232,235,242,0.78); }
+  .txt { opacity: 0; animation: up 0.8s 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  @keyframes up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .btn { display: inline-block; background: var(--verde); color: var(--tinta); padding: 14px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 16px; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,255,153,0.22); }
+  .btn:active { transform: scale(0.96); }
+  .btn:focus-visible, .ghost:focus-visible, .logo:focus-visible { outline: 2px solid var(--cobalto); outline-offset: 3px; }
+  .acts { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .ghost { display: inline-block; color: rgba(232,235,242,0.82); padding: 12px 18px; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(232,235,242,0.35); font-size: 15px; transition: color 0.2s; }
+  .ghost:hover { color: #fff; }
+  .logo { position: fixed; top: 18px; left: clamp(16px, 4vw, 48px); display: inline-flex; min-height: 44px; align-items: center; }
+  .logo img { height: clamp(34px, 4vw, 48px); width: auto; display: block; }
+  h1 span { display: block; }
+  @media (prefers-reduced-motion: reduce) {
+    .chaos, .txt { animation: none; opacity: 1; }
+    .eyes { animation: none; transform: translateY(15px); } .nose { animation: none; transform: translate(0, 22.5px); }
+    .lid, .pupil { animation: none; } .ml, .mr { animation: none; stroke-dashoffset: 0; }
+  }
+</style>
+</head>
+<body>
+<a class="logo" href="/" aria-label="agencIA, inicio"><img src="/logotipo-agencia-blanco.png" alt="agencIA" width="83" height="48"></a>
+<main>
+  <svg class="face" viewBox="0 0 320 380" aria-hidden="true">
+    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="25">
+      <g class="eyes" transform="translate(0, 112.5)">
+        <g transform="translate(15, 0)"><g class="chaos c1"><polyline class="lid" points="37,0 0,120 75,120"/><polyline class="pupil" points="55,120 55,155" stroke-dasharray="35 35"/></g></g>
+        <g transform="translate(230, 0)"><g class="chaos c2"><polyline class="lid" points="37,0 0,120 75,120"/><polyline class="pupil" points="55,120 55,155" stroke-dasharray="35 35"/></g></g>
+      </g>
+      <g class="chaos c3"><rect class="nose" rx="4" ry="4" x="132.5" y="112.5" width="55" height="155"/></g>
+      <g class="mouth" stroke-dasharray="102 102" transform="translate(65, 334)">
+        <path class="ml" d="M 0 30 C 0 30 40 0 95 0" stroke-dashoffset="-102"/>
+        <path class="mr" d="M 95 0 C 150 0 190 30 190 30" stroke-dashoffset="102"/>
+      </g>
+    </g>
+  </svg>
+  <div class="code" id="code" aria-hidden="true"></div>
+  <div class="txt">
+    <h1><span>Esta página</span><span>se nos perdió.</span></h1>
+    <p>Todo lo demás sí está en orden. Alma te dice en cinco minutos qué puede hacer por tu negocio.</p>
+    <div class="acts"><a class="btn" href="tel:+522229980111">Llámale a Alma</a><a class="ghost" href="/">o vuelve al inicio</a></div>
+  </div>
+</main>
+<script>
+  /* el código se decodifica como en la portada: signos de máquina → "ERROR 404 · EN ORDEN" */
+  (function () {
+    var el = document.getElementById("code"), T = "ERROR 404 · EN ORDEN", G = "ABCDEFGHJKLMNPRSTUVXYZ0123456789#/<>_+=", t0 = performance.now();
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { el.innerHTML = "ERROR 404 · <b>EN ORDEN</b>"; return; }
+    var f = function (now) {
+      var k = (now - t0) / 1000, out = "";
+      for (var i = 0; i < T.length; i++) {
+        var fix = 0.3 + i * 0.06, c = T.charAt(i);
+        if (c === " " || k >= fix) out += c; else if (k > 0.05) out += G.charAt(Math.floor(Math.random() * G.length));
+      }
+      if (k >= 0.3 + T.length * 0.06) { el.innerHTML = "ERROR 404 · <b>EN ORDEN</b>"; return; }
+      el.textContent = out; requestAnimationFrame(f);
+    };
+    requestAnimationFrame(f);
+  })();
+</script>
+</body>
+</html>

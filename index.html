@@ -124,6 +124,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
       .x-hero-explainer.is-ready{visibility:visible;opacity:1}
       .x-hero-explainer{position:relative;z-index:2;padding:118px 24px 40px;background:#05070d;text-align:center}
       .x-hero-explainer p{max-width:720px;margin:0 auto;font:500 clamp(18px,2.2vw,26px)/1.6 "Poppins",var(--text);color:#f2f3f5;text-wrap:balance}
+      @media(min-width:821px){.x-top.x-intro-reading{background:#05070d!important}}
       @media(max-width:820px){
         .x-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:44px 44px;gap:10px 12px;padding:12px 16px;background:#05070d!important}
         .x-top .x-logo{grid-column:1;grid-row:1;justify-self:start;height:44px}
@@ -3594,6 +3595,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
   var end=pin?pin.end:document.querySelector('.x-caos-sp').offsetHeight-innerHeight;
   var ready=window.scrollY>=end-2;
   intro.classList.toggle('is-ready',ready);
+  var header=document.querySelector('.x-top');if(header)header.classList.toggle('x-intro-reading',ready&&intro.getBoundingClientRect().bottom>0);
   var guide=document.querySelector('.x-mobile-guide');if(guide)guide.style.visibility=ready?'hidden':'visible';
  }
  window.addEventListener('scroll',sync,{passive:true});

@@ -143,6 +143,9 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
         .x-hero-explainer{padding:150px 24px 32px}
         #paquetes,#boton{scroll-margin-top:136px}
       }
+      @media(prefers-reduced-motion:reduce){
+        .x-hero-explainer{margin-top:0;visibility:visible;opacity:1;transition:none;padding:48px 24px}
+      }
     </style>
     <header class="x-top">
       <p class="x-mobile-guide">Desliza hacia arriba</p>
@@ -3589,7 +3592,9 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
  function sync(){
   var pin=window.ScrollTrigger&&ScrollTrigger.getById('caos');
   var end=pin?pin.end:document.querySelector('.x-caos-sp').offsetHeight-innerHeight;
-  intro.classList.toggle('is-ready',window.scrollY>=end-2);
+  var ready=window.scrollY>=end-2;
+  intro.classList.toggle('is-ready',ready);
+  var guide=document.querySelector('.x-mobile-guide');if(guide)guide.style.visibility=ready?'hidden':'visible';
  }
  window.addEventListener('scroll',sync,{passive:true});
  window.addEventListener('resize',sync);

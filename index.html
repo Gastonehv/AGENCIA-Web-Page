@@ -184,7 +184,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
           </span>
           
         </h1>
-        <p class="x-hint x-cue" aria-label="Desplázate para continuar"><span class="x-cue__c" aria-hidden="true"><span class="x-cue__ico x-cue__d"><svg viewBox="0 0 30 48"><rect x="1.5" y="1.5" width="27" height="45" rx="13.5" class="x-ms"/><rect x="13" y="9" width="4" height="9" rx="2" class="x-mw"/></svg></span><span class="x-cue__ico x-cue__m"><svg viewBox="0 0 30 64"><line x1="15" y1="10" x2="15" y2="54" class="x-ft"/><rect x="13.5" y="18" width="3" height="34" rx="1.5" class="x-fl"/><g class="x-fg"><circle cx="15" cy="52" r="10" class="x-fr"/><circle cx="15" cy="52" r="4.5" class="x-fd"/></g></svg></span><span class="x-cue__w"><span class="x-cue__m">Desliza hacia arriba</span><span class="x-cue__d">Desplázate</span></span></span></p>
+
       </section>
       </div>
 
@@ -3490,42 +3490,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
         else { var loop = function () { both(); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
       })();
     </script>
-      <script>
-      /* señal fija para avanzar: aparece sola si el visitante se detiene 2.2 s en medio de una escena larga; se va al moverse */
-      (function () {
-        var el = document.createElement("div");
-        el.className = "x-cue x-cuefix"; el.setAttribute("aria-hidden", "true");
-        el.innerHTML = '<span class="x-cue__c"><span class="x-cue__ico x-cue__d"><svg viewBox="0 0 30 48"><rect x="1.5" y="1.5" width="27" height="45" rx="13.5" class="x-ms"/><rect x="13" y="9" width="4" height="9" rx="2" class="x-mw"/></svg></span><span class="x-cue__ico x-cue__m"><svg viewBox="0 0 30 64"><line x1="15" y1="10" x2="15" y2="54" class="x-ft"/><rect x="13.5" y="18" width="3" height="34" rx="1.5" class="x-fl"/><g class="x-fg"><circle cx="15" cy="52" r="10" class="x-fr"/><circle cx="15" cy="52" r="4.5" class="x-fd"/></g></svg></span><span class="x-cue__w"><span class="x-cue__m">Desliza hacia arriba</span><span class="x-cue__d">Desplázate</span></span></span>';
-        document.body.appendChild(el);
-        var hero = document.getElementById("caos"), t = null;
-        var hide = function () { el.classList.remove("is-on"); };
-        var check = function () {
-          var de = document.documentElement, y = window.scrollY, vh = window.innerHeight;
-          var heroOn = hero && hero.getBoundingClientRect().bottom > vh * 0.6 && y < vh * 0.4;
-          var nearEnd = y + vh > de.scrollHeight - vh * 1.2;
-          /* 21 oct: nunca encima de texto. Si en la franja de la píldora hay texto visible (p. ej. #quien), no sale */
-          var q = document.getElementById("quien"), qr = q && q.getBoundingClientRect();
-          var inQuien = qr && qr.top < vh * 0.5 && qr.bottom > vh * 0.5;
-          var busy = inQuien || (function () {
-            var b = vh - Math.max(18, vh * 0.03) - 24, w = innerWidth / 2, xs = [w - 100, w - 50, w, w + 50, w + 100], ys = [b - 30, b - 6, b + 18];
-            for (var i = 0; i < xs.length; i++) for (var j = 0; j < ys.length; j++) {
-              var hits = document.elementsFromPoint(xs[i], ys[j]);
-              for (var k = 0; k < hits.length; k++) {
-                var h = hits[k]; if (h === el || el.contains(h)) continue;
-                if (/^(P|H1|H2|H3|A|LI|BUTTON|SPAN|STRONG|EM|B)$/.test(h.tagName)) {
-                  var cs = getComputedStyle(h); if (cs.visibility !== "hidden" && parseFloat(cs.opacity) > 0.15 && h.textContent.trim()) return true;
-                }
-              }
-            }
-            return false;
-          })();
-          if (!heroOn && !nearEnd && !busy) { el.classList.add("is-on"); clearTimeout(t); t = setTimeout(hide, 2800); } /* 19:58: se va sola a los 2.8 s para no tapar contenido */
-        };
-        var onScroll = function () { hide(); clearTimeout(t); t = setTimeout(check, 1200); };
-        window.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener("touchstart", hide, { passive: true });
-      })();
-    </script>
+      
     <!-- 18 oct 16:45: vaivén automático retirado a petición de Gastón (solo cursor o giroscopio real) -->
     <script>
       /* Gastón 18 oct 16:45: malla en tres profundidades sobre el grafito. Cada plano se mueve distinto con el cursor,

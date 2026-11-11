@@ -150,7 +150,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
       #caos .x-hint.x-cue{display:none!important}
       :root{--chapter-peek:clamp(148px,22svh,184px)}
       #caos .x-field{bottom:var(--chapter-peek)}
-      .x-hero-explainer{visibility:visible;opacity:1;position:relative;z-index:105;pointer-events:auto;box-sizing:border-box;width:min(760px,calc(100% - 36px));margin-left:auto;margin-right:auto;padding:22px 28px 32px;border:1px solid rgba(223,225,244,.38);border-radius:28px 28px 22px 22px;background:linear-gradient(135deg,rgba(39,43,61,.96),rgba(12,16,29,.98));box-shadow:inset 0 1px 1px rgba(255,255,255,.35),0 -12px 60px rgba(103,96,201,.11);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);text-align:left;transition:none}
+      .x-hero-explainer{visibility:visible;opacity:1;position:absolute;top:calc(100svh - var(--chapter-peek));left:0;right:0;z-index:105;margin-top:0!important;pointer-events:auto;box-sizing:border-box;width:min(760px,calc(100% - 36px));margin-left:auto;margin-right:auto;padding:22px 28px 32px;border:1px solid rgba(223,225,244,.38);border-radius:28px 28px 22px 22px;background:linear-gradient(135deg,rgba(39,43,61,.96),rgba(12,16,29,.98));box-shadow:inset 0 1px 1px rgba(255,255,255,.35),0 -12px 60px rgba(103,96,201,.11);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);text-align:left;transition:none}
       .x-chapter-handle{display:block;width:44px;height:4px;margin:0 auto 18px;background:#bec2cf;border-radius:4px}
       .x-chapter-invite{display:block;font:500 12px/1.5 "Poppins",var(--text);letter-spacing:.08em;color:#e1e3ed;margin:0 0 14px}
       .x-chapter-invite span{display:inline-block;margin-left:6px}
@@ -160,7 +160,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
       @keyframes x-chapter-point{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
       @media(min-width:821px){.x-hero-explainer{padding:24px 40px 36px}.x-chapter-title{margin-bottom:28px}}
       @media(max-width:380px){.x-hero-explainer{width:calc(100% - 24px);padding:18px 22px 28px}.x-chapter-handle{margin-bottom:14px}.x-chapter-invite{font-size:11px;margin-bottom:12px}.x-chapter-title{font-size:25px;margin-bottom:24px}}
-      @media(prefers-reduced-motion:reduce){#caos .x-field{bottom:0}.x-hero-explainer{margin-top:-100px!important}.x-chapter-invite span{animation:none!important}}
+      @media(prefers-reduced-motion:reduce){#caos .x-field{bottom:0}.x-hero-explainer{top:calc(100svh - 148px)}.x-chapter-invite span{animation:none!important}}
     </style>
     <header class="x-top">
 
@@ -184,10 +184,10 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
           
         </h1>
 
+      <section class="x-hero-explainer" id="capitulo" aria-label="Nuestra fuerza laboral digital"><span class="x-chapter-handle" aria-hidden="true"></span><span class="x-chapter-invite">SIGUE HACIA ABAJO <span aria-hidden="true">↓</span></span><h2 class="x-chapter-title">Mira cómo se ordena.</h2><p>Fuerza laboral digital: agentes de IA que atienden, crean, atraen y administran tu negocio</p></section>
       </section>
       </div>
-
-      <section class="x-hero-explainer" id="capitulo" aria-label="Nuestra fuerza laboral digital"><span class="x-chapter-handle" aria-hidden="true"></span><span class="x-chapter-invite">SIGUE HACIA ABAJO <span aria-hidden="true">↓</span></span><h2 class="x-chapter-title">Mira cómo se ordena.</h2><p>Fuerza laboral digital: agentes de IA que atienden, crean, atraen y administran tu negocio</p></section>
+      <div class="x-chapter-space" aria-hidden="true"></div>
 
       <section class="x-resp" id="boton" aria-label="Lo que hacemos por tu negocio">
         <div class="x-resp__stage" id="respstage">
@@ -1115,7 +1115,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
             end: function(){
               var intro=document.querySelector('.x-hero-explainer');
               var end=Math.max(innerHeight*.2,innerHeight*.85-(intro?intro.offsetHeight:0));
-              if(intro){var peek=Math.min(184,Math.max(148,innerHeight*.22));intro.style.marginTop=(-end-peek)+'px';}
+              if(intro){var peek=Math.min(184,Math.max(148,innerHeight*.22));document.documentElement.style.setProperty('--chapter-peek',peek+'px');var space=document.querySelector('.x-chapter-space');if(space)space.style.height=Math.max(0,intro.offsetHeight-peek)+'px';}
               return '+='+end;
             },
             pin: true,

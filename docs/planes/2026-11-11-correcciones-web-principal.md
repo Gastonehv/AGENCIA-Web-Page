@@ -77,3 +77,16 @@ Además, de la revisión salieron aplicadas antes: header móvil con fondo sóli
 - QA ejecutado sobre el preview final: animación completa del hero móvil sin colisión subtítulo/tarjetas (5+ frames), badge visible bajo header, anclas #paquetes y #boton despejadas del header fijo (124px vs header 110px), 3 paquetes apilados en móvil sin tabs ni contactos duplicados, desktop 1440px idéntico al vivo en precios (3 columnas) y hero con subtítulo. `.x-pq__tabs` oculto también en el sitio vivo: comportamiento original, no regresión.
 - Gaps declarados: contenido exacto de `_redirects` no recuperado (comportamiento reproducido por pretty-URL por defecto); bundle de la edge function "markdown" no recuperado (el preview no sirve la variante .md por Accept: text/markdown); respaldo = 97 públicos byte-exact, no íntegro funcional por esos faltantes.
 - Publicación en producción: pendiente, SOLO con OK explícito de Gastón, en paso aparte.
+
+## Enmienda 2026-11-11 (cierre de gaps de configuración del deploy)
+
+Investigación read-only posterior a la entrega del preview, autorizada por Main 04:28. Resultado: la **configuración del deploy** de producción quedó recuperada **byte-exacta** y respaldada en la rama `respaldo-publicado-2026-11-07`, carpeta `recuperado-config-2026-11-11/` (+ `RESPALDO-NOTAS-ADENDA-2026-11-11.md` en raíz, que sustituye la sección "No recuperable" de las notas originales).
+
+- `_redirects` (434 B, sha1 `1924ab27…` == inventario): 13 reglas legado (`/automatizacion`, `/identidad`, `/infraestructura`, `/nueva`, `/nueva/*` → `/`; aliases EN→ES; rewrite `/anterior/*`). Los 301 html→diagonal son pretty-URL por defecto de Netlify.
+- `manifest.json` (886 B, sha1 `21c0d3c1…` == inventario): en repo como `10-manifest.json` (prefijo automático de la UI de upload; contenido exacto).
+- Bundle eszip (6211 B, sha1 `cb476f02…` == inventario) + `markdown.ts` extraído (extracto original 1080 B; copia repo 1081 B por salto final del editor web).
+- Método: token de control de acceso de la UI de Netlify + encabezado `application/vnd.bitballoon.v1.raw` (detalle en el LEEME de la carpeta).
+
+**Alcance exacto**: se recuperó la *configuración del deploy*, NO la fuente original del 26 oct (no hallada en las rutas revisadas: refs/tags del repo, staging, cerebro, buzón, correo, mensajes). El preview actual **sigue sin** la edge function ni las reglas de `_redirects`: no hay paridad funcional con producción hasta implementarlas y probarlas en una revisión autorizada aparte.
+
+**Paso concreto para publicación segura** (NO ejecutado; preview y live congelados): cuando Gastón autorice publicar, (1) crear un deploy NUEVO desde el respaldo: 97 públicos + `_redirects` exacto + edge function `markdown` con la fuente `markdown.ts` recuperada (deploy con build/CLI, no drag-and-drop, para incluir la función); (2) verificar en ese deploy candidato: 301s legado, `Accept: text/markdown` en `/` y en ruta inexistente (404 markdown), y las correcciones visuales de este plan; (3) solo con ese candidato verificado, cambiar producción al nuevo deploy (sin tocar el deploy bloqueado 26-oct, que queda como rollback).

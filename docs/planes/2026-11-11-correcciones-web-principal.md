@@ -125,3 +125,9 @@ Error de QA: paridad del destino no prueba que un enlace nuevo sea útil. Debe p
 - QA funcional en preview: 33/33 PASS (redirects, markdown 200 y 404, secciones, archivos directos y HTML).
 - QA visual y clic real: móvil 390x844, sección precios y=124 y header hasta y=110; desktop 1440x1000, sección y=90, contenido del panel totalmente despejado del header. Título inicial completo; móvil tarjetas apiladas y desktop tres columnas. Botón visible sin tapar badge ni alterar Alma.
 - Producción permanece en `6af474578532c2c410697c3d`, locked=true. Esta corrección NO publicada, pendiente de revisión y OK posterior de Gastón. Main y ajustes de build no tocados; alineación segura de main sigue pendiente aparte.
+
+
+## Candidato conjunto autorizado 2026-11-11
+Gastón autorizó a las 08:26 incluir la categoría estructurada mínima junto con Ver precios y publicar ambos tras revisar el candidato conjunto. Se añade knowsAbout: ["Agentes de IA para negocios"] al Organization principal y serviceType: "Agentes de IA para negocios" al Service Atender/Agente 360. Frase coherente con el título y contenido visibles. No se cambian otros servicios, precios, copy ni condiciones; no se añade meta keywords. Esto no garantiza ranking ni nota.
+
+Candidato inmutable: https://6af47ba45f3fda2a2a5c4cd8--agenciamx-fixnav-20261111.netlify.app (deploy 6af47ba45f3fda2a2a5c4cd8). index.html sha1 eb6d86d3765dd895a53cbb6df80fd1c45e25b60a. Mapa de 100 archivos exacto, solo index cambia. QA funcional 33/33, parseo JSON-LD correcto, clic real móvil/desktop al inicio completo de precios. Publicación queda pendiente de fuente guardada y revisión final conjunta. main no alineada; deuda separada sin cambios de build settings.

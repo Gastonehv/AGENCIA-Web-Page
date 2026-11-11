@@ -124,7 +124,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
       .x-hero-explainer.is-ready{visibility:visible;opacity:1}
       .x-hero-explainer{position:relative;z-index:2;padding:118px 24px 40px;background:#05070d;text-align:center}
       .x-hero-explainer p{max-width:720px;margin:0 auto;font:500 clamp(18px,2.2vw,26px)/1.6 "Poppins",var(--text);color:#f2f3f5;text-wrap:balance}
-      @media(min-width:821px){.x-top.x-intro-reading{background:#05070d!important}}
+      @media(min-width:821px){.x-top.x-intro-reading{background:#05070d!important}.x-hero-explainer{padding-top:230px;transition:none}}
       @media(max-width:820px){
         .x-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:44px 44px;gap:10px 12px;padding:12px 16px;background:#05070d!important}
         .x-top .x-logo{grid-column:1;grid-row:1;justify-self:start;height:44px}
@@ -1100,7 +1100,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
             start: "top top",
             end: function(){
               var intro=document.querySelector('.x-hero-explainer');
-              return '+='+Math.max(innerHeight*.4,innerHeight*.85-(intro?intro.offsetHeight:0));
+              return '+='+Math.max(innerHeight*.2,innerHeight*.85-(intro?intro.offsetHeight:0));
             },
             pin: true,
             pinSpacer: document.querySelector(".x-caos-sp"),

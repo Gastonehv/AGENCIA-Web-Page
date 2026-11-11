@@ -46,7 +46,6 @@ Negocios y empresas en México que pierden clientes por no contestar a tiempo, q
 - LinkedIn: [agencIA](https://www.linkedin.com/company/agenciamx-app/)
 
 ## Páginas de servicio
-- [Agentes de IA para negocios en Xalapa](https://agenciamx.app/agentes-ia-xalapa/): resumen de los cuatro frentes, precios y cómo empezar.
 - [Atender](https://agenciamx.app/atender/): Alma contesta llamadas y WhatsApp 24/7, agenda y da seguimiento.
 - [Crear](https://agenciamx.app/crear/): videos, imágenes y textos con IA.
 - [Atraer](https://agenciamx.app/atraer/): SEO, GEO y anuncios con retorno medido.

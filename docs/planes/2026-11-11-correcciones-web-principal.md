@@ -58,3 +58,22 @@ Cuidado de diseño: `#caos` es sección fijada (pin) con animación GSAP; el sub
 - Sección de casos reales (requiere evidencia + permiso).
 - Funciones nuevas, envíos, gastos.
 - Descubre, DNS, deploy raíz, desbloqueo de Netlify.
+
+
+## Enmienda 2026-11-11 (post-revisión de QA visual)
+
+Tras la revisión de capturas se aplicaron dos correcciones adicionales dentro del mismo `<style id="x-fix-20261111">`, solo en el media query móvil (max-width:820px):
+
+- `#caos .x-title{z-index:140}` — en móvil las tarjetas animadas del hero (z-index hasta 105) cruzaban por encima del título y del subtítulo (h1 z-index 88); con 140 el título y la píldora del subtítulo quedan siempre por encima de las tarjetas y por debajo del badge (150). Legibilidad garantizada en todo el ciclo de animación.
+- `.x-hero-sub{background:rgba(5,7,13,.88)}` — fondo más opaco para que el subtítulo no se vea afectado por tarjetas que pasan detrás.
+
+Además, de la revisión salieron aplicadas antes: header móvil con fondo sólido `#05070d` y segunda fila de navegación, `#caos .x-badge{top:124px}` para que el badge no quede tras el header, y `scroll-margin-top:124px` en `#paquetes`/`#boton` móvil (90px en desktop).
+
+### Estado de ejecución
+
+- Rama: `correcciones-web-2026-11-11`. HEAD exacto: commit `27894507d7f90306ffe50b1b0df5c27ba4c6cc7a` ("Rename 1-index.html to index.html"). Cadena: `aabcede7` (CSS enmienda) → `d8062fa` (retira index.html viejo) → `2789450` (deja el parchado final como index.html). Historial íntegro; el index previo queda recuperable en `aabcede7` y el publicado original en la rama de respaldo `respaldo-publicado-2026-11-07`.
+- Preview: https://agenciamx-preview-20261111.netlify.app (sitio Netlify separado 6763e531-ab49-429a-a146-f559e6a40bed), deploy de 97 archivos públicos, state ready.
+- Nota de alcance: la "fuente editable" es la base estática publicada y parchada (archivos tal como se sirvieron el 26-oct + parche), no el código fuente original del sitio, que no se encontró en las rutas revisadas. Los assets compilados (p. ej. assets/index-cbqndily.js) no se tocaron.
+- QA ejecutado sobre el preview final: animación completa del hero móvil sin colisión subtítulo/tarjetas (5+ frames), badge visible bajo header, anclas #paquetes y #boton despejadas del header fijo (124px vs header 110px), 3 paquetes apilados en móvil sin tabs ni contactos duplicados, desktop 1440px idéntico al vivo en precios (3 columnas) y hero con subtítulo. `.x-pq__tabs` oculto también en el sitio vivo: comportamiento original, no regresión.
+- Gaps declarados: contenido exacto de `_redirects` no recuperado (comportamiento reproducido por pretty-URL por defecto); bundle de la edge function "markdown" no recuperado (el preview no sirve la variante .md por Accept: text/markdown); respaldo = 97 públicos byte-exact, no íntegro funcional por esos faltantes.
+- Publicación en producción: pendiente, SOLO con OK explícito de Gastón, en paso aparte.

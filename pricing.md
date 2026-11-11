@@ -30,6 +30,6 @@
 - La inversión en anuncios no está incluida. Manejo de campañas pagadas: 15% de la inversión.
 
 ## Contratar
-- Primero, un diagnóstico gratis de 30 minutos: llama a Alma al [+52 222 998 0111](tel:+522229980111) o escribe por [WhatsApp](https://wa.me/522229980111) para agendar con Gastón Hernández.
+- Primero, un diagnóstico gratis de 30 minutos: llama a Alma al [+52 222 998 0111](tel:+522229980111) o escribe por [WhatsApp](https://wa.me/522229980111) para agendar con un experto de agencIA.
 - Después recibes una propuesta por escrito con precio cerrado. El enlace de pago se manda solo después de firmar el contrato.
 - Términos: [agenciamx.app/terminos/](https://agenciamx.app/terminos/)

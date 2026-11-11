@@ -8,7 +8,7 @@ El servicio lo presta Gastón Eduardo Hernández Vista, persona física con acti
 
 ## Cómo se contrata
 
-1. Diagnóstico gratis de 30 minutos, con Alma o con Gastón Hernández. 2. Propuesta por escrito con alcance y precio cerrado. 3. Firma del contrato. 4. Solo después de firmar te mandamos el enlace de pago. En esta página no se cobra nada.
+1. Diagnóstico gratis de 30 minutos, con Alma o con un experto de agencIA. 2. Propuesta por escrito con alcance y precio cerrado. 3. Firma del contrato. 4. Solo después de firmar te mandamos el enlace de pago. En esta página no se cobra nada.
 
 ## Precio y forma de pago
 

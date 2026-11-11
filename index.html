@@ -1094,7 +1094,10 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
             id: "caos",
             trigger: "#caos",
             start: "top top",
-            end: "+=85%",
+            end: function(){
+              var intro=document.querySelector('.x-hero-explainer');
+              return '+='+Math.max(innerHeight*.4,innerHeight*.85-(intro?intro.offsetHeight:0));
+            },
             pin: true,
             pinSpacer: document.querySelector(".x-caos-sp"),
             anticipatePin: 1,

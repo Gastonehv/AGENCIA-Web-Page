@@ -148,21 +148,20 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
         .x-hero-explainer{margin-top:0;visibility:visible;opacity:1;transition:none;padding:48px 24px}
       }
       #caos .x-hint.x-cue{display:none!important}
-      .x-edge-guides{position:fixed;inset:0;z-index:155;pointer-events:none;opacity:0;transition:opacity .25s ease}
-      .x-edge-guides.is-idle{opacity:1}
-      .x-edge-guide{position:absolute;top:max(160px,40svh);width:10px;height:144px;overflow:hidden;filter:drop-shadow(0 0 4px rgba(255,255,255,.6))}
-      .x-edge-guide--left{left:max(4px,env(safe-area-inset-left))}
-      .x-edge-guide--right{right:max(4px,env(safe-area-inset-right))}
-      .x-edge-guide::before{content:"";position:absolute;left:4.5px;top:0;bottom:0;width:1px;background:rgba(242,243,245,.24)}
-      .x-edge-guide::after{content:"";position:absolute;left:3.5px;top:-40px;width:3px;height:38px;border-radius:3px;background:linear-gradient(transparent,#fff,transparent);animation:x-edge-flow 2s linear infinite}
-      .x-edge-guide i{display:block;position:absolute;left:1.5px;width:7px;height:7px;border-right:1.5px solid #f2f3f5;border-bottom:1.5px solid #f2f3f5;transform:rotate(45deg);opacity:.28;animation:x-edge-v 2s ease-in-out infinite}
-      .x-edge-guide i:nth-child(1){top:25px;animation-delay:0s}.x-edge-guide i:nth-child(2){top:52px;animation-delay:.38s}.x-edge-guide i:nth-child(3){top:79px;animation-delay:.76s}.x-edge-guide i:nth-child(4){top:106px;animation-delay:1.14s}
-      @keyframes x-edge-flow{to{transform:translateY(210px)}}
-      @keyframes x-edge-v{0%,65%,100%{opacity:.28}25%{opacity:1}}
-      @media(min-width:821px){.x-edge-guide--left{left:14px}.x-edge-guide--right{right:14px}}
-      @media(prefers-reduced-motion:reduce){.x-edge-guides{transition:none}.x-edge-guide::after{display:none}.x-edge-guide i{animation:none;opacity:.75}}
+      :root{--chapter-peek:clamp(148px,22svh,184px)}
+      #caos .x-field{bottom:var(--chapter-peek)}
+      .x-hero-explainer{visibility:visible;opacity:1;position:relative;z-index:105;pointer-events:auto;box-sizing:border-box;width:min(760px,calc(100% - 36px));margin-left:auto;margin-right:auto;padding:22px 28px 32px;border:1px solid rgba(223,225,244,.38);border-radius:28px 28px 22px 22px;background:linear-gradient(135deg,rgba(39,43,61,.96),rgba(12,16,29,.98));box-shadow:inset 0 1px 1px rgba(255,255,255,.35),0 -12px 60px rgba(103,96,201,.11);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);text-align:left;transition:none}
+      .x-chapter-handle{display:block;width:44px;height:4px;margin:0 auto 18px;background:#bec2cf;border-radius:4px}
+      .x-chapter-invite{display:block;font:500 12px/1.5 "Poppins",var(--text);letter-spacing:.08em;color:#e1e3ed;margin:0 0 14px}
+      .x-chapter-invite span{display:inline-block;margin-left:6px}
+      .x-chapter-title{margin:0 0 26px;font:600 clamp(25px,3.2vw,38px)/1.18 "Poppins",var(--text);letter-spacing:-.035em;color:#f2f3f5;text-wrap:balance}
+      .x-hero-explainer p{font:500 clamp(17px,1.6vw,22px)/1.6 "Poppins",var(--text);color:#d5d8e4;margin:0;max-width:680px;text-wrap:balance}
+      .x-hero-explainer.is-idle .x-chapter-invite span{animation:x-chapter-point 1.4s ease-in-out 2}
+      @keyframes x-chapter-point{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+      @media(min-width:821px){.x-hero-explainer{padding:24px 40px 36px}.x-chapter-title{margin-bottom:28px}}
+      @media(max-width:380px){.x-hero-explainer{width:calc(100% - 24px);padding:18px 22px 28px}.x-chapter-handle{margin-bottom:14px}.x-chapter-invite{font-size:11px;margin-bottom:12px}.x-chapter-title{font-size:25px;margin-bottom:24px}}
+      @media(prefers-reduced-motion:reduce){#caos .x-field{bottom:0}.x-hero-explainer{margin-top:-100px!important}.x-chapter-invite span{animation:none!important}}
     </style>
-    <div class="x-edge-guides" aria-hidden="true"><span class="x-edge-guide x-edge-guide--left"><i></i><i></i><i></i><i></i></span><span class="x-edge-guide x-edge-guide--right"><i></i><i></i><i></i><i></i></span></div>
     <header class="x-top">
 
       <a class="x-logo" href="#top" aria-label="agencIA, inicio"><img src="/logo-agencia-220.webp" alt="agencIA" width="220" height="127" fetchpriority="high" /></a>
@@ -188,7 +187,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
       </section>
       </div>
 
-      <section class="x-hero-explainer" aria-label="Nuestra fuerza laboral digital"><p>Fuerza laboral digital: agentes de IA que atienden, crean, atraen y administran tu negocio</p></section>
+      <section class="x-hero-explainer" id="capitulo" aria-label="Nuestra fuerza laboral digital"><span class="x-chapter-handle" aria-hidden="true"></span><span class="x-chapter-invite">SIGUE HACIA ABAJO <span aria-hidden="true">↓</span></span><h2 class="x-chapter-title">Mira cómo se ordena.</h2><p>Fuerza laboral digital: agentes de IA que atienden, crean, atraen y administran tu negocio</p></section>
 
       <section class="x-resp" id="boton" aria-label="Lo que hacemos por tu negocio">
         <div class="x-resp__stage" id="respstage">
@@ -1115,7 +1114,9 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
             start: "top top",
             end: function(){
               var intro=document.querySelector('.x-hero-explainer');
-              return '+='+Math.max(innerHeight*.2,innerHeight*.85-(intro?intro.offsetHeight:0));
+              var end=Math.max(innerHeight*.2,innerHeight*.85-(intro?intro.offsetHeight:0));
+              if(intro){var peek=Math.min(184,Math.max(148,innerHeight*.22));intro.style.marginTop=(-end-peek)+'px';}
+              return '+='+end;
             },
             pin: true,
             pinSpacer: document.querySelector(".x-caos-sp"),
@@ -3568,34 +3569,17 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
 
   <script>
 (function(){
- var intro=document.querySelector('.x-hero-explainer');
+ var intro=document.querySelector('.x-hero-explainer'),timer;
  if(!intro)return;
  function sync(){
-  var pin=window.ScrollTrigger&&ScrollTrigger.getById('caos');
-  var end=pin?pin.end:document.querySelector('.x-caos-sp').offsetHeight-innerHeight;
-  var ready=window.scrollY>=end-2;
-  intro.classList.toggle('is-ready',ready);
-  var header=document.querySelector('.x-top');if(header)header.classList.toggle('x-intro-reading',ready&&intro.getBoundingClientRect().bottom>0);
-  var guide=document.querySelector('.x-mobile-guide');if(guide)guide.style.visibility=ready?'hidden':'visible';
+  var header=document.querySelector('.x-top'),r=intro.getBoundingClientRect();
+  if(header)header.classList.toggle('x-intro-reading',r.top<header.getBoundingClientRect().bottom&&r.bottom>0);
  }
- window.addEventListener('scroll',sync,{passive:true});
- window.addEventListener('resize',sync);
- if(window.ScrollTrigger)ScrollTrigger.addEventListener('refresh',sync);
- sync();
-})();
-</script>
-<script>
-(function(){
- var guides=document.querySelector('.x-edge-guides'),timer;
- if(!guides)return;
- function show(){
-  var el=document.activeElement,typing=el&&(/INPUT|TEXTAREA|SELECT/.test(el.tagName)||el.isContentEditable);
-  var more=window.scrollY+innerHeight<document.documentElement.scrollHeight-24;
-  guides.classList.toggle('is-idle',more&&!typing&&!document.hidden);
- }
- function moving(){guides.classList.remove('is-idle');clearTimeout(timer);timer=setTimeout(show,850)}
+ function show(){if(!document.hidden&&intro.getBoundingClientRect().bottom>0)intro.classList.add('is-idle')}
+ function moving(){intro.classList.remove('is-idle');clearTimeout(timer);timer=setTimeout(show,900);sync()}
  window.addEventListener('scroll',moving,{passive:true});
- window.addEventListener('resize',moving);document.addEventListener('focusin',moving);document.addEventListener('focusout',moving);document.addEventListener('visibilitychange',moving);
+ window.addEventListener('resize',moving);document.addEventListener('visibilitychange',moving);
+ if(window.ScrollTrigger)ScrollTrigger.addEventListener('refresh',sync);
  moving();
 })();
 </script>

@@ -148,7 +148,8 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
         .x-hero-explainer{margin-top:0;visibility:visible;opacity:1;transition:none;padding:48px 24px}
       }
       #caos .x-hint.x-cue{display:none!important}
-      #caos .x-field{bottom:170px;overflow:hidden}
+      #caos .x-field{bottom:170px;overflow:hidden;mask-image:linear-gradient(to bottom,#000 calc(100% - 36px),transparent);-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 36px),transparent)}
+      #caos:has(.x-gesture.is-away) .x-field{bottom:0;mask-image:none;-webkit-mask-image:none}
       .x-gesture{position:absolute;z-index:105;bottom:18px;left:50%;transform:translateX(-50%);width:280px;height:142px;text-align:center;pointer-events:none;color:#f2f3f6;transition:opacity .18s}
       .x-gesture.is-away{opacity:0;visibility:hidden}
       .x-gesture strong{display:block;font:600 17px/1.4 "Poppins",var(--text);margin-top:8px}
@@ -186,7 +187,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
         <div class="x-badge" aria-hidden="true"><b id="count">00</b> cosas sin atender</div>
         <div class="x-glow" aria-hidden="true"></div>
         <div class="x-field" id="field" aria-hidden="true"></div>
-        <div class="x-gesture" aria-label="Sigue hacia abajo. Desliza hacia arriba con el dedo para avanzar.">
+        <div class="x-gesture" role="note">
           <div class="x-touch" aria-hidden="true"><i class="x-touch-layer"></i><i class="x-touch-trail"></i><i class="x-touch-dot"></i></div>
           <div class="x-mouse" aria-hidden="true"><i></i></div>
           <strong>Sigue hacia abajo</strong>

@@ -148,19 +148,30 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
         .x-hero-explainer{margin-top:0;visibility:visible;opacity:1;transition:none;padding:48px 24px}
       }
       #caos .x-hint.x-cue{display:none!important}
-      :root{--chapter-peek:clamp(148px,22svh,184px)}
-      #caos{overflow:visible}#caos .x-field{bottom:var(--chapter-peek);overflow:hidden}
-      .x-hero-explainer{visibility:visible;opacity:1;position:absolute;top:calc(100svh - var(--chapter-peek));left:0;right:0;z-index:105;margin-top:0!important;pointer-events:auto;box-sizing:border-box;width:min(760px,calc(100% - 36px));margin-left:auto;margin-right:auto;padding:22px 28px 32px;border:1px solid rgba(223,225,244,.38);border-radius:28px 28px 22px 22px;background:linear-gradient(135deg,rgba(39,43,61,.96),rgba(12,16,29,.98));box-shadow:inset 0 1px 1px rgba(255,255,255,.35),0 -12px 60px rgba(103,96,201,.11);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);text-align:left;transition:none}
-      .x-chapter-handle{display:block;width:44px;height:4px;margin:0 auto 18px;background:#bec2cf;border-radius:4px}
-      .x-chapter-invite{display:block;font:500 12px/1.5 "Poppins",var(--text);letter-spacing:.08em;color:#e1e3ed;margin:0 0 14px}
-      .x-chapter-invite span{display:inline-block;margin-left:6px}
-      .x-chapter-title{margin:0 0 26px;font:600 clamp(25px,3.2vw,38px)/1.18 "Poppins",var(--text);letter-spacing:-.035em;color:#f2f3f5;text-wrap:balance}
-      .x-hero-explainer p{font:500 clamp(17px,1.6vw,22px)/1.6 "Poppins",var(--text);color:#d5d8e4;margin:0;max-width:680px;text-wrap:balance}
-      .x-hero-explainer.is-idle .x-chapter-invite span{animation:x-chapter-point 1.4s ease-in-out 2}
-      @keyframes x-chapter-point{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
-      @media(min-width:821px){.x-hero-explainer{padding:24px 40px 36px}.x-chapter-title{margin-bottom:28px}}
-      @media(max-width:380px){.x-hero-explainer{width:calc(100% - 24px);padding:18px 22px 28px}.x-chapter-handle{margin-bottom:14px}.x-chapter-invite{font-size:11px;margin-bottom:12px}.x-chapter-title{font-size:25px;margin-bottom:24px}}
-      @media(prefers-reduced-motion:reduce){#caos .x-field{bottom:0}.x-hero-explainer{top:calc(100svh - 148px)}.x-chapter-invite span{animation:none!important}}
+      #caos .x-field{bottom:170px;overflow:hidden}
+      .x-gesture{position:absolute;z-index:105;bottom:18px;left:50%;transform:translateX(-50%);width:280px;height:142px;text-align:center;pointer-events:none;color:#f2f3f6;transition:opacity .18s}
+      .x-gesture.is-away{opacity:0;visibility:hidden}
+      .x-gesture strong{display:block;font:600 17px/1.4 "Poppins",var(--text);margin-top:8px}
+      .x-gesture small{display:block;font:500 12px/1.5 "Poppins",var(--text);color:#bfc5d3;margin-top:4px}
+      .x-touch{position:relative;display:none;height:72px;width:126px;margin:auto}
+      .x-touch-layer{position:absolute;left:12px;right:12px;top:24px;height:38px;border:1px solid rgba(197,207,238,.28);border-radius:10px;background:rgba(191,203,238,.05)}
+      .x-touch-layer:before,.x-touch-layer:after{content:"";position:absolute;left:12px;right:30px;top:11px;height:2px;background:#bfc5d3;opacity:.5}
+      .x-touch-layer:after{top:21px;right:48px}
+      .x-touch-trail{position:absolute;left:59px;top:12px;width:8px;height:48px;border-radius:9px;background:linear-gradient(to top,rgba(222,229,255,.3),transparent);opacity:0}
+      .x-touch-dot{position:absolute;left:53px;top:46px;width:20px;height:20px;border:2px solid #f0f3ff;border-radius:50%;background:rgba(199,215,255,.25);box-shadow:0 0 16px rgba(188,210,255,.35)}
+      .x-mouse{height:64px;width:38px;border:2px solid #c8cddd;border-radius:22px;margin:8px auto 0;position:relative}
+      .x-mouse i{position:absolute;top:12px;left:15px;width:4px;height:12px;border-radius:4px;background:#f0f3ff}
+      .x-gesture-mobile{display:none!important}
+      .x-gesture.is-demo .x-mouse i{animation:x-wheel-demo 2s ease-in-out 1}
+      .x-gesture.is-demo .x-touch-dot{animation:x-touch-demo 2s ease-in-out 1}
+      .x-gesture.is-demo .x-touch-trail{animation:x-trail-demo 2s ease-in-out 1}
+      .x-gesture.is-demo .x-touch-layer{animation:x-layer-demo 2s ease-in-out 1}
+      @keyframes x-wheel-demo{0%,15%,100%{transform:translateY(0);opacity:1}65%{transform:translateY(20px);opacity:.1}80%{transform:translateY(0);opacity:0}}
+      @keyframes x-touch-demo{0%,15%,100%{transform:translateY(0);opacity:1}65%{transform:translateY(-40px);opacity:1}80%{transform:translateY(-40px);opacity:0}90%{transform:translateY(0);opacity:0}}
+      @keyframes x-trail-demo{0%,15%,100%{opacity:0}55%{opacity:1}80%{opacity:0}}
+      @keyframes x-layer-demo{0%,15%,100%{transform:translateY(0)}65%,80%{transform:translateY(-14px)}}
+      @media(pointer:coarse),(max-width:820px){.x-touch{display:block}.x-mouse{display:none}.x-gesture-mobile{display:block!important}.x-gesture-desktop{display:none!important}}
+      @media(prefers-reduced-motion:reduce){.x-gesture *{animation:none!important;transition:none!important}}
     </style>
     <header class="x-top">
 
@@ -175,6 +186,13 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
         <div class="x-badge" aria-hidden="true"><b id="count">00</b> cosas sin atender</div>
         <div class="x-glow" aria-hidden="true"></div>
         <div class="x-field" id="field" aria-hidden="true"></div>
+        <div class="x-gesture" aria-label="Sigue hacia abajo. Desliza hacia arriba con el dedo para avanzar.">
+          <div class="x-touch" aria-hidden="true"><i class="x-touch-layer"></i><i class="x-touch-trail"></i><i class="x-touch-dot"></i></div>
+          <div class="x-mouse" aria-hidden="true"><i></i></div>
+          <strong>Sigue hacia abajo</strong>
+          <small class="x-gesture-mobile">Desliza hacia arriba para descubrirlo.</small>
+          <small class="x-gesture-desktop">Usa la rueda o el trackpad.</small>
+        </div>
         <h1 class="x-title" id="title" aria-label="Así se ve tu negocio cuando todo se junta.">
           <span class="x-tin" aria-hidden="true">
             <span class="x-line" aria-hidden="true">ASÍ SE VE</span>
@@ -184,10 +202,10 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
           
         </h1>
 
-      <section class="x-hero-explainer" id="capitulo" aria-label="Nuestra fuerza laboral digital"><span class="x-chapter-handle" aria-hidden="true"></span><span class="x-chapter-invite">SIGUE HACIA ABAJO <span aria-hidden="true">↓</span></span><h2 class="x-chapter-title">Mira cómo se ordena.</h2><p>Fuerza laboral digital: agentes de IA que atienden, crean, atraen y administran tu negocio</p></section>
       </section>
       </div>
-      <div class="x-chapter-space" aria-hidden="true"></div>
+
+      <section class="x-hero-explainer" aria-label="Nuestra fuerza laboral digital"><p>Fuerza laboral digital: agentes de IA que atienden, crean, atraen y administran tu negocio</p></section>
 
       <section class="x-resp" id="boton" aria-label="Lo que hacemos por tu negocio">
         <div class="x-resp__stage" id="respstage">
@@ -1114,9 +1132,7 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
             start: "top top",
             end: function(){
               var intro=document.querySelector('.x-hero-explainer');
-              var end=Math.max(innerHeight*.2,innerHeight*.85-(intro?intro.offsetHeight:0));
-              if(intro){var peek=Math.min(184,Math.max(148,innerHeight*.22));document.documentElement.style.setProperty('--chapter-peek',peek+'px');var space=document.querySelector('.x-chapter-space');if(space)space.style.height=Math.max(0,intro.offsetHeight-peek)+'px';}
-              return '+='+end;
+              return '+='+Math.max(innerHeight*.2,innerHeight*.85-(intro?intro.offsetHeight:0));
             },
             pin: true,
             pinSpacer: document.querySelector(".x-caos-sp"),
@@ -3569,18 +3585,13 @@ var add=window.addEventListener;window.addEventListener=function(t,f,o){if(t==="
 
   <script>
 (function(){
- var intro=document.querySelector('.x-hero-explainer'),timer;
- if(!intro)return;
- function sync(){
-  var header=document.querySelector('.x-top'),r=intro.getBoundingClientRect();
-  if(header)header.classList.toggle('x-intro-reading',r.top<header.getBoundingClientRect().bottom&&r.bottom>0);
- }
- function show(){if(!document.hidden&&intro.getBoundingClientRect().bottom>0)intro.classList.add('is-idle')}
- function moving(){intro.classList.remove('is-idle');clearTimeout(timer);timer=setTimeout(show,900);sync()}
- window.addEventListener('scroll',moving,{passive:true});
- window.addEventListener('resize',moving);document.addEventListener('visibilitychange',moving);
- if(window.ScrollTrigger)ScrollTrigger.addEventListener('refresh',sync);
- moving();
+ var intro=document.querySelector('.x-hero-explainer'),cue=document.querySelector('.x-gesture'),timer,played=false;
+ if(!intro||!cue)return;
+ function sync(){var header=document.querySelector('.x-top'),r=intro.getBoundingClientRect();if(header)header.classList.toggle('x-intro-reading',r.top<header.getBoundingClientRect().bottom&&r.bottom>0);cue.classList.toggle('is-away',scrollY>70)}
+ function demo(){if(!played&&!document.hidden&&scrollY<20){played=true;cue.classList.add('is-demo')}}
+ function moving(){clearTimeout(timer);cue.classList.remove('is-demo');sync();if(!played)timer=setTimeout(demo,900)}
+ window.addEventListener('scroll',moving,{passive:true});window.addEventListener('resize',moving);document.addEventListener('visibilitychange',moving);
+ if(window.ScrollTrigger)ScrollTrigger.addEventListener('refresh',sync);moving();
 })();
 </script>
 </body>

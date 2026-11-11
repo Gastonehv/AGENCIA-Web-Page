@@ -28,3 +28,16 @@ Sitio público de agencIA en https://agenciamx.app (Netlify, sitio `agenciamx`, 
 - `/agentes-ia-xalapa/` está en el sitemap y da 404 (heredado del 26-oct): crear la página o quitarla del sitemap.
 - Caso real de cliente en la web: requiere evidencia comprobable + permiso del cliente.
 - Migración de `main` (ver arriba): solo con config de build equivalente y revisión.
+
+
+## Corrección de navegación 2026-11-11, posterior a la publicación
+
+Gastón señaló que el nuevo enlace "Qué hace" llevaba a mitad de una animación y era redundante con la segunda sección del recorrido. Después pidió que el acceso a precios fuera más visible. Se retira "Qué hace" y se deja un solo botón "Ver precios", fondo claro y texto oscuro. Alma, copy, precios, condiciones y configuración quedan intactos. Sin ajuste SEO adicional.
+
+Error de QA: paridad del destino no prueba que un enlace nuevo sea útil. Debe probarse el clic desde el punto de entrada y comprobar el principio completo del contenido, además de la redundancia en el recorrido. No se rehace la animación para conservar el enlace innecesario.
+
+- Fuente: commit `7d7f6b50d420324f5c2e63e44e9dea4c9aece5d3`, único archivo web cambiado `index.html`, sha1 `1214ad8cabe28b7b3998d381edce084393623b8a`.
+- Preview separada: https://agenciamx-fixnav-20261111.netlify.app, deploy `6af478269f5ee96cd4777e34`. Inventario de 100 archivos verificado: solo cambia index respecto al deploy publicado; config recuperada byte-idéntica.
+- QA funcional en preview: 33/33 PASS (redirects, markdown 200 y 404, secciones, archivos directos y HTML).
+- QA visual y clic real: móvil 390x844, sección precios y=124 y header hasta y=110; desktop 1440x1000, sección y=90, contenido del panel totalmente despejado del header. Título inicial completo; móvil tarjetas apiladas y desktop tres columnas. Botón visible sin tapar badge ni alterar Alma.
+- Producción permanece en `6af474578532c2c410697c3d`, locked=true. Esta corrección NO publicada, pendiente de revisión y OK posterior de Gastón. Main y ajustes de build no tocados; alineación segura de main sigue pendiente aparte.
